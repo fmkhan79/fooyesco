@@ -58,19 +58,20 @@ $stripe_settings = json_decode($stripe_settings);
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">First Name *</label>
                         <input type="text" class="form-control" id="" name="first_name" required
-                            placeholder="Enter first name..." value="ahmed">
+                            placeholder="Enter first name..." >
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputPassword4">Last Name *</label>
                         <input type="text" class="form-control" name="last_name" required
-                            placeholder="Enter last name..." value="ali">
+                            placeholder="Enter last name..." >
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputAddress">Mobile *</label>
                         <input type="tel" class="form-control" name="phone_mobile" id="inputAddress" required
-                            placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$" value="07123456789"
+                            placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$" 
+
                             title="Please enter a valid mobile number starting with +447 or 07 followed by 9 digits">
                         <small>Format: +44 7123 456 789 or 07123 456 789</small><br>
                     </div>
@@ -80,7 +81,7 @@ $stripe_settings = json_decode($stripe_settings);
                     <div class="form-group col-md-6">
                         <label for="inputAddress">Email *</label>
                         <input type="email" class="form-control" name="email" id="inputAddress" required
-                            value="test@test.com" placeholder="Enter email...">
+                            placeholder="Enter email...">
                     </div>
 
                     <div class="form-group col-md-6">
@@ -148,7 +149,7 @@ $stripe_settings = json_decode($stripe_settings);
 
             <div class="form-group col-md-6">
                 <label for="inputPassword4">Country</label>
-                <input type="text" name="country" class="form-control" placeholder="Country" value="London" disabled>
+                <input type="text" name="country" class="form-control" placeholder="Country"  disabled>
             </div>
 
         </div>
@@ -197,7 +198,7 @@ $stripe_settings = json_decode($stripe_settings);
                             <label for="cash-on-delivery">
                                 <div class="callout callout-primary">
                                     <input type="radio" class="payment-gateway-radio" name="payment_gateway"
-                                        value="cash_on_delivery" checked="" id="cash-on-delivery">
+                                         checked="" id="cash-on-delivery">
                                     <img src="<?php echo base_url('assets/payment/cash-on-delivery.png'); ?>"
                                         alt="cash-on-delivery">
                                 </div>
@@ -208,7 +209,7 @@ $stripe_settings = json_decode($stripe_settings);
                             <label for="paypal">
                                 <div class="callout callout-secondary">
                                     <input type="radio" class="payment-gateway-radio" name="payment_gateway"
-                                        value="paypal" id="paypal">
+                                         id="paypal">
                                     <img src="<?php echo base_url('assets/payment/paypal.png'); ?>" alt="paypal">
                                 </div>
                             </label>
@@ -218,7 +219,7 @@ $stripe_settings = json_decode($stripe_settings);
                             <label for="stripe">
                                 <div class="callout callout-secondary">
                                     <input type="radio" class="payment-gateway-radio" name="payment_gateway"
-                                        value="stripe" id="stripe">
+                                         id="stripe">
                                     <img src="<?php echo base_url('assets/payment/stripe.png'); ?>" alt="stripe">
                                 </div>
                             </label>
@@ -312,7 +313,7 @@ $stripe_settings = json_decode($stripe_settings);
                                 <tr>
                                     <td>
                                         <div class="order-delivery-types">
-                                            <input id="delivery" type="radio" name="order_type" value="delivery"
+                                            <input id="delivery" type="radio" name="order_type" 
                                                 onchange="$('#order-type').text('<?php echo site_phrase('delivery'); ?>'); $('.order_type').val('delivery'); loadFetchedUrl(); $('.delivery-order').removeClass('d-none'); $('.pickup-order').addClass('d-none');"
                                                 <?php if ($order_type == "delivery") echo "checked"; ?> />
                                             <label class="order-delivery-type-label order-type-delivery" for="delivery">
@@ -333,7 +334,7 @@ $stripe_settings = json_decode($stripe_settings);
                                                         }
                                                         ?>
                                         <div class="order-delivery-types">
-                                            <input id="pickup" type="radio" name="order_type" value="pickup"
+                                            <input id="pickup" type="radio" name="order_type" 
                                                 onchange="$('#order-type').text('<?php echo site_phrase('pickup'); ?>'); $('.order_type').val('pickup'); loadFetchedUrl(); $('.delivery-order').addClass('d-none'); $('.pickup-order').removeClass('d-none');"
                                                 <?php if ($order_type == "pickup") echo "checked"; ?>
                                                 <?php if (!$pickup_order_status) echo 'disabled'; ?> />
@@ -415,7 +416,7 @@ $stripe_settings = json_decode($stripe_settings);
 
             <div class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-between my-4">
                 <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between">
-                    <input type="radio" name="basket-switcher" value="delivery" checked="checked"
+                    <input type="radio" name="basket-switcher"  checked="checked"
                         class="is-visuallyHidden"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         viewBox="0 0 24 24" fill="none">
                         <g clip-path="url(#clip0_4609_18686)">
@@ -443,7 +444,7 @@ $stripe_settings = json_decode($stripe_settings);
                             from 7:35
                         </span></div>
                 </label> <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between"><input
-                        type="radio" name="basket-switcher" value="collection" class="is-visuallyHidden"> <svg
+                        type="radio" name="basket-switcher"  class="is-visuallyHidden"> <svg
                         xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
                         <g clip-path="url(#clip0_4609_18694)">
                             <path
