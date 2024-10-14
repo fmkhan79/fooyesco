@@ -1,0 +1,677 @@
+{
+	"require_version": "2.0",
+	"directory": [
+		{
+			"name": "application/views/backend/admin/cook"
+		},
+		{
+			"name": "application/views/backend/admin/cook/scripts"
+		},
+		{
+			"name": "application/views/backend/admin/cook/styles"
+		},
+		{
+			"name": "application/views/backend/owner/cook"
+		},
+		{
+			"name": "application/views/backend/owner/cook/scripts"
+		},
+		{
+			"name": "application/views/backend/owner/cook/styles"
+		},
+		{
+			"name": "application/views/backend/admin/ingredient"
+		},
+		{
+			"name": "application/views/backend/admin/ingredient/scripts"
+		},
+		{
+			"name": "application/views/backend/admin/ingredient/styles"
+		},
+		{
+			"name": "application/views/backend/owner/ingredient"
+		},
+		{
+			"name": "application/views/backend/owner/ingredient/scripts"
+		},
+		{
+			"name": "application/views/backend/owner/ingredient/styles"
+		},
+		{
+			"name": "application/views/backend/cook"
+		},
+		{
+			"name": "application/views/backend/cook/navigation"
+		},
+		{
+			"name": "application/views/backend/cook/orders"
+		},
+		{
+			"name": "application/views/backend/cook/orders/scripts"
+		},
+		{
+			"name": "application/views/backend/cook/orders/styles"
+		},
+		{
+			"name": "application/views/backend/cook/settings"
+		},
+		{
+			"name": "application/views/backend/cook/settings/scripts"
+		},
+		{
+			"name": "application/views/backend/cook/settings/styles"
+		}
+	],
+	"sql_file": "",
+	"libraries": [],
+	"files": [
+		{
+			"root_directory": "update/update_3.0/application/controllers/Auth.php",
+			"update_directory": "application/controllers/Auth.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/controllers/Base.php",
+			"update_directory": "application/controllers/Base.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/controllers/Cart.php",
+			"update_directory": "application/controllers/Cart.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/controllers/Checkout.php",
+			"update_directory": "application/controllers/Checkout.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/controllers/Dashboard.php",
+			"update_directory": "application/controllers/Dashboard.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/controllers/Menu.php",
+			"update_directory": "application/controllers/Menu.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/controllers/Orders.php",
+			"update_directory": "application/controllers/Orders.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/controllers/Settings.php",
+			"update_directory": "application/controllers/Settings.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/helpers/common_helper.php",
+			"update_directory": "application/helpers/common_helper.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/helpers/restaurant_helper.php",
+			"update_directory": "application/helpers/restaurant_helper.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/helpers/sanitizer_helper.php",
+			"update_directory": "application/helpers/sanitizer_helper.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/helpers/user_helper.php",
+			"update_directory": "application/helpers/user_helper.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Auth_model.php",
+			"update_directory": "application/models/Auth_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Cart_model.php",
+			"update_directory": "application/models/Cart_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Checkout_model.php",
+			"update_directory": "application/models/Checkout_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Customer_model.php",
+			"update_directory": "application/models/Customer_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Driver_model.php",
+			"update_directory": "application/models/Driver_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Menu_model.php",
+			"update_directory": "application/models/Menu_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Order_model.php",
+			"update_directory": "application/models/Order_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Report_model.php",
+			"update_directory": "application/models/Report_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Restaurant_model.php",
+			"update_directory": "application/models/Restaurant_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Settings_model.php",
+			"update_directory": "application/models/Settings_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/User_model.php",
+			"update_directory": "application/models/User_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/menu/edit.php",
+			"update_directory": "application/views/backend/admin/menu/edit.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/navigation/index.php",
+			"update_directory": "application/views/backend/admin/navigation/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/orders/all.php",
+			"update_directory": "application/views/backend/admin/orders/all.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/orders/details.php",
+			"update_directory": "application/views/backend/admin/orders/details.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/orders/live-data.php",
+			"update_directory": "application/views/backend/admin/orders/live-data.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/orders/scripts/index-script.php",
+			"update_directory": "application/views/backend/admin/orders/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/orders/today.php",
+			"update_directory": "application/views/backend/admin/orders/today.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/restaurant/edit.php",
+			"update_directory": "application/views/backend/admin/restaurant/edit.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/restaurant/list.php",
+			"update_directory": "application/views/backend/admin/restaurant/list.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/customer/favourite/cart.php",
+			"update_directory": "application/views/backend/customer/favourite/cart.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/customer/favourite/list.php",
+			"update_directory": "application/views/backend/customer/favourite/list.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/customer/favourite/scripts/index-script.php",
+			"update_directory": "application/views/backend/customer/favourite/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/customer/orders/all.php",
+			"update_directory": "application/views/backend/customer/orders/all.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/customer/orders/details.php",
+			"update_directory": "application/views/backend/customer/orders/details.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/customer/orders/live-data.php",
+			"update_directory": "application/views/backend/customer/orders/live-data.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/customer/orders/today.php",
+			"update_directory": "application/views/backend/customer/orders/today.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/driver/orders/all.php",
+			"update_directory": "application/views/backend/driver/orders/all.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/driver/orders/details.php",
+			"update_directory": "application/views/backend/driver/orders/details.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/driver/orders/live-data.php",
+			"update_directory": "application/views/backend/driver/orders/live-data.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/index.php",
+			"update_directory": "application/views/backend/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/menu/edit.php",
+			"update_directory": "application/views/backend/owner/menu/edit.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/navigation/index.php",
+			"update_directory": "application/views/backend/owner/navigation/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/orders/all.php",
+			"update_directory": "application/views/backend/owner/orders/all.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/orders/details.php",
+			"update_directory": "application/views/backend/owner/orders/details.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/orders/live-data.php",
+			"update_directory": "application/views/backend/owner/orders/live-data.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/orders/today.php",
+			"update_directory": "application/views/backend/owner/orders/today.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/restaurant/list.php",
+			"update_directory": "application/views/backend/owner/restaurant/list.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/common/script.php",
+			"update_directory": "application/views/common/script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/cart/index.php",
+			"update_directory": "application/views/frontend/default/cart/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/cart/scripts/index-script.php",
+			"update_directory": "application/views/frontend/default/cart/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/cart/summary.php",
+			"update_directory": "application/views/frontend/default/cart/summary.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/checkout/cash_on_delivery/cash_on_delivery_form.php",
+			"update_directory": "application/views/frontend/default/checkout/cash_on_delivery/cash_on_delivery_form.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/checkout/index.php",
+			"update_directory": "application/views/frontend/default/checkout/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/checkout/paypal/paypal.php",
+			"update_directory": "application/views/frontend/default/checkout/paypal/paypal.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/checkout/paypal/paypal_form.php",
+			"update_directory": "application/views/frontend/default/checkout/paypal/paypal_form.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/checkout/scripts/paypal-script.php",
+			"update_directory": "application/views/frontend/default/checkout/scripts/paypal-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/checkout/stripe/stripe_checkout.php",
+			"update_directory": "application/views/frontend/default/checkout/stripe/stripe_checkout.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/checkout/stripe/stripe_form.php",
+			"update_directory": "application/views/frontend/default/checkout/stripe/stripe_form.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/checkout/styles/index-style.php",
+			"update_directory": "application/views/frontend/default/checkout/styles/index-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/frontend/default/restaurant/scripts/index-script.php",
+			"update_directory": "application/views/frontend/default/restaurant/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/controllers/Cook.php",
+			"update_directory": "application/controllers/Cook.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/controllers/Ingredient.php",
+			"update_directory": "application/controllers/Ingredient.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Cook_model.php",
+			"update_directory": "application/models/Cook_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/models/Ingredient_model.php",
+			"update_directory": "application/models/Ingredient_model.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/scripts/create-script.php",
+			"update_directory": "application/views/backend/admin/cook/scripts/create-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/scripts/edit-script.php",
+			"update_directory": "application/views/backend/admin/cook/scripts/edit-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/scripts/index-script.php",
+			"update_directory": "application/views/backend/admin/cook/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/scripts/profile-script.php",
+			"update_directory": "application/views/backend/admin/cook/scripts/profile-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/styles/create-style.php",
+			"update_directory": "application/views/backend/admin/cook/styles/create-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/styles/edit-style.php",
+			"update_directory": "application/views/backend/admin/cook/styles/edit-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/styles/index-style.php",
+			"update_directory": "application/views/backend/admin/cook/styles/index-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/styles/profile-style.php",
+			"update_directory": "application/views/backend/admin/cook/styles/profile-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/create.php",
+			"update_directory": "application/views/backend/admin/cook/create.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/header.php",
+			"update_directory": "application/views/backend/admin/cook/header.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/index.php",
+			"update_directory": "application/views/backend/admin/cook/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/list.php",
+			"update_directory": "application/views/backend/admin/cook/list.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/cook/profile.php",
+			"update_directory": "application/views/backend/admin/cook/profile.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/scripts/create-script.php",
+			"update_directory": "application/views/backend/owner/cook/scripts/create-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/scripts/edit-script.php",
+			"update_directory": "application/views/backend/owner/cook/scripts/edit-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/scripts/index-script.php",
+			"update_directory": "application/views/backend/owner/cook/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/scripts/profile-script.php",
+			"update_directory": "application/views/backend/owner/cook/scripts/profile-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/styles/create-style.php",
+			"update_directory": "application/views/backend/owner/cook/styles/create-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/styles/edit-style.php",
+			"update_directory": "application/views/backend/owner/cook/styles/edit-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/styles/index-style.php",
+			"update_directory": "application/views/backend/owner/cook/styles/index-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/styles/profile-style.php",
+			"update_directory": "application/views/backend/owner/cook/styles/profile-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/create.php",
+			"update_directory": "application/views/backend/owner/cook/create.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/header.php",
+			"update_directory": "application/views/backend/owner/cook/header.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/index.php",
+			"update_directory": "application/views/backend/owner/cook/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/list.php",
+			"update_directory": "application/views/backend/owner/cook/list.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/cook/profile.php",
+			"update_directory": "application/views/backend/owner/cook/profile.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/scripts/create-script.php",
+			"update_directory": "application/views/backend/admin/ingredient/scripts/create-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/scripts/edit-script.php",
+			"update_directory": "application/views/backend/admin/ingredient/scripts/edit-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/scripts/index-script.php",
+			"update_directory": "application/views/backend/admin/ingredient/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/scripts/report-script.php",
+			"update_directory": "application/views/backend/admin/ingredient/scripts/report-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/styles/create-style.php",
+			"update_directory": "application/views/backend/admin/ingredient/styles/create-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/styles/edit-style.php",
+			"update_directory": "application/views/backend/admin/ingredient/styles/edit-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/styles/index-style.php",
+			"update_directory": "application/views/backend/admin/ingredient/styles/index-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/styles/report-style.php",
+			"update_directory": "application/views/backend/admin/ingredient/styles/report-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/create.php",
+			"update_directory": "application/views/backend/admin/ingredient/create.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/edit.php",
+			"update_directory": "application/views/backend/admin/ingredient/edit.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/header.php",
+			"update_directory": "application/views/backend/admin/ingredient/header.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/index.php",
+			"update_directory": "application/views/backend/admin/ingredient/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/list.php",
+			"update_directory": "application/views/backend/admin/ingredient/list.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/ingredient/report.php",
+			"update_directory": "application/views/backend/admin/ingredient/report.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/scripts/create-script.php",
+			"update_directory": "application/views/backend/owner/ingredient/scripts/create-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/scripts/edit-script.php",
+			"update_directory": "application/views/backend/owner/ingredient/scripts/edit-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/scripts/index-script.php",
+			"update_directory": "application/views/backend/owner/ingredient/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/scripts/report-script.php",
+			"update_directory": "application/views/backend/owner/ingredient/scripts/report-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/styles/create-style.php",
+			"update_directory": "application/views/backend/owner/ingredient/styles/create-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/styles/edit-style.php",
+			"update_directory": "application/views/backend/owner/ingredient/styles/edit-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/styles/index-style.php",
+			"update_directory": "application/views/backend/owner/ingredient/styles/index-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/styles/report-style.php",
+			"update_directory": "application/views/backend/owner/ingredient/styles/report-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/create.php",
+			"update_directory": "application/views/backend/owner/ingredient/create.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/edit.php",
+			"update_directory": "application/views/backend/owner/ingredient/edit.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/header.php",
+			"update_directory": "application/views/backend/owner/ingredient/header.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/index.php",
+			"update_directory": "application/views/backend/owner/ingredient/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/list.php",
+			"update_directory": "application/views/backend/owner/ingredient/list.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/ingredient/report.php",
+			"update_directory": "application/views/backend/owner/ingredient/report.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/menu/edit-ingredient.php",
+			"update_directory": "application/views/backend/admin/menu/edit-ingredient.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/menu/ingredients.php",
+			"update_directory": "application/views/backend/admin/menu/ingredients.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/menu/report.php",
+			"update_directory": "application/views/backend/admin/menu/report.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/menu/scripts/report-script.php",
+			"update_directory": "application/views/backend/admin/menu/scripts/report-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/menu/styles/report-style.php",
+			"update_directory": "application/views/backend/admin/menu/styles/report-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/settings/order.php",
+			"update_directory": "application/views/backend/admin/settings/order.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/settings/scripts/order-script.php",
+			"update_directory": "application/views/backend/admin/settings/scripts/order-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/admin/settings/styles/order-style.php",
+			"update_directory": "application/views/backend/admin/settings/styles/order-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/navigation/index.php",
+			"update_directory": "application/views/backend/cook/navigation/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/scripts/details-script.php",
+			"update_directory": "application/views/backend/cook/orders/scripts/details-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/scripts/index-script.php",
+			"update_directory": "application/views/backend/cook/orders/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/styles/details-style.php",
+			"update_directory": "application/views/backend/cook/orders/styles/details-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/styles/index-style.php",
+			"update_directory": "application/views/backend/cook/orders/styles/index-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/details.php",
+			"update_directory": "application/views/backend/cook/orders/details.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/edit.php",
+			"update_directory": "application/views/backend/cook/orders/edit.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/header.php",
+			"update_directory": "application/views/backend/cook/orders/header.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/index.php",
+			"update_directory": "application/views/backend/cook/orders/index.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/live-data.php",
+			"update_directory": "application/views/backend/cook/orders/live-data.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/note.php",
+			"update_directory": "application/views/backend/cook/orders/note.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/orders/today.php",
+			"update_directory": "application/views/backend/cook/orders/today.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/settings/scripts/profile-script.php",
+			"update_directory": "application/views/backend/cook/settings/scripts/profile-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/settings/styles/profile-style.php",
+			"update_directory": "application/views/backend/cook/settings/styles/profile-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/settings/header.php",
+			"update_directory": "application/views/backend/cook/settings/header.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/cook/settings/profile.php",
+			"update_directory": "application/views/backend/cook/settings/profile.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/menu/edit-ingredient.php",
+			"update_directory": "application/views/backend/owner/menu/edit-ingredient.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/menu/ingredients.php",
+			"update_directory": "application/views/backend/owner/menu/ingredients.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/menu/report.php",
+			"update_directory": "application/views/backend/owner/menu/report.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/menu/scripts/report-script.php",
+			"update_directory": "application/views/backend/owner/menu/scripts/report-script.php"
+		},
+		{
+			"root_directory": "update/update_3.0/application/views/backend/owner/menu/styles/report-style.php",
+			"update_directory": "application/views/backend/owner/menu/styles/report-style.php"
+		},
+		{
+			"root_directory": "update/update_3.0/assets/frontend/default/images/delivery.png",
+			"update_directory": "assets/frontend/default/images/delivery.png"
+		},
+		{
+			"root_directory": "update/update_3.0/assets/frontend/default/images/pickup.png",
+			"update_directory": "assets/frontend/default/images/pickup.png"
+		}
+	]
+}

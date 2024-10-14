@@ -1,0 +1,343 @@
+{
+	"require_version": "1.3",
+	"directory": [
+		{
+			"name": "application/views/backend/admin/addons"
+		},
+		{
+			"name": "application/views/backend/admin/addons/scripts"
+		},
+		{
+			"name": "application/views/backend/admin/addons/styles"
+		},
+		{
+			"name": "application/views/backend/admin/variant"
+		},
+		{
+			"name": "application/views/backend/admin/variant/scripts"
+		},
+		{
+			"name": "application/views/backend/admin/variant/styles"
+		},
+		{
+			"name": "application/views/backend/admin/variant_options"
+		},
+		{
+			"name": "application/views/backend/admin/variant_options/scripts"
+		},
+		{
+			"name": "application/views/backend/admin/variant_options/styles"
+		},
+		{
+			"name": "application/views/backend/owner/addons"
+		},
+		{
+			"name": "application/views/backend/owner/addons/scripts"
+		},
+		{
+			"name": "application/views/backend/owner/addons/styles"
+		},
+		{
+			"name": "application/views/backend/owner/variant"
+		},
+		{
+			"name": "application/views/backend/owner/variant/scripts"
+		},
+		{
+			"name": "application/views/backend/owner/variant/styles"
+		},
+		{
+			"name": "application/views/backend/owner/variant_options"
+		},
+		{
+			"name": "application/views/backend/owner/variant_options/scripts"
+		},
+		{
+			"name": "application/views/backend/owner/variant_options/styles"
+		}
+	],
+	"sql_file": "",
+	"libraries": [],
+	"files": [
+		{
+			"root_directory": "update/update_2.0/application/controllers/Base.php",
+			"update_directory": "application/controllers/Base.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/controllers/Cart.php",
+			"update_directory": "application/controllers/Cart.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/controllers/Checkout.php",
+			"update_directory": "application/controllers/Checkout.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/controllers/Menu.php",
+			"update_directory": "application/controllers/Menu.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/helpers/restaurant_helper.php",
+			"update_directory": "application/helpers/restaurant_helper.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/models/Cart_model.php",
+			"update_directory": "application/models/Cart_model.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/models/Menu_model.php",
+			"update_directory": "application/models/Menu_model.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/models/Order_model.php",
+			"update_directory": "application/models/Order_model.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/models/Restaurant_model.php",
+			"update_directory": "application/models/Restaurant_model.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/menu/create.php",
+			"update_directory": "application/views/backend/admin/menu/create.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/menu/edit.php",
+			"update_directory": "application/views/backend/admin/menu/edit.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/menu/header.php",
+			"update_directory": "application/views/backend/admin/menu/header.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/menu/scripts/edit-script.php",
+			"update_directory": "application/views/backend/admin/menu/scripts/edit-script.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/menu/styles/edit-style.php",
+			"update_directory": "application/views/backend/admin/menu/styles/edit-style.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/orders/details.php",
+			"update_directory": "application/views/backend/admin/orders/details.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/orders/styles/details-style.php",
+			"update_directory": "application/views/backend/admin/orders/styles/details-style.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/restaurant/edit.php",
+			"update_directory": "application/views/backend/admin/restaurant/edit.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/restaurant/header.php",
+			"update_directory": "application/views/backend/admin/restaurant/header.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/settings/delivery.php",
+			"update_directory": "application/views/backend/admin/settings/delivery.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/settings/revenue.php",
+			"update_directory": "application/views/backend/admin/settings/revenue.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/settings/scripts/system-script.php",
+			"update_directory": "application/views/backend/admin/settings/scripts/system-script.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/settings/system.php",
+			"update_directory": "application/views/backend/admin/settings/system.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/settings/vat.php",
+			"update_directory": "application/views/backend/admin/settings/vat.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/customer/orders/all.php",
+			"update_directory": "application/views/backend/customer/orders/all.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/customer/orders/details.php",
+			"update_directory": "application/views/backend/customer/orders/details.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/customer/orders/styles/details-style.php",
+			"update_directory": "application/views/backend/customer/orders/styles/details-style.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/driver/orders/details.php",
+			"update_directory": "application/views/backend/driver/orders/details.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/driver/orders/styles/details-style.php",
+			"update_directory": "application/views/backend/driver/orders/styles/details-style.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/menu/create.php",
+			"update_directory": "application/views/backend/owner/menu/create.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/menu/edit.php",
+			"update_directory": "application/views/backend/owner/menu/edit.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/menu/header.php",
+			"update_directory": "application/views/backend/owner/menu/header.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/menu/scripts/edit-script.php",
+			"update_directory": "application/views/backend/owner/menu/scripts/edit-script.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/orders/details.php",
+			"update_directory": "application/views/backend/owner/orders/details.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/orders/styles/details-style.php",
+			"update_directory": "application/views/backend/owner/orders/styles/details-style.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/restaurant/edit.php",
+			"update_directory": "application/views/backend/owner/restaurant/edit.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/restaurant/header.php",
+			"update_directory": "application/views/backend/owner/restaurant/header.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/frontend/default/cart/list.php",
+			"update_directory": "application/views/frontend/default/cart/list.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/frontend/default/cart/scripts/index-script.php",
+			"update_directory": "application/views/frontend/default/cart/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/frontend/default/partials/modal.php",
+			"update_directory": "application/views/frontend/default/partials/modal.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/frontend/default/restaurant/cart.php",
+			"update_directory": "application/views/frontend/default/restaurant/cart.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/frontend/default/restaurant/index.php",
+			"update_directory": "application/views/frontend/default/restaurant/index.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/frontend/default/restaurant/menu.php",
+			"update_directory": "application/views/frontend/default/restaurant/menu.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/frontend/default/restaurant/scripts/index-script.php",
+			"update_directory": "application/views/frontend/default/restaurant/scripts/index-script.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/frontend/default/restaurant/styles/index-style.php",
+			"update_directory": "application/views/frontend/default/restaurant/styles/index-style.php"
+		},
+		{
+			"root_directory": "update/update_2.0/assets/backend/js/tabular-input.js",
+			"update_directory": "assets/backend/js/tabular-input.js"
+		},
+		{
+			"root_directory": "update/update_2.0/assets/frontend/default/css/custom.css",
+			"update_directory": "assets/frontend/default/css/custom.css"
+		},
+		{
+			"root_directory": "update/update_2.0/assets/frontend/default/css/modal.css",
+			"update_directory": "assets/frontend/default/css/modal.css"
+		},
+		{
+			"root_directory": "update/update_2.0/application/controllers/Addon.php",
+			"update_directory": "application/controllers/Addon.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/controllers/Variation.php",
+			"update_directory": "application/controllers/Variation.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/models/Addon_model.php",
+			"update_directory": "application/models/Addon_model.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/models/Variation_model.php",
+			"update_directory": "application/models/Variation_model.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/frontend/default/cart/summary.php",
+			"update_directory": "application/views/frontend/default/cart/summary.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/addons/create.php",
+			"update_directory": "application/views/backend/admin/addons/create.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/addons/edit.php",
+			"update_directory": "application/views/backend/admin/addons/edit.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/addons/list.php",
+			"update_directory": "application/views/backend/admin/addons/list.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/addons/create.php",
+			"update_directory": "application/views/backend/owner/addons/create.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/addons/edit.php",
+			"update_directory": "application/views/backend/owner/addons/edit.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/addons/list.php",
+			"update_directory": "application/views/backend/owner/addons/list.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/variant/create.php",
+			"update_directory": "application/views/backend/admin/variant/create.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/variant/edit.php",
+			"update_directory": "application/views/backend/admin/variant/edit.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/variant/list.php",
+			"update_directory": "application/views/backend/admin/variant/list.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/variant/create.php",
+			"update_directory": "application/views/backend/owner/variant/create.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/variant/edit.php",
+			"update_directory": "application/views/backend/owner/variant/edit.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/variant/list.php",
+			"update_directory": "application/views/backend/owner/variant/list.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/variant_options/create.php",
+			"update_directory": "application/views/backend/admin/variant_options/create.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/variant_options/edit.php",
+			"update_directory": "application/views/backend/admin/variant_options/edit.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/admin/variant_options/list.php",
+			"update_directory": "application/views/backend/admin/variant_options/list.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/variant_options/create.php",
+			"update_directory": "application/views/backend/owner/variant_options/create.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/variant_options/edit.php",
+			"update_directory": "application/views/backend/owner/variant_options/edit.php"
+		},
+		{
+			"root_directory": "update/update_2.0/application/views/backend/owner/variant_options/list.php",
+			"update_directory": "application/views/backend/owner/variant_options/list.php"
+		}
+	]
+}
