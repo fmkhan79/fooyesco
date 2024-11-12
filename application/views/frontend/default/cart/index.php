@@ -42,3 +42,18 @@
         </div>
     </div>
 </section>
+
+
+<script>
+    // Delay session destruction by 5 seconds
+    setTimeout(function() {
+        // Make an AJAX call to destroy the session
+        fetch('<?php echo site_url('cart/session_destroy'); ?>')  // Using PHP to get the correct URL
+            .then(response => {
+                if (response.ok) {
+                    console.log('Session destroyed successfully.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }, 5000); // 5000 milliseconds = 5 seconds
+</script>

@@ -81,6 +81,14 @@ class Cart extends Base
             echo "Invalid promo code.";
         }
     }
+    // SENDING ORDER PLACING MAILS FROM THIS FUNCTION
+    public function order_placing_mail($order_code)
+    {
+        print_r($order_code);
+      
+        $this->cart_model->order_placing_mail($order_code);
+        // $this->session->sess_destroy();
+    }
 
 
     function damn()
@@ -111,7 +119,8 @@ class Cart extends Base
             $page_data['page_name']  = 'cart/index';
             $page_data['page_title'] = get_phrase("your_cart", true);
             $this->load->view(frontend('index'), $page_data);
-             $this->session->sess_destroy();
+            
+            //  $this->session->sess_destroy();
 
         } else {
             $page_data['page_name']  = 'cart/index';
@@ -119,11 +128,27 @@ class Cart extends Base
             $this->load->view(frontend('index'), $page_data);
         }
     
+        
 
 
      
 
 
+    }
+
+    public function session_destroy() {
+        $user_id = $this->session->userdata('user_id');
+
+        // die();
+        
+        // Load the user model
+        $this->load->model('User_model');
+        
+        if ($this->User_model->is_guest($user_id) == 1){
+        $this->session->sess_destroy();
+        // Optionally return a response
+        echo json_encode(['status' => 'success']);
+        }
     }
 
     // add_to_cart method add items to the cart

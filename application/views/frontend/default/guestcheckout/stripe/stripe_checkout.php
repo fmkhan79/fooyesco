@@ -89,3 +89,7 @@ if (!empty($request->checkoutSession)) {
 
 // Return response
 echo json_encode($response);
+
+
+
+

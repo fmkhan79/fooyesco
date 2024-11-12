@@ -94,17 +94,24 @@ class Cart_model extends Base_model
      */
     function add_to_cart()
     {
+
+
         // CHECK IF THE USER IS LOGGED IN, IF NOT THEN ASSIGN A RANDOM NUMBER AS USER ID
         if (!$this->logged_in_user_id || empty($this->logged_in_user_id)) {
             // $this->session->set_userdata('user_id', rand(9999, 99999));
             $this->customer_model->insert_guest_customer(array());
+            // $user_id = $this->get_customer_id_from_user_id($user_id);
             //Get session user_id 
+            // $data['customer_id'] = $this->customer_model->get_customer_id_from_user_id($this->session->userdata('user_id'));
             $data['customer_id'] = $this->session->userdata('user_id');
-           
+            // echo "created";
             $this->logged_in_user_id = $data['customer_id'];
         } else {
+            // $data['customer_id'] = $this->customer_model->get_customer_id_from_user_id($this->logged_in_user_id);
             $data['customer_id'] = $this->logged_in_user_id;
         }
+        
+        // print_r($data['customer_id'] . "<br>");
 
         $data['servings'] = "menu"; // STATIC VALUE
         $data['note'] = sanitize($this->input->post('note'));
@@ -222,7 +229,7 @@ class Cart_model extends Base_model
      * RETURN ALL THE CART ITEMS
      */
     public function get_all() {
-        $data['customer_id'] = $this->logged_in_user_id; // Assuming this is set in the model
+        $data['customer_id'] = $this->logged_in_user_id; // Assuming this is set in the mode
         $obj = $this->db->get_where($this->table, $data);
         return $this->merger($obj); // Process the result through the merger method
     }
@@ -331,14 +338,56 @@ public function get_restaurants_by_ids($restaurant_ids) {
     public function get_restaurant_ids() {
         $restaurant_ids = array();
         $cart_items = $this->get_all(); // Get all cart items
+        // print_r($cart_items);
         foreach ($cart_items as $cart_item) {
-            if (!in_array($cart_item['restaurant_id'], $restaurant_ids)) {
+                    if (!in_array($cart_item['restaurant_id'], $restaurant_ids)) {
                 array_push($restaurant_ids, $cart_item['restaurant_id']);
             }
         }
+      
         return $restaurant_ids;
     }
 
+    public function order_placing_mail($order_code)
+    {
+        // print_r($customer_details . "<dada");
+        // SENDING MAIL TO CUSTOMER
+        // print_r("id" . $this->logged_in_user_id . "das");
+        $customer_details = $this->user_model->get_user_by_id($this->logged_in_user_id);
+            print_r($customer_details . "Da");
+            // print_r($this->user_model->get_user_by_id($this->logged_in_user_id));
+        // print_r($customer_details. "hey");
+        $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
+          $message .= get_phrase('your_order_has_been_placed_successfully') . '.<br/>';
+        $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
+        $message .= get_phrase('please_track_down_your_order_status_from_the_order_details_page') . '.';
+        $this->email_model->order_pacing($customer_details['email'], $message);
+        print_r($customer_details['email'] ."email");
+        // SENDING MAIL TO ADMIN
+        $admin_details = $this->user_model->get_admin_details();
+        $message  = get_phrase('hello') . ' ' . $admin_details['name'] . ', <br/>';
+        $message .= get_phrase('a_new_order_has_been_placed_by_the_customer_name') . ' <b>' . $customer_details['name'] . '</b>.<br/>';
+        $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
+        $message .= get_phrase('please_check_the_order_as_soon_as_possible_and_process_the_order') . '.';
+        $this->email_model->order_pacing($admin_details['email'], $message);
+        // print_r($admin_details['email']. "admin");
+
+
+        // PUSH ALL THE RESTAURANT IDS TO THIS ARRAY FOR SENDING MAILS TO THE RESTAURANT OWNERS
+        $restaurant_ids = $this->get_restaurant_ids($order_code);
+        // print_r($restaurant_id)
+        foreach ($restaurant_ids as $key => $restaurant_id) {
+            $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
+            $message  = get_phrase('hello') . ' ' . $restaurant_details['owner_name'] . ', <br/>';
+            $message .= get_phrase('a_new_order_has_been_placed_to_your_restaurant_from') . ' <b>' . $customer_details['name'] . '</b>.<br/>';
+            $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
+            $message .= get_phrase('please_check_the_order_as_soon_as_possible') . '.';
+            $this->email_model->order_pacing($restaurant_details['owner_email'], $message);
+            
+        }
+        // print_r($restaurant_details . "admin");
+
+    }
 
     /**
      * GET SMALLER DATA FOR CART PAGE : DISCOUNT % FOR CURRENT CART

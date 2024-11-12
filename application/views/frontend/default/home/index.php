@@ -64,8 +64,9 @@
                         </div>
                     </div>
                     <div class="col-md-7 text-md-right">
-                        <img class="img-fluid"
-                            src="<?php echo base_url('assets/frontend/default/images/main-banner-img.png') ?>" />
+                        <!-- add ? <.?.php -->
+                        <!-- <img class="img-fluid"
+                            src="<php echo base_url('assets/frontend/default/images/main-banner-img.png') ?>" /> -->
                     </div>
                 </div>
             </div>

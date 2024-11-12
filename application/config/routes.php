@@ -6,3 +6,4 @@ $route['404_override'] = '';
 $route['login'] = 'auth/index';
 $route['logout'] = 'auth/logout';
 $route['translate_uri_dashes'] = FALSE;
+// $route['check'] = 'orders/check_new_orders';

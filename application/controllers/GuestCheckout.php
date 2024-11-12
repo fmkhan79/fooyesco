@@ -23,21 +23,8 @@ class GuestCheckout extends Base
 
 
     public function createUser(){
-
-        $data["email"] = $_POST["email"]; 
-        $data["name"] = $_POST["first_name"]." ".$_POST["last_name"];  
-        $data["is_guest"]  = 1;
-
-    
-        
-    
-        $this->customer_model->insert_guest_user($data);
-        $_POST["password"] =  "123";
-        // var_dump($_POST);
         // die();
-        //  $this->validate();
-        // redirect(base_url("cart"));
-
+        
     }
     public function send_distance() {
         
@@ -45,15 +32,23 @@ class GuestCheckout extends Base
         $long_to = $_POST['long_to'];
         
         $restaurant_ids = $this->cart_model->get_restaurant_ids();
+        // die();   
+        // print_r($restaurant_ids);
         $restaurant_details = $this->cart_model->get_restaurants_by_ids($restaurant_ids);
-        // print_r($restaurant_details);
+        // print_r($restaurant_ids);
+        // die();
+
+        // print_r($restaurant_ids);
         $maximum_range = $restaurant_details[0]->maximum_range;
         $free_range = $restaurant_details[0]->free_range;
         $rate_per_mile = $restaurant_details[0]->rate_per_mile;
 
         $latitude = $restaurant_details[0]->latitude;    
         $longitude = $restaurant_details[0]->longitude;
-    
+        // print_r($latitude);
+        // print_r($longitude);
+        // print_r("fas");
+        // die();
         $theta = $long_to - $longitude;
         $miles = (sin(deg2rad($lat_to)) * sin(deg2rad($latitude))) + 
                  (cos(deg2rad($lat_to)) * cos(deg2rad($latitude)) * cos(deg2rad($theta)));
@@ -102,13 +97,12 @@ class GuestCheckout extends Base
     public function save_billing_data() {
         // Retrieve form data
 
-        
+
         $data["email"] = $_POST["email"]; 
         $data["name"] = $_POST["first_name"]." ".$_POST["last_name"];  
         $data["is_guest"]  = 1;
         
-        $user_id = $this->session->userdata("user_id");
-        $this->db->update("users", $data);
+        $this->customer_model->update_guest_user($data);
         
         $_POST["password"] =  "123";
 

@@ -1,5 +1,7 @@
 <!-- NAVIGATION BAR -->
+
 <?php include APPPATH . 'views/frontend/default/navigation/dark.php';
+
 
 $cash_on_delivery_settings = get_payment_settings("cash_on_delivery");
 $cash_on_delivery_settings = json_decode($cash_on_delivery_settings);
@@ -9,15 +11,27 @@ $paypal_settings = json_decode($paypal_settings);
 
 $stripe_settings = get_payment_settings("stripe");
 $stripe_settings = json_decode($stripe_settings);
+
 ?>
-
+ 
 <!-- MAIN CONTENT -->
+<style>
+    .disabled {
+    pointer-events: none; /* Prevent clicks */
+    opacity: 0.5; /* Make it look disabled */
+    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
 
+}
+.order-delivery-types{
+    display:none;
+}
+
+</style>
 <section class="detail-wbox mt-4 mb-2 p-5 d-flex justify-content-around">
     <div class="container bg-white text-dark border border-light p-5 w-75">
         <ul class="d-flex justify-content-between align-item-center billing-list-topbar p-0">
             <li class="billing acitve">
-                <div class="img-box text-center red">Customer Details<img class="billing-active"
+                <div class="img-box text-center red">Customer Details <img class="billing-active"
                         src="<?php echo base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
                     <img class="billing-notactive"
                         src="<?php echo base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
@@ -42,24 +56,24 @@ $stripe_settings = json_decode($stripe_settings);
         <div id="billing-address">
             <h4 class="mt-5 text-dark">Customer Details</h4>
 
-            <form id="billing-form" onsubmit="submitForm(); return false;">
+            <form id="billing-form" onsubmit="submitForm(); return false;" method="POST">
                 <div class="form-row mt-4">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">First Name *</label>
                         <input type="text" class="form-control" id="" name="first_name" required
-                            placeholder="Enter first name...">
+                            placeholder="Enter first name..." value="ahmed">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputPassword4">Last Name *</label>
                         <input type="text" class="form-control" name="last_name" required
-                            placeholder="Enter last name...">
+                            placeholder="Enter last name..." value="ali">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputAddress">Mobile *</label>
                         <input type="tel" class="form-control" name="phone_mobile" id="inputAddress" required
-                            placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$"
+                            placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$" value="07123456789"
                             title="Please enter a valid mobile number starting with +447 or 07 followed by 9 digits">
                         <small>Format: +44 7123 456 789 or 07123 456 789</small><br>
                     </div>
@@ -69,169 +83,167 @@ $stripe_settings = json_decode($stripe_settings);
                     <div class="form-group col-md-6">
                         <label for="inputAddress">Email *</label>
                         <input type="email" class="form-control" name="email" id="inputAddress" required
-                            placeholder="Enter email...">
+                            value="test@test.com" placeholder="Enter email...">
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="inputPassword4">Collection time</label>
+                        <label for="inputPassword4">Collection Time (Optional)</label>
                         <input type="text" class="form-control" name="collection_time" placeholder="Wednesday 12:30">
                     </div>
 
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Note for Delivery: </label>
                     <textarea class="form-control" name="note" placeholder="Details" rows="5"></textarea>
-                </div>
+                </div> -->
 
                 <button type="submit" class="rr-btn border-0 mt-4">Go to payments</button>
             </form>
         </div>
 
         <div id="payment-option">
-            <h4 class="mt-5 text-dark">Your Address</h4>
+            <h4 class="mt-5 text-dark"><span class="order_type">Delivery</span> Address</h4>
 
             <form id="address-form" onsubmit="submitAddressForm(); return false;">
                 <div class="form-row mt-4">
-                    <div class="form-group col-md-6">
-                        <label for="inputAddress">Enter Post Code *</label>
-                        <input type="text" name="additional_address" class="form-control" id="to" required placeholder="Enter Post Code">
+                <div class="form-group col-md-6">
+                        
+                        <label for="inputAddress">Enter Post Code and Select Your Street*</label>
+                        <input type="text" name="additional_address" class="form-control" id="to" required
+                            placeholder="Enter Post Code" >
+                        
                         <small class="text-danger d-none" id="not-deliever"> Address not in deliverable range </small>
                         <input type="hidden" placeholder="Latitude" id="lat_to">
                         <input type="hidden" placeholder="Longitude" id="long_to">
                     </div>
-                    <div class="form-group col-md-6">
-                    <label for="inputEmail4">Street/House No</label>
-                    <input type="text" class="form-control" name="street" placeholder="Street">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                    <label for="inputPassword4">Extra Details</label>
-                    <input type="text" class="form-control" name="number" placeholder="No">
-                    </div>
 
+                 
                     <div class="form-group col-md-6">
-                        <!-- <label for="inputAddress">Post Code *</label>
-                        <input type="text" class="form-control"  name="zip_code" id="inputAddress" required
-                            placeholder="Code"> -->
+                             <label for="inputEmail4">House/Flat Number*</label>
+                        <input type="text" class="form-control" name="street" placeholder="House/Flat Number" required>
                     </div>
-
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputAddress">City</label>
-                        <input type="text" name="city" class="form-control" id="inputAddress" placeholder="City">
-                    </div>
+                    
+                <div class="form-group col-md-12" id="additional-delivery-notes">
+                <label for="inputPassword4">Any Additional Delivery Instructions</label>
+                    <textarea name="number" class="form-control" placeholder="No"></textarea>
+                      </div>
+                <!-- <div class="form-group col-md-6">
+                    <label for="inputAddress">Post Code *</label>
 
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Country</label>
-                        <input type="text" name="country" class="form-control" placeholder="Country" value="London"
-                            disabled>
-                    </div>
+                    <input type="text" class="form-control" name="zip_code" id="post" required placeholder="Code"
+                        minlength="7" maxlength="8" pattern="[A-Za-z0-9]+"
+                        title="Only alphanumeric characters are allowed (no special characters)">
 
-                </div>
-                <div class="form-check mt-4 d-flex">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1"><strong>The shipping address does not
-                            match
-                            the
-                            billing address</strong></label>
-                </div>
+                </div> -->
 
-                <button id="" type="submit" class="rr-btn border-0 mt-4">Save & Continue</button>
-
-            </form>
         </div>
 
-        <div id="your-address">
-            <h4 class="mt-5 text-dark"><?php echo site_phrase('choose_way_of_payment', true); ?></h4>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputAddress">City</label>
+                <input type="text" name="city" class="form-control" id="inputAddress" placeholder="City">
+            </div>
 
-            <?php if ($this->session->userdata('customer_login') || $this->session->userdata('owner_login')) : ?>
-            <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">Country</label>
+                <input type="text" name="country" class="form-control" placeholder="Country" value="London" disabled>
+            </div>
 
-            <?php
+        </div>
+        <div class="form-check mt-4 d-flex">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1"><strong>The shipping address does not
+                    match
+                    the
+                    billing address</strong></label>
+        </div>
+
+        <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Save & Continue</button>
+        <!-- <button id="calculate_distance">Calculate Distance</button> -->
+
+        </form>
+    </div>
+
+    <div id="your-address">
+        <!-- <h4 class="mt-5 text-dark"><?php //echo site_phrase('choose_way_of_payment', true); ?></h4> -->
+
+        <!-- <pre><php print_r($this->session->all_userdata()); ?></pre> -->
+        <?php if (
+    $this->session->userdata('customer_login') || 
+    $this->session->userdata('owner_login') || 
+    $this->session->userdata('user_id') || 
+    $this->session->userdata('guest_checkout')
+) :  ?>
+
+
+        <!-- <pre><php print_r($this->session->all_userdata()); ?></pre> -->
+
+
+
+        <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
+
+        <?php
                     $restaurant_ids = $this->cart_model->get_restaurant_ids();
                     if (count($restaurant_ids) > 0) : ?>
-            <div class="row justify-content-center">
-                <div class="col-md-12 responsive-wrap">
-                    <div class="booking-checkbox_wrap">
-                        <div class="row">
-                            <div class="col-md-7 payment-gateways">
+        <div class="row justify-content-center">
+            <div class="col-md-12 responsive-wrap">
+                <div class="booking-checkbox_wrap">
+                    <div class="row">
+                        <div class="col-md-6 payment-gateways d-none">
+                        <h4><?php echo site_phrase('bill_summary', true); ?></h4>
+                            <table class="bill-table mt-4" style='width:90%'>
+                                <tr>
+                                    <td class="bill-type" style="width:1px"><?php echo site_phrase('total_menu_price'); ?> :
+                                    </td>
+                                    <td class="bill-value">
+                                    <div class="subtotal-price"></div>
 
-                                <?php if ($cash_on_delivery_settings[0]->active) : ?>
-                                <label for="cash-on-delivery">
-                                    <div class="callout callout-primary">
-                                        <input type="radio" class="payment-gateway-radio" name="payment_gateway"
-                                            value="cash_on_delivery" checked="" id="cash-on-delivery">
-                                        <img src="<?php echo base_url('assets/payment/cash-on-delivery.png'); ?>"
-                                            alt="cash-on-delivery">
-                                    </div>
-                                </label>
-                                <?php endif; ?>
+                                        <!-- <php echo currency(sanitize($this->cart_model->get_total_menu_price())); ?> -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bill-type" style="width:1px">VAT :</td>
+                                    <td class="bill-value">
+                                    <div class="total-vat-price"></div>
 
-                                <?php if ($paypal_settings[0]->active) : ?>
-                                <label for="paypal">
-                                    <div class="callout callout-secondary">
-                                        <input type="radio" class="payment-gateway-radio" name="payment_gateway"
-                                            value="paypal" id="paypal">
-                                        <img src="<?php echo base_url('assets/payment/paypal.png'); ?>" alt="paypal">
-                                    </div>
-                                </label>
-                                <?php endif; ?>
+                                        <!-- <php echo currency(sanitize($this->cart_model->get_vat_amount())); ?> -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bill-type" style="width:1px">Service Charges :</td>
+                                    <td class="bill-value">
+                                    <div class="total-service-price"></div>
 
-                                <?php if ($stripe_settings[0]->active) : ?>
-                                <label for="stripe">
-                                    <div class="callout callout-secondary">
-                                        <input type="radio" class="payment-gateway-radio" name="payment_gateway"
-                                            value="stripe" id="stripe">
-                                        <img src="<?php echo base_url('assets/payment/stripe.png'); ?>" alt="stripe">
-                                    </div>
-                                </label>
-                                <?php endif; ?>
-                            </div>
+                                        <!-- <php echo currency(sanitize($this->cart_model->get_service_amount())); ?> -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bill-type" style="width:1px"><?php echo site_phrase('sub_total'); ?> :</td>
+                                    <td class="bill-value">
+                                    <div class="subtotal-price"></div>
 
-                            <div class="col-sm-5">
-                                <h4><?php echo site_phrase('bill_summary', true); ?></h4>
-                                <table class="bill-table">
-                                    <tr>
-                                        <td class="bill-type"><?php echo site_phrase('total_menu_price'); ?> :
-                                        </td>
-                                        <td class="bill-value">
-                                            <?php echo currency(sanitize($this->cart_model->get_total_menu_price())); ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="bill-type">VAT :</td>
-                                        <td class="bill-value">
-                                            <?php echo currency(sanitize($this->cart_model->get_vat_amount())); ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="bill-type">Service Charges :</td>
-                                        <td class="bill-value">
-                                            <?php echo currency(sanitize($this->cart_model->get_service_amount())); ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="bill-type"><?php echo site_phrase('sub_total'); ?> :</td>
-                                        <td class="bill-value">
-                                            <?php echo currency(sanitize($this->cart_model->get_sub_total())); ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="bill-type">
-                                            <?php echo site_phrase('delivery_charge'); ?>:
-                                        </td>
-                                        <td class="bill-value delivery-order">
-                                            <?php echo currency(sanitize($this->cart_model->get_total_delivery_charge())); ?>
-                                        </td>
-                                        <td class="bill-value pickup-order d-none"><?php echo currency(0); ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <?php
+                                        <!-- <php echo currency(sanitize($this->cart_model->get_sub_total())); ?> -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bill-type" style="width:1px">
+
+                                        <?php echo site_phrase('delivery_charge'); ?>:
+                                    </td>
+                                    <td class="bill-value delivery-order">
+                                    <div class="total-delivery-price">x</div>
+
+                                    <!-- <php echo currency(sanitize($this->cart_model->get_total_delivery_charge())); ?> -->
+                                    </td>
+                                    <td class="bill-value pickup-order d-none"><?php echo currency(0); ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <?php
                                                     $grand_total = $this->cart_model->get_grand_total();
                                                     $discount =  $this->cart_model->get_discound_val();
                                                     $discountAmount = 0;
@@ -239,125 +251,159 @@ $stripe_settings = json_decode($stripe_settings);
                                                         $discountAmount =  ($grand_total * $discount) / 100;
                                                         }
                                                     ?>
-                                        <?php if($discountAmount > 0){ ?>
-                                        <input type="hidden" name="discount_amount"
-                                            value="<?php echo $discountAmount; ?>">
-                                        <td class="bill-type"><?php echo site_phrase('discount'); ?> :</td>
-                                        <td class="bill-value font-weight-bold"><?php echo $discountAmount; ?>
-                                        </td>
-                                    </tr>
-                                    <?php } ?>
-                                    <tr class="text-danger">
-                                        <?php $grand_total = $this->cart_model->get_grand_total(); ?>
-                                        <input type="hidden" name="grand_total_code"
-                                            value="<?php echo sanitize($grand_total); ?>">
-                                        <td class="bill-type"><?php echo site_phrase('grand_total'); ?> :</td>
-                                        <td class="bill-value font-weight-bold">
-                                            <?php echo currency(sanitize($grand_total)); ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="bill-type"><?php echo site_phrase('order_type'); ?> :</td>
-                                        <td class="bill-value order-type" id="order-type">
-                                            <?php echo site_phrase('delivery'); ?></td>
-                                    </tr>
-                                </table>
+                                    <?php if($discountAmount > 0){ ?>
+                                    <input type="hidden" name="discount_amount" value="<?php echo $discountAmount; ?>">
+                                    <td class="bill-type" style="width:1px"><?php echo site_phrase('discount'); ?> :</td>
+                                    <td class="bill-value font-weight-bold"><?php echo $discountAmount; ?>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                                <tr class="text-danger">
+                                    <?php $grand_total = $this->cart_model->get_grand_total(); ?>
+                                    <input type="hidden" name="grand_total_code"
+                                        value="<?php echo sanitize($grand_total); ?>">
+                                    <td class="bill-type" style="width:1px"><?php echo site_phrase('grand_total'); ?> :</td>
+                                    <td class="bill-value font-weight-bold">
+                                    <div class="grand-product-price"></div>
 
-                                <!-- ORDER DELIVERY TYPE -->
-                                <table class="bill-table mt-4">
-                                    <tr>
-                                        <td>
-                                            <div class="order-delivery-types">
-                                                <input id="delivery" type="radio" name="order_type" value="delivery"
-                                                    onchange="$('#order-type').text('<?php echo site_phrase('delivery'); ?>'); $('.order_type').val('delivery'); loadFetchedUrl(); $('.delivery-order').removeClass('d-none'); $('.pickup-order').addClass('d-none');"
-                                                    <?php if ($order_type == "delivery") echo "checked"; ?> />
-                                                <label class="order-delivery-type-label order-type-delivery"
-                                                    for="delivery">
-                                                    <div class="order-type-overlay">
-                                                        <p>
-                                                            <?php echo site_phrase('delivery'); ?>
-                                                        </p>
-                                                    </div>
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <?php
+                                        <!-- <php echo currency(sanitize($grand_total)); ?></td> -->
+                                </tr>
+                                <tr>
+                                    <td class="bill-type" style="width:1px"><?php echo site_phrase('order_type'); ?> :</td>
+                                    <td class="bill-value order-type" id="order-type">
+                                        <?php echo site_phrase('delivery'); ?></td>
+                                </tr>
+                            </table>
 
-                                                        $pickup_order_status = 0;
-                                                        if (count($restaurant_ids) == 1 && pickup_order_availability($restaurant_ids[0])) {
-                                                            $pickup_order_status = 1;
-                                                        }
+                        
+                            <?php if ($cash_on_delivery_settings[0]->active) : ?>
+                            <!-- <label for="cash-on-delivery">
+                                <div class="callout callout-primary">
+                                    <input type="radio" class="payment-gateway-radio" name="payment_gateway"
+                                        value="cash_on_delivery" checked="" id="cash-on-delivery">
+                                    <img src="<?php //echo base_url('assets/payment/cash-on-delivery.png'); ?>"
+                                        alt="cash-on-delivery">
+                                </div>
+                            </label> -->
+                            <?php endif; ?>
+
+                            <?php if ($paypal_settings[0]->active) : ?>
+                            <!-- <label for="paypal">
+                                <div class="callout callout-secondary">
+                                    <input type="radio" class="payment-gateway-radio" name="payment_gateway"
+                                        value="paypal" id="paypal">
+                                    <img src="<?php //echo base_url('assets/payment/paypal.png'); ?>" alt="paypal">
+                                </div>
+                            </label> -->
+                            <?php endif; ?>
+
+                            <?php if ($stripe_settings[0]->active) : ?>
+                            <!-- <label for="stripe">
+                                <div class="callout callout-secondary">
+                                    <input type="radio" class="payment-gateway-radio" name="payment_gateway"
+                                        value="stripe" id="stripe">
+                                    <img src="<?php //echo base_url('assets/payment/stripe.png'); ?>" alt="stripe">
+                                </div>
+                            </label> -->
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-md-6 payment-gateways">
+                        <h4><span class="order_type">Delivery</span> Address</h4>
+                            <span id="show-address"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <h4>Choose Payment Method To Proceed</h4>
+                         
+
+                            <!-- ORDER DELIVERY TYPE -->
+                         
+                                <!-- <tr>
+                                    <td>
+                                        <div class="order-delivery-types">
+                                            <input id="delivery" type="radio" name="order_type" value="delivery"
+                                                onchange="$('#order-type').text('<?php //echo site_phrase('delivery'); ?>'); $('.order_type').val('delivery'); loadFetchedUrl(); $('.delivery-order').removeClass('d-none'); $('.pickup-order').addClass('d-none');"
+                                                <?php //if ($order_type == "delivery") echo "checked"; ?> />
+                                            <label class="order-delivery-type-label order-type-delivery" for="delivery">
+                                                <div class="order-type-overlay">
+                                                    <p>
+                                                        <?php //echo site_phrase('delivery'); ?>
+                                                    </p>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <?php
+
+                                                       // $pickup_order_status = 0; if (count($restaurant_ids) == 1 && pickup_order_availability($restaurant_ids[0])) { $pickup_order_status = 1; }
                                                         ?>
-                                            <div class="order-delivery-types">
-                                                <input id="pickup" type="radio" name="order_type" value="pickup"
-                                                    onchange="$('#order-type').text('<?php echo site_phrase('pickup'); ?>'); $('.order_type').val('pickup'); loadFetchedUrl(); $('.delivery-order').addClass('d-none'); $('.pickup-order').removeClass('d-none');"
-                                                    <?php if ($order_type == "pickup") echo "checked"; ?>
-                                                    <?php if (!$pickup_order_status) echo 'disabled'; ?> />
-                                                <label class="order-delivery-type-label order-type-pickup" for="pickup">
-                                                    <div class="order-type-overlay">
-                                                        <p>
-                                                            <?php echo site_phrase('Pickup'); ?>
-                                                        </p>
-                                                    </div>
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <!-- CASH ON DELIVERY FORM -->
-                                            <?php if ($cash_on_delivery_settings[0]->active) {
+                                        <div class="order-delivery-types">
+                                            <input id="pickup" type="radio" name="order_type" value="pickup"
+                                                onchange="$('#order-type').text('<?php //echo site_phrase('pickup'); ?>'); $('.order_type').val('pickup'); loadFetchedUrl(); $('.delivery-order').addClass('d-none'); $('.pickup-order').removeClass('d-none');"
+                                                <?php //if ($order_type == "pickup") echo "checked"; ?>
+                                                <?php //if (!$pickup_order_status) echo 'disabled'; ?> />
+                                            <label class="order-delivery-type-label order-type-pickup" for="pickup">
+                                                <div class="order-type-overlay">
+                                                    <p>
+                                                        <?php //echo site_phrase('Pickup'); ?>
+                                                    </p>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr> -->
+                                  
+                                        <!-- CASH ON DELIVERY FORM -->
+                                        <?php if ($cash_on_delivery_settings[0]->active) {
                                                             include "cash_on_delivery/cash_on_delivery_form.php";
+                                                        } ?>
+
+                                           <!-- STRIPE FORM -->
+                                        <?php if ($stripe_settings[0]->active) {
+                                                            include "stripe/stripe_form.php";
                                                         } ?>
 
                                             <!-- PAYPAL FORM -->
                                             <?php if ($paypal_settings[0]->active) {
                                                             include "paypal/paypal_form.php";
                                                         } ?>
-
-                                            <!-- STRIPE FORM -->
-                                            <?php if ($stripe_settings[0]->active) {
-                                                            include "stripe/stripe_form.php";
-                                                        } ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <div class="featured-btn-wrap text-right">
-                                                <button
-                                                    onclick="window.location.replace('<?php echo site_url('cart'); ?>');"
-                                                    class="btn btn-dark bg-warning btn-sm pl-5 pr-5 pt-2 pb-2 w-100 rr-btn border-0 mt-2"><?php echo site_phrase('back_to_my_cart', true); ?></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                                        <!-- <div class="featured-btn-wrap text-right col-12 p-0">
+                                            <button
+                                                onclick="redirect()"
+                                                class="btn btn-dark btn-sm pl-5 pr-5 pt-3 pb-3 w-100 rr-btn border-0 mt-2"><?php echo site_phrase('proceed', true); ?></button>
+                                        </div> -->
+                                  
+                        </div>
+                    
                         </div>
                     </div>
                 </div>
             </div>
-            <?php else : ?>
-            <div class="row justify-content-md-center">
-                <div class="col-md-12 responsive-wrap">
-                    <div class="booking-checkbox_wrap mb-2">
-                        <div class="row">
-                            <div class="col-sm-12 text-center">
-                                <img src="<?php echo base_url('assets/frontend/default/images/empty-cart.png'); ?>"
-                                    class="img-fluid" alt="<?php echo "empty-cart-logo"; ?>">
-                                <span class="d-block mt-2"><?php echo site_phrase('you_got_nothing_to_order'); ?></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
-            <?php else : ?>
-            <div class="text-center">
-                <h5><?php echo site_phrase('user_is_not_logged_in'); ?></h5>
-            </div>
-            <?php endif; ?>
-            <!-- </form> -->
         </div>
+        <?php else : ?>
+        <div class="row justify-content-md-center">
+            <div class="col-md-12 responsive-wrap">
+                <div class="booking-checkbox_wrap mb-2">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <img src="<?php echo base_url('assets/frontend/default/images/empty-cart.png'); ?>"
+                                class="img-fluid" alt="<?php echo "empty-cart-logo"; ?>">
+                            <span class="d-block mt-2"><?php echo site_phrase('you_got_nothing_to_order'); ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+        <?php else : ?>
+        <div class="text-center">
+            <h5><?php echo site_phrase('user_is_not_logged_in'); ?></h5>
+        </div>
+        <?php endif; ?>
+        <!-- </form> -->
+    </div>
     </div>
 
     <div class="order-summery-box d-none d-md-block" id="order-summary">
@@ -394,7 +440,7 @@ $stripe_settings = json_decode($stripe_settings);
                         </defs>
                     </svg>
                     <div class="c-basketSwitcher-eta-wrapper"><span>
-                            Delivery from<br />
+                            Delivery<br />
                         </span> <span class="c-basketSwitcher-eta">
                             from 7:35
                         </span></div>
@@ -432,7 +478,7 @@ $stripe_settings = json_decode($stripe_settings);
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
                 <div class="subtotal">Delivery Charges</div>
-                <div class="total-delivery-price"></div>
+                <div class="total-delivery-price">x</div>
             </div>
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
@@ -549,5 +595,9 @@ $stripe_settings = json_decode($stripe_settings);
         </div>
     </div>
 </section>
+
+<script>
+    // var checking = $("#")
+</script>
 
 <!-- END MAIN CONTENT -->

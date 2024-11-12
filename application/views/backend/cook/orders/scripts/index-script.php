@@ -27,9 +27,8 @@
 
     // BEEP SOUND
     function playBeep() {
-        var audio = new Audio(
-            '<?php echo base_url('assets/backend/alert.mp3'); ?>');
-        audio.play();
+        var audio = new Audio('<?php echo base_url('assets/auth/audio/noti.mp3'); ?>'); 
+        notificationSound.play();
     }
 </script>
 

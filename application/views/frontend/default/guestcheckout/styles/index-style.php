@@ -170,4 +170,23 @@ ul.billing-list-topbar li .img-box {
 #your-address {
     display: none;
 }
+
+.payment-option {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .payment-option input[type="radio"] {
+      margin-right: 10px;
+    }
+    .payment-option img {
+      width: 24px;
+      height: auto;
+      margin-right: 10px;
+    }
 </style>

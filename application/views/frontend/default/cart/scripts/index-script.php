@@ -214,14 +214,11 @@ function updateDiscountCodeToCart(promoCode, discount) {
 "use strict";
 var orderCode = '<?php echo $this->session->flashdata('order_code'); ?>';
 $.ajax({
-    url: '<?php echo site_url('orders/order_placing_mail/'); ?>' + orderCode,
+    url: '<?php echo site_url('cart/order_placing_mail/'); ?>' + orderCode,
     method: 'POST', // Ensure the correct method is used
     success: function(response) {
-        // Handle success response here
-
-        // Now delete the cookies
-        deleteCookies();
-
+    
+        console.log('sent');
         // After deleting the specified cookies, delete ci_session again
         // deleteCiSession();
     },

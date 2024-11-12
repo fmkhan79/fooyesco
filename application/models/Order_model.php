@@ -71,6 +71,12 @@ class Order_model extends Base_model
         return $this->order_merger($obj, true);
     }
 
+    public function get_order_payment($code){
+        $this->db->where('order_code', $code);
+        $obj = $this->db->get("payment");
+        return $this->order_merger($obj, true);
+    }
+
     /**
      * GET ORDER CODE BY RESTAURANT ID OR RESTAURANT ID ARRAY
      * GET ORDERS CODE BY RESTAURANT ID ONLY. YOU CAN PROVIDE RESTAURANT ID AS ARRAY [1,3,4,5].
@@ -125,6 +131,18 @@ class Order_model extends Base_model
         $this->db->order_by("id", "desc");
         $obj = $this->db->get($this->table);
         return $this->order_merger($obj);
+        
+    }
+
+    public function newOrder($restaurant_id){
+
+        
+        $thirtyMinutesAgo = date('Y-m-d H:i:s', strtotime('-30 minutes'));
+
+        $this->db->where('restaurant_id', $restaurant_id);
+        $this->db->where('created_at >=', $thirtyMinutesAgo); // Check if the order is within the last 30 minutes
+        $query = $this->db->get('orders');
+        return $query->result();
     }
 
     // GET TODAYS ORDERS. IT WILL BE DIFFERENT USER WISE
@@ -415,7 +433,7 @@ class Order_model extends Base_model
      */
     public function confirm($address_id_arg = "")
     {
-
+        
         $address_id = !empty($address_id_arg) ? $address_id_arg : sanitize($this->input->post('address_number'));
 
         $data['code'] = "OR-" . strtotime(date('D, d-M-Y H:i:s')) . "-" . $this->session->userdata('user_id');
@@ -427,8 +445,14 @@ class Order_model extends Base_model
         $data['total_delivery_charge'] = $this->cart_model->get_total_delivery_charge();
         $data['total_vat_amount'] = $this->cart_model->get_vat_amount();
         $data['grand_total'] = $this->cart_model->get_grand_total();
+        $cart_items = $this->cart_model->get_all();
+        if (!empty($cart_items)) {
+            $data['restaurant_id'] = $cart_items[0]['restaurant_id']; 
+        }
+    
         // print_r($data);
         // die();
+
         $this->db->insert($this->table, $data);
 
         $cart_items = $this->cart_model->get_all();
@@ -463,6 +487,7 @@ class Order_model extends Base_model
     // SENDING ORDER PLACING MAILS FROM THIS FUNCTION
     public function order_placing_mail($order_code)
     {
+
         // SENDING MAIL TO CUSTOMER
         $customer_details = $this->user_model->get_user_by_id($this->logged_in_user_id);
         $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
@@ -470,7 +495,7 @@ class Order_model extends Base_model
         $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
         $message .= get_phrase('please_track_down_your_order_status_from_the_order_details_page') . '.';
         $this->email_model->order_pacing($customer_details['email'], $message);
-
+        // print_r($customer_details['email'] . "dada");
         // SENDING MAIL TO ADMIN
         $admin_details = $this->user_model->get_admin_details();
         $message  = get_phrase('hello') . ' ' . $admin_details['name'] . ', <br/>';

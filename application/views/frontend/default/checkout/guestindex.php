@@ -81,8 +81,8 @@ $stripe_settings = json_decode($stripe_settings);
                             placeholder="Enter email...">
                     </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Collection time</label>
+                    <div class="form-group col-md-6 d-none" id="collection-time">
+                        <label for="inputPassword4">Collection Time (Optional)</label>
                         <input type="text" class="form-control" name="collection_time" placeholder="Wednesday 12:30">
                     </div>
 
@@ -98,7 +98,7 @@ $stripe_settings = json_decode($stripe_settings);
         </div>
 
         <div id="payment-option">
-            <h4 class="mt-5 text-dark">Your Address</h4>
+            <h4 class="mt-5 text-dark"><span class="order_type">Delivery</span> Address</h4>
 
             <form id="address-form" onsubmit="submitAddressForm(); return false;">
                 <div class="form-row mt-4">
@@ -199,23 +199,23 @@ $stripe_settings = json_decode($stripe_settings);
                                 <h4><?php echo site_phrase('bill_summary', true); ?></h4>
                                 <table class="bill-table">
                                     <tr>
-                                        <td class="bill-type"><?php echo site_phrase('total_menu_price'); ?> :</td>
+                                        <td class="bill-type" style="width:1px"><?php echo site_phrase('total_menu_price'); ?> :</td>
                                         <td class="bill-value">
                                             <?php echo currency(sanitize($this->cart_model->get_total_menu_price())); ?>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="bill-type">VAT :</td>
+                                        <td class="bill-type" style="width:1px">VAT :</td>
                                         <td class="bill-value">
                                             <?php echo currency(sanitize($this->cart_model->get_vat_amount())); ?></td>
                                     </tr>
                                     <tr>
-                                        <td class="bill-type"><?php echo site_phrase('sub_total'); ?> :</td>
+                                        <td class="bill-type" style="width:1px"><?php echo site_phrase('sub_total'); ?> :</td>
                                         <td class="bill-value">
                                             <?php echo currency(sanitize($this->cart_model->get_sub_total())); ?></td>
                                     </tr>
                                     <tr>
-                                        <td class="bill-type">
+                                        <td class="bill-type" style="width:1px">
                                             <?php echo site_phrase('delivery_charge_for') . ' ' . count($restaurant_ids) . ' ' . site_phrase('restaurants'); ?>
                                             :
                                         </td>
@@ -236,7 +236,7 @@ $stripe_settings = json_decode($stripe_settings);
                                         <?php if($discountAmount > 0){ ?>
                                         <input type="hidden" name="discount_amount"
                                             value="<?php echo $discountAmount; ?>">
-                                        <td class="bill-type"><?php echo site_phrase('discount'); ?> :</td>
+                                        <td class="bill-type" style="width:1px"><?php echo site_phrase('discount'); ?> :</td>
                                         <td class="bill-value font-weight-bold"><?php echo $discountAmount; ?></td>
                                     </tr>
                                     <?php } ?>
@@ -244,19 +244,19 @@ $stripe_settings = json_decode($stripe_settings);
                                         <?php $grand_total = $this->cart_model->get_grand_total(); ?>
                                         <input type="hidden" name="grand_total_code"
                                             value="<?php echo sanitize($grand_total); ?>">
-                                        <td class="bill-type"><?php echo site_phrase('grand_total'); ?> :</td>
+                                        <td class="bill-type" style="width:1px"><?php echo site_phrase('grand_total'); ?> :</td>
                                         <td class="bill-value font-weight-bold">
                                             <?php echo currency(sanitize($grand_total)); ?></td>
                                     </tr>
                                     <tr>
-                                        <td class="bill-type"><?php echo site_phrase('order_type'); ?> :</td>
+                                        <td class="bill-type" style="width:1px"><?php echo site_phrase('order_type'); ?> :</td>
                                         <td class="bill-value order-type" id="order-type">
                                             <?php echo site_phrase('delivery'); ?></td>
                                     </tr>
                                 </table>
 
                                 <!-- ORDER DELIVERY TYPE -->
-                                <table class="bill-table mt-4">
+                                <table class="bill-table mt-4" style='width:90%'>
                                     <tr>
                                         <td>
                                             <div class="order-delivery-types">

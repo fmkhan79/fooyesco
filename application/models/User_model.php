@@ -16,6 +16,20 @@ class User_model extends Base_model
         $this->table = "users";
     }
 
+    public function is_user_guest($user_id) {
+        // Select only the is_guest field
+        $this->db->select('is_guest'); 
+        $this->db->from('users');
+        $this->db->where('id', $user_id);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->row()->is_guest; // Return the is_guest value
+        }
+        
+        return null; // Return null if no user found
+    }
+
     public function is_guest($user_id) {
         $this->db->select('is_guest');
         $this->db->from('users');
@@ -35,6 +49,7 @@ class User_model extends Base_model
     public function get_user_by_id($id)
     {
         return $this->db->get_where($this->table, ['id' => $id])->row_array();
+        // print_r($red . "s");
     }
 
     // GET ADMIN DETAILS

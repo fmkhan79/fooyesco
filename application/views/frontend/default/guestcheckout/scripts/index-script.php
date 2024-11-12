@@ -10,13 +10,13 @@
 <script>
 "use strict";
 
-$('#to').keyup(function() {
-  var foo = $(this).val().split(" ").join(""); // remove hyphens
-  if (foo.length > 0) {
-    foo = foo.match(new RegExp('.{1,4}', 'g')).join(" ");
-  }
-  $(this).val(foo);
-});
+// $('#to').keyup(function() {
+//   var foo = $(this).val().split(" ").join(""); // remove hyphens
+//   if (foo.length > 0) {
+//     foo = foo.match(new RegExp('.{1,4}', 'g')).join(" ");
+//   }
+//   $(this).val(foo);
+// });
 
 $(document).ready(function() {
     $.ajax({
@@ -538,9 +538,46 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
             calculateDistance();
         });
     });
-    // debugger;
-  
 
+    
+    document.getElementById("checking").onclick = function(){
+        document.getElementById("show-address").innerHTML = document.querySelector("input[name='additional_address']").value + "<br> House/Street: " + document.querySelector("input[name='street']").value
+    }
+  
+    const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
+    const hiddenInputs = document.querySelectorAll('input[name="order_type"]');
+
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.checked) {
+                let value = radio.value;
+                // Loop through all hidden inputs and update their value
+                hiddenInputs.forEach(hiddenInput => {
+                    hiddenInput.value = value;
+                    if(value == "collection"){
+                        document.getElementById("collection-time").classList.remove("d-none");
+
+                        document.getElementById("additional-delivery-notes").classList.add("d-none");
+                        document.getElementById("cash_button").innerHTML ="Cash On Collection";
+                          
+                        document.querySelectorAll("span.order_type").forEach(otype => {
+                            
+                            otype.innerHTML = "Your";
+                        });                  
+                    }else{
+                        document.getElementById("collection-time").classList.add("d-none");
+
+                        document.getElementById("additional-delivery-notes").classList.remove("d-none");
+                        document.getElementById("cash_button").innerHTML = "Cash On Delivery";                        
+                        document.querySelectorAll("span.order_type").forEach(otype => {
+                            otype.innerHTML = "Delivery";
+                        });                  
+                    }
+                });
+            }
+        });
+    });
+    
     function calculateDistance() {
         var lat_to = $("#lat_to").val();
         var long_to = $("#long_to").val();
@@ -562,7 +599,7 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
               
             },
             success: function(response) {
-                // debugger;
+                
                 
                 if(response.message == "Not delivery at this location"){
                     $($(".rr-btn.border-0.mt-4")[1]).prop("disabled", "true");

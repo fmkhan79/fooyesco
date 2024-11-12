@@ -565,7 +565,6 @@ function viewselected_cat_items_summary_total() {
             $(".grand-product-price").text(grandSubTotalValue);
             $(".total-service-price").text(totalServicePrice);
 
-            // debugger;
             if(subTotalValue !== "£0"){
                 var button = document.getElementById("guestCheckoutBtn");
                 button.classList.remove("disabled"); 
@@ -810,6 +809,9 @@ function updateCart(cartId, isIncreased) {
 
 document.addEventListener('DOMContentLoaded', function() {
     const checkoutButton = document.getElementById('checkout-button');
+
+    if(checkoutButton == null)
+        return;
 
     if (checkoutButton.getAttribute('data-disabled') === 'true') {
         checkoutButton.addEventListener('click', function(event) {

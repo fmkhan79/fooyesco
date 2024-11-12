@@ -20,10 +20,13 @@ define('STRIPE_PUBLISHABLE_KEY', $public_key);
 
 <!-- Buy button -->
 <div id="buynow" class="featured-btn-wrap text-right">
-    <button type="submit" class="btn btn-dark btn-sm pl-5 pr-5 pt-2 pb-2 w-100 rr-btn border-0 mt-2" id="pay-with-stripe-form">
-    <?php echo get_phrase("pay_with_stripe", true); ?>
-
-    
+    <!-- <button type="submit" class="btn btn-dark btn-sm pl-5 pr-5 pt-2 pb-2 w-100 rr-btn border-0 mt-2" id="pay-with-stripe-form">
+   
+    </button> -->
+    <button class="payment-option w-100 bg-white" id="pay-with-stripe-form">
+      <input type="radio" name="payment" value="Stripe">
+      <img src="assets/frontend/default/images/credit-card.png" alt="Stripe">
+      <?php echo get_phrase("pay_with_stripe", true); ?>
     </button>
 </div>
 
@@ -34,30 +37,19 @@ define('STRIPE_PUBLISHABLE_KEY', $public_key);
 <script>
     var buyBtn = document.getElementById('pay-with-stripe-form');
     var responseContainer = document.getElementById('stripePaymentResponse');
-    var order_type = document.getElementsByClassName('order_type').value;
-    var fetchedUrl = loadFetchedUrl();
+    var order_type = document.querySelectorAll('input[name="order_type"]')[0].value;
 
     function loadFetchedUrl() {
-        order_type = document.getElementById('order_type').value;
+        debugger;
+        order_type = document.querySelectorAll('input[name="order_type"]')[0].value;
         // fetchedUrl = "<= site_url('GuestCheckout/pay_with_stripe' . $_GET['address_number'] . '/'); ?>" + order_type;
+        if(order_type == "collection")
+            order_type = "pickup";
+        
         fetchedUrl = "<?= site_url('GuestCheckout/pay_with_stripe/1/'); ?>" + order_type;
         return fetchedUrl;
     }
 
-    // Create a Checkout Session with the selected product
-    var createCheckoutSession = function(stripe) {
-        return fetch(fetchedUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                checkoutSession: 1,
-            }),
-        }).then(function(result) {
-            return result.json();
-        });
-    };
 
     // Handle any errors returned from Checkout
     var handleResult = function(result) {
@@ -72,6 +64,23 @@ define('STRIPE_PUBLISHABLE_KEY', $public_key);
     var stripe = Stripe('<?php echo STRIPE_PUBLISHABLE_KEY; ?>');
 
     buyBtn.addEventListener("click", function(evt) {
+        var fetchedUrl = loadFetchedUrl();
+
+        var createCheckoutSession = function(stripe) {
+            return fetch(fetchedUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    checkoutSession: 1,
+                }),
+            }).then(function(result) {
+                return result.json();
+            });
+        };
+
+
         buyBtn.disabled = true;
         buyBtn.textContent = '<?php echo get_phrase("please_wait"); ?>...';
 

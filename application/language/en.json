@@ -244,7 +244,7 @@
     "restaurant_gallery": "Restaurant gallery",
     "update_gallery": "Update gallery",
     "restaurant_updated_successfully": "Restaurant updated successfully",
-    "confirm_order": "Place my order",
+    "confirm_order": "Pay with Cash",
     "an_error_occurred": "An error occurred",
     "order_submitted_successfully": "Order submitted successfully",
     "your_order_has_been_placed_successfully": "Your order has been placed successfully",
@@ -831,7 +831,7 @@
     "choose_way_of_payment": "Choose way of payment",
     "bill_summary": "Bill summary",
     "pay_with_paypal": "Pay with paypal",
-    "pay_with_stripe": "Pay with stripe",
+    "pay_with_stripe": "Pay with card",
     "student_name": "Student name",
     "paypal": "Paypal",
     "you_do_not_have_anything_to_checkout": "You do not have anything to checkout",
@@ -989,6 +989,7 @@
     "go_to_my_cart": "Go to my cart",
     "show_my_cart": "Show my cart",
     "no_found": "No found",
+    "proceed": "Proceed",
     "let_the_restaurant_approving_order": "Let the restaurant approving order",
     "let_the_restaurant_owner_approve_order": "Let the restaurant owner approve order",
     "all_these_settings_are_applicable_if_multi_restaurant_order_is_disabled": "All these settings are applicable if multi restaurant order is disabled",
@@ -1163,5 +1164,6 @@
     "10.12": "10.12",
     "one_two": "One two",
     "approve_this_order": "Approve this order",
-    "s": "S"
+    "s": "S",
+    "you_have_to_choose_at_least_one_restaurant": "You have to choose at least one restaurant"
 }

@@ -110,8 +110,28 @@ class Customer_model extends Base_model
         }
     }
 
+    // public function insert_guest_user_for_guest_checkout($data){
+    //     $user_id = $this->session->userdata("user_id");
+    //     print_r($user_id);
+    //     $data['password'] = sha1("123");
+    //     $data['role_id'] = 2; // 2 for Customer
+    //     $data['status'] = 1;
+    //     $data['created_at'] = strtotime(date('d-m-y'));
+    //     $this->db->insert('users', $data);
 
-    public function insert_guest_user($data){
+    //     $this->session->set_userdata("user_id", $this->db->insert_id());
+
+    //     $user_id = $this->session->userdata("user_id");
+    //     $this->db->where("id" ,$user_id);
+    //     $this->db->update("users", $data);
+
+    // }
+
+
+
+    // Will return the customer id
+    public function insert_guest_customer(){
+
         $data['password'] = sha1("123");
         $data['role_id'] = 2; // 2 for Customer
         $data['status'] = 1;
@@ -119,21 +139,34 @@ class Customer_model extends Base_model
         $this->db->insert('users', $data);
 
         $this->session->set_userdata("user_id", $this->db->insert_id());
-    }
 
-    // Will return the customer id
-    public function insert_guest_customer(){
-
-        $this->insert_guest_user(array());
-
-        $user_id = $this->session->userdata("user_id");
-
+        $user_id = $this->db->insert_id();
         $data = [
             "user_id" => $user_id
         ];
-        // $this->db->where('user_id', $id);
+
         $this->db->insert('customers', $data);
-        $this->session->set_userdata("user_id", $this->db->insert_id());
+
+    }
+
+    public function update_guest_user($data){
+
+        $user_id = $this->session->userdata("user_id");
+
+        print_r($user_id);
+    
+        $this->db->where("id" ,$user_id);
+        $this->db->update("users", $data);
+    }
+    
+    public function get_customer_id_from_user_id($id){
+
+        $this->db->from("customers");
+        $this->db->where("user_id", $id);
+        $this->db->select("id");
+        $data = $this->db->get()->result_array();
+        return $data[0]["id"];
+
     }
 
     /**

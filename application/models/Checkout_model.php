@@ -182,8 +182,15 @@ class Checkout_model extends Base_model
         $data['order_code'] = $order_code;
 
         $this->db->insert('payment', $data);
+
+        // if($order_type == "collection")
+        //     $order_type = "pickup";
           
-        $order_type = isset($_POST['order_type']) && $_POST['order_type'] == "pickup" && get_order_settings('pickup_order') ? "pickup" : "delivery";
+        $order_type = isset($_POST['order_type']) && $_POST['order_type'] == "collection" && get_order_settings('pickup_order') ? "pickup" : "delivery";
+    
+        // print_r($order_type);
+        // die();
+
         if ($order_type == "pickup") {
             $order_data  = $this->order_model->get_by_code($order_code);
             $grand_total = $data['amount_to_pay'] - $order_data['total_delivery_charge'];

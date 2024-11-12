@@ -20,10 +20,18 @@ define('STRIPE_PUBLISHABLE_KEY', $public_key);
 
 <!-- Buy button -->
 <div id="buynow" class="featured-btn-wrap text-right">
-    <button type="submit" class="btn btn-dark btn-sm pl-5 pr-5 pt-2 pb-2 w-100 rr-btn border-0 mt-2" id="pay-with-stripe-form">
+    <!-- <button type="submit" class="btn btn-dark btn-sm pl-5 pr-5 pt-2 pb-2 w-100 rr-btn border-0 mt-2" id="pay-with-stripe-form">
         
     <?php echo get_phrase("pay_with_stripe", true); ?>
-</button>
+
+    
+</button> -->
+
+<button class="payment-option w-100 bg-white" id="pay-with-stripe-form">
+      <input type="radio" name="payment" value="Stripe">
+      <img src="assets/frontend/default/images/credit-card.png" alt="Stripe">
+      <?php echo get_phrase("pay_with_stripe", true); ?>
+    </button>
 </div>
 
 <!--Stripe API-->

@@ -67,25 +67,25 @@ if (count($restaurant_ids) > 0) :
                 <h6><?php echo site_phrase('total_bill', true); ?></h6>
                 <table class="bill-table">
                     <tr>
-                        <td class="bill-type"><?php echo site_phrase('total_menu_price'); ?> :</td>
+                        <td class="bill-type" style="width:1px"><?php echo site_phrase('total_menu_price'); ?> :</td>
                         <td class="bill-value"><?php echo currency(sanitize($this->cart_model->get_total_menu_price())); ?></td>
                     </tr>
                     <tr>
-                        <td class="bill-type">VAT :</td>
+                        <td class="bill-type" style="width:1px">VAT :</td>
                         <td class="bill-value"><?php echo currency(sanitize($this->cart_model->get_vat_amount())); ?></td>
                     </tr>
                     <tr>
-                        <td class="bill-type"><?php echo site_phrase('sub_total'); ?> :</td>
+                        <td class="bill-type" style="width:1px"><?php echo site_phrase('sub_total'); ?> :</td>
                         <td class="bill-value"><?php echo currency(sanitize($this->cart_model->get_sub_total())); ?></td>
                     </tr>
                     <tr>
-                        <td class="bill-type">
+                        <td class="bill-type" style="width:1px">
                             <?php echo site_phrase('delivery_charge_for') . ' ' . count($restaurant_ids) . ' ' . site_phrase('restaurants'); ?> :
                         </td>
                         <td class="bill-value"><?php echo currency(sanitize($this->cart_model->get_total_delivery_charge())); ?></td>
                     </tr>
                     <tr>
-                        <td class="bill-type"><?php echo site_phrase('grand_total'); ?> :</td>
+                        <td class="bill-type" style="width:1px"><?php echo site_phrase('grand_total'); ?> :</td>
                         <td class="bill-value"><?php echo currency(sanitize($this->cart_model->get_grand_total())); ?></td>
                     </tr>
                     <tr>

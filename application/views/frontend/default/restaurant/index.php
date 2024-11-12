@@ -5,11 +5,13 @@
 ?>
 <style>
     .disabled {
-    pointer-events: none; /* Prevent clicks */
-    opacity: 0.5; /* Make it look disabled */
-    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
-}
-
+        pointer-events: none;
+        /* Prevent clicks */
+        opacity: 0.5;
+        /* Make it look disabled */
+        cursor: not-allowed;
+        /* Change cursor to indicate it's not clickable */
+    }
 </style>
 <!-- RESTAURANT GALLERY -->
 
@@ -21,7 +23,7 @@
                 <div class="d-md-flex justify-content-between">
                     <div class="detail-wbox-title">
                         <h3>
-                            <?php echo $restaurant_details["name"]; ?>
+                            <?php echo $restaurant_details['name']; ?>
                         </h3>
 
                         <?php if ($restaurant_details["address"]) {
@@ -40,10 +42,10 @@
                 if (isset($cuisine) && count($cuisine)): ?>
 
                             <?php if ($key === array_key_last($cuisines)) {
-                    echo sanitize($cuisine['name']);
-                  } else {
-                    echo sanitize($cuisine['name'] . " |");
-                  } ?>
+                                echo sanitize($cuisine['name']);
+                            } else {
+                                echo sanitize($cuisine['name'] . ' |');
+                            } ?>
 
 
                             <?php endif; ?>
@@ -63,14 +65,14 @@
                         <div class="review-grid d-flex justify-content-around align-items-center m-0 col-md-7">
                             <?php if($restaurant_details['rating']){ ?>
                             <ul class="inline-grid">
-                                <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt width="38"
-                                        height="38">
+                                <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt
+                                        width="38" height="38">
                                 </li>
-                                <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt width="38"
-                                        height="38">
+                                <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt
+                                        width="38" height="38">
                                 </li>
-                                <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt width="38"
-                                        height="38">
+                                <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt
+                                        width="38" height="38">
                                 </li>
                             </ul>
                             <div class="star">
@@ -90,46 +92,41 @@
 
                 <div class="row my-4 free-delivery-list">
 
-                    <div class="col-md-3 col-sm-6"><img
-                            src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png') ?>" />
+                    <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
                         Delivery fee :
                         0-
-                        <?php echo $restaurant_details['delivery_charge'] ?>$
+                        <?php echo $restaurant_details['delivery_charge']; ?>$
                     </div>
-                    <div class="col-md-3 col-sm-6"><img
-                            src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png') ?>" /> Min
+                    <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
                         Order : 10 $
                     </div>
-                    <div class="col-md-3 col-sm-6"><img
-                            src="<?php echo base_url('assets/frontend/default/images/collect-icon.png') ?>" />
+                    <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
                         <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
                             class="collect-box" style="display:none">I
                             want to collect</span>
                     </div>
-                    <div class="col-md-3 col-sm-6 red"><img
-                            src="<?php echo base_url('assets/frontend/default/images/time-icon-red.png') ?>" />
-                        <?php echo $restaurant_details['maximum_time_to_deliver'] ?> mins
+                    <div class="col-md-3 col-sm-6 red"><img src="<?php echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
+                        <?php echo $restaurant_details['maximum_time_to_deliver']; ?> mins
                     </div>
 
                 </div>
 
                 <div class="order-about">
                     <h3><strong>About "
-                            <?php echo $restaurant_details["name"]; ?>"
+                            <?php echo $restaurant_details['name']; ?>"
                         </strong></h3>
-                    <?php echo $restaurant_details["restaurant_about"]; ?>. <a class="red" href="#"> READ MORE</a>
+                    <?php echo $restaurant_details['restaurant_about']; ?>. <a class="red" href="#"> READ MORE</a>
                 </div>
 
             </div>
-            <div class="col-md-4"><img class="img-fluid"
-                    src="<?php echo base_url('assets/frontend/default/images/detail-wbox-img.png') ?>" /></div>
+            <div class="col-md-4"><img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/detail-wbox-img.png'); ?>" /></div>
         </div>
     </div>
 </section>
 
 <!-- ./ RESTAURANT TITLE HEADER -->
 
-<?php 
+<?php
 
 // Get saved settings
 $heading = $this->order_model->getSetting('heading');
@@ -147,8 +144,9 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <?php echo !is_null($description) ? $description : 'Be there, we will have an amazing offer.'; ?>
                 </p>
             </div>
-            <div class="col-md-3 text-center"><a <?php if (!empty($ctaLink)) echo 'href="' . $ctaLink . '"'; ?>
-                    class="w-rounded-btn">More
+            <div class="col-md-3 text-center"><a <?php if (!empty($ctaLink)) {
+                echo 'href="' . $ctaLink . '"';
+            } ?> class="w-rounded-btn">More
                     Offers</a></div>
         </div>
     </div>
@@ -161,7 +159,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
     <div class="container">
         <div class="order-detail-slider owl-carousel owl-theme my-5">
             <?php foreach ($restaurant_categories as $restaurant_category) { ?>
-            <a href="#<?php echo strtolower(str_replace(" ","-",$restaurant_category['name'])); ?>">
+            <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
                 <?php echo $restaurant_category['name']; ?>
             </a>
             <?php } ?>
@@ -185,7 +183,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
           if (count($menus) > 0) {
             ?>
-                <h3 class="mt-2" id="<?php echo strtolower(str_replace(" ","-",$restaurant_category['name']))  ?>">
+                <h3 class="mt-2" id="<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
                     <?php echo $restaurant_category['name']; ?>
                 </h3>
 
@@ -200,39 +198,39 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
               foreach ($menus as $key => $menu):
                 $starts_from = json_decode($menu["price"]);
                 ?>
-                    <div data-toggle="modal"
-                        onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']); echo $price->menu;  ?>)">
+                    <div data-toggle="modal" onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
+                    echo $price->menu; ?>)">
                         <div class="d-flex order-detail-box-txt align-items-center justify-content-between">
                             <div class="col-md-8 d-flex align-items-center p-0 m-0">
                                 <div class="item-img-box mr-3"><a href="#"><img class="rounded-circle"
-                                            src="<?php echo base_url('uploads/menu/') . $menu["thumbnail"]; ?>"
-                                            height="80  px" width="80px" /></a></div>
+                                            src="<?php echo base_url('uploads/menu/') . $menu['thumbnail']; ?>" height="80  px" width="80px" /></a></div>
                                 <div class="item-txt-box">
                                     <h3>
                                         <span>
-                                            <?php echo ucfirst($menu["name"]); ?>
+                                            <?php echo ucfirst($menu['name']); ?>
                                         </span>
                                     </h3>
-                                    <?php echo $menu["details"]; ?>
+                                    <?php echo $menu['details']; ?>
                                 </div>
                             </div>
                             <div class="price col-md-2">
-                                <?php echo  currency($starts_from->menu); ?>
+                                <?php echo currency($starts_from->menu); ?>
                             </div>
                             <div class="order col-md-2">
                                 <a href="#" data-toggle="modal"
-                                    onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']); echo $price->menu;  ?>)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56"
-                                        fill="none">
+                                    onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
+                                    echo $price->menu; ?>)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56"
+                                        viewBox="0 0 56 56" fill="none">
                                         <g clip-path="url(#clip0_4609_18554)">
                                             <path
                                                 d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z"
                                                 stroke="#F54748" stroke-width="2" stroke-linecap="round"
                                                 stroke-linejoin="round" />
-                                            <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                            <path d="M28 21V35" stroke="#F54748" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round" />
+                                            <path d="M21 28H35" stroke="#F54748" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M28 21V35" stroke="#F54748" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" />
                                         </g>
                                         <defs>
                                             <clippath id="clip0_4609_18554">
@@ -244,8 +242,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
+                    <div class="modal fade" id="popup" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <button style="    text-align: right;margin: 20px 20px 0 0;cursor: pointer;"
@@ -336,15 +334,15 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                 </defs>
                             </svg>
                             <div class="c-basketSwitcher-eta-wrapper"><span>
-                                    Delivery from<br />
+                                    Delivery<br />
                                 </span> <span class="c-basketSwitcher-eta">
                                     from 7:35
                                 </span></div>
                         </label> <label
                             class="c-basketSwitcher-switch d-flex align-items-center justify-content-between"><input
-                                type="radio" name="basket-switcher" value="collection" class="is-visuallyHidden"> <svg
-                                xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24"
-                                fill="none">
+                                type="radio" name="basket-switcher" value="collection" class="is-visuallyHidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24"
+                                viewBox="0 0 25 24" fill="none">
                                 <g clip-path="url(#clip0_4609_18694)">
                                     <path
                                         d="M18 20C19.3807 20 20.5 18.8807 20.5 17.5C20.5 16.1193 19.3807 15 18 15C16.6193 15 15.5 16.1193 15.5 17.5C15.5 18.8807 16.6193 20 18 20Z"
@@ -361,7 +359,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                 </g>
                                 <defs>
                                     <clippath id="clip0_4609_18694">
-                                        <rect width="24" height="24" fill="white" transform="translate(0.5)" />
+                                        <rect width="24" height="24" fill="white"
+                                            transform="translate(0.5)" />
                                     </clippath>
                                 </defs>
                             </svg>
@@ -393,7 +392,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     </div>
 
                     <?php
-                        $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
+                    $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
                     ?>
 
                     <hr />
@@ -404,7 +403,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                 <label for="promo_code">Promo Code</label>
                                 <div class="d-flex gap-2 justify-content-center">
                                     <input type="text" class="form-control" id="promo_code" name="promo_code"
-                                        value="<?php echo $cart_items[0]['offer_code'] ?>" required>
+                                        value="<?php echo $cart_items[0]['offer_code']; ?>" required>
                                     <?php if(isset($cart_items[0]['offer_code'])){ ?>
                                     <div class="btn btn-sm btn-danger m-2" onclick="remove_promo()">
                                         <i class="fa fa-times"></i>
@@ -434,8 +433,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <div class="day-time-box my-4 p-2">
 
                         <div class="d-flex align-items-center justify-content-between mb-2">
-                            Day <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none">
+                            Day <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none">
                                 <g clip-path="url(#clip0_4609_18708)">
                                     <path
                                         d="M11.795 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V7C3 6.46957 3.21071 5.96086 3.58579 5.58579C3.96086 5.21071 4.46957 5 5 5H17C17.5304 5 18.0391 5.21071 18.4142 5.58579C18.7893 5.96086 19 6.46957 19 7V11"
@@ -463,8 +462,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                         </div>
 
                         <div class="d-flex align-items-center justify-content-between">
-                            Time <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none">
+                            Time <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none">
                                 <g clip-path="url(#clip0_4609_18717)">
                                     <path
                                         d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
@@ -491,8 +490,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                         <div class="grand-product-price"></div>
                     </div>
 
-                    <?php $restaurant_ids = $this->cart_model->get_restaurant_ids(); 
-                          
+                    <?php $restaurant_ids = $this->cart_model->get_restaurant_ids();
+                    
                     ?>
                     <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
 
@@ -501,10 +500,10 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                         <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn text-center mt-4">
                             <?php echo site_phrase('login_first', true); ?>
                         </a>
-                        <a href="<?php echo site_url('GuestCheckout'); ?>"
-   id="guestCheckoutBtn" class="d-block order-red-btn text-center mt-4 disabled">
-   Guest Checkout
-</a>
+                        <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn"
+                            class="d-block order-red-btn text-center mt-4 disabled">
+                            Guest Checkout
+                        </a>
                         <?php else : ?>
                         <form action="<?php echo site_url('checkout'); ?>" method="get">
                             <input type="hidden" name="address_number" id="address-number" value="1">
@@ -512,10 +511,12 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                 <!-- <button type="submit" id="checkout-button"
                                     class="d-block order-red-btn text-center mt-4 w-100 border-0"
                                     style="cursor: pointer;" role="button"
-                                    data-disabled="<?php //echo count($restaurant_ids) == 0 ? 'true' : 'false'; ?>">
-                                    <?php //echo site_phrase('checkout', true); ?>
+                                    data-disabled="<?php //echo count($restaurant_ids) == 0 ? 'true' : 'false';
+                                    ?>">
+                                    <?php //echo site_phrase('checkout', true);
+                                    ?>
                                 </button> -->
-                                <button type="submit" 
+                                <button type="submit"
                                     class="d-block order-red-btn text-center mt-4 w-100 border-0 disabled"
                                     style="cursor: pointer;" role="button" id="guestCheckoutBtn">
                                     <?php echo site_phrase('checkout', true); ?>
@@ -535,26 +536,23 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
 <!-- Mobile app section -->
-<section class="dt-hide"><img class="img-fluid"
-        src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" />
+<section class="dt-hide"><img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png'); ?>" />
 </section>
 <section class="footer-top mt-4">
     <div class="container-fluid">
         <div class="d-md-flex ">
             <div class="col-md-6">
-                <h3>It's Now <span class="red">More Easy</span> to <span class="yellow">Order</span> by Our Mobile <span
-                        class="red">App</span></h3>
+                <h3>It's Now <span class="red">More Easy</span> to <span class="yellow">Order</span> by Our Mobile
+                    <span class="red">App</span></h3>
                 <p>All you need to do is downlode one of the best delivery apps,
                     make a and most companies are opting for mobile app devlopment
                     for food delivery</p>
                 <div class="google-btns"><a href="#" class="goole-play-btn"><img
-                            src="<?php echo base_url('assets/frontend/default/images/google-play-icon.png') ?>" /></a>
-                    <a href="#"><img
-                            src="<?php echo base_url('assets/frontend/default/images/app-store-icon.png') ?>" /></a>
+                            src="<?php echo base_url('assets/frontend/default/images/google-play-icon.png'); ?>" /></a>
+                    <a href="#"><img src="<?php echo base_url('assets/frontend/default/images/app-store-icon.png'); ?>" /></a>
                 </div>
             </div>
-            <div class="col-md-6 mob-hide"><img class="img-fluid"
-                    src="<?php echo base_url('assets/frontend/default/images/footer-top-img.png') ?>" /></div>
+            <div class="col-md-6 mob-hide"><img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-top-img.png'); ?>" /></div>
         </div>
     </div>
 
@@ -562,4 +560,36 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 </section>
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        document.querySelectorAll(".owl-item.cloned").forEach(function(element) {
+            let anchor = element.querySelector("a");
+            // if(anchor == "")
+            if (anchor) {
+                let href = anchor.getAttribute("href");
+                
+                if (href) {
+                    let elem_id = href.replace("#", '');
+                    let data = document.getElementById(elem_id);
+                
+                    if (!data) {
+                        element.style.display = "none";
+                        // console.log();
+                        let multiple = document.querySelectorAll(".owl-item a[href='#" + elem_id + "']");
+                        multiple.forEach(function(element) {
+                            let owlItem = element.closest(".owl-item");
+                            if (owlItem) {
+                                owlItem.style.display = 'none';
+                            }
+                        });
+
+                    }
+                }
+            }
+        });
+    });
+
+</script>
 <!-- ./Mobile app section -->

@@ -9,25 +9,25 @@
         <h6><i class="fas fa-spinner fa-pulse summary-loader mr-2 d-none"></i><?php echo site_phrase('total_bill', true); ?></h6>
         <table class="bill-table">
             <tr>
-                <td class="bill-type"><?php echo site_phrase('total_menu_price'); ?> :</td>
+                <td class="bill-type" style="width:1px"><?php echo site_phrase('total_menu_price'); ?> :</td>
                 <td class="bill-value font-weight-bold"><?php echo currency(sanitize($this->cart_model->get_total_menu_price())); ?></td>
             </tr>
             <tr>
-                <td class="bill-type">VAT :</td>
+                <td class="bill-type" style="width:1px">VAT :</td>
                 <td class="bill-value font-weight-bold"><?php echo currency(sanitize($this->cart_model->get_vat_amount())); ?></td>
             </tr>
             <tr>
-                <td class="bill-type"><?php echo site_phrase('sub_total'); ?> :</td>
+                <td class="bill-type" style="width:1px"><?php echo site_phrase('sub_total'); ?> :</td>
                 <td class="bill-value font-weight-bold"><?php echo currency(sanitize($this->cart_model->get_sub_total())); ?></td>
             </tr>
             <tr>
-                <td class="bill-type">
+                <td class="bill-type" style="width:1px">
                     <?php echo site_phrase('delivery_charge'); ?> :
                 </td>
                 <td class="bill-value font-weight-bold"><?php echo currency(sanitize($this->cart_model->get_total_delivery_charge())); ?></td>
             </tr>
             <tr>
-                <td class="bill-type">
+                <td class="bill-type" style="width:1px">
                     <?php echo site_phrase('service_charge'); ?> :
                 </td>
                 <td class="bill-value font-weight-bold"><?php echo currency(sanitize($this->cart_model->get_service_amount())); ?></td>
@@ -44,13 +44,13 @@
             <tr  style="">
            
             <input type="hidden" name="discount_amount" id="discount_amount" value="<?php echo $discountAmount; ?>">
-                <td class="bill-type"><?php echo site_phrase('discount'); ?> :</td>
+                <td class="bill-type" style="width:1px"><?php echo site_phrase('discount'); ?> :</td>
                 <td class="bill-value font-weight-bold" id="discount_amount_lable"><?php echo currency($discountAmount); ?> </td>
             </tr>
             <?php } ?>
             <tr class="text-danger">
             <input type="hidden" name="grand_total_code" id="grand_total_code" value="<?php echo sanitize($this->cart_model->get_grand_total()); ?>">
-                <td class="bill-type"><?php echo site_phrase('grand_total'); ?> :</td>
+                <td class="bill-type" style="width:1px"><?php echo site_phrase('grand_total'); ?> :</td>
                 <td class="bill-value font-weight-bold" id="grand_total_label"><?php echo currency(sanitize($this->cart_model->get_grand_total())); ?></td>
             </tr>
             <tr>

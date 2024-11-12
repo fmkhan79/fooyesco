@@ -28,18 +28,16 @@ class Email_model extends Base_model
 
 		// PHPMailer object
 		$mail = $this->phpmailer_lib->load();
+// SMTP configuration
+$mail->isSMTP();
+$mail->Host       = 'mail.fooyes.co.uk'; // Your SMTP server
+$mail->SMTPAuth   = true;
+$mail->Username   = 'test@fooyes.co.uk'; // Your email username
+$mail->Password   = 'ih.Y.8QR?3at'; // Your email password
+$mail->SMTPSecure = 'ssl'; // Use 'ssl' for SSL
+$mail->Port       = 465; // Use 465 for SSL
 
-		// SMTP configuration
-		$mail->isSMTP();
-		$mail->Host       = get_smtp_settings('host');
-		$mail->SMTPAuth   = true;
-		$mail->Username   = get_smtp_settings('username');
-		$mail->Password   = get_smtp_settings('password');
-		$mail->SMTPSecure = get_smtp_settings('security');
-		$mail->Port       = get_smtp_settings('port');
-
-		$mail->setFrom(get_smtp_settings('username'), get_smtp_settings('from'));
-		$mail->addReplyTo(get_system_settings('system_email'), get_system_settings('system_name'));
+$mail->setFrom('test@fooyes.co.uk', 'Fooyes'); // Your email and name
 
 		// Add a recipient
 		$mail->addAddress($to);
@@ -61,6 +59,9 @@ class Email_model extends Base_model
 		$mail->Body = $htmlContent;
 		// Send email
 		if (!$mail->send()) {
+
+			log_message('error', 'Mail Error: ' . $mail->ErrorInfo);
+
 			// YOU CAN DEBUG HERE, WHETHER MAIL IS GOING OT NO. YOU CAN PRING THE "ErrorInfo" OF MAIL OBJECT
 			return false;
 		} else {

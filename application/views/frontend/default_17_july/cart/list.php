@@ -141,9 +141,9 @@ if (count($restaurant_ids) > 0):
                 <?php echo site_phrase('your_order_has_been_placed_successfully'); ?>.
             </span>
             <span class="d-block mt-2">
-                <?php echo site_phrase('check_your_order_status'); ?> <a href="<?php echo site_url('orders/today'); ?>">
-                    <?php echo strtolower(site_phrase('here')); ?>.
-                </a>
+                                <!-- <?php // echo site_phrase('check_your_order_status'); ?> <a href="<?php // echo site_url('orders/today'); ?>"> -->
+                    <!-- <php echo strtolower(site_phrase('here')); ?>. -->
+                <!-- </a> -->
             </span>
             <?php else: ?>
             <section class="detail-wbox mt-4 mb-2">

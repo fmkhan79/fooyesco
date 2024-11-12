@@ -1,6 +1,8 @@
+
 <div class="col-lg-4 col-md-6">
     <div class="card card-outline">
         <div class="card-header bg-warning">
+            
             <h3 class="card-title"><?php echo get_phrase('pending_orders'); ?> (<?php echo count($orders['pending']); ?>)</h3>
         </div>
         <div class="card-body">
@@ -42,7 +44,7 @@
 
                         <div class="row mt-2">
                             <div class="col-12">
-                                <a href="#" class="btn btn-dark btn-block btn-sm text-xs">Print</a>
+                            <a href="<?php echo site_url('orders/print_recipt/' . sanitize($pending['code'])); ?>" target="_blank" class="btn btn-primary btn-block" "><b> <i class="fas fa-times-rectangle"></i> Print</b></a>
                             </div>
                             <div class="col-12 mt-2">
                                 <a href="<?php echo site_url('orders/details/' . sanitize($pending['code'])); ?>" class="btn btn-secondary btn-block btn-sm text-xs"><?php echo get_phrase('details'); ?></a>

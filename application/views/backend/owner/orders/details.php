@@ -64,7 +64,7 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                                 </a>
                             </li>
                             <li class="list-group-item border-bottom-0 text-center">
-                                        <a href="javascript:void(0)" class="btn btn-primary btn-block" onclick="alert('print has been sent')"><b> <i class="fas fa-times-rectangle"></i> Print</b></a>
+                                        <a href="<?php echo site_url('orders/print_recipt/' . sanitize($order_data['code'])); ?>" target="_blank" class="btn btn-primary btn-block" "><b> <i class="fas fa-times-rectangle"></i> Print</b></a>
                                     </li>
                             <?php if (can_process_order()) : ?>
                                 <?php if ($order_data['order_status'] == "pending" || $order_data['order_status'] == "approved") : ?>
