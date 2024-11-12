@@ -86,7 +86,7 @@ $stripe_settings = json_decode($stripe_settings);
                             value="test@test.com" placeholder="Enter email...">
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6 d-none" id="collection-time">
                         <label for="inputPassword4">Collection Time (Optional)</label>
                         <input type="text" class="form-control" name="collection_time" placeholder="Wednesday 12:30">
                     </div>
