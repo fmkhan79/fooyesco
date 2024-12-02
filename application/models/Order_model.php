@@ -487,6 +487,17 @@ class Order_model extends Base_model
     // SENDING ORDER PLACING MAILS FROM THIS FUNCTION
     public function order_placing_mail($order_code)
     {
+        $order_details = $this->order_model->get_by_code($order_code);
+        $payment       = $this->order_model->get_order_payment($order_code);
+        
+       print_r($order_details);
+       die();
+               // Load necessary models
+        $ordered_items = $this->order_model->details($order_code);
+        // print_r($ordered_items . "Dass");
+        // die();
+        // Prepare data for the view
+       
 
         // SENDING MAIL TO CUSTOMER
         $customer_details = $this->user_model->get_user_by_id($this->logged_in_user_id);
@@ -502,6 +513,7 @@ class Order_model extends Base_model
         $message .= get_phrase('a_new_order_has_been_placed_by_the_customer_name') . ' <b>' . $customer_details['name'] . '</b>.<br/>';
         $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
         $message .= get_phrase('please_check_the_order_as_soon_as_possible_and_process_the_order') . '.';
+        
         $this->email_model->order_pacing($admin_details['email'], $message);
 
         // PUSH ALL THE RESTAURANT IDS TO THIS ARRAY FOR SENDING MAILS TO THE RESTAURANT OWNERS

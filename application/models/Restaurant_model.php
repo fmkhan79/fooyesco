@@ -395,22 +395,18 @@ class Restaurant_model extends Base_model
     /**
      * FILTER RESTAURANTS FOR FRONTEND
      */
-
-    public function filter_restaurant_frontend()
-    {
+    public function filter_restaurant_frontend() {
         $cuisine    = nuller(sanitize($this->input->get('cuisine')));
         $category   = nuller(sanitize($this->input->get('category')));
         $search_string   = nuller(sanitize($this->input->get('query')));
         $lat   = nuller(sanitize($this->input->get('latitude_1')));
         $lng   = nuller(sanitize($this->input->get('longitude_1')));
-
-
-
+    
         $filtered_restaurant_ids = array();
         $restaurant_ids_have_cuisine = array();
         $restaurant_ids_have_category = array();
-        $restaurant_ids_have_search_string = array();
-
+    
+        // Filter by category
         if ($category) {
             $this->db->distinct();
             $this->db->select('restaurant_id');
@@ -421,7 +417,8 @@ class Restaurant_model extends Base_model
                 }
             }
         }
-
+    
+        // Filter by cuisine
         if ($cuisine) {
             $query = $this->db->get_where($this->table, ['status' => 1])->result_array();
             foreach ($query as $row) {
@@ -433,7 +430,8 @@ class Restaurant_model extends Base_model
                 }
             }
         }
-
+    
+        // Combine the filters based on category, cuisine, and search string
         if ($category && $cuisine && !$search_string) {
             if (count($restaurant_ids_have_category) && count($restaurant_ids_have_cuisine)) {
                 $filtered_restaurant_ids = array_intersect($restaurant_ids_have_cuisine, $restaurant_ids_have_category);
@@ -450,18 +448,105 @@ class Restaurant_model extends Base_model
         } elseif (!$category && $cuisine && !$search_string) {
             $filtered_restaurant_ids = $restaurant_ids_have_cuisine;
         } elseif ($search_string) {
-            $this->db->select('id');
+            // Search by address (you can expand this if needed)
+            $this->db->select('id, latitude, longitude, address, maximum_range');
             $this->db->like('address', $search_string, 'both');
-            $this->db->or_like('latitude', $lat, 'both');
-            $this->db->or_like('longitude', $lng, 'both');
             $query = $this->db->get($this->table)->result_array();
+    
             foreach ($query as $row) {
-                if (!in_array($row['id'], $filtered_restaurant_ids)) {
-                    array_push($filtered_restaurant_ids, $row['id']);
+                $restaurant_id = $row['id'];
+                $restaurant_latitude = $row['latitude'];
+                $restaurant_longitude = $row['longitude'];
+                $maximum_range = $row['maximum_range'];
+    
+                // Calculate distance (miles) from user's location to the restaurant
+                $theta = $lng - $restaurant_longitude;
+                $miles = (sin(deg2rad($lat)) * sin(deg2rad($restaurant_latitude))) + 
+                         (cos(deg2rad($lat)) * cos(deg2rad($restaurant_latitude)) * cos(deg2rad($theta)));
+                $miles = acos($miles);
+                $miles = rad2deg($miles);
+                $distance = $miles * 60 * 1.1515; // Convert to miles
+    
+                // If the restaurant is within the maximum delivery range, include it
+                if ($distance <= $maximum_range) {
+                    if (!in_array($restaurant_id, $filtered_restaurant_ids)) {
+                        array_push($filtered_restaurant_ids, $restaurant_id);
+                    }
                 }
             }
-
         }
+    
+        // Return the filtered restaurant IDs that are within range
         return $filtered_restaurant_ids;
     }
+
+
+    // public function filter_restaurant_frontend()
+    // {
+    //     $cuisine    = nuller(sanitize($this->input->get('cuisine')));
+    //     $category   = nuller(sanitize($this->input->get('category')));
+    //     $search_string   = nuller(sanitize($this->input->get('query')));
+    //     $lat   = nuller(sanitize($this->input->get('latitude_1')));
+    //     $lng   = nuller(sanitize($this->input->get('longitude_1')));
+
+
+
+    //     $filtered_restaurant_ids = array();
+    //     $restaurant_ids_have_cuisine = array();
+    //     $restaurant_ids_have_category = array();
+    //     $restaurant_ids_have_search_string = array();
+
+    //     if ($category) {
+    //         $this->db->distinct();
+    //         $this->db->select('restaurant_id');
+    //         $query = $this->db->get_where('food_menus', ['category_id' => $category])->result_array();
+    //         foreach ($query as $row) {
+    //             if (!in_array($row['restaurant_id'], $restaurant_ids_have_category)) {
+    //                 array_push($restaurant_ids_have_category, $row['restaurant_id']);
+    //             }
+    //         }
+    //     }
+
+    //     if ($cuisine) {
+    //         $query = $this->db->get_where($this->table, ['status' => 1])->result_array();
+    //         foreach ($query as $row) {
+    //             $cuisines = json_decode($row['cuisine']);
+    //             if (in_array($cuisine, $cuisines)) {
+    //                 if (!in_array($row['id'], $restaurant_ids_have_cuisine)) {
+    //                     array_push($restaurant_ids_have_cuisine, $row['id']);
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     if ($category && $cuisine && !$search_string) {
+    //         if (count($restaurant_ids_have_category) && count($restaurant_ids_have_cuisine)) {
+    //             $filtered_restaurant_ids = array_intersect($restaurant_ids_have_cuisine, $restaurant_ids_have_category);
+    //         }
+    //     } elseif (!$category && !$cuisine && !$search_string) {
+    //         $query = $this->db->get_where($this->table, ['status' => 1])->result_array();
+    //         foreach ($query as $row) {
+    //             if (!in_array($row['id'], $filtered_restaurant_ids)) {
+    //                 array_push($filtered_restaurant_ids, $row['id']);
+    //             }
+    //         }
+    //     } elseif ($category && !$cuisine && !$search_string) {
+    //         $filtered_restaurant_ids = $restaurant_ids_have_category;
+    //     } elseif (!$category && $cuisine && !$search_string) {
+    //         $filtered_restaurant_ids = $restaurant_ids_have_cuisine;
+    //     } elseif ($search_string) {
+    //         $this->db->select('id');
+    //         $this->db->like('address', $search_string, 'both');
+    //         $this->db->or_like('latitude', $lat, 'both');
+    //         $this->db->or_like('longitude', $lng, 'both');
+    //         $query = $this->db->get($this->table)->result_array();
+    //         foreach ($query as $row) {
+    //             if (!in_array($row['id'], $filtered_restaurant_ids)) {
+    //                 array_push($filtered_restaurant_ids, $row['id']);
+    //             }
+    //         }
+
+    //     }
+    //     return $filtered_restaurant_ids;
+    // }
 }

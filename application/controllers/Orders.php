@@ -183,7 +183,7 @@ class Orders extends Authorization
     // CANCEL AN ORDER. BEFORE CANCELING AN ORDER MAKE SURE TO CHECK THE CUSTOMER ID AND THE ORDER STATUS
     public function cancel($order_code)
     {
-        authorization(['admin', 'customer'], true);
+        authorization(['admin', 'driver', 'cook', 'owner'], true);
         $is_valid = $this->order_model->is_valid($order_code);
         if (!$is_valid) {
             error(get_phrase('nothing_found'), site_url('orders'));

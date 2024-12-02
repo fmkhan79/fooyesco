@@ -56,7 +56,7 @@ $stripe_settings = json_decode($stripe_settings);
         <div id="billing-address">
             <h4 class="mt-5 text-dark">Customer Details</h4>
 
-            <form id="billing-form" onsubmit="submitForm(); return false;" method="POST">
+            <form id="billing-form" onsubmit="submitForm(); return false;" method="POST" autocomplete="off">
                 <div class="form-row mt-4">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">First Name *</label>
@@ -98,14 +98,14 @@ $stripe_settings = json_decode($stripe_settings);
                     <textarea class="form-control" name="note" placeholder="Details" rows="5"></textarea>
                 </div> -->
 
-                <button type="submit" class="rr-btn border-0 mt-4">Go to payments</button>
+                <button type="submit" class="rr-btn border-0 mt-4">Address Details</button>
             </form>
         </div>
 
         <div id="payment-option">
             <h4 class="mt-5 text-dark"><span class="order_type">Delivery</span> Address</h4>
 
-            <form id="address-form" onsubmit="submitAddressForm(); return false;">
+            <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="off">
                 <div class="form-row mt-4">
                 <div class="form-group col-md-6">
                         
@@ -162,7 +162,7 @@ $stripe_settings = json_decode($stripe_settings);
                     billing address</strong></label>
         </div>
 
-        <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Save & Continue</button>
+        <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Place Order</button>
         <!-- <button id="calculate_distance">Calculate Distance</button> -->
 
         </form>

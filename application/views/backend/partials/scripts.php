@@ -1,5 +1,6 @@
 <!-- jQuery -->
 <script src="<?php echo base_url('assets/backend/'); ?>plugins/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Bootstrap -->
 <script src="<?php echo base_url('assets/backend/'); ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

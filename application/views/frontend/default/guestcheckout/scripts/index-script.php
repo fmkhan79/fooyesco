@@ -579,15 +579,17 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
     });
     
     function calculateDistance() {
-        var lat_to = $("#lat_to").val();
-        var long_to = $("#long_to").val();
-    
-        if(lat_to){
-            var button = document.getElementById("checking");
-                button.classList.remove("disabled"); 
-                button.style.pointerEvents = "auto"; 
-        }
+    var lat_to = $("#lat_to").val();
+    var long_to = $("#long_to").val();
 
+    $("#not-deliever").addClass("d-none"); 
+    $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15)"); 
+    $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled"); 
+    var button = document.getElementById("checking");
+    button.classList.remove("disabled"); 
+    button.style.pointerEvents = "auto"; 
+
+    if (lat_to && long_to) {
         // Perform the AJAX request
         $.ajax({
             type: "POST",
@@ -596,38 +598,32 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
             data: {
                 lat_to: lat_to,
                 long_to: long_to,
-              
             },
             success: function(response) {
-                
-                
-                if(response.message == "Not delivery at this location"){
-                    $($(".rr-btn.border-0.mt-4")[1]).prop("disabled", "true");
-                    $("input[name='additional_address']").css("border", "1px solid red")
-                    $("#not-deliever").toggleClass("d-none");
+                if (response.message == 'Not delivery at this location') {
+                    // Handle 'Not delivery' error
+                    $($(".rr-btn.border-0.mt-4")[1]).prop("disabled", "true"); // Disable button
+                    $("input[name='additional_address']").css("border", "1px solid red"); // Highlight input
+                    $("#not-deliever").toggleClass("d-none"); // Show error message
+                } else if (response.message == 'Free delivery applied') {
+                    // Handle Free delivery
+                    $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled"); // Enable button
+                    $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
+                    $("#not-deliever").addClass("d-none"); // Hide error message
+                    $(".total-delivery-price").text("£0 (Free Delivery)"); // Display free delivery price
+                } else {
+                    // Handle regular delivery price
+                    $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled"); // Enable button
+                    $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
+                    $("#not-deliever").toggleClass("d-none"); // Show error message
+                    $(".total-delivery-price").text("£" + response.message); // Show delivery price
 
-                }else if(response.message == "Free delivery applied"){
-                    $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled");
-                    $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15);")
-                    $("#not-deliever").addClass("d-none");
-
-                    $(".total-delivery-price").text("£0 (Free Delivery)");
-                }else{
-
-                    $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled");
-                    $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15)")
-                    $("#not-deliever").toggleClass("d-none");
-                    
-                    $(".total-delivery-price").text("£"+response.message);
-
+                    // Update the grand total price
                     let subTotal = parseFloat($(".subtotal-price").html().replace("£", ""));
                     let totalVatPrice = parseFloat($(".total-vat-price").html().replace("£", ""));
                     let totalServicePrice = parseFloat($(".total-service-price").html().replace("£", ""));
-                    
-                    let total = subTotal + totalVatPrice + totalServicePrice + response.message;
-
+                    let total = subTotal + totalVatPrice + totalServicePrice + parseFloat(response.message);
                     $(".grand-product-price").text("£" + total);
-
                 }
             },
             error: function(xhr, status, error) {
@@ -635,4 +631,6 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
             }
         });
     }
+}
+
 </script>

@@ -31,18 +31,19 @@ class GuestCheckout extends Base
         $lat_to = $_POST['lat_to'];
         $long_to = $_POST['long_to'];
         
+
         $restaurant_ids = $this->cart_model->get_restaurant_ids();
+
         // die();   
         // print_r($restaurant_ids);
         $restaurant_details = $this->cart_model->get_restaurants_by_ids($restaurant_ids);
-        // print_r($restaurant_ids);
-        // die();
+       
 
         // print_r($restaurant_ids);
         $maximum_range = $restaurant_details[0]->maximum_range;
         $free_range = $restaurant_details[0]->free_range;
         $rate_per_mile = $restaurant_details[0]->rate_per_mile;
-
+        
         $latitude = $restaurant_details[0]->latitude;    
         $longitude = $restaurant_details[0]->longitude;
         // print_r($latitude);
@@ -56,8 +57,8 @@ class GuestCheckout extends Base
         $miles = rad2deg($miles);
         
         $result['miles'] = $miles * 60 * 1.1515;
-
-        
+   
+    
         if($result['miles'] > $maximum_range)
         {
             $response = [

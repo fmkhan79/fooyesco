@@ -1,6 +1,13 @@
 <!-- NAVIGATION BAR -->
 <?php include APPPATH . 'views/frontend/default/navigation/transparent.php'; ?>
+<style>
+.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
 
+}
+</style>
 <!-- SLIDER -->
 <section class="main-banner d-flex align-items-center">
     <div class="container-fluid m-5">
@@ -30,26 +37,24 @@
                         </div>
 
                         <div class="banner-form-box">
-                            <form action="<?php echo site_url('site/restaurants/filter'); ?>" class="form-wrap mt-4"
-                                method="GET">
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <div class="form-group has-search">
-                                        <span class="fa fa-search form-control-feedback"></span>
-                                    </div>
-                                    <input type="text" id="address"
-                                        placeholder="<?php echo site_phrase('which_restaurant_are_you_looking_for'); ?>?"
-                                        class="btn-group1 banner-search" name="query" required="">
-                                    <input type="hidden" name="latitude_1" class="form-control" id="latitude_1">
-                                    <input type="hidden" class="form-control" id="longitude_1" name="longitude_1">
-                                    <button type="submit" class="btn-search">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42"
-                                            viewBox="0 0 42 42" fill="none">
-                                            <circle cx="21" cy="21" r="21" fill="#FDC55E"></circle>
-                                        </svg>
-                                        <span class="icon-magnifier search-icon"></span>
-                                    </button>
-                                </div>
-                            </form>
+                        <form action="<?php echo site_url('site/restaurants/filter'); ?>" class="form-wrap mt-4" method="GET">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <div class="form-group has-search">
+            <span class="fa fa-search form-control-feedback"></span>
+        </div>
+        <input type="text" id="address" placeholder="<?php echo site_phrase('which_restaurant_are_you_looking_for'); ?>?"
+            class="btn-group1 banner-search" name="query" onchange="updateButtonState()" required>
+        <input type="hidden" name="latitude_1" class="form-control" id="latitude_1">
+        <input type="hidden" class="form-control" id="longitude_1" name="longitude_1">
+        <button type="submit" class="btn-search disabled" id="search-btn" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" fill="none">
+                <circle cx="21" cy="21" r="21" fill="#FDC55E"></circle>
+            </svg>
+            <span class="icon-magnifier search-icon"></span>
+        </button>
+    </div>
+</form>
+
                             <div class="slider-link text-left">
                                 <a class="btn btn-danger banner-btn mb-2"
                                     href="<?php echo site_url('site/restaurants/popular'); ?>">

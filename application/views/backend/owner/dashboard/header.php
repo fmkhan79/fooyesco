@@ -12,7 +12,7 @@
         </div>
     </div><!-- /.container-fluid -->
 </div>
-<script>
+<!-- <script>
     setInterval(function() {
         $.ajax({
             url: 'orders/check_new_order/',
@@ -88,4 +88,4 @@
             }
         });
     }
-</script>
+</script> -->

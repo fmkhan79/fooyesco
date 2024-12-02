@@ -93,3 +93,112 @@
     </li>
   </ul>
 </nav>
+
+
+<script>
+    setInterval(function() {
+        $.ajax({
+            url: 'orders/check_new_order/',
+            method: 'GET',
+            success: function(data) {
+                if (data.length > 0) {
+                    // Update the dashboard with the new orders
+                    showNewOrderNotification(data);
+                }
+            },
+            error: function() {
+                console.error('Error fetching new orders.');
+            }
+        });
+    }, 8000);
+
+    function showNewOrderNotification(data) {
+        const obj = JSON.parse(data);
+        const add = JSON.parse(obj.address);
+
+        const notificationSound = new Audio('<?php echo base_url('assets/auth/audio/foodpanda.mp3'); ?>'); 
+        notificationSound.play();
+        let text;
+        if(obj.order_type == "delivery"){
+            text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + obj.grand_total +
+                " | Address: " + add.additional_address;
+        } else if(obj.order_type == "pickup"){
+            text = "COLLECTION | Order ID: " + obj.id + " | Total Amount: " + obj.grand_total; 
+        }
+
+        Swal.fire({
+            title: "New Order Received!",
+            text: text,
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonText: "Accept Order ",
+            cancelButtonText: "Reject Order",
+            allowOutsideClick: false,
+        }).then((result) => {
+            notificationSound.pause();
+            notificationSound.currentTime = 0;
+            if (result.isConfirmed) {
+                updateOrderReadStatus(obj.id, obj.code);
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                cancelOrderAndMarkAsRead(obj.id, obj.code);
+            }
+        });
+    }
+
+    function updateOrderReadStatus(orderId, code) {
+        $.ajax({
+            url: 'orders/mark_order_as_read/',
+            method: 'POST',
+            data: { order_id: orderId },
+            success: function(response) {
+                $.ajax({
+                    url: 'orders/process/'+code+"/approved",
+                    method: 'POST',
+                    data: { order_id: orderId },
+                    success: function(response) {
+                        window.location.href = "orders/print_recipt/" + code;
+                        console.log('Order marked as read successfully');
+                    },
+                    error: function() {
+                        console.error('Error marking order as read.');
+                    }
+                });
+            },
+            error: function() {
+                console.error('Error marking order as read.');
+            }
+        });
+    }
+
+    function cancelOrderAndMarkAsRead(orderId, code) {
+
+      $.ajax({
+            url: 'orders/mark_order_as_read/',
+            method: 'POST',
+            data: { order_id: orderId },
+            success: function(response) {
+                // Now cancel the order
+                $.ajax({
+                    url: 'orders/cancel/' + code,
+                    method: 'POST',
+                    data: { order_id: orderId },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Order Rejected!',
+                            text: 'The order has been canceled.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        console.log('Order canceled successfully');
+                    },
+                    error: function() {
+                        console.error('Error canceling the order.');
+                    }
+                });
+            },
+            error: function() {
+                console.error('Error marking order as read.');
+            }
+        });
+    }
+</script>

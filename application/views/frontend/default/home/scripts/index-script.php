@@ -42,38 +42,61 @@
 </script>
 
 <script>
-console.log('map script loaded!')
+console.log('map script loaded!');
 
 function initMap() {
     const input = document.getElementById("address");
-    console.log(input)
+    console.log(input);
 
     const options = {
         fields: ["formatted_address", "geometry", "name"],
         strictBounds: false,
     };
 
-
     const autocomplete = new google.maps.places.Autocomplete(input, options);
-
     console.log(autocomplete, 'autocomplete created');
 
     autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
 
         if (!place.geometry || !place.geometry.location) {
-            // User entered the name of a Place that was not suggested and
-            // pressed the Enter key, or the Place Details request failed.
-            window.alert("No details available for input: '" + place.name + "'");
+            console.warn("No details available for input: '" + place.name + "'");
             return;
         }
 
-        console.log(place.geometry.location.lat(), place.geometry.location.lng(), 'place.geometry', place
-            .formatted_address)
+        console.log(
+            place.geometry.location.lat(),
+            place.geometry.location.lng(),
+            'place.geometry',
+            place.formatted_address
+        );
 
+        // Set latitude and longitude
         document.getElementById('latitude_1').value = place.geometry.location.lat();
         document.getElementById('longitude_1').value = place.geometry.location.lng();
+
+        // Update button state
+        updateButtonState();
     });
+
+    // Update button state based on input values
+    function updateButtonState() {
+        const address = input.value.trim();
+        const latitude = document.getElementById('latitude_1').value.trim();
+        const longitude = document.getElementById('longitude_1').value.trim();
+        const searchButton = document.getElementById('search-btn');
+
+        if (address && latitude && longitude) {
+            searchButton.disabled = false; // Enable button
+            searchButton.classList.remove('disabled');
+        } else {
+            searchButton.disabled = true; // Disable button
+            searchButton.classList.add('disabled');
+        }
+    }
+
+    // Listen for manual address changes to update button state
+    input.addEventListener('input', updateButtonState);
 }
 
 window.initMap = initMap;

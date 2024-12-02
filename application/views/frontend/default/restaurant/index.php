@@ -496,35 +496,27 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
 
                     <div class="row mt-2 d-flex flex-column">
-                        <?php if (!$customer_details || count($customer_details) == 0) : ?>
-                        <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn text-center mt-4">
-                            <?php echo site_phrase('login_first', true); ?>
-                        </a>
-                        <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn"
-                            class="d-block order-red-btn text-center mt-4 disabled">
-                            Guest Checkout
-                        </a>
-                        <?php else : ?>
-                        <form action="<?php echo site_url('checkout'); ?>" method="get">
-                            <input type="hidden" name="address_number" id="address-number" value="1">
-                            <div class="featured-btn-wrap text-right mt-3">
-                                <!-- <button type="submit" id="checkout-button"
-                                    class="d-block order-red-btn text-center mt-4 w-100 border-0"
-                                    style="cursor: pointer;" role="button"
-                                    data-disabled="<?php //echo count($restaurant_ids) == 0 ? 'true' : 'false';
-                                    ?>">
-                                    <?php //echo site_phrase('checkout', true);
-                                    ?>
-                                </button> -->
-                                <button type="submit"
-                                    class="d-block order-red-btn text-center mt-4 w-100 border-0 disabled"
-                                    style="cursor: pointer;" role="button" id="guestCheckoutBtn">
-                                    <?php echo site_phrase('checkout', true); ?>
-                                </button>
-                            </div>
-                        </form>
-                        <?php endif; ?>
-                    </div>
+
+    
+    <?php if (empty($customer_details) || empty($customer_details['name'])) : ?>
+        <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn text-center mt-4">
+            <?php echo site_phrase('login_first', true); ?>
+        </a>
+        <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn" class="d-block order-red-btn text-center mt-4 disabled">
+            Guest Checkout
+        </a>
+    <?php else : ?>
+        <form action="<?php echo site_url('checkout'); ?>" method="get">
+            <input type="hidden" name="address_number" id="address-number" value="1">                                       
+            <div class="featured-btn-wrap text-right mt-3">
+                <button type="submit" class="d-block order-red-btn text-center mt-4 w-100 border-0 <?php echo (count($restaurant_ids) == 0 ? 'disabled' : ''); ?>" style="cursor: pointer;" role="button" id="checkoutBtn">
+                    <?php echo site_phrase('checkout', true); ?>
+                </button>
+            </div>
+        </form>
+    <?php endif; ?>
+</div>
+
 
                     <!-- <a href="<?php echo base_url('cart'); ?>" class="d-block order-red-btn text-center mt-4">Order
                         Now!</a> -->
