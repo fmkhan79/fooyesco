@@ -17,15 +17,18 @@ $stripe_settings = json_decode($stripe_settings);
 <!-- MAIN CONTENT -->
 <style>
     .disabled {
-    pointer-events: none; /* Prevent clicks */
-    opacity: 0.5; /* Make it look disabled */
-    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+        pointer-events: none;
+        /* Prevent clicks */
+        opacity: 0.5;
+        /* Make it look disabled */
+        cursor: not-allowed;
+        /* Change cursor to indicate it's not clickable */
 
-}
-/* .order-delivery-types{
+    }
+
+    /* .order-delivery-types{
     display:none;
 } */
-
 </style>
 <section class="detail-wbox mt-4 mb-2 p-5 d-flex justify-content-around">
     <div class="container bg-white text-dark border border-light p-5 w-75">
@@ -60,31 +63,34 @@ $stripe_settings = json_decode($stripe_settings);
                 <div class="form-row mt-4">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">First Name *</label>
-                        <input type="text" class="form-control" id="" name="first_name" required
-                            placeholder="Enter first name..." value="ahmed">
+                        <input type="text" class="form-control" id="txtfname" name="first_name" required
+                            placeholder="Enter first name..." value="">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputPassword4">Last Name *</label>
-                        <input type="text" class="form-control" name="last_name" required
-                            placeholder="Enter last name..." value="ali">
+                        <input type="text" id="txtlname" class="form-control" name="last_name" required
+                            placeholder="Enter last name..." value="">
                     </div>
                 </div>
                 <div class="form-row">
+                <div class="form-group col-md-6">
+    <label for="inputAddress">Mobile *</label>
+    <input type="tel" class="form-control" name="phone_mobile" id="mobile" required
+        placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$" value=""
+        title="Please enter a valid mobile number starting with +447 or 07 followed by 9 digits">
+    <small>Format: +44 7123 456 789 or 07123 456 789</small><br>
+</div>
+
+
                     <div class="form-group col-md-6">
-                        <label for="inputAddress">Mobile *</label>
-                        <input type="tel" class="form-control" name="phone_mobile" id="inputAddress" required
-                            placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$" value="07123456789"
-                            title="Please enter a valid mobile number starting with +447 or 07 followed by 9 digits">
-                        <small>Format: +44 7123 456 789 or 07123 456 789</small><br>
+                        <label for="inputAddress">Email *</label>
+                        <input type="email" class="form-control" name="email" id="email" required
+                            value="" placeholder="Enter email...">
                     </div>
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputAddress">Email *</label>
-                        <input type="email" class="form-control" name="email" id="inputAddress" required
-                            value="test@test.com" placeholder="Enter email...">
-                    </div>
+
 
                     <div class="form-group col-md-6 d-none" id="collection-time">
                         <label for="inputPassword4">Collection Time (Optional)</label>
@@ -98,7 +104,7 @@ $stripe_settings = json_decode($stripe_settings);
                     <textarea class="form-control" name="note" placeholder="Details" rows="5"></textarea>
                 </div> -->
 
-                <button type="submit" class="rr-btn border-0 mt-4">Address Details</button>
+                <button type="submit" class="rr-btn border-0 mt-4">Go to next step: Address Details</button>
             </form>
         </div>
 
@@ -107,31 +113,45 @@ $stripe_settings = json_decode($stripe_settings);
 
             <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="off">
                 <div class="form-row mt-4">
-                <div class="form-group col-md-6">
-                        
+                    <div class="form-group col-md-6">
+
                         <label for="inputAddress">Enter Post Code and Select Your Street*</label>
                         <input type="text" name="additional_address" class="form-control" id="to" required
-                            placeholder="Enter Post Code" >
-                        
+                            placeholder="Enter Post Code">
+
                         <small class="text-danger d-none" id="not-deliever"> Address not in deliverable range </small>
                         <input type="hidden" placeholder="Latitude" id="lat_to">
                         <input type="hidden" placeholder="Longitude" id="long_to">
                     </div>
 
-                 
+
                     <div class="form-group col-md-6">
-                             <label for="inputEmail4">House/Flat Number*</label>
+                        <label for="inputEmail4">House/Flat Number*</label>
                         <input type="text" class="form-control" name="street" placeholder="House/Flat Number" required>
                     </div>
-                </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail4">Street Name*</label>
+                        <input type="text" class="form-control" id="street-value" name="zip_code" placeholder="Street Number" required>
+                    </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputAddress">City</label>
+                            <input type="text" name="city" class="form-control" id="city" placeholder="City">
+                        </div>
+
+                        <!-- <div class="form-group col-md-6">
+                <label for="inputPassword4">Country</label>
+                <input type="text" name="country" class="form-control" placeholder="Country" value="London" disabled>
+            </div> -->
+
+                    </div>
 
                 <div class="form-row">
-                    
-                <div class="form-group col-md-12" id="additional-delivery-notes">
-                <label for="inputPassword4">Any Additional Delivery Instructions</label>
-                  <textarea name="number" class="form-control" placeholder="No"></textarea>
+
+                    <div class="form-group col-md-12" id="additional-delivery-notes">
+                        <label for="inputPassword4">Any Additional Delivery Instructions</label>
+                        <textarea name="number" class="form-control" placeholder="No"></textarea>
                     </div>
-                <!-- <div class="form-group col-md-6">
+                    <!-- <div class="form-group col-md-6">
                     <label for="inputAddress">Post Code *</label>
 
                     <input type="text" class="form-control" name="zip_code" id="post" required placeholder="Code"
@@ -140,80 +160,73 @@ $stripe_settings = json_decode($stripe_settings);
 
                 </div> -->
 
+                </div>
+
+
+                <div class="form-check mt-4 d-flex">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1"><strong>The shipping address does not
+                            match
+                            the
+                            billing address</strong></label>
+                </div>
+
+                <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Go to next step: Place Order</button>
+                <!-- <button id="calculate_distance">Calculate Distance</button> -->
+
+            </form>
         </div>
 
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputAddress">City</label>
-                <input type="text" name="city" class="form-control" id="inputAddress" placeholder="City">
-            </div>
+        <div id="your-address">
+            <!-- <h4 class="mt-5 text-dark"><?php //echo site_phrase('choose_way_of_payment', true); 
+                                            ?></h4> -->
 
-            <!-- <div class="form-group col-md-6">
-                <label for="inputPassword4">Country</label>
-                <input type="text" name="country" class="form-control" placeholder="Country" value="London" disabled>
-            </div> -->
-
-        </div>
-        <div class="form-check mt-4 d-flex">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1"><strong>The shipping address does not
-                    match
-                    the
-                    billing address</strong></label>
-        </div>
-
-        <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Place Order</button>
-        <!-- <button id="calculate_distance">Calculate Distance</button> -->
-
-        </form>
-    </div>
-
-    <div id="your-address">
-        <!-- <h4 class="mt-5 text-dark"><?php //echo site_phrase('choose_way_of_payment', true); ?></h4> -->
-
-        <!-- <pre><php print_r($this->session->all_userdata()); ?></pre> -->
-        <?php if (
-    $this->session->userdata('customer_login') || 
-    $this->session->userdata('owner_login') || 
-    $this->session->userdata('user_id') || 
-    $this->session->userdata('guest_checkout')
-) :  ?>
+            <!-- <pre><php print_r($this->session->all_userdata()); ?></pre> -->
+            <?php if (
+                $this->session->userdata('customer_login') ||
+                $this->session->userdata('owner_login') ||
+                $this->session->userdata('user_id') ||
+                $this->session->userdata('guest_checkout')
+            ) :  ?>
 
 
-        <!-- <pre><php print_r($this->session->all_userdata()); ?></pre> -->
+                <!-- <pre><php print_r($this->session->all_userdata()); ?></pre> -->
 
 
 
-        <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
+                <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
 
-        <?php
-                    $restaurant_ids = $this->cart_model->get_restaurant_ids();
-                    if (count($restaurant_ids) > 0) : ?>
-        <div class="row justify-content-center">
-            <div class="col-md-12 responsive-wrap">
-                <div class="booking-checkbox_wrap">
-                    <div class="row">
-                        
-                    <div class="col-md-6 payment-gateways">
-                        <h4><span class="order_type">Delivery</span> Address</h4>
-                            <span id="show-address"></span>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <h4>Choose Payment Method To Proceed</h4>
-                         
+                <?php
+                $restaurant_ids = $this->cart_model->get_restaurant_ids();
+                if (count($restaurant_ids) > 0) : ?>
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 responsive-wrap">
+                            <div class="booking-checkbox_wrap">
+                                <div class="row">
 
-                             <!-- ORDER DELIVERY TYPE -->
-                         
-                                <!-- <tr>
+                                    <div class="col-md-6 payment-gateways">
+                                        <h4><span class="order_type">Delivery</span> Address</h4>
+                                        <span id="show-address"></span>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <h4>Choose Payment Method To Proceed</h4>
+
+
+                                        <!-- ORDER DELIVERY TYPE -->
+
+                                        <!-- <tr>
                                     <td>
                                         <div class="order-delivery-types">
                                             <input id="delivery" type="radio" name="order_type" value="delivery"
-                                                onchange="$('#order-type').text('<?php //echo site_phrase('delivery'); ?>'); $('.order_type').val('delivery'); loadFetchedUrl(); $('.delivery-order').removeClass('d-none'); $('.pickup-order').addClass('d-none');"
-                                                <?php //if ($order_type == "delivery") echo "checked"; ?> />
+                                                onchange="$('#order-type').text('<?php //echo site_phrase('delivery'); 
+                                                                                    ?>'); $('.order_type').val('delivery'); loadFetchedUrl(); $('.delivery-order').removeClass('d-none'); $('.pickup-order').addClass('d-none');"
+                                                <?php //if ($order_type == "delivery") echo "checked"; 
+                                                ?> />
                                             <label class="order-delivery-type-label order-type-delivery" for="delivery">
                                                 <div class="order-type-overlay">
                                                     <p>
-                                                        <?php //echo site_phrase('delivery'); ?>
+                                                        <?php //echo site_phrase('delivery'); 
+                                                        ?>
                                                     </p>
                                                 </div>
                                             </label>
@@ -222,17 +235,21 @@ $stripe_settings = json_decode($stripe_settings);
                                     <td>
                                         <?php
 
-                                                       // $pickup_order_status = 0; if (count($restaurant_ids) == 1 && pickup_order_availability($restaurant_ids[0])) { $pickup_order_status = 1; }
-                                                        ?>
+                                        // $pickup_order_status = 0; if (count($restaurant_ids) == 1 && pickup_order_availability($restaurant_ids[0])) { $pickup_order_status = 1; }
+                                        ?>
                                         <div class="order-delivery-types">
                                             <input id="pickup" type="radio" name="order_type" value="pickup"
-                                                onchange="$('#order-type').text('<?php //echo site_phrase('pickup'); ?>'); $('.order_type').val('pickup'); loadFetchedUrl(); $('.delivery-order').addClass('d-none'); $('.pickup-order').removeClass('d-none');"
-                                                <?php //if ($order_type == "pickup") echo "checked"; ?>
-                                                <?php //if (!$pickup_order_status) echo 'disabled'; ?> />
+                                                onchange="$('#order-type').text('<?php //echo site_phrase('pickup'); 
+                                                                                    ?>'); $('.order_type').val('pickup'); loadFetchedUrl(); $('.delivery-order').addClass('d-none'); $('.pickup-order').removeClass('d-none');"
+                                                <?php //if ($order_type == "pickup") echo "checked"; 
+                                                ?>
+                                                <?php //if (!$pickup_order_status) echo 'disabled'; 
+                                                ?> />
                                             <label class="order-delivery-type-label order-type-pickup" for="pickup">
                                                 <div class="order-type-overlay">
                                                     <p>
-                                                        <?php //echo site_phrase('Pickup'); ?>
+                                                        <?php //echo site_phrase('Pickup'); 
+                                                        ?>
                                                     </p>
                                                 </div>
                                             </label>
@@ -240,36 +257,36 @@ $stripe_settings = json_decode($stripe_settings);
                                     </td>
                                 </tr>
                                 <tr> -->
-                                    
-                                  
+
+
                                         <!-- CASH ON DELIVERY FORM -->
                                         <?php if ($cash_on_delivery_settings[0]->active) {
-                                                            include "cash_on_delivery/cash_on_delivery_form.php";
-                                                        } ?>
+                                            include "cash_on_delivery/cash_on_delivery_form.php";
+                                        } ?>
 
-                                           <!-- STRIPE FORM -->
+                                        <!-- STRIPE FORM -->
                                         <?php if ($stripe_settings[0]->active) {
-                                                            include "stripe/stripe_form.php";
-                                                        } ?>
+                                            include "stripe/stripe_form.php";
+                                        } ?>
 
-                                            <!-- PAYPAL FORM -->
-                                            <?php if ($paypal_settings[0]->active) {
-                                                            include "paypal/paypal_form.php";
-                                                        } ?>
+                                        <!-- PAYPAL FORM -->
+                                        <?php if ($paypal_settings[0]->active) {
+                                            include "paypal/paypal_form.php";
+                                        } ?>
                                         <!-- <div class="featured-btn-wrap text-right col-12 p-0">
                                             <button
                                                 onclick="redirect()"
                                                 class="btn btn-dark btn-sm pl-5 pr-5 pt-3 pb-3 w-100 rr-btn border-0 mt-2"><?php echo site_phrase('proceed', true); ?></button>
                                         </div> -->
-                                  
-                        </div>
-                    
+
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
         </div>
-        <?php else : ?>
+    <?php else : ?>
         <div class="row justify-content-md-center">
             <div class="col-md-12 responsive-wrap">
                 <div class="booking-checkbox_wrap mb-2">
@@ -283,13 +300,13 @@ $stripe_settings = json_decode($stripe_settings);
                 </div>
             </div>
         </div>
-        <?php endif; ?>
-        <?php else : ?>
-        <div class="text-center">
-            <h5><?php echo site_phrase('user_is_not_logged_in'); ?></h5>
-        </div>
-        <?php endif; ?>
-        <!-- </form> -->
+    <?php endif; ?>
+<?php else : ?>
+    <div class="text-center">
+        <h5><?php echo site_phrase('user_is_not_logged_in'); ?></h5>
+    </div>
+<?php endif; ?>
+<!-- </form> -->
     </div>
     </div>
 
@@ -379,40 +396,40 @@ $stripe_settings = json_decode($stripe_settings);
             </div>
 
             <?php
-                        $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
-                    ?>
+            $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
+            ?>
 
             <hr />
-            <?php if(sizeof($cart_items) > 0) { ?>
-            <div class="row justify-content-md-end">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="promo_code">Promo Code</label>
-                        <div class="d-flex gap-2 justify-content-center">
-                            <input type="text" class="form-control" id="promo_code" name="promo_code"
-                                value="<?php echo $cart_items[0]['offer_code'] ?>" required>
-                            <?php if(isset($cart_items[0]['offer_code'])){ ?>
-                            <div class="btn btn-sm btn-danger m-2" onclick="remove_promo()">
-                                <i class="fa fa-times"></i>
+            <?php if (sizeof($cart_items) > 0) { ?>
+                <div class="row justify-content-md-end">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="promo_code">Promo Code</label>
+                            <div class="d-flex gap-2 justify-content-center">
+                                <input type="text" class="form-control" id="promo_code" name="promo_code"
+                                    value="<?php echo $cart_items[0]['offer_code'] ?>" required>
+                                <?php if (isset($cart_items[0]['offer_code'])) { ?>
+                                    <div class="btn btn-sm btn-danger m-2" onclick="remove_promo()">
+                                        <i class="fa fa-times"></i>
+                                    </div>
+                                <?php } ?>
+                                <div class="btn btn-sm btn-danger m-2" id="remove_promo" style="display:none"
+                                    onclick="remove_promo()">
+                                    <i class="fa fa-times"></i>
+                                </div>
                             </div>
+                            <small id="promo_code_message"></small> <!-- Container for messages -->
+                            <?php if (isset($cart_items[0]['offer_code'])) { ?>
+                                <small class="text-success">Promo is already applied.</small>
+                                <!-- Container for messages -->
+                            <?php } else { ?>
+                                <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo"
+                                    onclick="apply_promo_action()">APPLY COUPON CODE
+                                </div>
                             <?php } ?>
-                            <div class="btn btn-sm btn-danger m-2" id="remove_promo" style="display:none"
-                                onclick="remove_promo()">
-                                <i class="fa fa-times"></i>
-                            </div>
                         </div>
-                        <small id="promo_code_message"></small> <!-- Container for messages -->
-                        <?php if(isset($cart_items[0]['offer_code'])){ ?>
-                        <small class="text-success">Promo is already applied.</small>
-                        <!-- Container for messages -->
-                        <?php } else { ?>
-                        <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo"
-                            onclick="apply_promo_action()">APPLY COUPON CODE
-                        </div>
-                        <?php } ?>
                     </div>
                 </div>
-            </div>
             <?php } ?>
 
             <!-- <div class="offer-spend my-3">Offer Spend £28.05 more to get 10% off</div> -->
@@ -472,7 +489,7 @@ $stripe_settings = json_decode($stripe_settings);
                 <div class="grand-product-price"></div>
             </div>
 
-            <?php $restaurant_ids = $this->cart_model->get_restaurant_ids();?>
+            <?php $restaurant_ids = $this->cart_model->get_restaurant_ids(); ?>
             <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
 
 

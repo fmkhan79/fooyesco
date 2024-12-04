@@ -16,6 +16,12 @@ label {
     width: 100%;
 }
 
+
+.form-control.invalid {
+        border-color: red;
+    }
+
+
 input[type=radio] {
     display: none;
 }

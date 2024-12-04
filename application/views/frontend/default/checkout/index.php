@@ -60,31 +60,33 @@ $stripe_settings = json_decode($stripe_settings);
                 <div class="form-row mt-4">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">First Name *</label>
-                        <input type="text" class="form-control" id="" name="first_name" required
+                        <input type="text" class="form-control" id="txtfname" name="first_name" required
                             placeholder="Enter first name..." value="ahmed">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputPassword4">Last Name *</label>
-                        <input type="text" class="form-control" name="last_name" required
+                        <input type="text" class="form-control" id="txtlname" name="last_name" required
                             placeholder="Enter last name..." value="ali">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputAddress">Mobile *</label>
-                        <input type="tel" class="form-control" name="phone_mobile" id="inputAddress" required
-                            placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$" value="07123456789"
+                        <input type="tel" class="form-control" name="phone_mobile" id="mobile" required
+                            placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$" value=""
                             title="Please enter a valid mobile number starting with +447 or 07 followed by 9 digits">
                         <small>Format: +44 7123 456 789 or 07123 456 789</small><br>
                     </div>
-                </div>
 
-                <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputAddress">Email *</label>
                         <input type="email" class="form-control" name="email" id="inputAddress" required
                             value="test@test.com" placeholder="Enter email...">
                     </div>
+                </div>
+
+                <div class="form-row">
+                 
 
                     <div class="form-group col-md-6 d-none" id="collection-time">
                         <label for="inputPassword4">Collection Time (Optional)</label>
@@ -98,7 +100,7 @@ $stripe_settings = json_decode($stripe_settings);
                     <textarea class="form-control" name="note" placeholder="Details" rows="5"></textarea>
                 </div> -->
 
-                <button type="submit" class="rr-btn border-0 mt-4">Address Details</button>
+                <button type="submit" class="rr-btn border-0 mt-4">Go to next Step: Address Details</button>
             </form>
         </div>
 
@@ -118,11 +120,18 @@ $stripe_settings = json_decode($stripe_settings);
                         <input type="hidden" placeholder="Longitude" id="long_to">
                     </div>
 
-                 
                     <div class="form-group col-md-6">
-                             <label for="inputEmail4">House/Flat Number*</label>
+                        <label for="inputEmail4">House/Flat Number*</label>
                         <input type="text" class="form-control" name="street" placeholder="House/Flat Number" required>
                     </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail4">Street Name*</label>
+                        <input type="text" class="form-control" id="street-value" name="zip_code" placeholder="Street Number" required>
+                    </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputAddress">City</label>
+                            <input type="text" name="city" class="form-control" id="city" placeholder="City">
+                        </div>
                 </div>
 
                 <div class="form-row">
@@ -140,18 +149,12 @@ $stripe_settings = json_decode($stripe_settings);
 
                 </div> -->
 
-        </div>
 
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputAddress">City</label>
-                <input type="text" name="city" class="form-control" id="inputAddress" placeholder="City">
-            </div>
-
-            <div class="form-group col-md-6">
+       
+            <!-- <div class="form-group col-md-6">
                 <label for="inputPassword4">Country</label>
                 <input type="text" name="country" class="form-control" placeholder="Country" value="London" disabled>
-            </div>
+            </div> -->
 
         </div>
         <div class="form-check mt-4 d-flex">
@@ -162,7 +165,7 @@ $stripe_settings = json_decode($stripe_settings);
                     billing address</strong></label>
         </div>
 
-        <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Place Order</button>
+        <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Go to next step: Place Order</button>
         <!-- <button id="calculate_distance">Calculate Distance</button> -->
 
         </form>

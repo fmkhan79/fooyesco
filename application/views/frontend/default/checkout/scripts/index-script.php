@@ -540,8 +540,22 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
 
             // Call the function to calculate distance here
             calculateDistance();
+            let firstSplit = place.adr_address.split('<span class=\"street-address\">')[1];
+            
+            if(firstSplit == undefined || firstSplit == "")
+                return; 
+
+            let result = firstSplit.split("</span>")[0];
+            console.log(result);
+            // let baba = document.getElementById("street-value");
+            // console.log(baba)
+            document.getElementById("street-value").value = result;
+
         });
     });
+    document.getElementById("checking").onclick = function(){
+        document.getElementById("show-address").innerHTML = document.querySelector("input[name='additional_address']").value + "<br> House/Street: " + document.querySelector("input[name='street']").value + "<br> Street/Name: " + document.querySelector("input[name='zip_code']").value
+    }
   
 
     const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
@@ -579,10 +593,7 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
         });
     });
 
-    document.getElementById("checking").onclick = function(){
-        document.getElementById("show-address").innerHTML = document.querySelector("input[name='additional_address']").value + "<br> House/Street: " + document.querySelector("input[name='street']").value
-    }
-
+   
 
        
     function calculateDistance() {
@@ -605,6 +616,7 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
             data: {
                 lat_to: lat_to,
                 long_to: long_to,
+                                        
             },
             success: function(response) {
                 if (response.message == 'Not delivery at this location') {
@@ -622,7 +634,7 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
                     // Handle regular delivery price
                     $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled"); // Enable button
                     $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
-                    $("#not-deliever").toggleClass("d-none"); // Show error message
+                    $("#not-deliever").addClass("d-none"); // Show error message
                     $(".total-delivery-price").text("£" + response.message); // Show delivery price
 
                     // Update the grand total price
@@ -639,4 +651,68 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
         });
     }
 }
+
+
+
+document.getElementById('mobile').addEventListener('input', function() {
+        var input = this;
+        // debugger;
+        var pattern = new RegExp(input.getAttribute('pattern'));
+        
+        if (!pattern.test(input.value)) {
+            input.classList.add('invalid');
+        } else {
+            input.classList.remove('invalid');
+        }
+    });
+
+
+    $(function() {
+
+$('#txtfname').keydown(function (e) {
+
+  if (e.shiftKey || e.ctrlKey || e.altKey) {
+  
+    e.preventDefault();
+    
+  } else {
+  
+    var key = e.keyCode;
+    
+    if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+    
+      e.preventDefault();
+      
+    }
+
+  }
+  
+});
+
+});
+    $(function() {
+
+$('#txtlname').keydown(function (e) {
+
+  if (e.shiftKey || e.ctrlKey || e.altKey) {
+  
+    e.preventDefault();
+    
+  } else {
+  
+    var key = e.keyCode;
+    
+    if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+    
+      e.preventDefault();
+      
+    }
+
+  }
+  
+});
+
+});
+
+
 </script>

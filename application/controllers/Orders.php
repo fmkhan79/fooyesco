@@ -156,7 +156,7 @@ class Orders extends Authorization
     public function mark_order_as_read()
     {
         $order_id = $this->input->post('order_id');
-    
+
         if ($order_id) {
             $this->db->set('read_status', 1); // Assuming 'read_status' is the field name in the 'orders' table
             $this->db->where('id', $order_id);

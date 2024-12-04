@@ -12,6 +12,11 @@
     margin: 5px 0px;
 }
 
+
+    .form-control.invalid {
+        border-color: red;
+    }
+
 label {
     width: 100%;
 }

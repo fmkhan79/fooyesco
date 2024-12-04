@@ -39,17 +39,13 @@ class GuestCheckout extends Base
         $restaurant_details = $this->cart_model->get_restaurants_by_ids($restaurant_ids);
        
 
-        // print_r($restaurant_ids);
         $maximum_range = $restaurant_details[0]->maximum_range;
         $free_range = $restaurant_details[0]->free_range;
         $rate_per_mile = $restaurant_details[0]->rate_per_mile;
         
         $latitude = $restaurant_details[0]->latitude;    
         $longitude = $restaurant_details[0]->longitude;
-        // print_r($latitude);
-        // print_r($longitude);
-        // print_r("fas");
-        // die();
+       
         $theta = $long_to - $longitude;
         $miles = (sin(deg2rad($lat_to)) * sin(deg2rad($latitude))) + 
                  (cos(deg2rad($lat_to)) * cos(deg2rad($latitude)) * cos(deg2rad($theta)));

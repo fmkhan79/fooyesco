@@ -820,6 +820,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+$(window).scroll(function(e) { 
+  var $el = $('.sticky-offset'); 
+  var isPositionFixed = ($el.css('position') == 'sticky-offset');
+  var scrollOffset = $(this).scrollTop();
+  
+  
+
+  // Apply padding-top: 50px when the offset value is 750
+  if (scrollOffset >= 750) {
+    $el.css('margin-top', '60px');
+  } else {
+    $el.css('margin-top', '0px');
+  }
+
+  if (scrollOffset > 200 && !isPositionFixed) { 
+    $el.css({'position': 'sticky', 'top': '0px'}); 
+  }
+
+  if (scrollOffset < 200 && isPositionFixed) {
+    $el.css({'position': 'static', 'top': '0px'}); 
+  } 
+});
 
 
 </script>

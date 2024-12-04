@@ -442,6 +442,13 @@ price-box
     line-height: normal;
 }
 
+div.sticky {
+  position: sticky;
+  top: 0;
+  margin-top: 55px;
+
+}
+
 
 .cart-btns {
     height: 24px;
@@ -452,5 +459,12 @@ price-box
     font-size: 14px;
     border-radius: 6px;
     border: 1px solid #F54747;
+}
+.fixedElement {
+    background-color: #c0c0c0;
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:100;
 }
 </style>

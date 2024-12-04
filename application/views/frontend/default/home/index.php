@@ -71,7 +71,7 @@
                     <div class="col-md-7 text-md-right">
                         <!-- add ? <.?.php -->
                         <img class="img-fluid"
-                            src="<?php echo base_url('assets/frontend/default/images/main-banner-img.png') ?>" />
+                            src="<?php echo base_url('assets/frontend/default/images/main-banner-img.png') ?>" /> 
                     </div>
                 </div>
             </div>
