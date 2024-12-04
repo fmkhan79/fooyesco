@@ -628,7 +628,7 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
                     // Handle regular delivery price
                     $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled"); // Enable button
                     $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
-                    $("#not-deliever").addClass("d-none"); // Show error message
+                    $("#not-deliever").toggleClass("d-none"); // Show error message
                     $(".total-delivery-price").text("£" + response.message); // Show delivery price
 
                     // Update the grand total price
