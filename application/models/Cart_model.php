@@ -350,11 +350,11 @@ public function get_restaurants_by_ids($restaurant_ids) {
 
     public function order_placing_mail($order_code)
     {
-        // print_r($customer_details . "<dada");
+        // print_r($customer_details . "<dada");                                                            
         // SENDING MAIL TO CUSTOMER
         // print_r("id" . $this->logged_in_user_id . "das");
         $customer_details = $this->user_model->get_user_by_id($this->logged_in_user_id);
-            print_r($customer_details . "Da");
+            // print_r($customer_details . "Da");
             // print_r($this->user_model->get_user_by_id($this->logged_in_user_id));
         // print_r($customer_details. "hey");
         $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
@@ -362,7 +362,7 @@ public function get_restaurants_by_ids($restaurant_ids) {
         $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
         $message .= get_phrase('please_track_down_your_order_status_from_the_order_details_page') . '.';
         $this->email_model->order_pacing($customer_details['email'], $message);
-        print_r($customer_details['email'] ."email");
+        // print_r($customer_details['email'] ."email");
         // SENDING MAIL TO ADMIN
         $admin_details = $this->user_model->get_admin_details();
         $message  = get_phrase('hello') . ' ' . $admin_details['name'] . ', <br/>';

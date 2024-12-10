@@ -12,21 +12,20 @@ include 'Authorization.php';
 
 class Dashboard extends Authorization
 {
-    function index()
-    {
-        // CHECK IF THE LOGGED IN USER ROLE IS DRIVER, REDIRECT HIM TO TODAY
-        if ($this->logged_in_user_role == "driver" || $this->logged_in_user_role == "cook" || $this->logged_in_user_role == "owner" || $this->logged_in_user_role =="admin" || $this->logged_in_user_role == "restaurants") {
-
-            $page_data['page_name'] = 'dashboard/index';
-            $page_data['page_title'] = ucfirst($this->session->userdata('user_role')) . " " . get_phrase("dashboard");
-            $this->load->view('backend/index', $page_data);
-        }else
+    
+        function index()
         {
             
-		$this->load->view('auth/login');
-     
-         }
+            if ($this->logged_in_user_role == "customer" || $this->logged_in_user_role == "driver" || $this->logged_in_user_role == "cook" || $this->logged_in_user_role == "owner" || $this->logged_in_user_role =="admin" || $this->logged_in_user_role == "restaurants") {
 
-  
+                $page_data['page_name'] = 'dashboard/index';
+                $page_data['page_title'] = ucfirst($this->session->userdata('user_role')) . " " . get_phrase("dashboard");
+                $this->load->view('backend/index', $page_data);
+            }else
+            {
+                
+                redirect('auth');
+        
+            }
+        }
     }
-}

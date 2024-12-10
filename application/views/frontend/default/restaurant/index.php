@@ -504,9 +504,15 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn text-center mt-4">
                                 <?php echo site_phrase('login_first', true); ?>
                             </a>
+                            
+                            <a href="<?php echo site_url('auth/registration/customer'); ?>"  class="d-block order-red-btn text-center mt-4">
+                                Sign in
+                            </a>
                             <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn" class="d-block order-red-btn text-center mt-4 disabled">
                                 Guest Checkout
                             </a>
+                          
+                          
                         <?php else : ?>
                             <a href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtn" style="cursor: pointer;" role="button">
                                 <?php echo site_phrase('checkout', true); ?>
