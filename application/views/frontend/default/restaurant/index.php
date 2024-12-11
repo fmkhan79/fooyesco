@@ -1,6 +1,7 @@
 <!-- NAVIGATION BAR -->
 
 
+
 <?php include APPPATH . 'views/frontend/default/navigation/dark.php';
 ?>
 <style>
@@ -12,6 +13,16 @@
         cursor: not-allowed;
         /* Change cursor to indicate it's not clickable */
     }
+
+
+
+/* Show the element only on mobile screens (<= 768px) */
+/* @media (max-width: 768px) {
+    #mobile-only {
+        display: block;
+    } */
+
+
 </style>
 <!-- RESTAURANT GALLERY -->
 
@@ -169,7 +180,62 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 </section>
 <!-- ./Category tabs with scrool nav -->
 
+
+ <div class="container mt-5">
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item d-md-none">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button bg-danger text-white border-danger"  type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            Check Cart Item
+          </button>
+        </h2>
+        <!-- Initially hidden content -->
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+
+          <div id="item-list">
+
+</div>
+
+          <div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="subtotal">Subtotal</div>
+                        <div id="no-menu" class="subtotal-price"></div>
+                    </div>
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="subtotal">Delivery Charges</div>
+                        <div class="total-delivery-price"></div>
+                    </div>
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="subtotal">VAT Charges</div>
+                        <div class="total-vat-price"></div>
+                    </div>
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="subtotal">Service Charges</div>
+                        <div class="total-service-price"></div>
+                    </div>
+                    
+                    <a href="<?php echo site_url('cart'); ?>">
+   <button id="mobile-only" class="order-red-btn text-center mt-4">  <?php echo site_phrase('cart', true); ?></button>
+ </a>  
+                 
+          
+        
+        </div>
+        </div>
+        
+      </div>
+    
+    </div>
+    
+  </div>
+
+
 <!-- Menu section -->
+
+
 <section class="order-detail-listing mt-4 mb-2">
     <div class="container p-md-4 text-dark p-0">
         <div class="d-md-flex align-items-start">
@@ -506,7 +572,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             </a>
                             
                             <a href="<?php echo site_url('auth/registration/customer'); ?>"  class="d-block order-red-btn text-center mt-4">
-                                Sign in
+                                Sign UP
                             </a>
                             <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn" class="d-block order-red-btn text-center mt-4 disabled">
                                 Guest Checkout

@@ -54,7 +54,7 @@ if (count($restaurant_ids) > 0) {
                             </li>
                             <li class="cart-menu">
                                 <?php if ($restaurant_details): ?>
-                                <a href="<?php echo site_url('site/restaurant/' . $restaurant_details['slug'] . '/' . $restaurant_details['id']); ?>"
+                                <a href="<?php echo site_url('cart'); ?>"
                                     class="cart-btn">
                                     <span class="cart-items" id="#cart-items">
                                         <?php echo sanitize($this->cart_model->total_cart_items()); ?>

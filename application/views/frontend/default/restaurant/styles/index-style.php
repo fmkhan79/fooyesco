@@ -467,4 +467,8 @@ div.sticky {
     width:100%;
     z-index:100;
 }
+
+
+/* Hide the element on larger screens (tablets and up) */
+
 </style>

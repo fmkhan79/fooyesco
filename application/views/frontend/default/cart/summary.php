@@ -54,14 +54,17 @@
                 <td class="bill-value font-weight-bold" id="grand_total_label"><?php echo currency(sanitize($this->cart_model->get_grand_total())); ?></td>
             </tr>
             <tr>
+            <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
+
                 <td class="buttonsWrapper">
-                    <?php if (!$customer_details || count($customer_details) == 0) : ?>
-                        <a href="<?php echo site_url('auth'); ?>" class="rr-btn"><?php echo site_phrase('login_first', true); ?></a>
+                <?php if (empty($customer_details) || empty($customer_details['name'])) : ?>
+                    <a href="<?php echo site_url('auth'); ?>" class="rr-btn"><?php echo site_phrase('login_first', true); ?></a>
                         <a href="<?php echo site_url('GuestCheckout'); ?>" class="rr-btn">Guest Checkout</a>
                     <?php else : ?>
                         <form action="<?php echo site_url('checkout'); ?>" method="get">
                             <input type="hidden" name="address_number" id="address-number" value="1">
                             <div class="featured-btn-wrap text-right mt-3"><button type="submit" class="btn btn-danger btn-sm pl-5 pr-5 pt-2 pb-2 bg-danger rr-btn w-100"><?php echo site_phrase('checkout', true); ?></button></div>
+                            <!-- <?php print_r("Hey"); ?> -->
                         </form>
                     <?php endif; ?>
                 </td>

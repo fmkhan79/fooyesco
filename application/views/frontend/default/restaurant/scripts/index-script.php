@@ -10,6 +10,10 @@
 <script src="<?php echo base_url('assets/frontend/default/js/init.js') ?>"></script>
 
 <script src="<?php echo base_url('assets/frontend/default/js/owl.carousel.min.js') ?>"></script>
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
 <script>
     "use strict";
@@ -854,4 +858,27 @@
             });
         }
     });
+
+
+    
+  // Function to update the id of the element based on screen size
+  function updateItemListId() {
+    const itemList = document.getElementById("item-list");
+    
+    // Check if screen width is at least 768px (md breakpoint for Bootstrap)
+    if (window.innerWidth >= 768) {
+      // Change the id when not on mobile (>= 768px)
+      itemList.id = "item-list-md";
+    } else {
+      // Reset the id back to item-list for mobile view
+      itemList.id = "item-list";
+    }
+  }
+
+  // Run the function initially
+  updateItemListId();
+
+  // Add event listener to update on resize
+  window.addEventListener("resize", updateItemListId);
+
 </script>

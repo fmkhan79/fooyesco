@@ -19,6 +19,7 @@
 <!-- Main CSS -->
 <link rel="stylesheet" href="<?php echo base_url('assets/frontend/default/css/style.css'); ?>">
 
+
 <!-- Toastr -->
 <link rel="stylesheet" href="<?php echo base_url() . 'assets/global/toastr/toastr.css' ?>">
 
