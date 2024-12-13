@@ -244,12 +244,13 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
             
             <!-- Sign Up Button -->
          
+            <a href="<?php echo site_url('GuestCheckout'); ?>" class="order-red-btn text-center mt-4 disabled border-0" id="guestCheckoutBtnmobile">
+                                Guest Checkout
+                            </a>
             
             <!-- Guest Checkout Button -->
-            <button class="order-red-btn text-center mt-4 disabled border-0" id="guestCheckoutBtnmobile">
-                Guest Checkout
-            </button>
-        <?php else : ?>
+            
+            <?php else : ?>
             <!-- Checkout Button -->
             <button class="order-red-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtnmobile" style="cursor: pointer;" disabled>
                 <?php echo site_phrase('checkout', true); ?>
