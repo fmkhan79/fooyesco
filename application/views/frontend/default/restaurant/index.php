@@ -184,22 +184,39 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
  <div class="container mt-5">
     <div class="accordion" id="accordionExample">
       <div class="accordion-item d-md-none">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button bg-danger text-white border-danger"  type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-            Check Cart Item
-          </button>
+      <!-- <div class="accordion-item"> -->
+
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button order-red-btn text-center mt-4 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+    <?php echo site_phrase('cart', true); ?>
+</button>
+
         </h2>
         <!-- Initially hidden content -->
-        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
           <div class="accordion-body">
 
           <div id="item-list">
 
 </div>
 
-          <div class="total-price-box d-flex justify-content-between align-items-center">
+          
+                 
+
+        
+        </div>
+        </div>
+        
+      </div>
+    
+    </div>
+
+
+    <div class="d-md-none">
+
+    <div class="total-price-box d-flex justify-content-between align-items-center">
                         <div class="subtotal">Subtotal</div>
-                        <div id="no-menu" class="subtotal-price"></div>
+                        <div id="ttprice" class="subtotal-price"></div>
                     </div>
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
@@ -217,19 +234,28 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                         <div class="total-service-price"></div>
                     </div>
                     
-                    <a href="<?php echo site_url('cart'); ?>">
-   <button id="mobile-only" class="order-red-btn text-center mt-4">  <?php echo site_phrase('cart', true); ?></button>
- </a>  
-                 
-          
-        
+                  
+    <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
+         <?php if (empty($customer_details) || empty($customer_details['name'])) : ?>
+            <!-- Login Button -->
+            <button id="mobile-only" class="order-red-btn text-center mt-4 border-0" onclick="window.location.href='<?php echo site_url('auth'); ?>'">
+            Login 
+            </button>
+            
+            <!-- Sign Up Button -->
+         
+            
+            <!-- Guest Checkout Button -->
+            <button class="order-red-btn text-center mt-4 disabled border-0" id="guestCheckoutBtnmobile">
+                Guest Checkout
+            </button>
+        <?php else : ?>
+            <!-- Checkout Button -->
+            <button class="order-red-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtnmobile" style="cursor: pointer;" disabled>
+                <?php echo site_phrase('checkout', true); ?>
+            </button>
+        <?php endif; ?>
         </div>
-        </div>
-        
-      </div>
-    
-    </div>
-    
   </div>
 
 
@@ -438,11 +464,15 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                 </span></div>
                         </label>
                     </div>
+                   
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
                         <div class="subtotal">Subtotal</div>
-                        <div id="no-menu" class="subtotal-price"></div>
+                        
+                        <div id="ttprice" class="subtotal-price"></div>
                     </div>
+
+
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
                         <div class="subtotal">Delivery Charges</div>

@@ -570,18 +570,34 @@
                 $(".total-service-price").text(totalServicePrice);
 
                 if (subTotalValue !== "£0") {
-                    // Get both buttons
-                    var guestButton = document.getElementById("guestCheckoutBtn");
-                    var checkoutButton = document.getElementById("CheckoutBtn");
+                    debugger;
+    // Get both buttons
+    var guestButton = document.getElementById("guestCheckoutBtn");
+    var checkoutButton = document.getElementById("CheckoutBtn");
+    var guestcheckoutButtonmobile = document.getElementById("guestCheckoutBtnmobile");
+    var checkoutButtonmobile = document.getElementById("CheckoutBtnmobile");
 
-                    // Remove 'disabled' class and enable pointer events for both buttons
-                    guestButton.classList.remove("disabled");
-                    guestButton.style.pointerEvents = "auto";
+    // Check if elements are not null before modifying them
+    if (guestButton) {
+        guestButton.classList.remove("disabled");
+        guestButton.style.pointerEvents = "auto";
+    }
 
-                    checkoutButton.classList.remove("disabled");
-                    checkoutButton.style.pointerEvents = "auto";
-                }
+    if (checkoutButton) {
+        checkoutButton.classList.remove("disabled");
+        checkoutButton.style.pointerEvents = "auto";
+    }
 
+    if (guestcheckoutButtonmobile) {
+        guestcheckoutButtonmobile.classList.remove("disabled");
+        guestcheckoutButtonmobile.style.pointerEvents = "auto";
+    }
+
+    if (checkoutButtonmobile) {
+        checkoutButtonmobile.classList.remove("disabled");
+        checkoutButtonmobile.style.pointerEvents = "auto";
+    }
+}
             },
             error: function() {
                 alert("<?php echo $this->lang->line('fail'); ?>")
@@ -797,15 +813,34 @@
                 quantity: currentQuantity,
             },
             success: function(updatedPrice) {
-                $('#sub-total-' + cartId).text(updatedPrice);
+        // Log the updated price to the console for debugging
+        console.log('Updated Price:', updatedPrice);
+        console.log('Cart id:', cartId);
+
+        // Update the price shown in the cart
+        $('#sub-total-' + cartId).text(updatedPrice);
+                // $('#sub-total').text(updatedPrice);
+                // $('#sub-total-' + cartId).text(updatedPrice);
                 $.ajax({
-                    url: '<?php echo site_url('cart/reload_cart_summary'); ?>',
-                    success: function(response) {
-                        $('#cart-summary').html(response);
-                        $('.cart-actions').prop('disabled', false);
-                        $(".summary-loader").addClass('d-none');
-                    }
-                });
+    url: '<?php echo site_url('cart/reload_cart_summary'); ?>',
+    success: function(response) {
+        console.log(response); // Check the response in the console
+        $('#cart-summary').html(response); // Update the HTML content
+        $('.cart-actions').prop('disabled', false);
+        $(".summary-loader").addClass('d-none');
+        console.log("fsa")
+        // Extract the total menu price using split
+        let firstSplit = response.split('<td class="bill-value font-weight-bold">')[1];
+
+
+        let result = firstSplit.split("</td>")[0];
+console.log(result);
+        document.getElementById("ttprice").innerHTML = result;
+
+    }
+
+});
+
             }
         });
     }

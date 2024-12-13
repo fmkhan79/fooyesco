@@ -47,9 +47,8 @@ if (count($restaurant_ids) > 0):
 
     <div class="product-price">
         <img src="<?php echo base_url('assets/frontend/default/images/cart-red.png') ?>" />
-        <span><?php echo currency(sanitize($cart_item['price'])); ?></span>
+        <span id="sub-total-<?= $cart_item['id']?>"><?php echo currency(sanitize($cart_item['price'])); ?></span>
     </div>
-
 
 </div>
 <?php $c++;
