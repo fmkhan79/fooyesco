@@ -570,7 +570,6 @@
                 $(".total-service-price").text(totalServicePrice);
 
                 if (subTotalValue !== "£0") {
-                    debugger;
     // Get both buttons
     var guestButton = document.getElementById("guestCheckoutBtn");
     var checkoutButton = document.getElementById("CheckoutBtn");
