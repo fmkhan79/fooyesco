@@ -179,14 +179,20 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 <!-- ./Category tabs with scrool nav -->
 
 
-<div class="container mt-5">
+
+
+<div class="col-md-6 mt-3 order-summery-box d-md-none" id="order-summary">
+    <h3 class="d-flex justify-content-center">Order Summary</h3>
+    <p class="green d-flex justify-content-center">You're all set</p>
+
+    <div class="container mt-5">
     <div class="accordion" id="accordionExample">
         <div class="accordion-item d-md-none">
             <!-- <div class="accordion-item"> -->
 
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button order-red-btn text-center mt-4 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                    <?php echo site_phrase('cart', true); ?>
+                    Show My Cart
                 </button>
 
             </h2>
@@ -202,14 +208,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
         </div>
     </div>
 </div>
-
-<div class="col-md-6 mt-3 order-summery-box d-md-none" id="">
-    <h3 class="d-flex justify-content-center">Order Summary</h3>
-    <p class="green d-flex justify-content-center">You're all set</p>
-
-    <div id="item-list">
-
-    </div>
+    
 
     <div
         class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-center my-4 mx-5">
@@ -755,8 +754,9 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <?php $restaurant_ids = $this->cart_model->get_restaurant_ids();
 
                     ?>
-                    <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
 
+                    <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
+                    
                     <div class="row mt-2 d-flex flex-column">
 
 

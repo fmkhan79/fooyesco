@@ -195,7 +195,6 @@ $stripe_settings = json_decode($stripe_settings);
 
 
                 <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
-
                 <?php
                 $restaurant_ids = $this->cart_model->get_restaurant_ids();
                 if (count($restaurant_ids) > 0) : ?>
