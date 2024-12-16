@@ -208,8 +208,26 @@ class Checkout_model extends Base_model
         $this->db->where('code', $order_code);
         //billing data is inserting here
         $this->db->update('orders', $updater);
+
+        if (!$this->session->userdata('is_logged_in')) {  // Only update if the user is NOT logged in
+            $user_id = $this->session->userdata('user_id');
+            if ($user_id) {
+                $this->customer_model->update_is_complete($user_id, 1);
+            }
+        }
         return true;
     }
+
+    // public function get_payment_method_by_user_id($user_id) {
+    //     $this->db->select('payment_method');
+    //     $this->db->from('payment');
+    //     $this->db->where('id', $user_id); 
+    //     $query = $this->db->get();
+    //     $result = $query->row_array();
+        
+        
+    //     return isset($result['payment_method']) ? $result['payment_method'] : null;
+    // }
 
     // INSERT TO PAYMENT TABLE
     public function paid_with_paypal($order_type, $amount_paid, $address_id, $paymentID, $paymentToken, $payerID)

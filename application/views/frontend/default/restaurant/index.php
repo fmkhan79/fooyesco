@@ -394,7 +394,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
         <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
-        <?php if (empty($customer_details) || empty($customer_details['name'])) : ?>
+        
+        <?php if ($customer_details['is_complete'] == 0) : ?>
             <!-- Login Button -->
             <div class="button-container d-flex justify-content-between mt-2">
 
@@ -758,26 +759,26 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
                     
                     <div class="row mt-2 d-flex flex-column">
+                                        
+                                        <?php if ($customer_details['is_complete'] == 0) : ?>
+                            
 
+    <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn text-center mt-4">
+        <?php echo site_phrase('login_first', true); ?>
+    </a>
 
-                        <?php if (empty($customer_details) || empty($customer_details['name'])) : ?>
-                            <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn text-center mt-4">
-                                <?php echo site_phrase('login_first', true); ?>
-                            </a>
+    <a href="<?php echo site_url('auth/registration/customer'); ?>" class="d-block order-red-btn text-center mt-4">
+        Sign UP
+    </a>
+    <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn" class="d-block order-red-btn text-center mt-4 disabled">
+        Guest Checkout
+    </a>
+<?php else : ?>
+    <a href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtn" style="cursor: pointer;" role="button">
+        <?php echo site_phrase('checkout', true); ?>
+    </a>
+<?php endif; ?>
 
-                            <a href="<?php echo site_url('auth/registration/customer'); ?>" class="d-block order-red-btn text-center mt-4">
-                                Sign UP
-                            </a>
-                            <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn" class="d-block order-red-btn text-center mt-4 disabled">
-                                Guest Checkout
-                            </a>
-
-
-                        <?php else : ?>
-                            <a href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtn" style="cursor: pointer;" role="button">
-                                <?php echo site_phrase('checkout', true); ?>
-                            </a>
-                        <?php endif; ?>
 
                     </div>
 

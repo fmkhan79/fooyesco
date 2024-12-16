@@ -248,6 +248,12 @@ class Customer_model extends Base_model
         return true;
     }
 
+public function update_is_complete($user_id, $status)
+{
+    $this->db->where('id', $user_id);
+    $this->db->update('users', ['is_complete' => $status]);
+}
+
     /**
      * DELETE CUSTOMER DATA
      * @return boolean
