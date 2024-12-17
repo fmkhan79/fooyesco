@@ -1417,7 +1417,7 @@ footer ul.footer-links li {
 .order-summery-box {
   background: #f2f2f2;
   border-radius: 25px;
-  padding: 30px 20px 43px !important;
+  padding: 10px 20px 43px !important;
 }
 
 .order-summery-box h3 {
@@ -1513,9 +1513,9 @@ footer ul.footer-links li {
 }
 
 .order-red-btn {
-  padding: 16px 32px;
+  padding: 26px 32px;
   background: #f54748;
-  border-radius: 41px;
+  /* border-radius: 41px; */
   font-size: 16px;
   color: #fff;
   font-weight: 500;

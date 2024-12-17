@@ -51,7 +51,7 @@
 
 <section class="dt-hide">
     <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" />
-</section>
+</section>                                                                                                                  
 
 <section class="footer-top mt-4">
     <div class="container-fluid">
