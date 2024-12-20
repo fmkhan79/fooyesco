@@ -1511,11 +1511,20 @@ footer ul.footer-links li {
   color: #191919;
   font-weight: 500;
 }
-
+                                            
 .order-red-btn {
+  padding: 11px 22px;
+  background: #f54748;
+  border-radius: 41px;
+  font-size: 14px;           
+  color: #fff;           
+  font-weight: 500;
+}
+
+.order-red-btn-main {
   padding: 26px 32px;
   background: #f54748;
-  /* border-radius: 41px; */
+  border-radius: 41px;
   font-size: 16px;
   color: #fff;
   font-weight: 500;

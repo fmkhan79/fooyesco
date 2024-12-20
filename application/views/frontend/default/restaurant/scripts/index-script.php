@@ -536,6 +536,7 @@
                 $("#item-list").empty(); // Empty the content of the div
                 $("#item-list").html(res); // Replace with the 'res' response
             },
+            
             error: function() {
                 alert("<?php echo $this->lang->line('fail'); ?>")
             }
@@ -820,6 +821,7 @@
         $('#sub-total-' + cartId).text(updatedPrice);
                 // $('#sub-total').text(updatedPrice);
                 // $('#sub-total-' + cartId).text(updatedPrice);
+                
                 $.ajax({
     url: '<?php echo site_url('cart/reload_cart_summary'); ?>',
     success: function(response) {

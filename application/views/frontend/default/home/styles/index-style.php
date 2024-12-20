@@ -301,6 +301,11 @@
 .slider-link {
     margin: 45px 0 0;
 }
+
+.slider-link-mobile {
+    margin: 4px 10px 0;
+}
+
 .slider-link a {
     color: #FFF;
 font-size: 16px;

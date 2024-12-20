@@ -315,10 +315,10 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                         <div id="item-list" class="mt-2">
                             <!-- Dynamically filled item list goes here -->
                         </div>
-                    </div>
+                   
 
                     <!-- Basket Switcher (Delivery / Collection) -->
-                    <div class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-center my-4 mx-5">
+                    <div class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-center my-4 mx-4">
                         <!-- Delivery Option -->
                         <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between mr-4">
                             <input type="radio" name="basket-switcher" value="delivery" checked="checked" class="is-visuallyHidden">
@@ -481,7 +481,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
         </div>
     </div> <!-- End of Accordion Wrapper -->
 </div>
-
+</div>
 <!-- Menu section -->
 
 
@@ -562,9 +562,11 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
-                                            <button style="    text-align: right;margin: 20px 20px 0 0;cursor: pointer;"
-                                                type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            <button style="text-align: right;margin: 20px 20px 0 0;cursor: pointer;"
+                                                type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span
                                                     aria-hidden="true">&times;</span></button>
+
                                             <div class="modal-body p-0" id="getdetails_selected_menu">
 
                                             </div>
@@ -822,18 +824,18 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                         <?php if ($customer_details['is_complete'] == 0) : ?>
 
 
-                            <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn text-center mt-4">
+                            <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn-main text-center mt-4 border-0">
                                 <?php echo site_phrase('login_first', true); ?>
                             </a>
 
-                            <a href="<?php echo site_url('auth/registration/customer'); ?>" class="d-block order-red-btn text-center mt-4">
+                            <a href="<?php echo site_url('auth/registration/customer'); ?>" class="d-block order-red-btn-main text-center mt-4">
                                 Sign UP
                             </a>
-                            <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn" class="d-block order-red-btn text-center mt-4 disabled">
+                            <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn" class="d-block order-red-btn-main text-center mt-4 disabled">
                                 Guest Checkout
                             </a>
                         <?php else : ?>
-                            <a href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtn" style="cursor: pointer;" role="button">
+                            <a href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn-main text-center mt-4 w-100 border-0 disabled" id="CheckoutBtn" style="cursor: pointer;" role="button">
                                 <?php echo site_phrase('checkout', true); ?>
                             </a>
                         <?php endif; ?>

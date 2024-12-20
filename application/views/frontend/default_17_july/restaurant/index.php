@@ -237,11 +237,12 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             </div>
                         </div>
                     </div>
+                    
                     <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <button style="    text-align: right;margin: 20px 20px 0 0;cursor: pointer;"
+                                <button style="text-align: right;margin: 20px 20px 0 0;cursor: pointer;"
                                     type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                         aria-hidden="true">&times;</span></button>
                                 <div class="modal-body p-0" id="getdetails_selected_menu">

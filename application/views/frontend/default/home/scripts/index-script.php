@@ -85,13 +85,18 @@ function initMap() {
         const latitude = document.getElementById('latitude_1').value.trim();
         const longitude = document.getElementById('longitude_1').value.trim();
         const searchButton = document.getElementById('search-btn');
+        const searchButtonmobile = document.getElementById('search-btn-mobile');
+
 
         if (address && latitude && longitude) {
             searchButton.disabled = false; // Enable button
             searchButton.classList.remove('disabled');
+            searchButtonmobile.classList.remove('disabled');
         } else {
             searchButton.disabled = true; // Disable button
             searchButton.classList.add('disabled');
+            searchButtonmobile.classList.add('disabled');
+
         }
     }
 
