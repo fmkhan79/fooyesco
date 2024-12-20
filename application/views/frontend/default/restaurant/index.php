@@ -145,6 +145,9 @@
                         <h3>
                             <?php echo $restaurant_details['name']; ?>
                         </h3>
+                        <?php if ($restaurant_details["address"]) { ?>
+                                    <div><?php echo $restaurant_details["address"]; ?> - <span class="red">Get directions</span></div>
+                                <?php } ?>
                     </div>
                 </div>
 
@@ -160,9 +163,7 @@
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#restaurantAccordion1">
                             <div class="accordion-body">
                                 <!-- Restaurant Address and Directions -->
-                                <?php if ($restaurant_details["address"]) { ?>
-                                    <div><?php echo $restaurant_details["address"]; ?> - <span class="red">Get directions</span></div>
-                                <?php } ?>
+                              
 
                                 <!-- Cuisines Section -->
                                 <div class="red big-txt">

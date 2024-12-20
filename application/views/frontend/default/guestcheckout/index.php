@@ -26,6 +26,23 @@ $stripe_settings = json_decode($stripe_settings);
 
     }
 
+    @media (max-width: 768px) {
+  .detail-wbox {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+  }
+
+ .payment-text{
+    font-size: medium;
+
+  }
+  .delivery-text{
+    font-size: large;
+  }
+
+}
+
     /* .order-delivery-types{
     display:none;
 } */
@@ -34,7 +51,7 @@ $stripe_settings = json_decode($stripe_settings);
     <div class="container bg-white text-dark border border-light p-5 w-75">
         <ul class="d-flex justify-content-between align-item-center billing-list-topbar p-0">
             <li class="billing acitve">
-                <div class="img-box text-center red">Customer Details <img class="billing-active"
+                <div class="img-box text-center red">Customer <img class="billing-active"
                         src="<?php echo base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
                     <img class="billing-notactive"
                         src="<?php echo base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
@@ -48,7 +65,7 @@ $stripe_settings = json_decode($stripe_settings);
                 </div>
             </li>
             <li class="order last">
-                <div class="img-box text-center">Payment & Order
+                <div class="img-box text-center">Payment
                     <img class="billing-active"
                         src="<?php echo base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
                     <img class="billing-notactive"
@@ -204,11 +221,11 @@ $stripe_settings = json_decode($stripe_settings);
                                 <div class="row">
 
                                     <div class="col-md-6 payment-gateways">
-                                        <h4><span class="order_type">Delivery</span> Address</h4>
+                                        <h4 class="delivery-text"><span class="order_type">Delivery</span> Address</h4>
                                         <span id="show-address"></span>
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <h4>Choose Payment Method To Proceed</h4>
+                                        <h4 class="payment-text">Choose Payment Method To Proceed</h4>
 
 
                                         <!-- ORDER DELIVERY TYPE -->
