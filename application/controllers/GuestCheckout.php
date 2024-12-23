@@ -97,7 +97,7 @@ class GuestCheckout extends Base
 
         $data["email"] = $_POST["email"]; 
         $data["name"] = $_POST["first_name"]." ".$_POST["last_name"];  
-        $data["is_guest"]  = 1;
+        // $data["is_guest"]  = 1;
         
         $this->customer_model->update_guest_user($data);
         

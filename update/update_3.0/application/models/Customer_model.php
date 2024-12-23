@@ -97,11 +97,13 @@ class Customer_model extends Base_model
             $data['phone'] = required(sanitize($this->input->post('phone')));
             $data['role_id'] = 2; // 2 for Customer
             $data['status'] = 1;
+            // $data['is_guest'] = 1;
             $data['created_at'] = strtotime(date('d-m-y'));
             // UPLOAD THUMBNAIL
             $data['thumbnail']  = $this->upload('user', $_FILES['image']);
             $this->db->insert('users', $data);
-
+            // print_r($data);
+            // die();
             $customer_data = $this->update_customer_address();
             $customer_data['user_id'] = $this->db->insert_id();
             $this->db->insert('customers', $customer_data);

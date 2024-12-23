@@ -135,6 +135,7 @@ class Customer_model extends Base_model
         $data['password'] = sha1("123");
         $data['role_id'] = 2; // 2 for Customer
         $data['status'] = 1;
+        $data['is_guest'] = 1;
         $data['created_at'] = strtotime(date('d-m-y'));
         $this->db->insert('users', $data);
 

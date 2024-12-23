@@ -122,7 +122,7 @@
                 </div>
 
                 <div class="order-about">
-                    <h3><strong>About "
+                    <h3><strong>About"
                             <?php echo $restaurant_details['name']; ?>"
                         </strong></h3>
                     <?php echo $restaurant_details['restaurant_about']; ?>. <a class="red" href="#"> READ MORE</a>
@@ -459,10 +459,19 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <!-- Customer Checkout Logic -->
                     <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
 
-                    <?php if ($customer_details['is_complete'] == 0) : ?>
+                    <?php if ($customer_details['is_guest'] == 0 && $customer_details['name']) : ?>
                         <div class="button-container d-flex justify-content-between mt-2">
                             <!-- Login Button -->
-                            <button id="mobile-only" class="order-red-btn text-center mt-4 border-0 w-50" onclick="window.location.href='<?php echo site_url('auth'); ?>'">
+                            <button class="order-red-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtnmobile" style="cursor: pointer;" disabled>
+                            <?php echo site_phrase('checkout', true); ?>
+                        </button>
+                        
+                        </div>
+                    
+                        <?php else : ?>
+
+
+                        <button id="mobile-only" class="order-red-btn text-center mt-4 border-0 w-50" onclick="window.location.href='<?php echo site_url('auth'); ?>'">
                                 Login
                             </button>
 
@@ -470,12 +479,9 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             <a href="<?php echo site_url('GuestCheckout'); ?>" class="order-red-btn text-center mt-4 disabled border-0" id="guestCheckoutBtnmobile">
                                 Guest Checkout
                             </a>
-                        </div>
-                    <?php else : ?>
+                      
                         <!-- Checkout Button (Disabled if not complete) -->
-                        <button class="order-red-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtnmobile" style="cursor: pointer;" disabled>
-                            <?php echo site_phrase('checkout', true); ?>
-                        </button>
+                     
                     <?php endif; ?>
                 </div>
             </div>
@@ -821,10 +827,17 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
 
                     <div class="row mt-2 d-flex flex-column">
+                        
+                    <?php if ($customer_details['is_guest'] == 0 && $customer_details['name']) : ?>
 
-                        <?php if ($customer_details['is_complete'] == 0) : ?>
-
-
+                        <a href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn-main text-center mt-4 w-100 border-0 disabled" id="CheckoutBtn" style="cursor: pointer;" role="button">
+                                <?php echo site_phrase('checkout', true); ?>
+                            </a>
+                           
+                      
+                           
+                        <?php else : ?>
+                            
                             <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn-main text-center mt-4 border-0">
                                 <?php echo site_phrase('login_first', true); ?>
                             </a>
@@ -835,10 +848,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn" class="d-block order-red-btn-main text-center mt-4 disabled">
                                 Guest Checkout
                             </a>
-                        <?php else : ?>
-                            <a href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn-main text-center mt-4 w-100 border-0 disabled" id="CheckoutBtn" style="cursor: pointer;" role="button">
-                                <?php echo site_phrase('checkout', true); ?>
-                            </a>
+                       
                         <?php endif; ?>
 
 
