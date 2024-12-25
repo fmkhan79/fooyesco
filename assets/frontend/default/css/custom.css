@@ -1774,6 +1774,9 @@ footer ul.footer-links li {
   .order-detail-box-txt .price {
     font-size: 12px;
   }
+  /* div.container-fluid.fixed {
+    background: #ffffff;
+} */
 }
 
 @media (max-width: 768px) {

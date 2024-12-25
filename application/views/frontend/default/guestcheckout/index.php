@@ -27,21 +27,22 @@ $stripe_settings = json_decode($stripe_settings);
     }
 
     @media (max-width: 768px) {
-  .detail-wbox {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    padding: 0 !important;
-  }
+        .detail-wbox {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            padding: 0 !important;
+        }
 
- .payment-text{
-    font-size: medium;
+        .payment-text {
+            font-size: medium;
 
-  }
-  .delivery-text{
-    font-size: large;
-  }
+        }
 
-}
+        .delivery-text {
+            font-size: large;
+        }
+
+    }
 
     /* .order-delivery-types{
     display:none;
@@ -90,13 +91,13 @@ $stripe_settings = json_decode($stripe_settings);
                     </div>
                 </div>
                 <div class="form-row">
-                <div class="form-group col-md-6">
-    <label for="inputAddress">Mobile *</label>
-    <input type="tel" class="form-control" name="phone_mobile" id="mobile" required
-        placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$" value=""
-        title="Please enter a valid mobile number starting with +447 or 07 followed by 9 digits">
-    <small>Format: +44 7123 456 789 or 07123 456 789</small><br>
-</div>
+                    <div class="form-group col-md-6">
+                        <label for="inputAddress">Mobile *</label>
+                        <input type="tel" class="form-control" name="phone_mobile" id="mobile" required
+                            placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$" value=""
+                            title="Please enter a valid mobile number starting with +447 or 07 followed by 9 digits">
+                        <small>Format: +44 7123 456 789 or 07123 456 789</small><br>
+                    </div>
 
 
                     <div class="form-group col-md-6">
@@ -150,17 +151,17 @@ $stripe_settings = json_decode($stripe_settings);
                         <label for="inputEmail4">Street Name*</label>
                         <input type="text" class="form-control" id="street-value" name="zip_code" placeholder="Street Number" required>
                     </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputAddress">City</label>
-                            <input type="text" name="city" class="form-control" id="city" placeholder="City">
-                        </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputAddress">City</label>
+                        <input type="text" name="city" class="form-control" id="city" placeholder="City">
+                    </div>
 
-                        <!-- <div class="form-group col-md-6">
+                    <!-- <div class="form-group col-md-6">
                 <label for="inputPassword4">Country</label>
                 <input type="text" name="country" class="form-control" placeholder="Country" value="London" disabled>
             </div> -->
 
-                    </div>
+                </div>
 
                 <div class="form-row">
 
