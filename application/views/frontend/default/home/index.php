@@ -51,9 +51,9 @@
                                         <div class="mb-5">
                                         <button class="btn btn-danger banner-btn disabled" id="search-btn"
                                             href="<?php echo site_url('site/restaurants/filter'); ?>">
-                                            Find now
+                                            Order now
                                         </button>
-                                        <a class="btn btn-danger banner-btn"
+                                        <a class="btn btn-danger banner-btn p-2"
                                 href="<?php echo site_url('site/how_to_order'); ?>">
                                 How to order
                             </a>

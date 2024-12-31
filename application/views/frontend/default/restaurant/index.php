@@ -21,12 +21,47 @@
     #mobile-only {
         display: block;
     } */
+
+    .scroll-to-order-btn {
+    position: fixed; /* Fix button to the screen */
+    bottom: 20px; /* Position from the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Ensure it's centered */
+    z-index: 1000; /* Ensure it's on top of other content */
+    background-color: #ff4d4d; /* Button background color */
+    color: white;
+    padding: 10px 20px; /* Button padding */
+    border-radius: 8px; /* Rounded corners */
+    display: none; /* Initially hide the button */
+    cursor: pointer; /* Pointer on hover */
+}
+
+    #myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #ed2c0d;
+  color: white;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+#myBtn:hover {
+  background-color: #555;
+}
 </style>
 <!-- RESTAURANT GALLERY -->
 
 
 
 <section class="detail-wbox mt-4 d-none d-md-block">
+
     <div class="container bg-white text-dark border border-light">
         <div class="row">
             <div class="col-md-8">
@@ -137,6 +172,8 @@
 
 <!-- RESTAURANT TITLE HEADER -->
 <section class="detail-wbox mt-4 d-md-none">
+<button onclick="topFunction()" id="myBtn" title="Go to top">&#8593;</button>
+
     <div class="container bg-white text-dark border border-light">
         <div class="row">
             <div class="col-md-8">
@@ -301,13 +338,17 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
         <!-- Accordion Item for Show My Cart -->
         <div class="accordion-item d-md-none">
             <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button order-red-btn text-center mt-4 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <button class="accordion-button order-red-btn text-center mt-4 border-0 w-100 collapsed" type="button"  id="viewOrderButton" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                     <h5>View My Order</h5>
                 </button>
             </h2>
 
+            <button id="scrollToOrderButton" class="scroll-to-order-btn" style="display: none;">
+    View My Order
+</button>
+
             <!-- Collapsible Content -->
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
 
                     <!-- Order Summary Section (only visible on mobile) -->
@@ -922,5 +963,54 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
             }
         });
     });
+
+let mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
+
+const scrollToOrderButton = document.getElementById('scrollToOrderButton');
+const viewOrderButton = document.getElementById('viewOrderButton');
+
+// Function to toggle the visibility of the button based on scroll position
+window.addEventListener('scroll', function() {
+    if (window.scrollY > 20) {
+        // Show the button after scrolling 20px down
+        scrollToOrderButton.style.display = 'block';
+    } else {
+        // Hide the button if the scroll is less than 20px
+        scrollToOrderButton.style.display = 'none';
+    }
+});
+
+// Scroll to the "View My Order" button when clicked
+scrollToOrderButton.addEventListener('click', function() {
+    viewOrderButton.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+    });
+    
+
+    
+    viewOrderButton.click();
+
+});
+
 </script>
+
 <!-- ./Mobile app section -->
