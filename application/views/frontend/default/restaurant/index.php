@@ -172,7 +172,7 @@
 
 <!-- RESTAURANT TITLE HEADER -->
 <section class="detail-wbox mt-4 d-md-none">
-<button onclick="topFunction()" id="myBtn" title="Go to top">&#8593;</button>
+<button onclick="topFunction()" class="mr-2 mb-1" id="myBtn" title="Go to top">&#8593;</button>
 
     <div class="container bg-white text-dark border border-light">
         <div class="row">
@@ -306,7 +306,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <?php echo !is_null($description) ? $description : 'Be there, we will have an amazing offer.'; ?>
                 </p>
             </div>
-            <div class="col-md-3 text-center"><a <?php if (!empty($ctaLink)) {
+            <div id="viewOrderButton" class="col-md-3 text-center"><a <?php if (!empty($ctaLink)) {
                                                         echo 'href="' . $ctaLink . '"';
                                                     } ?> class="w-rounded-btn">More
                     Offers</a></div>
@@ -338,12 +338,12 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
         <!-- Accordion Item for Show My Cart -->
         <div class="accordion-item d-md-none">
             <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button order-red-btn text-center mt-4 border-0 w-100 collapsed" type="button"  id="viewOrderButton" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <button class="accordion-button order-red-btn text-center mt-4 border-0 w-100 collapsed" type="button"   data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                     <h5>View My Order</h5>
                 </button>
             </h2>
 
-            <button id="scrollToOrderButton" class="scroll-to-order-btn" style="display: none;">
+            <button id="scrollToOrderButton" class="scroll-to-order-btn border-0 fw-bold" style="display: none; border-radius:38px;">
     View My Order
 </button>
 
@@ -989,7 +989,7 @@ const viewOrderButton = document.getElementById('viewOrderButton');
 
 // Function to toggle the visibility of the button based on scroll position
 window.addEventListener('scroll', function() {
-    if (window.scrollY > 20) {
+    if (window.scrollY > 1300) {
         // Show the button after scrolling 20px down
         scrollToOrderButton.style.display = 'block';
     } else {
