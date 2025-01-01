@@ -989,7 +989,7 @@ const viewOrderButton = document.getElementById('viewOrderButton');
 
 // Function to toggle the visibility of the button based on scroll position
 window.addEventListener('scroll', function() {
-    if (window.scrollY > 1300) {
+    if (window.scrollY > 0) {
         // Show the button after scrolling 20px down
         scrollToOrderButton.style.display = 'block';
     } else {
