@@ -37,7 +37,7 @@
 }
 
     #myBtn {
-  display: none;
+  /* display: none;
   position: fixed;
   bottom: 20px;
   right: 30px;
@@ -49,7 +49,20 @@
   color: white;
   cursor: pointer;
   padding: 5px 10px;
-  border-radius: 4px;
+  border-radius: 4px; */
+
+  display: none;
+  position: fixed; /* Fix button to the screen */
+    bottom: 20px; /* Position from the bottom */
+    right: 30px;
+    /* Ensure it's centered */
+    z-index: 99; /* Ensure it's on top of other content */
+    background-color: #ff4d4d; /* Button background color */
+    color: white;
+    padding: 10px 10px; /* Button padding */
+    border-radius: 8px; /* Rounded corners */
+    display: none; /* Initially hide the button */
+    cursor: pointer; /* Pointer on hover */
 }
 
 #myBtn:hover {
@@ -172,7 +185,7 @@
 
 <!-- RESTAURANT TITLE HEADER -->
 <section class="detail-wbox mt-4 d-md-none">
-<button onclick="topFunction()" class="mr-2 mb-1" id="myBtn" title="Go to top">&#8593;</button>
+<button onclick="topFunction()" class="border-0 fw-bold" id="myBtn" style="background-color: #ff4d4d; display: block; border-radius: 38px;" title="Go to top">Top</button>
 
     <div class="container bg-white text-dark border border-light">
         <div class="row">

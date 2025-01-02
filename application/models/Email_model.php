@@ -32,12 +32,12 @@ class Email_model extends Base_model
 $mail->isSMTP();
 $mail->Host       = 'mail.fooyes.co.uk'; // Your SMTP server
 $mail->SMTPAuth   = true;
-$mail->Username   = 'test@fooyes.co.uk'; // Your email username
-$mail->Password   = 'ih.Y.8QR?3at'; // Your email password
+$mail->Username   = 'no-reply@fooyes.co.uk'; // Your email username
+$mail->Password   = '^X{zK)uB%XrS'; // Your email password
 $mail->SMTPSecure = 'ssl'; // Use 'ssl' for SSL
 $mail->Port       = 465; // Use 465 for SSL
 
-$mail->setFrom('test@fooyes.co.uk', 'Fooyes'); // Your email and name
+$mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes'); // Your email and name
 
 		// Add a recipient
 		$mail->addAddress($to);
