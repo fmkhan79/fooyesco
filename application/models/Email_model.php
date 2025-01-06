@@ -17,7 +17,7 @@ class Email_model extends Base_model
 
 	function order_pacing($email_to = "", $email_message = "")
 	{
-		$email_sub = get_phrase("a_new_order_has_been_placed");
+		$email_sub = "Your Food Order Confirmation";
 		return $this->send_mail_using_php_mailer($email_message, $email_sub, $email_to);
 	}
 
