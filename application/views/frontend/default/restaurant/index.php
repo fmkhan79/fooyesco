@@ -352,6 +352,10 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                 <h5>View My Order</h5>
             </button>
         </h2>
+        <button id="scrollToOrderButton" class="scroll-to-order-btn border-0 fw-bold" style="display: none; border-radius:38px;">
+    View My Order
+</button>
+
         <div id="collapseOrder1" class="accordion-collapse collapse" aria-labelledby="headingOrder1" data-bs-parent="#accordionExample">
             <div class="accordion-body">
 
