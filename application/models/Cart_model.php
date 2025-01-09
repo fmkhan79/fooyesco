@@ -360,7 +360,7 @@ public function get_restaurants_by_ids($restaurant_ids) {
         $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
           $message .= get_phrase('your_order_has_been_placed_successfully') . '.<br/>';
         $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
-        $message .= get_phrase('please_track_down_your_order_status_from_the_order_details_page') . '.';
+        // $message .= get_phrase('please_track_down_your_order_status_from_the_order_details_page') . '.';
         $this->email_model->order_pacing($customer_details['email'], $message);
         // print_r($customer_details['email'] ."email");
         // SENDING MAIL TO ADMIN
@@ -368,7 +368,7 @@ public function get_restaurants_by_ids($restaurant_ids) {
         $message  = get_phrase('hello') . ' ' . $admin_details['name'] . ', <br/>';
         $message .= get_phrase('a_new_order_has_been_placed_by_the_customer_name') . ' <b>' . $customer_details['name'] . '</b>.<br/>';
         $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
-        $message .= get_phrase('please_check_the_order_as_soon_as_possible_and_process_the_order') . '.';
+        // $message .= get_phrase('please_check_the_order_as_soon_as_possible_and_process_the_order') . '.';
         $this->email_model->order_pacing($admin_details['email'], $message);
         // print_r($admin_details['email']. "admin");
 

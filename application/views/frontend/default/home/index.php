@@ -47,7 +47,7 @@
                                         class="btn-group1 banner-search" name="query" onchange="updateButtonState()" required>
                                     <input type="hidden" name="latitude_1" class="form-control" id="latitude_1">
                                     <input type="hidden" class="form-control" id="longitude_1" name="longitude_1">
-                                    <div class="slider-link-mobile text-left">
+                                    <div class="slider-link-mobile text-left" style="margin-left:45px">
                                         <div class="mb-5">
                                         <button class="btn btn-danger banner-btn disabled" id="search-btn"
                                             href="<?php echo site_url('site/restaurants/filter'); ?>">
