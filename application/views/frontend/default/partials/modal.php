@@ -64,10 +64,27 @@ function confirm_modal(delete_url) {
 }
 
 function confirm_modal_withoutPopup(delete_url) {
-    document.getElementById('update_link').setAttribute('href', delete_url);
-    document.getElementById('update_link').click();
-    window.location.reload();
+    // Create the request to the delete URL using AJAX
+    fetch(delete_url, {
+        method: 'DELETE', // or 'POST' depending on the type of request you need
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // If the request was successful, you can reload the page or update the UI accordingly
+            window.location.reload(); // Uncomment if you want to reload the page
+        } else {
+            alert('There was an error with the request.');
+        }
+    })
+    .catch(error => {
+        console.error('Error during the AJAX request:', error);
+        alert('Something went wrong. Please try again later.');
+    });
 }
+
 </script>
 
 <!-- (Large Modal)-->
