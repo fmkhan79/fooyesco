@@ -92,40 +92,30 @@ class Cart_model extends Base_model
     /**
      * ADDING TO CART METHOD
      */
-    function add_to_cart()
-    {
-
+    function add_to_cart() {
 
         // CHECK IF THE USER IS LOGGED IN, IF NOT THEN ASSIGN A RANDOM NUMBER AS USER ID
         if (!$this->logged_in_user_id || empty($this->logged_in_user_id)) {
-            // $this->session->set_userdata('user_id', rand(9999, 99999));
             $this->customer_model->insert_guest_customer(array());
-            // $user_id = $this->get_customer_id_from_user_id($user_id);
-            //Get session user_id 
-            // $data['customer_id'] = $this->customer_model->get_customer_id_from_user_id($this->session->userdata('user_id'));
             $data['customer_id'] = $this->session->userdata('user_id');
-            // echo "created";
             $this->logged_in_user_id = $data['customer_id'];
         } else {
-            // $data['customer_id'] = $this->customer_model->get_customer_id_from_user_id($this->logged_in_user_id);
             $data['customer_id'] = $this->logged_in_user_id;
         }
-        
-        // print_r($data['customer_id'] . "<br>");
-
+    
         $data['servings'] = "menu"; // STATIC VALUE
         $data['note'] = sanitize($this->input->post('note'));
         $data['menu_id'] = required(sanitize($this->input->post('menuId')));
         $data['options_1'] = $this->input->post('options_1');
         $data['options_2'] = $this->input->post('options_2');
         $totalprice = required(sanitize($this->input->post('totalprice')));
-
+    
         $data['quantity'] = sanitize($this->input->post('quantity')) > 0 ? sanitize($this->input->post('quantity')) : 1;
-
+    
         $menu_details = $this->menu_model->get_menu_by_condition(['id' => $data['menu_id'], 'availability' => 1]);
         $menu_details = $menu_details[0];
         $data['restaurant_id'] = $menu_details['restaurant_id'];
-
+    
         // CHECK MULTI RESTAURANT ORDER PERMISSION
         if (!get_order_settings('multi_restaurant_order')) {
             $get_current_items = $this->db->get_where($this->table, ['customer_id' => $data['customer_id']]);
@@ -137,48 +127,61 @@ class Cart_model extends Base_model
                 }
             }
         }
-
-        // if (!($menu_details['has_variant'])) {
-        //     $data['variant_id'] = sanitize($this->input->post('variantId'));
-        //     $variant_details = $this->db->get_where('variants', ['id' => $data['variant_id']]);
-        //     if ($variant_details->num_rows() > 0) {
-        //         $variant_details = $variant_details->row_array();
-        //         $price = $data['quantity'] * $variant_details['price'];
-        //         $data['price'] = $price;
-        //     }
-        // } else {
-        //     $price = $data['quantity'] * get_menu_price($data['menu_id']);
-        //     $data['price'] = $price;
-        // }
-
-        // if (isset($_POST['addons']) && !empty($_POST['addons'])) {
-        //     $total_addon_price = 0;
-        //     $selected_addons = explode(',', $this->input->post('addons'));
-        //     foreach ($selected_addons as $selected_addon) {
-        //         $selected_addon_details = $this->db->get_where('addons', ['id' => $selected_addon])->row_array();
-        //         $total_addon_price += $selected_addon_details['price'];
-        //     }
-
-        //     $data['addons'] = implode(",", $selected_addons);
-        //     $data['price'] = $data['price'] + $total_addon_price;
-        // }
-
-        $price = $data['quantity'] * $totalprice;
+    
+        // Calculate price based on whether the menu item has variants
+        if (!($menu_details['has_variant'])) {
+            $data['variant_id'] = sanitize($this->input->post('variantId'));
+            $variant_details = $this->db->get_where('variants', ['id' => $data['variant_id']]);
+            if ($variant_details->num_rows() > 0) {
+                $variant_details = $variant_details->row_array();
+                $price = $data['quantity'] * $variant_details['price'];
+                $data['price'] = $price;
+            }
+        } else {
+            $price = $data['quantity'] * get_menu_price($data['menu_id']);
             $data['price'] = $price;
-
-        //CHECK MENU ID VALIDITY
-
+        }
+    
+        // Add price for selected addons
+        if (isset($_POST['addons']) && !empty($_POST['addons'])) {
+            $total_addon_price = 0;
+            $selected_addons = explode(',', $this->input->post('addons'));
+            foreach ($selected_addons as $selected_addon) {
+                $selected_addon_details = $this->db->get_where('addons', ['id' => $selected_addon])->row_array();
+                $total_addon_price += $selected_addon_details['price'];
+            }
+    
+            $data['addons'] = implode(",", $selected_addons);
+            $data['price'] = $data['price'] + $total_addon_price;
+        }
+    
+        // Final price calculation
+        $price = $data['quantity'] * $totalprice;
+        $data['price'] = $price;
+    
+        // CHECK IF ITEM EXISTS IN THE CART
         $previous_data = $this->db->get_where($this->table, ['customer_id' => $data['customer_id'], 'menu_id' => $data['menu_id']]);
-        // if ($previous_data->num_rows() == 0 && count($menu_details) > 0) {
+    
+        // IF ITEM EXISTS, UPDATE QUANTITY AND PRICE
+        if ($previous_data->num_rows() > 0) {
+            $existing_item = $previous_data->row_array();
+            $new_quantity = $existing_item['quantity'] + $data['quantity']; // Update quantity by adding new one
+            $data['quantity'] = $new_quantity;
+    
+            // Recalculate the price based on new quantity
+            $data['price'] = $new_quantity * $totalprice;
+    
+            // Update the existing record
+            $this->db->where('id', $existing_item['id']);
+            $this->db->update($this->table, $data);
+        } else {
+            // If the item doesn't exist, insert a new record
             $this->db->insert($this->table, $data);
-        // } elseif ($previous_data->num_rows() > 0 && count($menu_details) > 0) {
-        //     $previous_data = $previous_data->row_array();
-        //     $this->db->where('id', $previous_data['id']);
-        //     $this->db->update($this->table, $data);
-        // }
+        }
+    
         return true;
     }
-
+    
     /**
      * UPDATE CART ITEM METHOD
      */

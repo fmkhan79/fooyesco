@@ -56,10 +56,13 @@
                                         <a class="btn btn-danger banner-btn p-2"
                                 href="<?php echo site_url('site/how_to_order'); ?>">
                                 How to order
+                            
                             </a>
                             </div>
+
                                     </div>
-                            </form>
+                            
+                                </form>
 
 
                             <!-- <div class="slider-link text-left">
@@ -67,7 +70,6 @@
                                     href="<?php echo site_url('site/restaurants/filter'); ?>">
                                     Order now
                                 </a> -->
-
 
                         </div>
                     </div>

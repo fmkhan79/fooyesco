@@ -50,9 +50,9 @@
 						<span class="focus-input100"></span>
 					</div>
 
-					<div class="wrap-input100 m-b-20">
+					<!-- <div class="wrap-input100 m-b-20">
 						<div class="g-recaptcha mb-2" data-sitekey="<?php echo get_system_settings('recaptcha_sitekey') ?>" required></div>
-					</div>
+					</div> -->
 
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn">

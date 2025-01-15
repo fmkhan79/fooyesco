@@ -178,11 +178,12 @@ class Cart extends Base
     // Delete method is responsible for storing data
     function delete($id)
     {
+        
         $response = $this->cart_model->delete($id);
+        // print_r($response);
+        // die();
         if ($response) {
             success(get_phrase('item_deleted_successfully'), site_url('cart'));
-            $delay = 0; // Where 0 is an example of a time delay. You can use 5 for 5 seconds, for example!
-header("Refresh: $delay;"); 
 
         } else {
             error(get_phrase('an_error_occurred'), site_url('cart'));

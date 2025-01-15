@@ -554,6 +554,8 @@
                 // Parse the JSON string into a JavaScript object
                 var data = JSON.parse(res);
 
+                // console.log(data)
+
                 // Access the 'sub_total' property and display its value
                 var subTotalValue = data.sub_total;
                 var totalDeliveryValue = data.total_delivery_charge;
