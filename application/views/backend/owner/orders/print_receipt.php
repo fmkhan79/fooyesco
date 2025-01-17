@@ -8,6 +8,7 @@
     <style>
         * {
             font-family: "sans-serif", sans-serif;
+            font-size: 23px;
         }
         .receipt {
             width: 270px;
@@ -109,7 +110,17 @@
                 <span><?php echo number_format(sanitize($order_details['total_delivery_charge']), 2); ?></span>
 
             </div>
-        <?php } ?>
+        <?php } else { ?>
+        
+        <div class="did mt-3">
+                <span style="font-size:20px">Delivery Charges</span>
+                <span style="font-size:17px">Free Delivery</span>
+
+            </div>
+
+   <?php } ?>
+
+
         <?php if($order_details['total_vat_amount'] != "") { ?>
             <div class="did mt-3">
                 <span>VAT Charges</span>
