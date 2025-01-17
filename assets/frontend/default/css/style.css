@@ -1319,6 +1319,9 @@ footer {
   color: #737882;
 }
 
+.nav-menu .fixed{
+  background: white !important;
+}
 .map-wrap {
   padding: 0;
 }

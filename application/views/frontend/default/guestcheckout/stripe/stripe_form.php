@@ -40,7 +40,7 @@ define('STRIPE_PUBLISHABLE_KEY', $public_key);
     var order_type = document.querySelectorAll('input[name="order_type"]')[0].value;
 
     function loadFetchedUrl() {
-        debugger;
+        // debugger;
         order_type = document.querySelectorAll('input[name="order_type"]')[0].value;
         // fetchedUrl = "<= site_url('GuestCheckout/pay_with_stripe' . $_GET['address_number'] . '/'); ?>" + order_type;
         if(order_type == "collection")

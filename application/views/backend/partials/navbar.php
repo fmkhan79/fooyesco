@@ -98,7 +98,7 @@
 <script>
     setInterval(function() {
         $.ajax({
-            url: 'orders/check_new_order/',
+        url: window.location.origin + '/fooyesco/orders/check_new_order/',  // Dynamically resolve the absolute URL
             method: 'GET',
             success: function(data) {
                 if (data.length > 0) {

@@ -348,15 +348,16 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
     <div class="accordion" id="accordionExample">
     <div class="accordion-item d-md-none">
         <h2 class="accordion-header" id="headingOrder1">
-            <button class="accordion-button order-red-btn text-center mt-4 border-0 w-100 collapsed d-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrder1" aria-expanded="true" aria-controls="collapseOrder1">
+            <button class="accordion-button order-red-btn text-center mt-4 border-0 w-100  d-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrder1" aria-expanded="true" aria-controls="collapseOrder1">
                 <h5>View My Order</h5>
             </button>
         </h2>
-        <button id="scrollToOrderButton" class="scroll-to-order-btn border-0 fw-bold" style="display: none; border-radius:38px;">
+        <button id="scrollToOrderButton" class="scroll-to-order-btn border-0 fw-bold" style="display: none; border-radius: 38px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrder1" aria-expanded="true" aria-controls="collapseOrder1">
+    <!-- Button content here, like text or icon -->
     View My Order
 </button>
 
-        <div id="collapseOrder1" class="accordion-collapse collapse show" aria-labelledby="headingOrder1" data-bs-parent="#accordionExample">
+        <div id="collapseOrder1" class="accordion-collapse collapse" aria-labelledby="headingOrder1" data-bs-parent="#accordionExample">
             <div class="accordion-body">
 
                     <!-- Order Summary Section (only visible on mobile) -->

@@ -70,6 +70,8 @@
         
         <?php  
         if($order_details['order_type'] != "pickup") {
+
+            // print_r($order_details['total_menu_price']);
         ?>
             <h3 style="margin-top:0px;"><?= $address["additional_address"] . ", " . $address["street"] ?></h3>
             <h3 style='margin:0px;'><?= $billing["phone_mobile"] ?></h3>
@@ -101,7 +103,7 @@
         <hr>
         <div class="did mt-3">
             <span>Subtotal</span>
-            <span><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></span>
+            <span><?php echo currency(number_format(sanitize($order_details['total_menu_price']), 2)); ?></span>
         </div>
         <hr>
         <?php if($order_details['total_delivery_charge'] != "") { ?>
@@ -123,7 +125,7 @@
 
         <?php if($order_details['total_vat_amount'] != "") { ?>
             <div class="did mt-3">
-                <span>VAT Charges</span>
+                <span>VAT Charges</span> 
                 <span><?php echo currency(number_format(sanitize($order_details['total_vat_amount']), 2)); ?></span>
 
             </div>
