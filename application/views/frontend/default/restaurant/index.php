@@ -760,7 +760,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                         <div class="total-delivery-price"></div>
                     </div>
 
-                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                    <div class="total-price-box d-none justify-content-between align-items-center">
                         <div class="subtotal">VAT Charges</div>
                         <div class="total-vat-price"></div>
                     </div>

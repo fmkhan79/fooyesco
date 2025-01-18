@@ -51,6 +51,9 @@
     <?php
     // print_r($order_details); 
     $address = json_decode($order_details["address"],true); 
+
+    // print_r($address);
+
     $billing = json_decode($order_details["billing"],true); 
 
     // print_r($ordered_items);
@@ -123,13 +126,13 @@
    <?php } ?>
 
 
-        <?php if($order_details['total_vat_amount'] != "") { ?>
+        <!-- <?php if($order_details['total_vat_amount'] != "") { ?>
             <div class="did mt-3">
                 <span>VAT Charges</span> 
                 <span><?php echo currency(number_format(sanitize($order_details['total_vat_amount']), 2)); ?></span>
 
             </div>
-        <?php } ?>
+        <?php } ?> -->
         <div class="did mt-3">
             <span>Service Charges</span>
             <span><?php echo currency(0.25); ?></span>
@@ -144,22 +147,17 @@
             <!-- <h4>Total Items: <?php echo $total_items; ?> </h4> Display total items -->
             <h4>Order Time: <?php echo date("H:i:s", $order_details['order_placed_at']); ?> </h4> <!-- Display order time -->
         </div>
-        <hr>
+        <hr>    
+
+      
 
         <div class="did mt-3">
             <div class="order-detail-restaurant-name">
                 <?php echo get_phrase('restaurant') . ': ' . sanitize($restaurant_details['name']); ?>
             </div>
         </div>
-
-        <?php if (!empty($ordered_item['note'])) : ?>
-            <div class="row mt-2">
-                <div class="col note">
-                    <span class="text-danger"><?php echo get_phrase('note'); ?> :</span> <?php echo sanitize($ordered_item['note']); ?>
-                </div>
-            </div>
-        <?php endif; ?>
-
+        
+       
         <?php 
         echo "<hr>";
         echo "<center>";
@@ -180,6 +178,14 @@
         echo "</center>";
         echo "<hr>";
         ?>
+          <?php if (!empty($address['number'])) : ?>
+            <div class="row mt-2">
+                <div class="col note" style="font-size: 18px;">
+                    <span class="text-danger">Note:</span> <?php echo sanitize($address['number']); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
 
     <script>
         window.print();
