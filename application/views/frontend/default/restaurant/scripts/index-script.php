@@ -357,6 +357,7 @@
     // CART OPERATIONS
     function addToCart() {
 
+        // debugger;
         var menuId = $('#menu-id').val();
 
         var variant = $('#variant').val();
@@ -365,7 +366,7 @@
 
         var totalprice = $('#totalprice').val();
         console.log("Totalprice:", totalprice);
-        var variantId = $('#variant-id').val();
+        var variantId = $('#variant').val();
         var addons = $('#addons').val();
         var note = $('#note').val();
 

@@ -45,8 +45,7 @@ class Cart_model extends Base_model
         $menu_details = $menu_details[0];
         $data['restaurant_id'] = $menu_details['restaurant_id'];
 
-
-
+      
 
         if (!($menu_details['has_variant'])) {
             return "has_variant";
@@ -137,6 +136,7 @@ class Cart_model extends Base_model
                 }
             }
         }
+<<<<<<< Updated upstream
 
         // if (!($menu_details['has_variant'])) {
         //     $data['variant_id'] = sanitize($this->input->post('variantId'));
@@ -163,6 +163,48 @@ class Cart_model extends Base_model
         //     $data['price'] = $data['price'] + $total_addon_price;
         // }
 
+=======
+        // print_r($menu_details);
+        // die();
+        // Calculate price based on whether the menu item has variants
+        if ($menu_details['has_variant'] == 1) {
+            // print_r("after");
+            // print_r($menu_details);
+            // die();
+            // print_r($this->input->post('variant'));
+            $data['variant_id'] = sanitize($this->input->post('variantId'));
+            // print_r($data['variant_id']);
+           
+            $variant_details = $this->db->get_where('variants', ['id' => $data['variant_id']]);
+            if ($variant_details->num_rows() > 0) {
+                $variant_details = $variant_details->row_array();
+                $price = $data['quantity'] * $variant_details['price'];
+                $data['price'] = $price;
+            }
+        } else {
+            $price = $data['quantity'] * get_menu_price($data['menu_id']);
+            $data['price'] = $price;
+        }
+
+        // print_r($data['variant_id']);
+        // print_r($data . "hello");
+        
+    
+        // Add price for selected addons
+        if (isset($_POST['addons']) && !empty($_POST['addons'])) {
+            $total_addon_price = 0;
+            $selected_addons = explode(',', $this->input->post('addons'));
+            foreach ($selected_addons as $selected_addon) {
+                $selected_addon_details = $this->db->get_where('addons', ['id' => $selected_addon])->row_array();
+                $total_addon_price += $selected_addon_details['price'];
+            }
+    
+            $data['addons'] = implode(",", $selected_addons);
+            $data['price'] = $data['price'] + $total_addon_price;
+        }
+    
+        // Final price calculation
+>>>>>>> Stashed changes
         $price = $data['quantity'] * $totalprice;
             $data['price'] = $price;
 

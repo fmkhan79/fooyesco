@@ -98,7 +98,11 @@
 <script>
     setInterval(function() {
         $.ajax({
+<<<<<<< Updated upstream
             url: 'orders/check_new_order/',
+=======
+        url: window.location.origin + '/fooyesco/orders/check_new_order/',  // Dynamically resolve the absolute URL
+>>>>>>> Stashed changes
             method: 'GET',
             success: function(data) {
                 if (data.length > 0) {

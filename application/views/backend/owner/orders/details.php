@@ -262,15 +262,21 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                                             </div>
                                         </div>
                                         <div class="col-md-3 variant-and-addons-area">
+                                            
                                             <strong class="d-block"><?php echo get_phrase('variant_details'); ?></strong>
                                             <?php if (!empty($ordered_item['variant_id'])) : ?>
                                                 <?php
+                                                // print_r($ordered_item['variant_id']);
                                                 $menu_variant = $this->db->get_where('variants', ['id' => $ordered_item['variant_id']])->row_array();
+                                                print_r($menu_variant);
                                                 $menu_variant_exploded = explode(',', $menu_variant['variant']);
                                                 foreach ($menu_variant_exploded as $menu_variant_with_option_id) {
+                                                    // print_r("ali jee1" . $menu_variant_with_option_id);
+
                                                     $menu_variant_with_option_id_exploded = explode('-', $menu_variant_with_option_id);
                                                     $menu_variant_option_id = $menu_variant_with_option_id_exploded[0];
                                                     $menu_variant_option = $this->db->get_where('variant_options', ['id' => $menu_variant_option_id])->row_array();
+                                                    print_r("ali jee" . $menu_variant_option);
                                                     echo sanitize($menu_variant_option['name']) . ' : ' . ucfirst(sanitize($menu_variant_with_option_id_exploded[1])) . '<br/> ';
                                                 }
                                                 ?>
