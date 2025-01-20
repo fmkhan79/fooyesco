@@ -452,7 +452,7 @@ public function get_restaurants_by_ids($restaurant_ids) {
         $total_menu_price = $this->get_total_menu_price();
         $vat_percentage = get_delivery_settings('vat');
         $total_vat = ($total_menu_price * $vat_percentage) / 100;
-        return ceil($total_vat);
+        return ceil($total_vat) * 0;
     }
 
     /**
