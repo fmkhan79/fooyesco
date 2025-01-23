@@ -361,7 +361,7 @@ letter-spacing: 0.16px;
         margin: 10px auto -20px;}
 .featured-responsive-card a.btn:hover{ background: #191919; color: #fff;}
 
-.multi-service-box{ background: url(images/multi-services-bg.png) no-repeat top left;color:#191919;
+.multi-service-box{ background: no-repeat top left;color:#191919;
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
