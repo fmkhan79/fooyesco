@@ -97,7 +97,7 @@
 
 <script>
    // Check if the URL contains "/fooyesco/orders"
-   var urlss = window.location.href.includes('/fooyesco/orders')
+   var urlss = window.location.href.includes('/fooyesco/orders/today')
         ? '/check_new_order/' // If already in orders, use a relative path
         : '/orders/check_new_order/'; // Otherwise, use the full path
         // 
