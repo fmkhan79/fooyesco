@@ -97,15 +97,17 @@
 
 <script>
    // Check if the URL contains "/fooyesco/orders"
-   var urlss = window.location.href.includes('/fooyesco/orders/today')
-        ? '/check_new_order/' // If already in orders, use a relative path
-        : '/orders/check_new_order/'; // Otherwise, use the full path
-        // 
+  //  var urlss = window.location.href.includes('/fooyesco/orders/today')
+
+  //       ? '/check_new_order/' // If already in orders, use a relative path
+  //       : '/orders/check_new_order/'; // Otherwise, use the full path
+  //       // 
             setInterval(function() {
+              console.log(window.location.href);
         $.ajax({
           
-          url: urlss,
-
+          
+          url: '/dashboard/check_new_order/';
         // url: window.location.origin + '/orders/check_new_order/',  // Dynamically resolve the absolute URL
             method: 'GET',
             success: function(data) {
@@ -155,7 +157,7 @@
 
     function updateOrderReadStatus(orderId, code) {
         $.ajax({
-            url: 'orders/mark_order_as_read/',
+            url: 'dashboard/mark_order_as_read/',
             method: 'POST',
             data: { order_id: orderId },
             success: function(response) {
