@@ -255,7 +255,7 @@
 .svg-devider-box{ margin: 15px 0 20px;}
 .main-banner .text-danger{color:#F54748!important;}
 .main-banner h1 .text-warning{color:#FDC55E!important; position: relative;}
-.main-banner h1 .text-warning::after{content: ""; position: absolute; background: url(../images/delivery-bg.png)no-repeat; width: 257px; height: 9px; left: 10px; bottom: -10px;}
+.main-banner h1 .text-warning::after{content: ""; position: absolute; background: no-repeat; width: 257px; height: 9px; left: 10px; bottom: -10px;}
 .has-search {
     position: absolute;
     z-index: 2;
