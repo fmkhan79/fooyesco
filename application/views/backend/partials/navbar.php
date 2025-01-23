@@ -96,10 +96,15 @@
 
 
 <script>
-    setInterval(function() {
+   // Check if the URL contains "/fooyesco/orders"
+   var urlss = window.location.href.includes('/fooyesco/orders')
+        ? '/check_new_order/' // If already in orders, use a relative path
+        : '/orders/check_new_order/'; // Otherwise, use the full path
+        // 
+            setInterval(function() {
         $.ajax({
           
-          url: '/orders/check_new_order/',
+          url: urlss,
 
         // url: window.location.origin + '/orders/check_new_order/',  // Dynamically resolve the absolute URL
             method: 'GET',
