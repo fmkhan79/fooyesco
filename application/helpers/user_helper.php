@@ -35,6 +35,8 @@ if (!function_exists('get_user_role')) {
 if (!function_exists('email_duplication')) {
 	function email_duplication($email = "", $user_id = "")
 	{
+
+		// print_r($email);
 		$CI	= &get_instance();
 		$CI->load->database();
 
@@ -42,15 +44,18 @@ if (!function_exists('email_duplication')) {
 		if (!empty($user_id)) {
 			$query_result = $query->row_array();
 			if ($query->num_rows() == 0 || $query_result['id'] == $user_id) {
+				// print_r("hey");
+
 				return true;
 			} else {
+				// print_r("error_message");
 				$CI->session->set_flashdata('error_message', get_phrase('duplicate_email'));
-				redirect($_SERVER['HTTP_REFERER'], 'refresh');
+				// redirect($_SERVER['HTTP_REFERER'], 'refresh');
 			}
 		} else {
 			if ($query->num_rows() > 0) {
 				$CI->session->set_flashdata('error_message', get_phrase('duplicate_email'));
-				redirect($_SERVER['HTTP_REFERER'], 'refresh');
+				// redirect($_SERVER['HTTP_REFERER'], 'refresh');
 			} else {
 				return true;
 			}

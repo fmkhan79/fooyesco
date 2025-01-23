@@ -52,7 +52,9 @@ class Auth_model extends CI_Model
      */
     public function registration()
     {
+        
         $role = required(sanitize($this->input->post('role')));
+        // print_r($role);
         if ($role == "customer" || $role == "owner" || $role == "driver") {
             $user_data['name'] = required(sanitize($this->input->post('name')));
             $user_data['email'] = required(sanitize($this->input->post('email')));
@@ -64,8 +66,12 @@ class Auth_model extends CI_Model
             $user_data['role_id'] = $role_details['id'];
             $user_data['created_at'] = strtotime(date('D, d-M-Y'));
 
+          
             if (email_duplication($user_data['email'])) {
+                // print_r($user_data['email']);
+                // die();
                 if ($role == "driver") {
+
                     $user_data['status'] = 0;
                     $this->db->insert('users', $user_data);
                     $user_id = $this->db->insert_id();
@@ -73,6 +79,7 @@ class Auth_model extends CI_Model
                     $this->db->insert('drivers', $driver_data);
                     success(get_phrase('your_registration_has_been_done') . '. ' . get_phrase('please_wait_till_admin_approves_your_registration'), site_url('login'));
                 } else {
+                    
                     $user_data['status'] = 1;
                     $this->db->insert('users', $user_data);
                     $user_id = $this->db->insert_id();
@@ -81,10 +88,14 @@ class Auth_model extends CI_Model
                     $this->auto_login('customer', $user_id);
                 }
             } else {
-                error(get_phrase("email_duplication"), site_url('auth/roles'));
+        $this->session->set_flashdata('error_message', get_phrase('This email is already registered. Please try another.'));
+
+                error(get_phrase('This email is already registered. Please try another.'), site_url('auth/registration/customer'));
             }
         } else {
-            error(get_phrase("invalid_user_role"), site_url('auth/roles'));
+                    $this->session->set_flashdata('error_message', get_phrase('This email is already registered. Please try another.'));
+
+            error(get_phrase('This email is already registered. Please try another.'), site_url('auth/roles'));
         }
     }
 

@@ -18,17 +18,27 @@
 </head>
 
 <body>
+
+
 	<div class="container-login100">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-80 p-b-30">
 			<div class="text-center">
 				<img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>" class="auth-logo" alt="">
 			</div>
+			
+			<?php if ($this->session->flashdata('error_message')): ?>
+    <div class="alert alert-danger">
+        <?= $this->session->flashdata('error_message'); ?>
+    </div>
+<?php endif; ?>
 			<?php if ($role == "customer" || $role == "owner" || $role == "driver") : ?>
 				<form action="<?php echo site_url('auth/register'); ?>" method="POST" class="login100-form">
+					
 					<span class="login100-form-title p-b-37">
 						<?php echo get_phrase('register_as') . ' ' . ucfirst(sanitize($role)); ?>
 					</span>
 
+	
 					<input type="hidden" name="role" value="<?php echo sanitize($role); ?>">
 					<div class="wrap-input100 m-b-20">
 						<input class="input100" type="text" name="name" placeholder="<?php echo get_phrase('enter_your_name'); ?>" required>
@@ -67,8 +77,8 @@
 							</a>
 						</span>
 						<span class="txt1">
-							<a href="<?php echo site_url(); ?>" class="txt2 hov1">
-								<?php echo get_phrase('get_back_to_the_homepage'); ?>
+							<a href="<?php echo site_url('cart'); ?>" class="txt2 hov1">
+								<?php echo get_phrase('Go to the cart page'); ?>
 							</a>
 						</span>
 					</div>
@@ -86,7 +96,7 @@
 					</span>
 					<span class="txt1">
 						<a href="<?php echo site_url(); ?>" class="txt2 hov1">
-							<?php echo get_phrase('get_back_to_the_homepage'); ?>
+							<?php echo get_phrase('Go to cart page'); ?>
 						</a>
 					</span>
 				</div>

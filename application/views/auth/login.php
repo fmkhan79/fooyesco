@@ -55,7 +55,7 @@
 					</span>
 					<span class="txt1">
 						<a href="<?php echo site_url(); ?>" class="txt2 hov1">
-							<?php echo get_phrase('get_back_to_the_homepage'); ?>
+							<?php echo get_phrase('go to cart page'); ?>
 						</a>
 					</span>
 				</div>

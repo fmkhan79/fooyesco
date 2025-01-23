@@ -25,6 +25,8 @@
             <span class="login100-form-title p-b-37">
                 <?php echo site_phrase('what_are_you', true); ?>
             </span>
+          
+
             <div class="row">
                 <div class="col-sm-6 mb-2">
                     <div class="button-images">

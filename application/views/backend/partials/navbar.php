@@ -99,7 +99,7 @@
     setInterval(function() {
         $.ajax({
           
-          url: 'orders/check_new_order/',
+          url: '/orders/check_new_order/',
 
         // url: window.location.origin + '/orders/check_new_order/',  // Dynamically resolve the absolute URL
             method: 'GET',
