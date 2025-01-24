@@ -435,10 +435,7 @@ class Restaurant_model extends Base_model
             }
         }
     
-        // Print filtered restaurant IDs for debugging
-        print_r("Filtered Restaurant IDs: ");
-        print_r($filtered_restaurant_ids);
-    
+
         // Return the filtered restaurant IDs within range
         return $filtered_restaurant_ids;
     }

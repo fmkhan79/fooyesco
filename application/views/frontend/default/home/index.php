@@ -93,16 +93,30 @@
                                         <circle cx="21" cy="21" r="21" fill="#FDC55E"></circle>
                                     </svg>
                                     <span class="icon-magnifier search-icon"></span>
-                                </button>
+                                </button> 
                             </div>
-                        </form>
 
 
                         <div class="slider-link text-left">
-                            <a class="btn btn-danger banner-btn mb-2"
-                                href="<?php echo site_url('site/restaurants/filter'); ?>">
-                                Order now
-                            </a>
+                            <button type="submit" class="btn btn-danger banner-btn" style="
+                            color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%;
+    letter-spacing: 0.16px;
+    border-radius: 41px;
+    padding: 16px;
+    vertical-align: sub;
+    margin-right: 17px;
+        background: #F54748 !important;
+    border-color: #F54748 !important;
+
+                            " id="searchwc">
+                               
+                            Order Now
+
+                                    </button>
 
                             <!-- <button class="btn btn-danger banner-btn mb-2">
                                     
@@ -110,6 +124,8 @@
                                 </button> -->
 
                             <!-- <span>Or</span>  -->
+                            </form>
+
                             <a class="btn btn-danger banner-btn"
                                 href="<?php echo site_url('site/how_to_order'); ?>">
                                 How to order

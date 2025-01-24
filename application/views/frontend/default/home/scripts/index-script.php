@@ -121,11 +121,11 @@
                 document.getElementById('longitude_sc').value = place.geometry.location.lng();
 
                 // Update button state for screen
-                updateButtonStatesc(inputScreen, 'latitude_sc', 'longitude_sc', 'searchsc');
+                updateButtonStatesc(inputScreen, 'latitude_sc', 'longitude_sc', 'searchsc' ,'searchwc');
             });
 
             // Listen for manual address changes on screen input to update button state
-            inputScreen.addEventListener('input', () => updateButtonStatesc(inputScreen, 'latitude_sc', 'longitude_sc', 'searchsc'));
+            inputScreen.addEventListener('input', () => updateButtonStatesc(inputScreen, 'latitude_sc', 'longitude_sc', 'searchsc' ,'searchwc'));
         }
     }
 
