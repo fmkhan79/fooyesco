@@ -16,6 +16,9 @@ $stripe_settings = json_decode($stripe_settings);
 
 <!-- MAIN CONTENT -->
 <style>
+    #item-list .d-flex.p-1,#item-list .product-price img{
+        display:none!important;
+    }
     .disabled {
         pointer-events: none;
         /* Prevent clicks */
@@ -133,15 +136,18 @@ $stripe_settings = json_decode($stripe_settings);
                 <div class="form-row mt-4">
                     <div class="form-group col-md-6">
 
-                        <label for="inputAddress">Enter Post Code and Select Your Street*</label>
+                        <label for="inputAddress">Enter Your Address*</label>
                         <input type="text" name="additional_address" class="form-control" id="to" required
-                            placeholder="Enter Post Code">
+                            placeholder="Enter Your Address">
 
                         <small class="text-danger d-none" id="not-deliever"> Address not in deliverable range </small>
                         <input type="hidden" placeholder="Latitude" id="lat_to">
                         <input type="hidden" placeholder="Longitude" id="long_to">
                     </div>
-
+                    <div class="form-group col-md-6">
+                        <label for="inputAddress">Zipcode*</label>
+                        <input type="text" name="zipcode" class="form-control" id="city" placeholder="Zipcode" required>
+                    </div>
 
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">House/Flat Number*</label>
@@ -151,10 +157,10 @@ $stripe_settings = json_decode($stripe_settings);
                         <label for="inputEmail4">Street Name*</label>
                         <input type="text" class="form-control" id="street-value" name="zip_code" placeholder="Street Number" required>
                     </div>
-                    <div class="form-group col-md-6">
+                    <!-- <div class="form-group col-md-6">
                         <label for="inputAddress">City</label>
                         <input type="text" name="city" class="form-control" id="city" placeholder="City">
-                    </div>
+                    </div> -->
 
                     <!-- <div class="form-group col-md-6">
                 <label for="inputPassword4">Country</label>

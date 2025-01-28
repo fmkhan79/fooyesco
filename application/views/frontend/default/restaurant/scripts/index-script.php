@@ -363,13 +363,11 @@
 
         var menuId = $('#menu-id').val();
 
-        var variant = $('#variant').val();
-
         var quantity = $('#quantity_for_menu').val();
 
         var totalprice = $('#totalprice').val();
-        console.log("Totalprice:", totalprice);
-        var variantId = $('#variant-id').val();
+
+        var variantId = $("input[name=variant]:checked").val();
         var addons = $('#addons').val();
         var note = $('#note').val();
 
@@ -423,7 +421,6 @@
                 options_2: jsonStringSelectedItems2
             },
             success: function(response) {
-                console.log(response);
                 if (response === "multi_restaurant") {
                     toastr.warning(
                         '<?php echo site_phrase('sorry_you_can_not_order_from_multiple_restaurant'); ?>');
@@ -445,8 +442,9 @@
     //  GET AND DISPALY THE MENU MAIN CATAGORIES BASED ON THE CLICK MENU 
     function viewselected_menu(menuid, menuprice) {
 
+        let url = '<?php echo base_url(); ?>site/selected_menu/' + menuid;
         $.ajax({
-            url: '<?php echo base_url(); ?>site/selected_menu/' + menuid,
+            url: url,
             success: function(res) {
                 $("#getdetails_selected_menu").html(res);
                 // console.log(res); 
@@ -463,12 +461,10 @@
 </script>
 <script type="text/javascript">
     function calculatePrice() {
-        console.log("i am hear");
         var menuPrice = $("#menu-price").val();
         var price = menuPrice;
         var currency = $('#currency').val();
         menuPrice = currency + menuPrice;
-        console.log(menuPrice);
         $('#totalprice').val(price);
         // Find the price element within the modal content and update its text
         $('#popup #add-order-price').text(menuPrice); // Replace '£15.99' with the new price you want to set
@@ -477,9 +473,7 @@
     function viewselected_cat_items(maincatid, menu_selection = null) {
 
         var menu_option = menu_selection;
-        console.log('--menu_selection', menu_selection);
         menu_selection = '.' + menu_selection;
-        console.log('--menu_selection:after', menu_selection);
         // Get the selected radio button element
         var selectedRadioButton = document.querySelector('input[type="radio"][value="' + maincatid + '"].menuoptions');
 
@@ -491,14 +485,12 @@
             if (itemPrice) {
                 var currency = $('#currency').val();
                 // Use the itemPrice as needed (e.g., log it to the console)
-                console.log("Item price: " + itemPrice);
                 itemPrice = currency + itemPrice;
                 // Find the price element within the modal content and update its text
                 $('#popup #add-order-price').text(itemPrice); // Replace '£15.99' with the new price you want to set
 
             } else {
                 var menuPrice = $('#menu-price').val();
-                console.log("--menu-price", menuPrice);
 
                 var currency = $('#currency').val();
                 menuPrice = currency + menuPrice;
@@ -510,7 +502,6 @@
         } else {
             console.log("Radio button not found");
         }
-        console.log(maincatid);
         $.ajax({
             url: '<?php echo base_url(); ?>site/selected_cat_items/' + maincatid + '/' + menu_option,
             success: function(res) {
@@ -532,7 +523,6 @@
         $.ajax({
             url: '<?php echo base_url(); ?>site/selected_cat_items_summary/',
             success: function(res) {
-                console.log(res, 'selected_cat_items_summary');
                 $("#item-list").empty(); // Empty the content of the div
                 $("#item-list").html(res); // Replace with the 'res' response
             },
@@ -565,7 +555,7 @@
 
 
                 // Now you can use subTotalValue as needed, for example, displaying it in the console
-                console.log("Sub Total:", subTotalValue);
+      
                 $(".subtotal-price").text(subTotalValue);
                 // $(".total-delivery-price").text(totalDeliveryValue);
                 $(".total-vat-price").text(totalVatValue);
@@ -621,8 +611,6 @@
             var totalPrice = 0;
             var quantity_for_menu = $('#quantity_for_menu').val();
             var menu_pric = $("#menu-price").val();
-            console.log('quantity_for_menu', quantity_for_menu);
-            console.log('menu_pric', menu_pric);
             // Get all selected radio buttons with data-item-price attribute inside the modal
             var selectedRadioButtons = $('#popup').find('input.menuoptions:checked[data-item-price]');
 
@@ -635,13 +623,11 @@
             });
 
             // Log or use the total price as needed
-            console.log('Total Price:', totalPrice);
 
 
             if (totalPrice == 0) {
                 totalPrice = parseInt(menu_pric);
             }
-            console.log('totalPrice', totalPrice);
 
 
             totalPrice_with_quty = totalPrice.toFixed(2) * quantity_for_menu;
@@ -651,7 +637,7 @@
             $('#totalprice').val(totalPrice.toFixed(2)); // Set the total price, rounding it to 2 decimal places
 
             totalPrice_with_quty = currency + totalPrice_with_quty.toString();
-            console.log(typeof(totalPrice_with_quty), '--type');
+        
 
             $('#popup #add-order-price').text(
                 totalPrice_with_quty); // Replace '£15.99' with the new price you want to set
@@ -680,10 +666,8 @@
 
 
     function apply_promo_action() {
-        console.log("working");
         var promoCode = $('#promo_code').val();
         var amount = $('#grand_total_code').val(); /* Get the order amount */ ;
-        console.log(amount);
         $.ajax({
             url: '<?php echo site_url('cart/checkPromoCode'); ?>',
             type: 'POST',
@@ -692,7 +676,6 @@
                 amount: amount
             },
             success: function(response) {
-                console.log(response);
                 if (!isNaN(response)) { // Check if response is a number
                     $('#promo_code_message').text(response + '% discount applied.').addClass(
                         'text-success').removeClass('text-danger');
@@ -750,7 +733,6 @@
                 discount: -1
             },
             success: function(response) {
-                console.log(response);
                 window.location.reload();
             }
         });
@@ -758,9 +740,6 @@
 
     function updateDiscountCodeToCart(promoCode, discount) {
         var userId = $('#user_id').val();
-        console.log('User Id : ', userId);
-        console.log('promoCode : ', promoCode);
-        console.log('discount : ', discount);
         var amount = $('#grand_total_code').val();
 
         $.ajax({
@@ -772,11 +751,9 @@
                 discount: discount
             },
             success: function(response) {
-                console.log(response);
                 // Calculate discount amount
                 var discountPercentage = discount;
                 var discountAmount = (amount * discount) / 100;
-                console.log(discountPercentage, 'cart')
 
                 // Update discount amount in the <td> element
                 // $('#discount_amount').val(discountAmount.toFixed(2)); // Set hidden input value
@@ -816,36 +793,96 @@
             },
             success: function(updatedPrice) {
         // Log the updated price to the console for debugging
-        console.log('Updated Price:', updatedPrice);
-        console.log('Cart id:', cartId);
 
         // Update the price shown in the cart
         $('#sub-total-' + cartId).text(updatedPrice);
                 // $('#sub-total').text(updatedPrice);
                 // $('#sub-total-' + cartId).text(updatedPrice);
-                
+                viewselected_cat_items_summary_total(); 
                 $.ajax({
     url: '<?php echo site_url('cart/reload_cart_summary'); ?>',
     success: function(response) {
-        console.log(response); // Check the response in the console
+
         $('#cart-summary').html(response); // Update the HTML content
         $('.cart-actions').prop('disabled', false);
         $(".summary-loader").addClass('d-none');
-        console.log("fsa")
         // Extract the total menu price using split
         let firstSplit = response.split('<td class="bill-value font-weight-bold">')[1];
 
 
         let result = firstSplit.split("</td>")[0];
-console.log(result);
-        document.getElementById("ttprice").innerHTML = result;
 
+        document.getElementById("ttprice").innerHTML = result;
+       
     }
 
 });
 
             }
         });
+    }
+
+    function viewselected_cat_items_summary_total() {
+
+
+$.ajax({
+    url: '<?php echo base_url(); ?>cart/get_order_summary/',
+    success: function(res) {
+        // Parse the JSON string into a JavaScript object
+        var data = JSON.parse(res);
+
+        // console.log(data)
+
+        // Access the 'sub_total' property and display its value
+        var subTotalValue = data.sub_total;
+        var totalDeliveryValue = data.total_delivery_charge;
+        var totalVatValue = data.vat_charges;
+        var grandSubTotalValue = data.grand_total;
+        var totalServicePrice = data.total_service_price;
+
+
+        // Now you can use subTotalValue as needed, for example, displaying it in the console
+
+        $(".subtotal-price").text(subTotalValue);
+        // $(".total-delivery-price").text(totalDeliveryValue);
+        $(".total-vat-price").text(totalVatValue);
+        $(".grand-product-price").text(grandSubTotalValue);
+        $(".total-service-price").text(totalServicePrice);
+
+        if (subTotalValue !== "£0") {
+        // Get both buttons
+        var guestButton = document.getElementById("guestCheckoutBtn");
+        var checkoutButton = document.getElementById("CheckoutBtn");
+        var guestcheckoutButtonmobile = document.getElementById("guestCheckoutBtnmobile");
+        var checkoutButtonmobile = document.getElementById("CheckoutBtnmobile");
+
+        // Check if elements are not null before modifying them
+        if (guestButton) {
+        guestButton.classList.remove("disabled");
+        guestButton.style.pointerEvents = "auto";
+        }
+
+        if (checkoutButton) {
+        checkoutButton.classList.remove("disabled");
+        checkoutButton.style.pointerEvents = "auto";
+        }
+
+        if (guestcheckoutButtonmobile) {
+        guestcheckoutButtonmobile.classList.remove("disabled");
+        guestcheckoutButtonmobile.style.pointerEvents = "auto";
+        }
+
+        if (checkoutButtonmobile) {
+        checkoutButtonmobile.classList.remove("disabled");
+        checkoutButtonmobile.style.pointerEvents = "auto";
+        }
+        }
+            },
+            error: function() {
+                alert("<?php echo $this->lang->line('fail'); ?>")
+            }
+        });
+    // holdModal('popup');
     }
     // document.addEventListener("DOMContentLoaded", function() {
     //     var empty = document.getElementById("no-menu").value;

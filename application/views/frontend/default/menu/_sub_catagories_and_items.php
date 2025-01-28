@@ -39,7 +39,7 @@ if($menu_sub_catagory_item["name"]){
                     </div>
                     <?php if($item["price"]){ ?>
                     <div class="amount-box"><?php echo currency($item["price"]);  ?></div>
-                    <?php } ?>
+                    <?php } else { echo "FREE"; }?>
                   </div>
                   <?php } } }else{
                   ?>
@@ -69,7 +69,7 @@ if($menu_sub_catagory_item["name"]){
                       </div>
                       <?php if($item["price"]){ ?>
                       <div class="amount-box"><?php echo currency($item["price"]);  ?></div>
-                      <?php } ?>
+                      <?php }  else { echo "FREE"; }  ?>
                     </div>
                     
                     <?php }  }

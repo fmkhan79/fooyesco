@@ -289,6 +289,7 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
+
     // Function to calculate and log the total price
     function calculateTotalPrice() {
         var totalPrice = 0;
@@ -523,31 +524,70 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
     $(document).ready(function() {
         var autocomplete_to;
 
+        const marchBounds = new google.maps.LatLngBounds(
+            { lat: 52.5435, lng: 0.0720 }, // Southwest corner
+            { lat: 52.5610, lng: 0.1120 }  // Northeast corner
+        );
+
         // Initialize Google Maps autocomplete for "to" address
         autocomplete_to = new google.maps.places.Autocomplete(
             document.getElementById('to'),
-            { types: ['geocode'] }
+            { 
+                libraries: ['street_address' , 'premise'],
+                componentRestrictions: { country: "uk" },
+                bounds: marchBounds,
+            }
         );
+        // { types: ['geocode'] }
 
         google.maps.event.addListener(autocomplete_to, 'place_changed', function() {
+
             var place = autocomplete_to.getPlace();
+            console.log(place);
+            var addressComp = place.address_components[place.address_components.length - 1].short_name;
+
+            document.querySelector("input[name='zipcode']").value = addressComp;
+            document.querySelector("input[name='street']").value = place.address_components[0].short_name;
+            document.querySelector("input[name='zip_code']").value = place.address_components[1].short_name;
+
+
             $("#lat_to").val(place.geometry.location.lat());
             $("#long_to").val(place.geometry.location.lng());
 
             // Call the function to calculate distance here
             calculateDistance();
-
-            let firstSplit = place.adr_address.split('<span class=\"street-address\">')[1];
             
-            if(firstSplit == undefined || firstSplit == "")
-                return; 
+            // debugger;
+            // let firstSplit = place.adr_address.includes("extended-address") ? place.adr_address.split('<span class=\"extended-address\">')[1] : place.adr_address.split('<span class=\"street-address\">')[1];
+            // let code = place.address_components[0].long_name;
+            // let city = place.address_components[1].types[0] == "postal_town" ? place.address_components[1].long_name : place.address_components[2].long_name;
 
-            let result = firstSplit.split("</span>")[0];
-            console.log(result);
-            // let baba = document.getElementById("street-value");
-            // console.log(baba)
-            document.getElementById("street-value").value = result;
+            // if(firstSplit == undefined || firstSplit == "")
+            //     return; 
+
+            // let result = firstSplit.split("</span>")[0];
+        
+            // // let baba = document.getElementById("street-value");
+            // // console.log(baba)
+            // document.getElementById("street-value").value = result;
         });
+
+        var address = document.querySelector("input[name='additional_address']");
+        address.addEventListener('input', function () {
+            const value = address.value.trim();
+
+            // If the first character isn't a number, clear the autocomplete predictions
+            if (!/^\d/.test(value)) {
+                autocomplete_to.setOptions({ strictBounds: true });
+                autocomplete_to.setBounds(new google.maps.LatLngBounds()); // Restrict to empty bounds
+            } else {
+                // Reset bounds when valid input starts with a number
+                autocomplete_to.setOptions({ strictBounds: false });
+                autocomplete_to.setBounds(marchBounds);
+            }
+        });
+
+        
     });
 
     

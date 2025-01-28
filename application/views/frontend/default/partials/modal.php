@@ -63,8 +63,9 @@ function confirm_modal(delete_url) {
     document.getElementById('update_link').setAttribute('href', delete_url);
 }
 
-function confirm_modal_withoutPopup(delete_url) {
+function confirm_modal_withoutPopup(delete_url, element = false) {
     // Create the request to the delete URL using AJAX
+    
     fetch(delete_url, {
         method: 'DELETE', // or 'POST' depending on the type of request you need
         headers: {
@@ -72,9 +73,12 @@ function confirm_modal_withoutPopup(delete_url) {
         }
     })
     .then(response => {
+        console.log(element);
+        
         if (response.ok) {
-            // If the request was successful, you can reload the page or update the UI accordingly
-            window.location.reload(); // Uncomment if you want to reload the page
+            if(element != false){
+                element.parent.remove();
+            }    
         } else {
             alert('There was an error with the request.');
         }

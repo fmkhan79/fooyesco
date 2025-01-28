@@ -129,9 +129,11 @@ class Cart_model extends Base_model
         }
     
         // Calculate price based on whether the menu item has variants
-        if (!($menu_details['has_variant'])) {
+        if ($menu_details['has_variant'] == 1) {
+
             $data['variant_id'] = sanitize($this->input->post('variantId'));
-            $variant_details = $this->db->get_where('variants', ['id' => $data['variant_id']]);
+   
+            $variant_details = $this->db->get_where('variant_options', ['id' => $data['variant_id']]);
             if ($variant_details->num_rows() > 0) {
                 $variant_details = $variant_details->row_array();
                 $price = $data['quantity'] * $variant_details['price'];
@@ -160,7 +162,7 @@ class Cart_model extends Base_model
         $data['price'] = $price;
     
         // CHECK IF ITEM EXISTS IN THE CART
-        $previous_data = $this->db->get_where($this->table, ['customer_id' => $data['customer_id'], 'menu_id' => $data['menu_id']]);
+        $previous_data = $this->db->get_where($this->table, ['customer_id' => $data['customer_id'], 'menu_id' => $data['menu_id'], 'variant_id' => $data['variant_id']]);
     
         // IF ITEM EXISTS, UPDATE QUANTITY AND PRICE
         if ($previous_data->num_rows() > 0) {
@@ -182,16 +184,33 @@ class Cart_model extends Base_model
         return true;
     }
     
+    function get_variant_details($id)
+    {
+        
+        $this->db->select('name');
+        $this->db->from('variant_options');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            return $row;
+        } else {
+            echo "Invalid promo code.";
+        }
+    }
+
+
     /**
      * UPDATE CART ITEM METHOD
      */
     function update_cart()
     {
         $cart_id = required(sanitize($this->input->post('cartId')));
-        $data['quantity'] = sanitize($this->input->post('quantity')) > 0 ? sanitize($this->input->post('quantity')) : 1;
+        $data['quantity'] = sanitize($this->input->post('quantity')) > 0 ? sanitize($this->input->post('quantity')) : 1; 
         $cart_detail = $this->db->get_where('cart', ['id' => $cart_id])->row_array();
         if ($cart_detail['variant_id'] > 0) {
-            $variant_details = $this->db->get_where('variants', ['id' => $cart_detail['variant_id']])->row_array();
+            $variant_details = $this->db->get_where('variant_options', ['id' => $cart_detail['variant_id']])->row_array();
             $unit_price = $variant_details['price'];
         } else {
             $menu_details = $this->db->get_where('food_menus', ['id' => $cart_detail['menu_id']])->row_array();

@@ -1,7 +1,8 @@
-<?php $menu_details = $this->menu_model->get_by_id($menuid); 
+<?php 
+$menu_details = $this->menu_model->get_by_id($menuid); 
 
 $starts_from = json_decode($menu_details["price"]);
-
+// print_r($menuid);
 $menu_main_catagories = $this->menu_model->get_options($menuid);
 // var_dump($menu_main_catagories);
 ?>
@@ -9,7 +10,6 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
 <h3 class="text-center my-4">
     <?PHP   echo  $menu_details["name"];  ?>
 </h3>
-
 <div class="product-img">
 
     <div class="order-img-box main-img">
@@ -65,7 +65,8 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
                 </label>
             </div>
             <div class="amount-box">
-                <?php if($menu_main_catagory["price"] > 0) { echo currency($menu_main_catagory["price"]); }  ?></div>
+                <?php if($menu_main_catagory["price"] > 0) { echo currency($menu_main_catagory["price"]); }else{ echo "FREE";
+}  ?></div>
         </div>
         <?php } 
                   ?>
@@ -115,7 +116,7 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
                 </label>
             </div>
             <div class="amount-box">
-                <?php if($menu_main_catagory["price"] > 0) { echo currency($menu_main_catagory["price"]); }  ?></div>
+                <?php if($menu_main_catagory["price"] > 0) { echo currency($menu_main_catagory["price"]); } else {echo "FREE";}  ?></div>
         </div>
         <?php } 
                   ?>

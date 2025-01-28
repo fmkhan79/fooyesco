@@ -467,7 +467,7 @@ class Order_model extends Base_model
             $order_details['total'] = $cart_item['price'];
             $order_details['note'] = $cart_item['note'];
             $order_details['variant_id'] = $cart_item['variant_id'];
-            $order_details['addons'] = $cart_item['addons'];
+            $order_details['addons'] = $cart_item['option_1'];
             $this->db->insert('order_details', $order_details);
         }
 

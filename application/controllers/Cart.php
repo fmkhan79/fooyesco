@@ -180,8 +180,6 @@ class Cart extends Base
     {
         
         $response = $this->cart_model->delete($id);
-        // print_r($response);
-        // die();
         if ($response) {
             success(get_phrase('item_deleted_successfully'), site_url('cart'));
 

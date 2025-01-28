@@ -26,6 +26,15 @@ if (count($restaurant_ids) > 0):
             <?php endforeach; ?>
         </ul>
         <?php endif; ?>
+        <?php 
+                // Display options_1_details if available
+                if (!empty($cart_item['variant_id'])):
+                    $variant = $this->cart_model->get_variant_details($cart_item['variant_id']);
+                 
+                ?>
+                <p class="text-muted" style="font-size: 12px;">Selected: <?= $variant->name ?></p>
+
+        <?php endif; ?>
     </div>
 
 
@@ -34,13 +43,13 @@ if (count($restaurant_ids) > 0):
         <button type="button" class="cart-actions mr-1 cart-btns"
             onclick="updateCart('<?php echo sanitize($cart_item['id']); ?>', true)">
             <i class="fas fa-plus"></i>
-        </button>
+        </button>   
         <button type="button" class="cart-actions mr-1 cart-btns"
             onclick="updateCart('<?php echo sanitize($cart_item['id']); ?>', false)">
             <i class="fas fa-minus"></i>
         </button>
         <button type="button" class="cart-actions mr-1 cart-btns"
-            onclick="confirm_modal_withoutPopup('<?php echo site_url('cart/delete/' . sanitize($cart_item['id'])); ?>')"><i
+            onclick="confirm_modal_withoutPopup('<?php echo site_url('cart/delete/' . sanitize($cart_item['id'])); ?>',this)"><i
                 class="fas fa-trash-alt"></i>
         </button>
     </div>

@@ -53,7 +53,8 @@ $stripe_settings = json_decode($stripe_settings);
                 </div>
             </li>
         </ul>
-        <div id="billing-address">
+        <!-- id="billing-address"> -->
+        <div id="payment-option">
             <h4 class="mt-5 text-dark">Customer Details</h4>
 
             <form id="billing-form" onsubmit="submitForm(); return false;" method="POST" autocomplete="off">
@@ -103,8 +104,8 @@ $stripe_settings = json_decode($stripe_settings);
                 <button type="submit" class="rr-btn border-0 mt-4">Go to next Step: Address Details</button>
             </form>
         </div>
-
-        <div id="payment-option">
+        <!-- id="payment-option" -->
+        <div id="payment-option2">
             <h4 class="mt-5 text-dark"><span class="order_type">Delivery</span> Address</h4>
 
             <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="off">

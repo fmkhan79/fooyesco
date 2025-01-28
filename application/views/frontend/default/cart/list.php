@@ -85,7 +85,7 @@ if (count($restaurant_ids) > 0):
                             class="fas fa-minus"></i>
                     </button>
                     <button type="button" class="btn btn-default btn-circle cart-actions"
-                        onclick="confirm_modal_withoutPopup('<?php echo site_url('cart/delete/' . sanitize($cart_item['id'])); ?>')"><i
+                        onclick="confirm_modal_withoutPopup('<?php echo site_url('cart/delete/' . sanitize($cart_item['id'])); ?>',this)"><i
                             class="fas fa-trash-alt"></i>
                     </button>
                 </div>
