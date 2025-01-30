@@ -95,11 +95,45 @@
                 $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']); 
                 $total_items += $ordered_item['quantity']; // Count ordered items
                 $total_amount += $ordered_item['total']; // Sum total amount
+                $addonHTML = "";
+                
+                if($ordered_item["addons"] != "[]"){
+                
+                    $groupedAddons = [];
+                    $addons = json_decode($ordered_item["addons"], true);
+
+                    foreach ($addons as $addon) {
+    
+                        $subVariantId = $addon['subVariantId'];
+                        $itemId = $addon['itemId'];
+
+                    
+                        if (!isset($groupedAddons[$subVariantId])) {
+                            $groupedAddons[$subVariantId] = [];
+                        }
+                        $groupedAddons[$subVariantId][] = $itemId;
+                    }
+                    $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
+                }
             ?>
                 <div class="line-item">
-                    <span><?php echo $ordered_item['quantity'] . "x " . sanitize($menu_details['name']); ?></span>
-                    <span><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></span>
+                    <span><?php echo $ordered_item['quantity'] . "x " . sanitize($menu_details['name']); ?>
+                    <?php 
+                    if($ordered_item["variant_id"] != null && $ordered_item["variant_id"] != 0){?>
+                        <br>
+                        <span style="font-size:15px;">
+                            <?php
+                                    echo "Selected: " . $this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"];   
+                            ?>
+                        </span>
 
+                    <?php } 
+                    if($addonHTML != ""){
+                        echo $addonHTML;
+                    }
+                    ?>
+                </span>
+                    <span><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></span>                    
                 </div>
             <?php endforeach; ?>
         </div>
@@ -188,10 +222,10 @@
 
 
     <script>
-        window.print();
+      /*  window.print();
         window.onafterprint = function() {
             history.back();
-        }
+        } */
     </script>
 </body>
 </html>

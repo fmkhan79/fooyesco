@@ -6,7 +6,12 @@ $starts_from = json_decode($menu_details["price"]);
 $menu_main_catagories = $this->menu_model->get_options($menuid);
 // var_dump($menu_main_catagories);
 ?>
-
+<style>
+    .disabled{
+        opacity: 0.5;
+        pointer-events:none;
+    }
+    </style>
 <h3 class="text-center my-4">
     <?PHP   echo  $menu_details["name"];  ?>
 </h3>
@@ -46,26 +51,34 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
     <input type="hidden" name="totalprice" id="totalprice" value="0">
 
     <div class="main-div-1" id="main-catagories">
+        <?php 
+            if(count($menu_main_catagories) > 0 ){
+        ?>
         <div class="d-flex align-items-center justify-content-between p-4 popup-gray-box">
             <h3 class="p-0 m-0">Choose one</h3>
             <div class="op-rq-box"><span>Required</span></div>
         </div>
+        <?php 
+            }
+        ?>
 
         <?php
+            $hasRequireVariant = false;
                   foreach($menu_main_catagories as $menu_main_catagory){
+                    $hasRequireVariant = true;
                   ?>
         <div class="d-flex align-items-center p-4 choice-box align-items-center justify-content-between gray-border">
             <div class="label-box">
-                <label>
-                    <input name="variant" class="menuoptions" data-menu-option="menu-option-1"
-                        data-item-price="<?php if($menu_main_catagory["price"] > 0) { echo $menu_main_catagory["price"]; }else{   echo $starts_from->menu;  }  ?>"
-                        id="variant" type="radio" value="<?php echo $menu_main_catagory['id'];  ?>"
-                        onclick="viewselected_cat_items(<?php echo $menu_main_catagory['id'];  ?>,'menu-option-1')" />
-                    <?php echo $menu_main_catagory["name"];  ?>
-                </label>
+            <label>
+    <input name="variant" class="menuoptions" data-menu-option="menu-option-1"
+        data-item-price="<?php if($menu_main_catagory["price"] > 0) { echo $menu_main_catagory["price"]; } else { echo $starts_from->menu; } ?>"
+        id="variant" type="radio" value="<?php echo $menu_main_catagory['id']; ?>"
+        onclick="viewselected_cat_items(<?php echo $menu_main_catagory['id']; ?>, 'menu-option-1'); updateOrderButton()"/>
+    <?php echo $menu_main_catagory["name"]; ?>
+</label>
             </div>
             <div class="amount-box">
-                <?php if($menu_main_catagory["price"] > 0) { echo currency($menu_main_catagory["price"]); }else{ echo "FREE";
+                <?php if($menu_main_catagory["price"] > 0) { echo currency($menu_main_catagory["price"]); }else{ echo "";
 }  ?></div>
         </div>
         <?php } 
@@ -168,17 +181,18 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
         </div>
     </div>
 
-    <div class="m-4 d-flex justify-content-between align-items-center add-order-box" onclick="addToCart()">
-        <div class="add-order-txt">Add To Order</div>
-        <div class="add-order-price" id="add-order-price">0</div>
-        </button>
-    </div>
+    <div class="m-4 d-flex justify-content-between align-items-center add-order-box <?= $hasRequireVariant ? "disabled" : ""?>" id="add-to-order-container" onclick="addToCart()"  >
+    <div class="add-order-txt">Add To Order</div>
+    <div class="add-order-price" id="add-order-price">0</div>
+</div>
 
 
     <!-- TODO:: +/- temp solution -->
     <script>
     jQuery(".filter-list.all-other .icon-arrow-down").click(function() {
         jQuery(".filter-list.all-other ul").toggle();
+
+
     });
 
     jQuery(".filter-list.price .icon-arrow-down").click(function() {
@@ -346,4 +360,9 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
             }
         }
     });
+
+    function updateOrderButton() {
+        document.querySelector("#add-to-order-container").classList.remove("disabled");
+}   
+
     </script>

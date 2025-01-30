@@ -96,35 +96,46 @@
 
 
 <script>
-    setInterval(function() {
-        $.ajax({
-          
-          url: 'orders/check_new_order/',
+    function showpopup(){
+      $.ajax({
+            
+            url: 'orders/check_new_order/',
 
-        // url: window.location.origin + '/orders/check_new_order/',  // Dynamically resolve the absolute URL
-            method: 'GET',
-            success: function(data) {
-                if (data.length > 0) {
-                    // Update the dashboard with the new orders
-                    showNewOrderNotification(data);
-                }
-            },
-            error: function() {
-                console.error('Error fetching new orders.');
-            }
-        });
+          // url: window.location.origin + '/orders/check_new_order/',  // Dynamically resolve the absolute URL
+              method: 'GET',
+              success: function(data) {
+                  if (data.length > 0) {
+                      // Update the dashboard with the new orders
+                      showNewOrderNotification(data);
+                  }
+              },
+              error: function() {
+                  console.error('Error fetching new orders.');
+              }
+          });
+    }
+    
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      showpopup();
+    }, false);
+
+    
+    setInterval(function() {
+      showpopup();
     }, 8000);
 
     function showNewOrderNotification(data) {
         const obj = JSON.parse(data);
         const add = JSON.parse(obj.address);
-
+      console.log(obj.address);
         const notificationSound = new Audio('<?php echo base_url('assets/auth/audio/foodpanda.mp3'); ?>'); 
         notificationSound.play();
         let text;
+        // console.log(obj.address);
         if(obj.order_type == "delivery"){
             text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + obj.grand_total +
-                " | Address: " + add.additional_address;
+                " | Address: " + add.additional_address ;
         } else if(obj.order_type == "pickup"){
             text = "COLLECTION | Order ID: " + obj.id + " | Total Amount: " + obj.grand_total; 
         }

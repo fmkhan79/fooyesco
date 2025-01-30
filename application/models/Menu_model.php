@@ -385,6 +385,54 @@ class Menu_model extends Base_model
          return $menu_options;
      }
 
+     public function get_variant_detail($variant_id)
+     {
+        $menu_options = $this->db->get_where('variant_options', ['id' => $variant_id])->result_array();
+        return $menu_options;
+     }
+
+     public function variant_name($variant_id)
+     {
+        $menu_options = $this->db->get_where('variant_sub_options', ['id' => $variant_id])->result_array();
+        if(count($menu_options) > 0){
+            
+            return $menu_options[0]["name"];
+        }
+        return "";
+     }
+
+     public function get_addons_value($variant_arry)
+     {
+        $menu_options = $this->db->select('variant,price')->where_in('id', $variant_arry)->get('variants')->result_array();
+        
+        return $menu_options;
+     }
+
+     public function addons_grouped_data($arr){
+        $result = "<div class='addons'>";
+        foreach($arr as $key => $item){      
+            $result .= "<span style='font-size:15px'>".$this->variant_name($key).":</span>";
+            $result .= "<ul style='font-size:15px; margin:0px;'>";
+            foreach($this->get_addons_value($item) as $addon_ar){
+                
+                // print_r($addon_ar["variant"]);
+                // $result[$variant_name][] = $addon_ar["variant"];
+                $result .= "<li style='font-size:15px'>" . 
+                $addon_ar["variant"] . " - " . 
+                ($addon_ar["price"] == 0 ? "Free" : "£" . number_format($addon_ar["price"], 2)) . 
+                "</li>";
+                        }
+            $result .= "</ul>";
+        }
+        $result .= "</div>";
+        return $result;
+     }
+
+     public function get_flat_menu_price($menu_id){
+        echo $menu_id;
+        $menu_options = $this->db->get_where('food_menus', ['id' => $menu_id])->result_array();
+        return $menu_options;
+     }
      /**
      *  GET VARIATION SUB OPTIONS
      */

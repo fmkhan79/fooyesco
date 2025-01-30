@@ -456,9 +456,14 @@ class Order_model extends Base_model
         $this->db->insert($this->table, $data);
 
         $cart_items = $this->cart_model->get_all();
+
         // print_r($cart_items);
+        // die();   
+        echo '<pre>';
+
 
         foreach ($cart_items as $cart_item) {
+        
             $order_details['order_code'] = $data['code'];
             $order_details['menu_id'] = $cart_item['menu_id'];
             $order_details['restaurant_id'] = $cart_item['restaurant_id'];
@@ -467,11 +472,11 @@ class Order_model extends Base_model
             $order_details['total'] = $cart_item['price'];
             $order_details['note'] = $cart_item['note'];
             $order_details['variant_id'] = $cart_item['variant_id'];
-            $order_details['addons'] = $cart_item['option_1'];
+            $order_details['addons'] = $cart_item['options_1'];
             $this->db->insert('order_details', $order_details);
         }
 
-        $this->cart_model->clearing_cart();
+        $this->cart_model->clearing_cart(); 
 
 
         // CHECK IF AUTO DRIVER ASSIGNMENT IS ENABLED

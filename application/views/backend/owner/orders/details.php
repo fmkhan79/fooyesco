@@ -264,38 +264,50 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                                         <div class="col-md-3 variant-and-addons-area">
                                             <strong class="d-block"><?php echo get_phrase('variant_details'); ?></strong>
                                             <?php if (!empty($ordered_item['variant_id'])) : ?>
-                                                <?php
-                                                $menu_variant = $this->db->get_where('variants', ['id' => $ordered_item['variant_id']])->row_array();
-                                                $menu_variant_exploded = explode(',', $menu_variant['variant']);
-                                                foreach ($menu_variant_exploded as $menu_variant_with_option_id) {
-                                                    $menu_variant_with_option_id_exploded = explode('-', $menu_variant_with_option_id);
-                                                    $menu_variant_option_id = $menu_variant_with_option_id_exploded[0];
-                                                    $menu_variant_option = $this->db->get_where('variant_options', ['id' => $menu_variant_option_id])->row_array();
-                                                    echo sanitize($menu_variant_option['name']) . ' : ' . ucfirst(sanitize($menu_variant_with_option_id_exploded[1])) . '<br/> ';
-                                                }
-                                                ?>
+                                                
+                                                <?= $this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"] ?>
+
                                             <?php else : ?>
-                                                <span><?php echo get_phrase('this_menu_has_no_variant'); ?></span>
+                                                <span><?php echo "None" ?></span>
                                             <?php endif; ?>
                                         </div>
                                         <div class="col-md-2 variant-and-addons-area">
                                             <strong class="d-block"><?php echo get_phrase('addons'); ?></strong>
-                                            <?php if (!empty($ordered_item['addons'])) : ?>
-                                                <?php
-                                                $addons_exploded = explode(',', $ordered_item['addons']);
-                                                foreach ($addons_exploded as $key => $addon) {
-                                                    $addon_details = $this->db->get_where('addons', ['id' => $addon])->row_array();
-                                                    echo ucfirst(sanitize($addon_details['name'])) . ': ' . currency($addon_details['price']) . '<br/> ';
-                                                }
+                                            <?php if ($ordered_item['addons'] != "[]") : ?>
+                                                <?php 
+                                                    $groupedAddons = [];
+                                                    $addons = json_decode($ordered_item["addons"], true);
+                                                    
+                                
+                                                    foreach ($addons as $addon) {
+                                                        $subVariantId = $addon['subVariantId'];
+                                                        $itemId = $addon['itemId'];
+
+                                                    
+                                                        if (!isset($groupedAddons[$subVariantId])) {
+                                                            $groupedAddons[$subVariantId] = [];
+                                                        }
+
+                                                        $groupedAddons[$subVariantId][] = $itemId;
+                                                    }
+                                                
+                                                    echo $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
+                                                    //  $check = $this->menu_model->get_flat_menu_price($groupedAddons);
+
+                                                   
+
                                                 ?>
                                             <?php else : ?>
-                                                <span><?php echo get_phrase('no_addon_selected'); ?></span>
+                                                <span><?php echo "None" ?></span>
                                             <?php endif; ?>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="order-detail-menu-unit-price mt-2">
                                                 <?php echo get_phrase('unit_price'); ?> :
-                                                <?php if (!empty($ordered_item['variant_id'])) : ?>
+                                                <?php if (!empty($ordered_item['variant_id'])) :
+                                                    
+                                                    ?>
+                                                   
                                                     <?php echo currency($menu_variant['price']); ?>
                                                 <?php else : ?>
                                                     <?php echo currency(get_menu_price($ordered_item['menu_id'], $ordered_item['servings'])); ?>
@@ -308,10 +320,13 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                                                 <?php
                                                 if (!empty($ordered_item['addons'])) {
                                                     $total_addon_price = 0;
+
                                                     $addons_exploded = explode(',', $ordered_item['addons']);
+
                                                     foreach ($addons_exploded as $key => $addon) {
                                                         $addon_details = $this->db->get_where('addons', ['id' => $addon])->row_array();
                                                         $total_addon_price += $addon_details['price'];
+                                                        // print_r($total_addon_price);
                                                     }
                                                     echo get_phrase('addon_price') . ': ' . currency(sanitize($total_addon_price));
                                                 }
