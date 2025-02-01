@@ -636,8 +636,10 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
 // print_r($isOwner);
                         ?>
                                            <?php if ($isOwner): ?>
-                                            <button class="btn btn-danger" disabled style="width: 90px; height: 70px; padding: 0; font-size: 13px; display: flex; align-items: center; justify-content: center;" disabled>
-    can't order
+                                            <button class="btn" disabled style="width: 114px; height: 70px; padding: 0; word-wrap: break-word;
+ font-size: 14px; color:red; display: flex; align-items: center; justify-content: center; padding-right: 65px;
+" disabled>
+    Owner <br> can't <br> order
 </button>
 <?php else: ?>
     <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
