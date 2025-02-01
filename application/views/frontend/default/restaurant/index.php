@@ -573,8 +573,32 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
                                 $starts_from = json_decode($menu["price"]);
                             ?>
-                                <div data-toggle="modal" onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
-                                                                                                                echo $price->menu; ?>)">
+                                                                  
+ <?php // Load the model
+$this->load->model('user_model');
+
+// Get the current user ID from session (assuming user ID is stored in session)
+$user_id = $this->session->userdata('user_id');
+
+// Check if the user is an owner (role_id = 3)
+$isOwner = $this->user_model->check_user_role($user_id);
+
+// Pass the result to the view
+$data['isOwner'] = $isOwner; // Pass to the view (if needed)
+// print_r($isOwner);
+                        ?>
+
+                                <?php if ($isOwner): ?>
+    <div data-toggle="" data-menu-id="<?php echo $menu['id']; ?>" data-price="<?php 
+        $price = json_decode($menu['price']);
+        echo $price->menu;?>">
+<?php else: ?>
+    <div data-toggle="modal" onclick="viewselected_menu(<?php echo $menu['id']; ?>, '<?php 
+        $price = json_decode($menu['price']);
+        echo $price->menu; ?>')">
+<?php endif; ?>
+    <!-- Your other content here -->
+
                                     <div class="d-flex order-detail-box-txt align-items-center justify-content-between">
                                         <div class="col-md-8 d-flex align-items-center p-0 m-0">
                                             <div class="item-img-box mr-3"><a><img class="rounded-circle"
@@ -595,24 +619,40 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                             <a href="#" data-toggle="modal"
                                                 onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
                                                                                                         echo $price->menu; ?>)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56"
-                                                    viewBox="0 0 56 56" fill="none">
-                                                    <g clip-path="url(#clip0_4609_18554)">
-                                                        <path
-                                                            d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z"
-                                                            stroke="#F54748" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path d="M21 28H35" stroke="#F54748" stroke-width="2"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
-                                                        <path d="M28 21V35" stroke="#F54748" stroke-width="2"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
-                                                    </g>
-                                                    <defs>
-                                                        <clippath id="clip0_4609_18554">
-                                                            <rect width="56" height="56" fill="white" />
-                                                        </clippath>
-                                                    </defs>
-                                                </svg>
+
+
+                                        
+ <?php // Load the model
+$this->load->model('user_model');
+
+// Get the current user ID from session (assuming user ID is stored in session)
+$user_id = $this->session->userdata('user_id');
+
+// Check if the user is an owner (role_id = 3)
+$isOwner = $this->user_model->check_user_role($user_id);
+
+// Pass the result to the view
+$data['isOwner'] = $isOwner; // Pass to the view (if needed)
+// print_r($isOwner);
+                        ?>
+                                           <?php if ($isOwner): ?>
+                                            <button class="btn btn-danger" disabled style="width: 90px; height: 70px; padding: 0; font-size: 13px; display: flex; align-items: center; justify-content: center;" disabled>
+    can't order
+</button>
+<?php else: ?>
+    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+        <g clip-path="url(#clip0_4609_18554)">
+            <path d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M28 21V35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+        <defs>
+            <clippath id="clip0_4609_18554">
+                <rect width="56" height="56" fill="white" />
+            </clippath>
+        </defs>
+    </svg>
+<?php endif; ?>
                                             </a>
                                         </div>
                                     </div>

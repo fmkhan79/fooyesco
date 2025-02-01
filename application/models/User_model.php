@@ -57,6 +57,32 @@ class User_model extends Base_model
     {
         return $this->db->get_where($this->table, ['role_id' => 1])->row_array();
     }
+    
+    // In user_model.php
+
+public function check_user_role($user_id) {
+    // Query to fetch the role_id of the user based on the user ID
+    $this->db->select('role_id');
+    $this->db->from('users'); // Assuming the table name is 'users'
+    $this->db->where('id', $user_id); // Assuming the user's ID is stored in the 'id' column
+    $query = $this->db->get();
+
+    // If the user is found, check their role
+    if ($query->num_rows() > 0) {
+        // Fetch the role_id
+        $role = $query->row();
+        
+        // Check if the role_id is 3 (owner)
+        if ($role->role_id == 3) {
+            return true; // Return true if the user is an owner
+        } else {
+            return false; // Return false if the user is not an owner
+        }
+    } else {
+        return false; // User not found, return false
+    }
+}
+
 
     // GET ONLY APPROVED USERS, EXCEPT FOR ROLE 4 WHICH IS DRIVER ROLE
     public function get_approved_users()
