@@ -459,7 +459,6 @@ class Order_model extends Base_model
 
         // print_r($cart_items);
         // die();   
-        echo '<pre>';
 
 
         foreach ($cart_items as $cart_item) {

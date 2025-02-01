@@ -40,7 +40,8 @@ class Checkout extends Base
         $miles = rad2deg($miles);
         
         $result['miles'] = $miles * 60 * 1.1515;
-
+        
+        print_r($result['miles']);
         
         if($result['miles'] > $maximum_range)
         {

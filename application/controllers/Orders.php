@@ -111,8 +111,7 @@ class Orders extends Authorization
 
     public function check_new_order()
     {
-        // print_r("test");
-        // $this->load->model('order_model');
+       
         $user_id = $this->session->userdata("user_id");
         
         $this->db->from('restaurants');

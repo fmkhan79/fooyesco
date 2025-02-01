@@ -84,7 +84,6 @@ class Cart extends Base
     // SENDING ORDER PLACING MAILS FROM THIS FUNCTION
     public function order_placing_mail($order_code)
     {
-        print_r($order_code);
       
         $this->cart_model->order_placing_mail($order_code);
         // $this->session->sess_destroy();
