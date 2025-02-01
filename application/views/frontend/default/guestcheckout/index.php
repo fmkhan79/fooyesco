@@ -294,7 +294,7 @@ $stripe_settings = json_decode($stripe_settings);
 
                                         <!-- PAYPAL FORM -->
                                         <?php if ($paypal_settings[0]->active) {
-                                            include "paypal/paypal_form.php";
+                                            // include "paypal/paypal_form.php";
                                         } ?>
                                         <!-- <div class="featured-btn-wrap text-right col-12 p-0">
                                             <button
