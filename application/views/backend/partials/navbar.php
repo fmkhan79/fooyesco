@@ -97,7 +97,9 @@
 
 <script>
 
-var urls;
+
+    function showpopup(){
+      var urls;
       const check = location.origin;
       if(check == "http://localhost"){
          urls = '/fooyesco/orders/';
@@ -107,8 +109,6 @@ var urls;
          urls = '/orders/';
       }
 
-    function showpopup(){
-   
       $.ajax({
 
             url: urls +'/check_new_order',
@@ -172,6 +172,16 @@ var urls;
     }
 
     function updateOrderReadStatus(orderId, code) {
+      var urls;
+      const check = location.origin;
+      if(check == "http://localhost"){
+         urls = '/fooyesco/orders/';
+      }
+      else
+      {
+         urls = '/orders/';
+      }
+
         $.ajax({
             url: '/' + urls +'/mark_order_as_read/',
             method: 'POST',
@@ -197,6 +207,15 @@ var urls;
     }
 
     function cancelOrderAndMarkAsRead(orderId, code) {
+      var urls;
+      const check = location.origin;
+      if(check == "http://localhost"){
+         urls = '/fooyesco/orders/';
+      }
+      else
+      {
+         urls = '/orders/';
+      }
 
       $.ajax({
             url: urls +'/mark_order_as_read/',
