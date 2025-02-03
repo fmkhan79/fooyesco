@@ -560,7 +560,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             <?php echo $restaurant_category['name']; ?>
                         </h3>
 
-                        <div class="order-detail-box">
+                        <div class="order-detail-box" style="width:105%">
                             <div class="d-flex order-detail-box-title align-items-center justify-content-between">
                                 <div class="item col-md-8 p-0 m-0">Item</div>
                                 <div class="price col-md-2">Price</div>
