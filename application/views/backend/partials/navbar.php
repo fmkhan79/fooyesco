@@ -179,20 +179,20 @@
       }
       else
       {
-         urls = '/orders/';
+         urls = 'resd/orders/';
       }
 
         $.ajax({
-            url: '/' + urls +'/mark_order_as_read/',
+            url: urls +'/mark_order_as_read/',
             method: 'POST',
             data: { order_id: orderId },
             success: function(response) {
                 $.ajax({
-                    url: '/orders/process/'+code+"/approved",
+                    url: urls + '/process/'+code+"/approved",
                     method: 'POST',
                     data: { order_id: orderId },
                     success: function(response) {
-                        window.location.href = "/orders/print_recipt/" + code;
+                        window.location.href = urls + "/print_recipt/" + code;
                         console.log('Order marked as read successfully');
                     },
                     error: function() {
