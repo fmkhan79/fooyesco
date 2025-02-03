@@ -179,7 +179,7 @@
       }
       else
       {
-         urls = 'resd/orders/';
+         urls = '/orders/';
       }
 
         $.ajax({
