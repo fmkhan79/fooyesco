@@ -63,23 +63,26 @@ function confirm_modal(delete_url) {
     document.getElementById('update_link').setAttribute('href', delete_url);
 }
 
-function confirm_modal_withoutPopup(delete_url, element = false) {
+function confirm_modal_withoutPopup(delete_url) {
     // Create the request to the delete URL using AJAX
-    
     fetch(delete_url, {
-        method: 'DELETE', // or 'POST' depending on the type of request you need
+        method: 'DELETE', // or 'POST' depending on your server's API
         headers: {
             'Content-Type': 'application/json'
         }
     })
     .then(response => {
-        console.log(element);
-        
         if (response.ok) {
-            if(element != false){
-                element.parent.remove();
-            }    
+            // Optionally handle response data if needed
+            console.log('Item deleted successfully.');
+
+            // Add q=2 to the URL after the item is deleted
+            const currentUrl = window.location.href;
+            const separator = currentUrl.includes('?') ? '&' : '?';
+            window.location.href = currentUrl + separator + 'q=2'; // Redirect with new query parameter
+
         } else {
+            console.error('Failed to delete the item:', response);
             alert('There was an error with the request.');
         }
     })
@@ -88,6 +91,8 @@ function confirm_modal_withoutPopup(delete_url, element = false) {
         alert('Something went wrong. Please try again later.');
     });
 }
+
+
 
 </script>
 

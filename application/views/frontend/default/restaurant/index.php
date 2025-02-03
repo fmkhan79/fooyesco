@@ -353,9 +353,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
             </button>
         </h2>
         <button id="scrollToOrderButton" class="scroll-to-order-btn border-0 fw-bold" style="display: none; border-radius: 38px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrder1" aria-expanded="true" aria-controls="collapseOrder1">
-    <!-- Button content here, like text or icon -->
-    View My Order
-</button>
+            View My Order
+        </button>
 
         <div id="collapseOrder1" class="accordion-collapse collapse" aria-labelledby="headingOrder1" data-bs-parent="#accordionExample">
             <div class="accordion-body">
@@ -1067,6 +1066,30 @@ scrollToOrderButton.addEventListener('click', function() {
     }
 
     document.querySelector('.close').addEventListener('click', closeModal);
+
+
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+    const status = getQueryParam('q');
+
+console.log(status);
+    if (status === '2') {
+        var element = document.getElementById("collapseOrder1");
+        element.classList.remove("accordion-collapse");
+        element.classList.remove("collapse");
+
+        element.classList.add("accordion-collapse");
+
+        element.classList.add("collapse");
+        element.classList.add("show");
+
+    }
+    else{
+        console.log("not deleted yet")
+    }
+
 
 
 </script>
