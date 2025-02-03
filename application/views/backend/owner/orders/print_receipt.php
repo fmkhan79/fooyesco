@@ -222,10 +222,10 @@
 
 
     <script>
-      /*  window.print();
+      window.print();
         window.onafterprint = function() {
             history.back();
-        } */
+        } 
     </script>
 </body>
 </html>
