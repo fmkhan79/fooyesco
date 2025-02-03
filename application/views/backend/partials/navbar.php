@@ -97,9 +97,18 @@
 
 <script>
     function showpopup(){
+      let urls;
+      const check = location.origin;
+      if(check == "http://localhost"){
+         urls = '/fooyesco/orders/check_new_order/';
+      }
+      else
+      {
+         urls = '/orders/check_new_order/';
+      }
       $.ajax({
-            
-            url: 'orders/check_new_order/',
+
+            url: urls,
 
           // url: window.location.origin + '/orders/check_new_order/',  // Dynamically resolve the absolute URL
               method: 'GET',
