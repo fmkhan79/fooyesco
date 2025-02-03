@@ -96,19 +96,22 @@
 
 
 <script>
-    function showpopup(){
-      let urls;
+
+var urls;
       const check = location.origin;
       if(check == "http://localhost"){
-         urls = '/fooyesco/orders/check_new_order/';
+         urls = '/fooyesco/orders/';
       }
       else
       {
-         urls = '/orders/check_new_order/';
+         urls = '/orders/';
       }
+
+    function showpopup(){
+   
       $.ajax({
 
-            url: urls,
+            url: urls +'/check_new_order',
 
           // url: window.location.origin + '/orders/check_new_order/',  // Dynamically resolve the absolute URL
               method: 'GET',
@@ -170,16 +173,16 @@
 
     function updateOrderReadStatus(orderId, code) {
         $.ajax({
-            url: 'orders/mark_order_as_read/',
+            url: '/' + urls +'/mark_order_as_read/',
             method: 'POST',
             data: { order_id: orderId },
             success: function(response) {
                 $.ajax({
-                    url: 'orders/process/'+code+"/approved",
+                    url: '/orders/process/'+code+"/approved",
                     method: 'POST',
                     data: { order_id: orderId },
                     success: function(response) {
-                        window.location.href = "orders/print_recipt/" + code;
+                        window.location.href = "/orders/print_recipt/" + code;
                         console.log('Order marked as read successfully');
                     },
                     error: function() {
@@ -196,13 +199,13 @@
     function cancelOrderAndMarkAsRead(orderId, code) {
 
       $.ajax({
-            url: 'orders/mark_order_as_read/',
+            url: urls +'/mark_order_as_read/',
             method: 'POST',
             data: { order_id: orderId },
             success: function(response) {
                 // Now cancel the order
                 $.ajax({
-                    url: 'orders/cancel/' + code,
+                    url: urls +'/cancel/' + code,
                     method: 'POST',
                     data: { order_id: orderId },
                     success: function(response) {
