@@ -188,3 +188,8 @@ if (count($restaurant_ids) > 0):
         </div>
     </div>
 </section>
+<script>
+    var timer = setTimeout(function() {
+        window.location = window.location.origin + '/site/restaurants/recent';
+    }, 4000);
+</script>
