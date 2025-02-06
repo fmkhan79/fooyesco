@@ -64,7 +64,7 @@ public function check_user_role($user_id) {
     // Query to fetch the role_id of the user based on the user ID
     $this->db->select('role_id');
     $this->db->from('users'); // Assuming the table name is 'users'
-    $this->db->where('id', $user_id); // Assuming the user's ID is stored in the 'id' column
+    $this->db->where('id', $user_id); 
     $query = $this->db->get();
 
     // If the user is found, check their role

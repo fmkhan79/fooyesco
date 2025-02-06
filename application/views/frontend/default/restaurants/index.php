@@ -18,7 +18,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
     <?php if ($cuisine_row['id'] == $cuisine) echo "selected"; ?>><?php echo sanitize($cuisine_row['name']); ?></option>
 <?php endforeach; */?>
 <!--============================= DETAIL =============================-->
-<section class="order-toplist mt-4 mb-2">
+<section class="order-toplist mt-4 mb-2 d-none">
     <div class="container bg-white p-4 text-dark rounded border border-light">
         <ul class="p-0 m-0 order-toplist-slider owl-carousel owl-theme">
             <!-- <li><a href="#"><img

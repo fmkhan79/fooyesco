@@ -191,7 +191,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="d-md-flex justify-content-between">
-                    <div class="detail-wbox-title">
+                    <div class="detail-wbox-title pl-3">
                         <h3>
                             <?php echo $restaurant_details['name']; ?>
                         </h3>

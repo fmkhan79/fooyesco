@@ -4,17 +4,17 @@
 
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
-        <h4 class="mt-5 mb-5 text-dark">How to order</h4>
+        <h4 class="mt-5 mb-5 text-dark ml-1">How to order</h4>
         <div class="about-txt my-4 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right">
             <div class="row">
                 <div class="col-md-6">
-                    <p>This is a type of resturent which typically serves food and drink, in addition to light
+                    <p class="pl-3">This is a type of resturent which typically serves food and drink, in addition to light
                         refreshments such as baked goods or snacks. The term comes frome the rench word meaning food Are
                         you hungry? Did you have a long and stressful day? Interested in getting a cheesy pizza
                         delivered to your office or looking to avoid the weekly shop? Then Pakistan is the right
                         destination for you! offers you a long and detailed list of the best restaurants and shops near
                         you to help make your everyday easier.</p>
-                    <p> Our online food delivery service has it all, whether you fancy Indian, Pakistani or Afghan
+                    <p class="pl-3"> Our online food delivery service has it all, whether you fancy Indian, Pakistani or Afghan
                         cuisine, Pakistan has over 15,000 restaurants available in top cities like Islamabad, Lahore,
                         Rawalpindi, and Karachi. Did you know you can order your groceries and more from , too? Check
                         out shops for favourite partners like Al-Fatah, Greenvalley and more. Sit back and relax – let

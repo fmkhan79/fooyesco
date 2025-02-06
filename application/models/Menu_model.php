@@ -411,20 +411,28 @@ class Menu_model extends Base_model
      public function addons_grouped_data($arr){
         $result = "<div class='addons'>";
         foreach($arr as $key => $item){      
-            $result .= "<span style='font-size:15px'>".$this->variant_name($key).":</span>";
-            $result .= "<ul style='font-size:15px; margin:0px;'>";
+            $result .= "<span style='font-weight:bold;'>".$this->variant_name($key).":</span>";
+         
             foreach($this->get_addons_value($item) as $addon_ar){
                 
                 // print_r($addon_ar["variant"]);
                 // $result[$variant_name][] = $addon_ar["variant"];
-                $result .= "<li style='font-size:15px'>" . 
-                $addon_ar["variant"] . " - " . 
+                $result .= "<div style='display:flex;justify-content:space-between;'>";
+                $result .= "<ul style='margin:0px;list-style:none;padding: 0;'>";
+                $result .= "<li>" . 
+                $addon_ar["variant"] . 
+                "</li>".
+                "</ul>".
+                "<ul style='margin:0px;list-style:none;padding: 0;'>"
+                ."<li>" . 
                 ($addon_ar["price"] == 0 ? "Free" : "£" . number_format($addon_ar["price"], 2)) . 
-                "</li>";
-                        }
-            $result .= "</ul>";
+                "</li>" .
+                "</ul>"  .  
+                 "</div>";
+            }
+            
         }
-        $result .= "</div>";
+       
         return $result;
      }
 
