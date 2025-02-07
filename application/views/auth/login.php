@@ -22,7 +22,11 @@
 			<div class="text-center">
 				<img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>" class="auth-logo" alt="">
 			</div>
-
+			<?php if ($this->session->flashdata('error_message')): ?>
+    <div class="alert alert-danger">
+        <?= $this->session->flashdata('error_message'); ?>
+    </div>
+<?php endif; ?>
 			<form action="<?php echo site_url('auth/validate'); ?>" method="POST" class="login100-form">
 				<span class="login100-form-title p-b-37">
 					<?php echo get_phrase('sign_in'); ?>
@@ -42,9 +46,7 @@
 						<?php echo get_phrase('sign_in'); ?>
 					</button>
 				</div>
-<script>
-	
-</script>
+
 				<div class="text-center p-t-57 p-b-20">
 					<span class="txt1 d-block">
 						<a href="<?php echo site_url('auth/forget_password'); ?>" class="txt2 hov1">
@@ -57,8 +59,8 @@
 						</a>
 					</span>
 					<span class="txt1">
-						<a href="<?php echo site_url('/cart'); ?>" class="txt2 hov1">
-							<?php echo get_phrase('go to cart page'); ?>
+						<a href="<?php echo site_url(); ?>" class="txt2 hov1">
+							<?php echo get_phrase('get_back_to_the_homepage'); ?>
 						</a>
 					</span>
 				</div>

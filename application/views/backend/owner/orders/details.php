@@ -43,8 +43,10 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                                 <b><?php echo get_phrase('total_delivery_charge'); ?>: </b> <a class="float-right"><?php echo currency(sanitize($order_data['total_delivery_charge'])); ?></a>
                             </li>
                             <li class="list-group-item">
-                                <b><?php echo get_phrase('grand_total'); ?>: </b> <a class="float-right"><?php echo currency(sanitize($order_data['grand_total'])); ?></a>
+                                <b><?php echo get_phrase('grand_total'); ?>: </b> <a class="float-right"><?php echo currency(sanitize($order_data['grand_total']) + sanitize($order_data['total_delivery_charge'])); ?></a>
+                            
                             </li>
+                      
                             <li class="list-group-item">
                                 <b><?php echo get_phrase('payment_status'); ?>: </b>
                                 <a class="float-right">

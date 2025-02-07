@@ -180,7 +180,14 @@
         <hr>
         <div class="did mt-3">
             <span><b>Total </b>(<?php echo $total_items; ?> Items)</span>
-            <span><?php echo currency(number_format(sanitize($order_details['grand_total']), 2)); ?></span>
+            <span><?php  
+       
+        $grand_total = sanitize($order_details['grand_total']);
+        $total_delivery_charge = sanitize($order_details['total_delivery_charge']);
+        echo currency(number_format($grand_total + $total_delivery_charge, 2));
+        
+    ?> 
+           </span>
             </div>
         <hr>
         <div class="order-details-summary">

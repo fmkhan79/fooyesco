@@ -139,17 +139,19 @@
 
     function showNewOrderNotification(data) {
         const obj = JSON.parse(data);
-        const add = JSON.parse(obj.address);
+        let total = parseFloat(obj.grand_total) + parseFloat(obj.total_delivery_charge);
+
+console.log(total); // Output: 6.35        const add = JSON.parse(obj.address);
       console.log(obj.address);
         const notificationSound = new Audio('<?php echo base_url('assets/auth/audio/foodpanda.mp3'); ?>'); 
         notificationSound.play();
         let text;
         // console.log(obj.address);
         if(obj.order_type == "delivery"){
-            text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + obj.grand_total +
-                " | Address: " + add.additional_address ;
+            text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + total +
+                " | Address: " + obj.additional_address ;
         } else if(obj.order_type == "pickup"){
-            text = "COLLECTION | Order ID: " + obj.id + " | Total Amount: " + obj.grand_total; 
+            text = "COLLECTION | Order ID: " + obj.id + " | Total Amount: " + obj.grandSubTotalValue; 
         }
 
         Swal.fire({
