@@ -41,7 +41,8 @@ class Auth extends Base
 				redirect(site_url('dashboard'), 'refresh');
 			}
 		} else {
-			error(get_phrase('invalid_login_credentials'), site_url('auth'));
+			$this->session->set_flashdata('error_message', get_phrase('This email or password is invalid. Please try another.'));
+			error(get_phrase('This email or password is invalid. Please try another.'), site_url('/auth'));
 		}
 	}
 

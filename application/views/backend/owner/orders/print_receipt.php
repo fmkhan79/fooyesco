@@ -122,8 +122,7 @@
                 <ul class="line-item">
                     <li><?php echo $ordered_item['quantity'] . "x " . sanitize($menu_details['name']); ?></li>
                     <li><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></li>  
-                    <li><?php echo currency($menu_main_catagory["price"]);?></li>  
-            </ul>
+                </ul>
                 
                     <?php 
                     if($ordered_item["variant_id"] != null && $ordered_item["variant_id"] != 0){?>

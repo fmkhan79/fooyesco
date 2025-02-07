@@ -8,7 +8,7 @@
         <div class="about-txt my-4 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right">
             <div class="row">
                 <div class="col-md-6">
-                    <p>This is a type of resturent which typically serves food and drink, in addition to light
+                    <p >This is a type of resturent which typically serves food and drink, in addition to light
                         refreshments such as baked goods or snacks. The term comes frome the rench word meaning food Are
                         you hungry? Did you have a long and stressful day? Interested in getting a cheesy pizza
                         delivered to your office or looking to avoid the weekly shop? Then Pakistan is the right

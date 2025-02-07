@@ -703,7 +703,7 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
 
 $('#txtfname').keydown(function (e) {
 
-  if ( e.ctrlKey || e.altKey) {
+  if (e.ctrlKey || e.altKey) {
   
     e.preventDefault();
     
@@ -726,7 +726,7 @@ $('#txtfname').keydown(function (e) {
 
 $('#txtlname').keydown(function (e) {
 
-  if (e.ctrlKey || e.altKey) {
+  if ( e.ctrlKey || e.altKey) {
   
     e.preventDefault();
     

@@ -127,7 +127,10 @@ class Cart_model extends Base_model
                 }
             }
         }
-    
+
+        
+        // print_r($menu_details);
+        // die();
         // Calculate price based on whether the menu item has variants
         if ($menu_details['has_variant'] == 1) {
 

@@ -264,14 +264,26 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                                         <div class="col-md-3 variant-and-addons-area">
                                             <strong class="d-block"><?php echo get_phrase('variant_details'); ?></strong>
                                             <?php if (!empty($ordered_item['variant_id'])) : ?>
-                                                
-                                                <?= $this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"] ?>
+                                                <?php
+                                                // print_r($ordered_item['variant_id']);
+                                                $menu_variant = $this->db->get_where('variants', ['id' => $ordered_item['variant_id']])->row_array();
+                                                // print_r($menu_variant);
+                                                $menu_variant_exploded = explode(',', $menu_variant['variant']);
+                                                foreach ($menu_variant_exploded as $menu_variant_with_option_id) {
+                                                    // print_r("ali jee1" . $menu_variant_with_option_id);
 
+                                                    $menu_variant_with_option_id_exploded = explode('-', $menu_variant_with_option_id);
+                                                    $menu_variant_option_id = $menu_variant_with_option_id_exploded[0];
+                                                    $menu_variant_option = $this->db->get_where('variant_options', ['id' => $menu_variant_option_id])->row_array();
+                                                    // print_r("ali jee" . $menu_variant_option);
+                                                    echo sanitize($menu_variant_option['name']) . ' : ' . ucfirst(sanitize($menu_variant_with_option_id_exploded[1])) . '<br/> ';
+                                                }
+                                                ?>
                                             <?php else : ?>
                                                 <span><?php echo "None" ?></span>
                                             <?php endif; ?>
                                         </div>
-                                        <div class="col-md-2 variant-and-addons-area">
+                                        <div class="col-md-5 variant-and-addons-area">
                                             <strong class="d-block"><?php echo get_phrase('addons'); ?></strong>
                                             <?php if ($ordered_item['addons'] != "[]") : ?>
                                                 <?php 
@@ -300,7 +312,7 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                                             <?php else : ?>
                                                 <span><?php echo "None" ?></span>
                                             <?php endif; ?>
-                                        </div>
+                               
                                         <div class="col-md-2">
                                             <div class="order-detail-menu-unit-price mt-2">
                                                 <?php echo get_phrase('unit_price'); ?> :

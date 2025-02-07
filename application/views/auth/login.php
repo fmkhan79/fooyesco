@@ -22,6 +22,7 @@
 			<div class="text-center">
 				<img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>" class="auth-logo" alt="">
 			</div>
+
 			<form action="<?php echo site_url('auth/validate'); ?>" method="POST" class="login100-form">
 				<span class="login100-form-title p-b-37">
 					<?php echo get_phrase('sign_in'); ?>

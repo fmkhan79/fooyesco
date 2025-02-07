@@ -1324,8 +1324,8 @@ footer ul.footer-links li {
   }
 }
 .order-detail-btns {
-  position: sticky;
-  top: 2rem;
+  /* position: sticky; */
+  top: 0rem;
   top: 0rem;
   left: 0;
   width: 100%;
@@ -2018,6 +2018,7 @@ ul.billing-list-topbar li{ list-style: none;color: #000;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
+  pointer-events: none;
   line-height: normal; position: relative; width: 46%;}
   ul.billing-list-topbar li.last{ width: 14%;}
   ul.billing-list-topbar li .img-box{ width: fit-content; position: relative; z-index: 10;}
