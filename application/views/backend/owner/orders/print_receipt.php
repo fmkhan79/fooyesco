@@ -152,7 +152,7 @@
         <?php if($order_details['total_delivery_charge'] != "") { ?>
             <div class="did mt-3">
                 <span>Delivery Charges</span>
-                <span><?php echo number_format(sanitize($order_details['total_delivery_charge']), 2); ?></span>
+                <span><?php echo currency(sanitize($order_details['total_delivery_charge']), 2); ?></span>
 
             </div>
         <?php } else { ?>
