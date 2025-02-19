@@ -235,10 +235,10 @@
 
 
     <script>
-    //   window.print();
-    //     window.onafterprint = function() {
-    //         history.back();
-    //     } 
+    window.print();
+    setTimeout(() => {
+        history.back();
+    }, 1000); 
     </script>
 </body>
 </html>

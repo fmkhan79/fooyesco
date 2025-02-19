@@ -712,7 +712,7 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
 
 
             </div>
-            <div class="col-md-4 order-summery-box d-none d-md-block sticky" id="order-summary">
+            <div class="col-md-4 order-summery-box d-none d-md-block" id="order-summary">
                 <div class="sticky-offset">
                     <h3>Order Summary</h3>
                     <p class="green">You're all set</p>

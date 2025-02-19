@@ -82,7 +82,11 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
             <!-- Filter -->
             <div class="col-md-4 bg-white rounded sidebar p-0">
                 <div class="form-group has-search dt-hide">
-                    <input type="text" class="search-box" placeholder="Search for a dish or Restaurant">
+                    <!-- <input type="text" class="search-box" placeholder="Search for a dish or Restaurant"> -->
+                    <!-- <input type="text" id="address" placeholder="<?php //echo site_phrase('which_restaurant_are_you_looking_for'); ?>?"
+                                        class="btn-group1 banner-search" name="query" onchange="updateButtonState()" required> -->
+                                    <!-- <input type="hidden" name="latitude_1" class="form-control" id="latitude_1">
+                                    <input type="hidden" class="form-control" id="longitude_1" name="longitude_1"> -->
                 </div>
                 <div class="sort-box float-right dt-hide">Sorted by Best match
                     <a href="#"><img src="images/filter-icon.png" /></a>
@@ -229,12 +233,40 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
             <!-- .// end filter -->
 
 
-            <div class="col-md-8 mt-4 pt-5 ml-4">
+            <div class="col-md-8 ml-4">
 
 
-                <div class="form-group has-search mob-hide">
-                    <input type="text" class="search-box" placeholder="Search for a dish or Restaurant">
-                </div>
+            <div class="banner-form-box d-none d-md-block">
+                        <form action="<?php echo site_url('site/restaurants/filter'); ?>" class="form-wrap" method="GET">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <div class="form-group has-search">
+                                    <span class="fa fa-search form-control-feedback"></span>
+                                </div>
+                                <input type="text" id="address-sc" placeholder="<?php echo site_phrase('which_restaurant_are_you_looking_for'); ?>?"
+                                    class="btn-group1 banner-search" name="query" onchange="updateButtonStatesc()">
+                                <input type="hidden" name="latitude_1" class="form-control" id="latitude_sc">
+                                <input type="hidden" class="form-control" id="longitude_sc" name="longitude_1">
+                                <button type="submit" class="btn-search disabled" id="searchsc">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" fill="none">
+                                        <circle cx="21" cy="21" r="21" fill="#FDC55E"></circle>
+                                    </svg>
+                                    <span class="icon-magnifier search-icon"></span>
+                                </button> 
+                            </div>
+
+
+                        <div class="slider-link text-left">
+                  
+                            <!-- <button class="btn btn-danger banner-btn mb-2">
+                                    
+                                Order now
+                                </button> -->
+
+                            <!-- <span>Or</span>  -->
+                            </form>
+
+                        
+                        </div>
 
 
                 <div class="sort-box float-right mob-hide">Sorted by Best match
