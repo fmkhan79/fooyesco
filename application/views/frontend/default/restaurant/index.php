@@ -68,6 +68,10 @@
 #myBtn:hover {
   background-color: #555;
 }
+#cal{
+    bottom: -0.1em!important;
+    font-size: 0.5em;
+}
 </style>
 <!-- RESTAURANT GALLERY -->
 
@@ -77,7 +81,7 @@
 
     <div class="container bg-white text-dark border border-light">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8" style="padding-left: 20px;">
                 <div class="d-md-flex justify-content-between">
                     <div class="detail-wbox-title">
                         <h3>
@@ -150,22 +154,22 @@
 
                 <div class="row my-4 free-delivery-list">
 
-                    <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
+                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
                         Delivery fee :
                         0-
                         <?php echo $restaurant_details['delivery_charge']; ?>$
                     </div>
-                    <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
+                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
                         Order : 10 $
                     </div>
-                    <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
+                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
                         <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
                             class="collect-box" style="display:none">I
                             want to collect</span>
                     </div>
-                    <div class="col-md-3 col-sm-6 red"><img src="<?php echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
-                        <?php echo $restaurant_details['maximum_time_to_deliver']; ?> mins
-                    </div>
+                    <!-- <div class="col-md-3 col-sm-6 red"><img src="<?php //echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
+                        <?php //echo $restaurant_details['maximum_time_to_deliver']; ?> mins
+                    </div> -->
 
                 </div>
 
@@ -173,7 +177,8 @@
                     <h3><strong>About"
                             <?php echo $restaurant_details['name']; ?>"
                         </strong></h3>
-                    <?php echo $restaurant_details['restaurant_about']; ?>. <a class="red" href="#"> READ MORE</a>
+                    <?php echo $restaurant_details['restaurant_about']; ?>. 
+                    <!-- <a class="red" href="#"> READ MORE</a> -->
                 </div>
 
             </div>
@@ -279,7 +284,7 @@
                                 <div class="order-about">
                                     <h3><strong>About "<?php echo $restaurant_details['name']; ?>"</strong></h3>
                                     <?php echo $restaurant_details['restaurant_about']; ?>.
-                                    <a class="red" href="#"> READ MORE</a>
+                                    <!-- <a class="red" href="#"> READ MORE</a> -->
                                 </div>
 
                                 <div class="col-md-4">
@@ -309,27 +314,27 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 ?>
 <!-- Offer area -->
-<section class="free-delivery-section order-detail-page mb-2 mt-3">
+<!-- <section class="free-delivery-section order-detail-page mb-2 mt-3">
     <div class="container bg-red p-4 text-light rounded border-light">
         <div class="d-md-flex align-items-center">
             <div class="col-md-9">
-                <h3><?php echo !is_null($heading) ? $heading : 'Offers Coming soon'; ?></h3>
+                <h3><?php //echo !is_null($heading) ? $heading : 'Offers Coming soon'; ?></h3>
                 <p class="p-0 m-0">
-                    <?php echo !is_null($description) ? $description : 'Be there, we will have an amazing offer.'; ?>
+                    <?php //echo !is_null($description) ? $description : 'Be there, we will have an amazing offer.'; ?>
                 </p>
             </div>
-            <div id="viewOrderButton" class="col-md-3 text-center"><a <?php if (!empty($ctaLink)) {
-                                                        echo 'href="' . $ctaLink . '"';
-                                                    } ?> class="w-rounded-btn">More
+            <div id="viewOrderButton" class="col-md-3 text-center"><a <?php //if (!empty($ctaLink)) {
+                                                        //echo 'href="' . $ctaLink . '"';
+                                                   // } ?> class="w-rounded-btn">More
                     Offers</a></div>
         </div>
     </div>
-</section>
+</section> -->
 <!-- ./Offer area -->
 
 <?php $restaurant_categories = $this->category_model->get_all(); ?>
 <!-- Category tabs with scrool nav -->
-<section class="order-detail-btns">
+<section class="container order-detail-btns">
     <div class="container">
         <div class="order-detail-slider owl-carousel owl-theme my-5">
             <?php foreach ($restaurant_categories as $restaurant_category) { ?>
@@ -797,7 +802,7 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
 
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
-                        <div class="subtotal">Delivery Charges</div>
+                        <div class="subtotal">Delivery Charges <sub id="cal">(Calculated On Checkout)</sub></div>
                         <div class="total-delivery-price"></div>
                     </div>
 

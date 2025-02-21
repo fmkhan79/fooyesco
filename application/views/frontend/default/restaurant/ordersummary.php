@@ -14,7 +14,8 @@ if (count($restaurant_ids) > 0):
         <span>
             <span id="cart-quantity-<?php echo sanitize($cart_item['id']); ?>">
                 <?php echo sanitize($cart_item['quantity']); ?>
-            </span> x <?php echo sanitize($cart_item['menu_name']); ?>
+            </span> x <?php echo html_entity_decode(sanitize($cart_item['menu_name'])); ?>
+
         </span>
         <?php 
                 // Display options_1_details if available
