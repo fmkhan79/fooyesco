@@ -48,8 +48,8 @@
                                     </a>
                                 </li>
                                 <li class="cart-menu ml-3">
-                                    <a href="<?php echo site_url('site/restaurants/recent'); ?>" class="cart-btn"><span class="cart-items"
-                                            id="#cart-items">
+                                <a href="<?php echo site_url('site/restaurant/chilli-hut-march/3'); ?>" class="cart-btn"><span class="cart-items"
+                                id="#cart-items">
                                             <?php echo sanitize($this->cart_model->total_cart_items()); ?>
                                         </span><img
                                             src="<?php echo base_url('assets/frontend/default/images/cart-icon.png') ?>" /></a>

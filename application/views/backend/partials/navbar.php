@@ -9,8 +9,7 @@
     </li>
     <?php if ($this->session->userdata('user_role') == "customer") : ?>
       <li class="nav-item mt-1 d-sm-inline-block ml-1">
-        <a href="<?php echo site_url('cart'); ?>" class="btn btn-sm btn-secondary" role="button"><i class="fas fa-shopping-cart"></i> <?php echo get_phrase('view_cart'); ?></a>
-      </li>
+      <a href="<?php echo site_url('site/restaurant/chilli-hut-march/3'); ?>" class="btn btn-sm btn-secondary" role="button"><i class="fas fa-shopping-cart"></i> <?php echo get_phrase('view_cart'); ?></a>      </li>
     <?php endif; ?>
   </ul>
 

@@ -64,6 +64,34 @@
     display: none; /* Initially hide the button */
     cursor: pointer; /* Pointer on hover */
 }
+    #viewmyBtn {
+  /* display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #ed2c0d;
+  color: white;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px; */
+
+  display: none;
+  position: fixed; /* Fix button to the screen */
+    bottom: 20px; /* Position from the bottom */
+    right: 30px;
+    /* Ensure it's centered */
+    z-index: 99; /* Ensure it's on top of other content */
+    background-color: #ff4d4d; /* Button background color */
+    color: white;
+    padding: 10px 10px; /* Button padding */
+    border-radius: 8px; /* Rounded corners */
+    display: none; /* Initially hide the button */
+    cursor: pointer; /* Pointer on hover */
+}
 
 #myBtn:hover {
   background-color: #555;
@@ -71,6 +99,7 @@
 #cal{
     bottom: -0.1em!important;
     font-size: 0.5em;
+    left: 25px;
 }
 </style>
 <!-- RESTAURANT GALLERY -->
@@ -189,10 +218,14 @@
 
 
 <!-- RESTAURANT TITLE HEADER -->
-<section class="detail-wbox mt-4 d-md-none">
-<button onclick="topFunction()" class="border-0 fw-bold" id="myBtn" style="background-color: #ff4d4d; display: block; border-radius: 38px;" title="Go to top">Top</button>
-
-    <div class="container bg-white text-dark border border-light">
+<section class="detail-wbox mt-4">
+<button onclick="topFunction()" class="border-0 fw-bold d-md-none" id="myBtn" style="background-color: #ff4d4d; display: block; border-radius: 38px;" title="Go to top">Top</button>
+<button onclick="viewtopFunction()" class="border-0 fw-bold d-none d-lg-block" 
+    id="viewmyBtn" style="background-color: #ff4d4d; border-radius: 38px; display: none !important;" 
+    title="Go to top">
+    View My Order
+</button>
+    <div class="container bg-white text-dark border border-light d-md-none">
         <div class="row">
             <div class="col-md-8">
                 <div class="d-md-flex justify-content-between">
@@ -1016,6 +1049,8 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
         });
     });
 
+    
+
 let mybutton = document.getElementById("myBtn");
 
 // When the user scrolls down 20px from the top of the document, show the button
@@ -1034,6 +1069,10 @@ function topFunction() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
+// function viewtopFunction() {
+//   document.body.scrollTop = 500;
+//   document.documentElement.scrollTop = 500;
+// }
 
 
 const scrollToOrderButton = document.getElementById('scrollToOrderButton');
@@ -1095,7 +1134,21 @@ console.log(status);
         console.log("not deleted yet")
     }
 
+    // Button ko select karein
+    let viewmyBtn = document.getElementById("viewmyBtn");
 
+    // Jab user scroll kare, function chalay ga
+    window.addEventListener("scroll", function() {
+        if (window.scrollY > 100) { 
+            viewmyBtn.style.display = "block"; // 100px scroll hone ke baad dikhayein
+        } else {
+            viewmyBtn.style.display = "none"; // 100px se kam scroll hone par chupayein
+        }
+    });
+
+    function viewtopFunction() {
+        window.scrollTo({ top: 500, behavior: 'smooth' }); // Smooth scrolling effect
+    }
 
 </script>
 
