@@ -142,6 +142,9 @@ if (count($restaurant_ids) > 0):
             <span class="d-block mt-2">
                 <?php echo site_phrase('your_order_has_been_placed_successfully'); ?>.
             </span>
+            <a href="https://fooyes.co.uk/" class="rr-btn btn-danger mt-4">
+    Go To Home
+</a>
             <span class="d-block mt-2">
                 <!-- <?php // echo site_phrase('check_your_order_status'); ?> <a href="<?php // echo site_url('orders/today'); ?>"> -->
                     <!-- <php echo strtolower(site_phrase('here')); ?>. -->
@@ -188,8 +191,8 @@ if (count($restaurant_ids) > 0):
         </div>
     </div>
 </section>
-<script>
+<!-- <script>
     var timer = setTimeout(function() {
         window.location = window.location.origin + '/site/restaurants/recent';
     }, 4000);
-</script>
+</script> -->

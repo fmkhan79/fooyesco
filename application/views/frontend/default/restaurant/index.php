@@ -99,7 +99,7 @@
 #cal{
     bottom: -0.1em!important;
     font-size: 0.5em;
-    left: 25px;
+    left: 45px;
 }
 </style>
 <!-- RESTAURANT GALLERY -->
