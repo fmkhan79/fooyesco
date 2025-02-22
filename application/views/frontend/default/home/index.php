@@ -65,17 +65,18 @@
                         <div class="slider-link text-left">
                             <button type="submit" class="btn btn-danger banner-btn" style="
                             color: #FFF;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 600;
     line-height: 100%;
     letter-spacing: 0.16px;
     border-radius: 41px;
-    padding: 16px;
+    padding: 13px;
     vertical-align: sub;
     margin-right: 17px;
     background: #F54748 !important;
     border-color: #F54748 !important;
+
 
                             " id="searchwc">
                                
@@ -93,13 +94,13 @@
 
                             <button class="btn btn-danger banner-btn"style="
                             color: #FFF;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 600;
     line-height: 100%;
     letter-spacing: 0.16px;
     border-radius: 41px;
-    padding: 16px;
+    padding: 13px;
     vertical-align: sub;
     margin-right: 17px;
     background: #F54748 !important;
