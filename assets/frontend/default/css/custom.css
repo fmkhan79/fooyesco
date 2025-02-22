@@ -1321,7 +1321,7 @@ footer ul.footer-links li {
   width: 100%;
   z-index: 10;
   background: #fff;
-  border-radius: 20px;
+  /* border-radius: 20px; */
 }
 .owl-carousel .owl-stage-outer{
   padding: 10px 0px;
@@ -1335,6 +1335,12 @@ footer ul.footer-links li {
   color: #424242;
   background: #dedede;
   border-radius: 50px;
+}
+
+@media(max-width: 425px){
+  .order-detail-btns a {
+    font-size: 13px;
+  }
 }
 
 .order-detail-btns a:hover {

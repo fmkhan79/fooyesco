@@ -89,7 +89,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                     <input type="hidden" class="form-control" id="longitude_1" name="longitude_1"> -->
                 </div>
                 <div class="sort-box float-right dt-hide">Sorted by Best match
-                    <a href="#"><img src="images/filter-icon.png" /></a>
+                    <!-- <a href="#"><img src="images/filter-icon.png" /></a> -->
                 </div>
                 <div class="location-box d-flex">
                   <div class="location-icon">
@@ -107,8 +107,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             <?php echo site_phrase('filter_by'); ?>
                             <a href="<?php echo site_url('site/restaurants/filter'); ?>">Clear</a>
                         </div>
-
-                        <div class="filter-list mb-4 all-other">
+<div class="d-flex d-md-block">
+                        <div class="filter-list mb-4 all-other pe-4">
                             <div class="filter-heading d-flex justify-content-between align-items-center">
                                 <?php echo ucwords(site_phrase('all_cuisine')); ?>
                                 <span class="icon-arrow-down"></span>
@@ -143,6 +143,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                       echo "checked"; ?> /><?php echo sanitize($category_row['name']); ?></li>
                                 <?php endforeach; ?>
                             </ul>
+                        </div>
                         </div>
                         <button type="submit" class="btn btn-danger btn-lg w-100" style="border-radius: 22px">
                             <?php echo site_phrase('filter'); ?>

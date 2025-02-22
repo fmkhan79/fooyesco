@@ -5,7 +5,8 @@
 
 <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRluKUOUHip7mS2d-BWqzfXpIu--VXroo&callback=initMap&libraries=places&v=weekly"
-    defer></script>
+    defer>
+</script>
 
 <script>
 "use strict";

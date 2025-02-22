@@ -367,18 +367,32 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 <?php $restaurant_categories = $this->category_model->get_all(); ?>
 <!-- Category tabs with scrool nav -->
-<section class="container order-detail-btns">
-    <div class="container">
-        <div class="order-detail-slider owl-carousel owl-theme my-5">
-            <?php foreach ($restaurant_categories as $restaurant_category) { ?>
-                <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
-                    <?php echo $restaurant_category['name']; ?>
-                </a>
-            <?php } ?>
-        </div>
 
+<section class="order-detail-btns container d-none d-lg-block " style="border-radius: 20px;">
+    <div class="container">
+    <div class="order-detail-slider owl-carousel owl-theme my-5 ">
+        <?php foreach ($restaurant_categories as $restaurant_category) { ?>
+            <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
+                <?php echo $restaurant_category['name']; ?>
+            </a>
+        <?php } ?>
+    </div>
+    </div>
+ 
+</section>
+
+<section class="order-detail-btns container-fluid d-lg-none">
+<div class="container">
+    <div class="order-detail-slider owl-carousel owl-theme my-5">
+        <?php foreach ($restaurant_categories as $restaurant_category) { ?>
+            <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
+                <?php echo $restaurant_category['name']; ?>
+            </a>
+        <?php } ?>
+    </div>
     </div>
 </section>
+
 <!-- ./Category tabs with scrool nav -->
 
 <div class="container mt-5">
@@ -986,6 +1000,7 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
                 <!-- <a href="<?php echo base_url('cart'); ?>" class="d-block order-red-btn text-center mt-4">Order
                         Now!</a> -->
             </div>
+            
         </div>
     </div>
 </section>
