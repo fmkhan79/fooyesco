@@ -37,48 +37,13 @@
                         </div>
 
                         <!-- for mobile  -->
-                        <div class="banner-form-box d-md-none">
-                            <form action="<?php echo site_url('site/restaurants/filter'); ?>" class="form-wrap mt-4" method="GET">
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <div class="form-group has-search">
-                                        <span class="fa fa-search form-control-feedback"></span>
-                                    </div>
-                                    <input type="text" id="address" placeholder="<?php echo site_phrase('which_restaurant_are_you_looking_for'); ?>?"
-                                        class="btn-group1 banner-search" name="query" onchange="updateButtonState()" required>
-                                    <input type="hidden" name="latitude_1" class="form-control" id="latitude_1">
-                                    <input type="hidden" class="form-control" id="longitude_1" name="longitude_1">
-                                    <div class="slider-link-mobile text-left" style="display:flex; justify-content:center;">
-                                        <div class="mb-5">
-                                        <button class="btn btn-danger banner-btn disabled" id="search-btn"
-                                            href="<?php echo site_url('site/restaurants/filter'); ?>">
-                                            Order now
-                                        </button>
-                                        <a class="btn btn-danger banner-btn p-2"
-                                href="<?php echo site_url('site/how_to_order'); ?>">
-                                How to order
-                            
-                            </a>
-                            </div>
-
-                                    </div>
-                            
-                                </form>
-
-
-                            <!-- <div class="slider-link text-left">
-                                <a class="btn btn-danger banner-btn mb-2"
-                                    href="<?php echo site_url('site/restaurants/filter'); ?>">
-                                    Order now
-                                </a> -->
-
-                        </div>
-                    </div>
+                  
 
                     <!-- end for mobile  -->
 
 
                      <!-- start for desktop -->
-                    <div class="banner-form-box d-none d-md-block">
+                    <div class="banner-form-box d-md-block">
                         <form action="<?php echo site_url('site/restaurants/filter'); ?>" class="form-wrap mt-4" method="GET">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <div class="form-group has-search">
@@ -109,7 +74,7 @@
     padding: 16px;
     vertical-align: sub;
     margin-right: 17px;
-        background: #F54748 !important;
+    background: #F54748 !important;
     border-color: #F54748 !important;
 
                             " id="searchwc">
@@ -126,10 +91,22 @@
                             <!-- <span>Or</span>  -->
                             </form>
 
-                            <a class="btn btn-danger banner-btn"
+                            <button class="btn btn-danger banner-btn"style="
+                            color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%;
+    letter-spacing: 0.16px;
+    border-radius: 41px;
+    padding: 16px;
+    vertical-align: sub;
+    margin-right: 17px;
+    background: #F54748 !important;
+    border-color: #F54748 !important;
                                 href="<?php echo site_url('site/how_to_order'); ?>">
                                 How to order
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>

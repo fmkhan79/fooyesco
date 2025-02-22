@@ -234,9 +234,13 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
             <div class="col-md-8 ml-4">
+<style>
+    .btn-search{
+        top: 0;
+    }
+</style>
 
-
-            <div class="banner-form-box d-none d-md-block">
+            <div class="banner-form-box">
                         <form action="<?php echo site_url('site/restaurants/filter'); ?>" class="form-wrap" method="GET">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <div class="form-group has-search">
