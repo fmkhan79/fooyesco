@@ -649,24 +649,12 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
         echo $price->menu; ?>')">
 <?php endif; ?>
     <!-- Your other content here -->
-
-                                    <div class="d-flex order-detail-box-txt align-items-center justify-content-between">
-                                        <div class="col-md-8 d-flex align-items-center p-0 m-0">
+                                    <div class="d-flex order-detail-box-txt align-items-center justify-content-between flex-row-reverse flex-md-row">
+                                        <div class="col-md-8 d-flex align-items-center p-0 m-0 flex-md-row flex-row-reverse
+">
                                             <div class="item-img-box mr-3"><a><img class="rounded-circle"
                                                         src="<?php echo base_url('uploads/menu/') . $menu['thumbnail']; ?>" height="80  px" width="80px" /></a></div>
-                                            <div class="item-txt-box">
-                                                <h3>
-                                                    <span>
-                                                        <?php echo ucfirst($menu['name']); ?>
-                                                    </span>
-                                                </h3>
-                                                <?php echo $menu['details']; ?>
-                                            </div>
-                                        </div>
-                                        <div class="price col-md-2">
-                                            <?php echo currency($starts_from->menu); ?>
-                                        </div>
-                                        <div class="order col-md-2">
+                                                        <div class="order col-md-2 d-md-none">
                                             <a href="#" data-toggle="modal"
                                                 onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
                                                                                                         echo $price->menu; ?>)">
@@ -693,7 +681,71 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
     Owner <br> can't <br> order
 </button>
 <?php else: ?>
-    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none" class="svg-mobile">
+        <g clip-path="url(#clip0_4609_18554)">
+            <path d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M28 21V35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+        <defs>
+            <clippath id="clip0_4609_18554" >
+                <rect width="56" height="56" fill="white" />
+            </clippath>
+        </defs>
+    </svg>
+<?php endif; ?>
+                                            </a>
+                                        </div>
+                                            <div class="item-txt-box d-none d-md-block">
+                                                <h3>
+                                                    <span>
+                                                        <?php echo ucfirst($menu['name']); ?>
+                                                    </span>
+                                                </h3>
+                                                <?php echo $menu['details']; ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 d-flex p-0 m-0 flex-column-reverse flex-md-row align-items-center">
+                                            <!-- <div class="col-md-2 d-md-none"></div> -->
+                                        <div class="price col-md-6 p-0">
+                                            <?php echo currency($starts_from->menu); ?>
+                                        </div>
+                                        <div class="item-txt-box col-md-6 p-0 d-md-none">
+                                                <h3>
+                                                    <span>
+                                                        <?php echo ucfirst($menu['name']); ?>
+                                                    </span>
+                                                </h3>
+                                                <?php echo $menu['details']; ?>
+                                            </div>
+                                        <div class="order col-md-2 d-none d-md-block">
+                                            <a href="#" data-toggle="modal"
+                                                onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
+                                                                                                        echo $price->menu; ?>)">
+
+
+                                        
+ <?php // Load the model
+$this->load->model('user_model');
+
+// Get the current user ID from session (assuming user ID is stored in session)
+$user_id = $this->session->userdata('user_id');
+
+// Check if the user is an owner (role_id = 3)
+$isOwner = $this->user_model->check_user_role($user_id);
+
+// Pass the result to the view
+$data['isOwner'] = $isOwner; // Pass to the view (if needed)
+// print_r($isOwner);
+                        ?>
+                                           <?php if ($isOwner): ?>
+                                            <button class="btn" disabled style="width: 114px; height: 70px; padding: 0; word-wrap: break-word;
+ font-size: 14px; color:red; display: flex; align-items: center; justify-content: center; padding-right: 65px;
+" disabled>
+    Owner <br> can't <br> order
+</button>
+<?php else: ?>
+    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none" class="svg-mobile">
         <g clip-path="url(#clip0_4609_18554)">
             <path d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -708,6 +760,9 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
 <?php endif; ?>
                                             </a>
                                         </div>
+                                        </div>
+                                  
+                                  
                                     </div>
                                 </div>
                                 <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

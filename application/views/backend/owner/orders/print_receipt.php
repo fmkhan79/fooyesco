@@ -22,13 +22,9 @@
             display: flex;
             justify-content: space-between;
             list-style: none;
-    padding: 0px;
-    margin: 10px 0px;
+            padding: 0px;
+            margin: 10px 0px;
         }
-        /* .receipt .line-item {
-            border-bottom: 1px dashed #ddd;
-            padding: 5px 0;
-        } */
         .receipt .total {
             font-weight: bold;
         }
@@ -84,11 +80,11 @@
         <?php } ?>
 
         <!-- <p style="margin:0px;"><?php echo date("Y-m-d H:i:s", $order_details['order_placed_at']); ?></p> -->
-        <div class="did">
+        <!-- <div class="did">
             <h4>Ordered Items:</h4>
             <h4 class="">Price Items:</h4>
         </div>
-        <hr>
+        <hr> -->
         <div id="ordered_items">
             <?php 
             $total_items = 0; // Variable to count total ordered items

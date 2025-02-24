@@ -425,7 +425,7 @@ class Menu_model extends Base_model
                 "</ul>".
                 "<ul style='margin:0px;list-style:none;padding: 0;'>"
                 ."<li>" . 
-                ($addon_ar["price"] == 0 ? "Free" : "£" . number_format($addon_ar["price"], 2)) . 
+                ($addon_ar["price"] == 0 ? "" : "£" . number_format($addon_ar["price"], 2)) . 
                 "</li>" .
                 "</ul>"  .  
                  "</div>";
