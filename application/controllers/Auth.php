@@ -8,10 +8,101 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * AUTH CONTROLLER FOR LOGGIN IN AND LOGGIN OT=UT FUNCTIONALITIES
  */
 
+//  require_once FCPATH . 'vendor/autoload.php';
+
+
 include 'Base.php';
 class Auth extends Base
 {
+	private $google_client;
 
+	public function __construct()
+    {
+        parent::__construct();
+
+        // Load Google API Client Library
+		require_once FCPATH . 'vendor/autoload.php';
+		$this->load->config('google');
+
+        $this->google_client = new Google_Client();
+        
+        // Set Google OAuth credentials
+		$this->google_client->setClientId($this->config->item('google_client_id'));
+        $this->google_client->setClientSecret($this->config->item('google_client_secret'));
+        $this->google_client->setRedirectUri($this->config->item('google_redirect_uri'));
+
+        $this->google_client->addScope('email');
+		$this->google_client->addScope('profile'); 
+	}
+
+	public function google_login()
+    {
+        // Create Google login URL
+        $auth_url = $this->google_client->createAuthUrl();
+        redirect($auth_url);
+    }
+
+    // Google OAuth callback
+	public function google_callback()
+	{
+		// Handle Google OAuth callback
+		if (isset($_GET['code'])) {
+			$this->google_client->authenticate($_GET['code']);
+			$access_token = $this->google_client->getAccessToken();
+			$this->google_client->setAccessToken($access_token);
+	
+			// Get user info from Google
+			$google_service = new Google_Service_Oauth2($this->google_client);
+			$google_account_info = $google_service->userinfo->get();
+	
+			// Debugging: Check the retrieved user info
+			// print_r($google_account_info);
+			// die();
+	
+			// Load User Model
+			$this->load->model('user_model');
+			$this->load->model('auth_model');
+
+			// Always create a new user entry
+			$user_data = [
+				'name' => $google_account_info->name,
+				'email' => $google_account_info->email,
+				'google_id' => $google_account_info->id,
+				'role_id' => '2', // Default role
+				'password' => '40bd001563085fc35165329ea1ff5c5ecbdbbeef',
+			];
+	
+			// Insert new user
+			$user_id = $this->user_model->register_user($user_data);
+	
+			// Debugging: Check if user is created successfully
+			if ($user_id) {
+				$this->session->set_userdata('user_id', $user_data['id']);
+				$this->session->set_userdata('user_role_id', 2);
+				$this->session->set_userdata('customer_login', 1);
+            
+				$this->session->set_userdata('logged_in_user_role', 'customer');
+
+				$this->session->set_userdata('is_logged_in', 1);
+				$this->session->set_flashdata('flash_message', 'Welcome ' . $google_account_info->name);
+				$this->session->set_userdata('user_role', "customer");
+
+				
+				// print_r($user_id);
+			// die();
+			// echo "jan";
+				
+			redirect(site_url('/'));
+
+			} else {
+				$this->session->set_flashdata('error_message', 'Registration failed, try again.');
+				redirect(site_url('auth/google_login'));
+			}
+		}
+	}
+	
+
+	
 	public function index()
 	{
 		if ($this->session->userdata('is_logged_in')) {
@@ -87,7 +178,9 @@ class Auth extends Base
 	 */
 	public function registration($role)
 	{
+
 		if ($this->session->userdata('is_logged_in')) {
+			
 			redirect(site_url('dashboard'), 'refresh');
 		}
 		$page_data['role'] = sanitize($role);

@@ -46,6 +46,13 @@
 						<?php echo get_phrase('sign_in'); ?>
 					</button>
 				</div>
+				<div class="container-login100-form-btn">
+
+				<a href="<?php echo site_url('auth/google_login'); ?>" class="btn btn-danger mt-2">
+    Login with Google
+</a> 	
+</div>
+
 
 				<div class="text-center p-t-57 p-b-20">
 					<span class="txt1 d-block">

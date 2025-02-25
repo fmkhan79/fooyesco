@@ -16,6 +16,18 @@ class User_model extends Base_model
         $this->table = "users";
     }
 
+
+    public function get_user_by_email($email)
+    {
+        return $this->db->get_where('users', ['email' => $email])->row_array();
+    }
+
+    public function register_user($data)
+    {
+        $this->db->insert('users', $data);
+        return $this->db->insert_id();
+    }
+
     public function is_user_guest($user_id) {
         // Select only the is_guest field
         $this->db->select('is_guest'); 
@@ -42,6 +54,15 @@ class User_model extends Base_model
 
         return false; // User not found
     }
+    public function get_user_by_google_id($google_id)
+{
+    // Query to check if a user with the given Google ID exists in the 'users' table
+    $query = $this->db->get_where('users', ['google_id' => $google_id]);
+    
+    // If the user exists, return their data
+    return $query->row_array();  // This will return the user data as an associative array, or null if no user found
+}
+
 
 
     // GET USER BY ID

@@ -104,6 +104,7 @@ class Auth_model extends CI_Model
      */
     public function auto_login($role, $user_id)
     {
+        
         $user_data = $this->user_model->get_user_by_id($user_id);
         
         if (count($user_data) > 0 && $user_data['status']) {
