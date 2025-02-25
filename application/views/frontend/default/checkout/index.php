@@ -25,11 +25,7 @@ $stripe_settings = json_decode($stripe_settings);
 .order-delivery-types{
     display:none;
 }
-#cal{
-    bottom: -0.1em!important;
-    font-size: 0.5em;
-    left: 45px;
-}
+
 </style>
 <section class="detail-wbox mt-4 mb-2 p-5 d-flex justify-content-around">
     <div class="container bg-white text-dark border border-light p-5 w-75">
@@ -381,14 +377,14 @@ $stripe_settings = json_decode($stripe_settings);
             </div>
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
-                <div class="subtotal">Delivery Charges</div>
-                <div class="total-delivery-price">x</div>
+            <div class="subtotal">Delivery Charges <sub id="cal">(Calculated On Checkout)</sub></div>
+                <div class="total-delivery-price"></div>
             </div>
 
-            <div class="total-price-box d-none justify-content-between align-items-center">
+            <!-- <div class="total-price-box d-none justify-content-between align-items-center">
                 <div class="subtotal">VAT Charges</div>
                 <div class="total-vat-price"></div>
-            </div>
+            </div> -->
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
                 <div class="subtotal">Service Charges</div>

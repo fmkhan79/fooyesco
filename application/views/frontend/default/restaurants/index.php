@@ -76,7 +76,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
 <section class="order-listing mt-4 mb-2">
-    <div class="container p-4 text-dark">
+    <div class="container p-0 text-dark">
         <div class="d-md-flex">
 
             <!-- Filter -->
@@ -234,7 +234,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
             <!-- .// end filter -->
 
 
-            <div class="col-md-8 ml-4">
+            <div class="col-md-8 ml-3">
 <style>
     .btn-search{
         top: 0;
@@ -355,18 +355,18 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             <div class="order-time-delivery-list">
 
                                 <ul>
-                                    <li class="red"><img
+                                    <!-- <li class="red"><img
                                             src="<?php echo base_url('assets/frontend/default/images/time-icon.png') ?>"
                                             alt="time-icon" /><?php echo $restaurant["maximum_time_to_deliver"]; ?> mins
-                                    </li>
+                                    </li> -->
                                     <li class="gray"><img
                                             src="<?php echo base_url('assets/frontend/default/images/delivery-icon.png') ?>"
                                             alt="delivery-icon" />Delivery fee
                                         : 0-<?php echo $restaurant["delivery_charge"]; ?> £ Min
                                         Order : 10£</li>
-                                    <li><img src="<?php echo base_url('assets/frontend/default/images/cheeky-icon.png') ?>"
+                                    <!-- <li><img src="<?php echo base_url('assets/frontend/default/images/cheeky-icon.png') ?>"
                                             alt="cheeky-icon" />Cheeky tuesday - 20%
-                                        off when you spend</li>
+                                        off when you spend</li> -->
                                     <li><img src="<?php echo base_url('assets/frontend/default/images/price-icon.png') ?>"
                                             alt="price-icon" />$15</li>
                                 </ul>

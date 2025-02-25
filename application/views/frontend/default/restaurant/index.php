@@ -543,14 +543,14 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     </div>
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
-                        <div class="subtotal">Delivery Charges</div>
+                    <div class="subtotal">Delivery Charges <sub id="cal">(Calculated On Checkout)</sub></div>
                         <div class="total-delivery-price"></div>
                     </div>
 
-                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                    <!-- <div class="total-price-box d-flex justify-content-between align-items-center">
                         <div class="subtotal">VAT Charges</div>
                         <div class="total-vat-price"></div>
-                    </div>
+                    </div> -->
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
                         <div class="subtotal">Service Charges</div>
@@ -908,10 +908,10 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
                         <div class="total-delivery-price"></div>
                     </div>
 
-                    <div class="total-price-box d-none justify-content-between align-items-center">
+                    <!-- <div class="total-price-box d-none justify-content-between align-items-center">
                         <div class="subtotal">VAT Charges</div>
                         <div class="total-vat-price"></div>
-                    </div>
+                    </div> -->
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
                         <div class="subtotal">Service Charges</div>

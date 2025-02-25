@@ -73,7 +73,7 @@
     border-radius: 41px;
     padding: 13px;
     vertical-align: sub;
-    margin-right: 17px;
+    margin-right: 5px;
     background: #F54748 !important;
     border-color: #F54748 !important;
 
@@ -102,7 +102,7 @@
     border-radius: 41px;
     padding: 13px;
     vertical-align: sub;
-    margin-right: 17px;
+    margin-right: 5px;
     background: #F54748 !important;
     border-color: #F54748 !important;
                                 href="<?php echo site_url('site/how_to_order'); ?>">
@@ -369,3 +369,4 @@
         </div>
     </div>
 </section>
+

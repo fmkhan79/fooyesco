@@ -404,14 +404,14 @@ $stripe_settings = json_decode($stripe_settings);
             </div>
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
-                <div class="subtotal">Delivery Charges</div>
-                <div class="total-delivery-price">x</div>
+            <div class="subtotal">Delivery Charges <sub id="cal">(Calculated On Checkout)</sub></div>
+                <div class="total-delivery-price"></div>
             </div>
 
-            <div class="total-price-box d-none justify-content-between align-items-center">
+            <!-- <div class="total-price-box d-none justify-content-between align-items-center">
                 <div class="subtotal">VAT Charges</div>
                 <div class="total-vat-price"></div>
-            </div>
+            </div> -->
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
                 <div class="subtotal">Service Charges</div>

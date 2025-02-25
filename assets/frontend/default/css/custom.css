@@ -654,6 +654,7 @@ a.w-rounded-btn:hover {
   font-weight: 700;
   font-size: 11px;
   cursor: pointer;
+  margin-left: 10px;
 }
 
 .filter-clear-box a {
@@ -2076,10 +2077,26 @@ ul.billing-list-topbar img{ display: block; margin: 13px auto 0;}
 button:disabled{
   opacity:0.3;
 }
+#cal{
+  bottom: -0.1em!important;
+  font-size: 0.5em;
+  left: 45px;
+}
 
 @media (max-width: 425px) {
   .order-detail-box svg {
       left: 105px !important;
+  }
+  .order-img-box img {
+    border-radius: 50%;
+    width: 198px;
+    height: 198px;
+    position: relative;
+    top: -17px;
+    right: -25px;
+  }
+  #billing-address h4{
+    font-size: 25px;
   }
 }
 
@@ -2092,4 +2109,7 @@ button:disabled{
   .order-detail-box svg {
       left: 75px !important;
   }
+}
+button:focus{
+  outline: none!important;
 }
