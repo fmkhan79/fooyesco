@@ -9,8 +9,7 @@
    
 <script>
 
-console.error = function() {};
-
+    
     "use strict";
     $(window).scroll(function() {
         // 100 = The point you would like to fade the nav in.
@@ -50,6 +49,12 @@ console.error = function() {};
 </script>
 
 <script>
+        window.console = {
+    log: function() {},
+    warn: function() {},
+    error: function() {},
+    info: function() {}
+};
     console.log('map script loaded!');
 
     function initMap() {
@@ -165,6 +170,7 @@ console.error = function() {};
     }
 
     window.initMap = initMap;
+
 
 
 
