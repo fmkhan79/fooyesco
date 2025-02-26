@@ -119,6 +119,8 @@ $autoload['config'] = array();
 */
 $autoload['language'] = array();
 
+$autoload['config'] = array('google');
+
 /*
 | -------------------------------------------------------------------
 |  Auto-load Models

@@ -12,28 +12,28 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
 include 'Base.php';
-class Auth extends Base
-{
-	private $google_client;
+class Auth extends Base {
+    private $google_client;
 
-	public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
-
-        // Load Google API Client Library
-		require_once FCPATH . 'vendor/autoload.php';
-		$this->load->config('google');
-
-        $this->google_client = new Google_Client();
         
-        // Set Google OAuth credentials
-		$this->google_client->setClientId($this->config->item('google_client_id'));
+        // Load the Google API Client Library
+        require_once FCPATH . 'vendor/autoload.php';
+
+        // Load the google configuration
+        $this->load->config('google');
+
+        // Initialize Google Client
+        $this->google_client = new Google_Client();
+
+        // Set Google OAuth credentials using the configuration
+        $this->google_client->setClientId($this->config->item('google_client_id'));
         $this->google_client->setClientSecret($this->config->item('google_client_secret'));
         $this->google_client->setRedirectUri($this->config->item('google_redirect_uri'));
-
         $this->google_client->addScope('email');
-		$this->google_client->addScope('profile'); 
-	}
+        $this->google_client->addScope('profile');
+    }
 
 	public function google_login()
     {
@@ -59,50 +59,52 @@ class Auth extends Base
 			// print_r($google_account_info);
 			// die();
 	
-			// Load User Model
-			$this->load->model('user_model');
-			$this->load->model('auth_model');
+			// Check if email already exists
+$this->db->where('email', $google_account_info->email);
+$existing_user = $this->db->get('users')->row_array();
 
-			// Always create a new user entry
-			$user_data = [
-				'name' => $google_account_info->name,
-				'email' => $google_account_info->email,
-				'google_id' => $google_account_info->id,
-				'role_id' => '2', // Default role
-				'password' => '40bd001563085fc35165329ea1ff5c5ecbdbbeef',
-			];
+
+if ($existing_user) {
+    // // Existing user - log them in
+	// print_r($existing_user);
+	// die();
+    $this->session->set_userdata('user_id', $existing_user['id']);
+    $this->session->set_userdata('user_role_id', $existing_user['role_id']);
+    $this->session->set_userdata('is_logged_in', 1);
+    $this->session->set_flashdata('flash_message', 'Welcome back ' . $google_account_info->name);
+	   redirect(site_url('/'));
+} else {
+    // New user - create new entry
+    $user_data = [
+        'name' => $google_account_info->name,
+        'email' => $google_account_info->email,
+        'google_id' => $google_account_info->id,
+        'role_id' => '2', // Default role
+        'is_guest' => '0',
+        'password' => '40bd001563085fc35165329ea1ff5c5ecbdbbeef',
+    ];
+	// print_r($user_data);
+    $user_id = $this->user_model->register_user($user_data);
 	
-			// Insert new user
-			$user_id = $this->user_model->register_user($user_data);
-	
-			// Debugging: Check if user is created successfully
-			if ($user_id) {
-				$this->session->set_userdata('user_id', $user_data['id']);
-				$this->session->set_userdata('user_role_id', 2);
-				$this->session->set_userdata('customer_login', 1);
-            
-				$this->session->set_userdata('logged_in_user_role', 'customer');
+    if ($user_id) {
 
-				$this->session->set_userdata('is_logged_in', 1);
-				$this->session->set_flashdata('flash_message', 'Welcome ' . $google_account_info->name);
-				$this->session->set_userdata('user_role', "customer");
-
-				
-				// print_r($user_id);
-			// die();
-			// echo "jan";
-				
-			redirect(site_url('/'));
-
-			} else {
-				$this->session->set_flashdata('error_message', 'Registration failed, try again.');
-				redirect(site_url('auth/google_login'));
-			}
-		}
-	}
-	
-
-	
+		// print_r($user_id);
+		// die();
+        $this->session->set_userdata('user_id', $user_data['id']);
+        $this->session->set_userdata('user_role_id', 2);
+        $this->session->set_userdata('customer_login', 1);
+        $this->session->set_userdata('logged_in_user_role', 'customer');
+        $this->session->set_userdata('is_logged_in', 1);
+        $this->session->set_flashdata('flash_message', 'Welcome ' . $google_account_info->name);
+        redirect(site_url('/'));
+    } else {
+        $this->session->set_flashdata('error_message', 'Registration failed, try again.');
+        redirect(site_url('auth/google_login'));
+    }
+}
+		
+}
+}
 	public function index()
 	{
 		if ($this->session->userdata('is_logged_in')) {
