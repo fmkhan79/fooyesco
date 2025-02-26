@@ -42,7 +42,6 @@ class Auth extends Base {
         redirect($auth_url);
     }
 
-    // Google OAuth callback
 	public function google_callback()
 	{
 		// Handle Google OAuth callback
@@ -55,56 +54,59 @@ class Auth extends Base {
 			$google_service = new Google_Service_Oauth2($this->google_client);
 			$google_account_info = $google_service->userinfo->get();
 	
-			// Debugging: Check the retrieved user info
-			// print_r($google_account_info);
-			// die();
-	
 			// Check if email already exists
-$this->db->where('email', $google_account_info->email);
-$existing_user = $this->db->get('users')->row_array();
-
-
-if ($existing_user) {
-    // // Existing user - log them in
-	// print_r($existing_user);
-	// die();
-    $this->session->set_userdata('user_id', $existing_user['id']);
-    $this->session->set_userdata('user_role_id', $existing_user['role_id']);
-    $this->session->set_userdata('is_logged_in', 1);
-    $this->session->set_flashdata('flash_message', 'Welcome back ' . $google_account_info->name);
-	   redirect(site_url('/'));
-} else {
-    // New user - create new entry
-    $user_data = [
-        'name' => $google_account_info->name,
-        'email' => $google_account_info->email,
-        'google_id' => $google_account_info->id,
-        'role_id' => '2', // Default role
-        'is_guest' => '0',
-        'password' => '40bd001563085fc35165329ea1ff5c5ecbdbbeef',
-    ];
-	// print_r($user_data);
-    $user_id = $this->user_model->register_user($user_data);
+			$this->db->where('email', $google_account_info->email);
+			$existing_user = $this->db->get('users')->row_array();
 	
-    if ($user_id) {
+			if ($existing_user) {
+				// Existing user - log them in
+				$this->session->set_userdata('user_id', $existing_user['id']);
+				$this->session->set_userdata('user_role_id', $existing_user['role_id']);
+				$this->session->set_userdata('is_logged_in', 1);
+				$this->session->set_flashdata('flash_message', 'Welcome back ' . $google_account_info->name);
+				redirect(site_url('/'));
+			} else {
+				// New user - create new entry
+				$user_data = [
+					'name' => $google_account_info->name,
+					'email' => $google_account_info->email,
+					'google_id' => $google_account_info->id,
+					'role_id' => '2', // Default role
+					'is_guest' => '0',
+					'password' => '40bd001563085fc35165329ea1ff5c5ecbdbbeef', // Default password (hashed)
+					'status' => 1
+				];
+	
+				// Insert user into the database
+				$this->db->insert('users', $user_data);
+				$user_id = $this->db->insert_id();
+	
+				// Insert related customer data
+				$customer_data = [
+					'user_id' => $user_id
+				];
+				$this->db->insert('customers', $customer_data);
+	
+				// Auto login after registration (if needed)
+				$this->auth_model->auto_login('customer', $user_id);
+	
+				// Set session data
+				$this->session->set_userdata('user_id', $user_id);
+				$this->session->set_userdata('user_role_id', 2); // Assuming '2' is the customer role
+				$this->session->set_userdata('customer_login', 1);
+				$this->session->set_userdata('logged_in_user_role', 'customer');
+				$this->session->set_userdata('is_logged_in', 1);
+				$this->session->set_flashdata('flash_message', 'Welcome ' . $google_account_info->name);
+				
+				redirect(site_url('/'));
+			}
+		} else {
+			$this->session->set_flashdata('error_message', 'Google OAuth failed.');
+			redirect(site_url('auth/google_login'));
+		}
+	}
+	
 
-		// print_r($user_id);
-		// die();
-        $this->session->set_userdata('user_id', $user_data['id']);
-        $this->session->set_userdata('user_role_id', 2);
-        $this->session->set_userdata('customer_login', 1);
-        $this->session->set_userdata('logged_in_user_role', 'customer');
-        $this->session->set_userdata('is_logged_in', 1);
-        $this->session->set_flashdata('flash_message', 'Welcome ' . $google_account_info->name);
-        redirect(site_url('/'));
-    } else {
-        $this->session->set_flashdata('error_message', 'Registration failed, try again.');
-        redirect(site_url('auth/google_login'));
-    }
-}
-		
-}
-}
 	public function index()
 	{
 		if ($this->session->userdata('is_logged_in')) {
