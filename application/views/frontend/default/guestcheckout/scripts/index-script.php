@@ -8,6 +8,12 @@
     defer>
 </script>
 
+
+<style>
+    .pac-container div:not(.pac-item) {
+    display: none;
+}
+</style>
 <script>
 "use strict";
 
@@ -522,74 +528,104 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        var autocomplete_to;
+   $(document).ready(function() {
+    var autocomplete_to;
 
-        const marchBounds = new google.maps.LatLngBounds(
-            { lat: 52.5435, lng: 0.0720 }, // Southwest corner
-            { lat: 52.5610, lng: 0.1120 }  // Northeast corner
-        );
+    const marchBounds = new google.maps.LatLngBounds(
+        { lat: 52.5435, lng: 0.0720 }, // Southwest corner
+        { lat: 52.5610, lng: 0.1120 }  // Northeast corner
+    );
 
-        // Initialize Google Maps autocomplete for "to" address
-        autocomplete_to = new google.maps.places.Autocomplete(
-            document.getElementById('to'),
-            { 
-                libraries: ['street_address' , 'premise'],
-                componentRestrictions: { country: "uk" },
-                bounds: marchBounds,
-            }
-        );
-        // { types: ['geocode'] }
+    // Initialize Google Maps autocomplete for "to" address
+    autocomplete_to = new google.maps.places.Autocomplete(
+        document.getElementById('to'),
+        { 
+            libraries: ['street_address', 'premise'],
+            componentRestrictions: { country: "uk" },
+            bounds: marchBounds,
+        }
+    );
 
-        google.maps.event.addListener(autocomplete_to, 'place_changed', function() {
-
-            var place = autocomplete_to.getPlace();
-            console.log(place);
+    google.maps.event.addListener(autocomplete_to, 'place_changed', function() {
+        var place = autocomplete_to.getPlace();
+        if (place.address_components && place.address_components.length > 0) {
             var addressComp = place.address_components[place.address_components.length - 1].short_name;
 
             document.querySelector("input[name='zipcode']").value = addressComp;
             document.querySelector("input[name='street']").value = place.address_components[0].short_name;
             document.querySelector("input[name='zip_code']").value = place.address_components[1].short_name;
 
-
             $("#lat_to").val(place.geometry.location.lat());
             $("#long_to").val(place.geometry.location.lng());
 
             // Call the function to calculate distance here
             calculateDistance();
-            
-            // debugger;
-            // let firstSplit = place.adr_address.includes("extended-address") ? place.adr_address.split('<span class=\"extended-address\">')[1] : place.adr_address.split('<span class=\"street-address\">')[1];
-            // let code = place.address_components[0].long_name;
-            // let city = place.address_components[1].types[0] == "postal_town" ? place.address_components[1].long_name : place.address_components[2].long_name;
+        }
+    });
 
-            // if(firstSplit == undefined || firstSplit == "")
-            //     return; 
+    // Address input validation to prevent alphabetic characters
+    var address = document.querySelector("input[name='additional_address']");
+    address.addEventListener('input', function () {
+        const value = address.value.trim();
 
-            // let result = firstSplit.split("</span>")[0];
-        
-            // // let baba = document.getElementById("street-value");
-            // // console.log(baba)
-            // document.getElementById("street-value").value = result;
-        });
+        // Check if the value contains alphabetic characters
+        if (/[a-zA-Z]/.test(value)) {
+            // Simply clear the input or prevent further action without showing any error message
+            address.value = "";
+            return;
+        }
 
-        var address = document.querySelector("input[name='additional_address']");
-        address.addEventListener('input', function () {
-            const value = address.value.trim();
+        // Reset bounds if no alphabets are present
+        if (/^\d/.test(value)) {
+            autocomplete_to.setOptions({ strictBounds: false });
+            autocomplete_to.setBounds(marchBounds);
+        } else {
+            autocomplete_to.setOptions({ strictBounds: true });
+            autocomplete_to.setBounds(null); // Restrict to empty bounds if alphabets are present
+        }
+    });
 
-            // If the first character isn't a number, clear the autocomplete predictions
-            if (!/^\d/.test(value)) {
-                autocomplete_to.setOptions({ strictBounds: true });
-                autocomplete_to.setBounds(new google.maps.LatLngBounds()); // Restrict to empty bounds
-            } else {
-                // Reset bounds when valid input starts with a number
-                autocomplete_to.setOptions({ strictBounds: false });
-                autocomplete_to.setBounds(marchBounds);
+    // Optional: Reset autocomplete on clearing the address field (if needed)
+    address.addEventListener('focus', function () {
+        autocomplete_to.setOptions({ strictBounds: false });
+        autocomplete_to.setBounds(marchBounds);
+    });
+    
+    // Handle button clicks and interactions
+    document.getElementById("checking").onclick = function(){
+        document.getElementById("show-address").innerHTML = document.querySelector("input[name='additional_address']").value + "<br> House/Street: " + document.querySelector("input[name='street']").value + "<br> Street/Name: " + document.querySelector("input[name='zip_code']").value;
+    }
+
+    const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
+    const hiddenInputs = document.querySelectorAll('input[name="order_type"]');
+
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.checked) {
+                let value = radio.value;
+                hiddenInputs.forEach(hiddenInput => {
+                    hiddenInput.value = value;
+                    if(value == "collection"){
+                        document.getElementById("collection-time").classList.remove("d-none");
+                        document.getElementById("additional-delivery-notes").classList.add("d-none");
+                        document.getElementById("cash_button").innerHTML ="Cash On Collection";
+                        document.querySelectorAll("span.order_type").forEach(otype => {
+                            otype.innerHTML = "Your";
+                        });
+                    }else{
+                        document.getElementById("collection-time").classList.add("d-none");
+                        document.getElementById("additional-delivery-notes").classList.remove("d-none");
+                        document.getElementById("cash_button").innerHTML = "Cash On Delivery";
+                        document.querySelectorAll("span.order_type").forEach(otype => {
+                            otype.innerHTML = "Delivery";
+                        });
+                    }
+                });
             }
         });
-
-        
     });
+
+});
 
     
     document.getElementById("checking").onclick = function(){
