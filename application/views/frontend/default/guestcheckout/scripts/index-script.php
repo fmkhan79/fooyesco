@@ -783,4 +783,21 @@ $('#txtlname').keydown(function (e) {
 
 });
   
+
+$(document).ready(function () {
+    // Jab bhi delivery price calculate ho jaye
+    if ($('.total-delivery-price').text().trim() !== '') {
+        $('.subtotal').hide();
+    }
+
+    // Agar dynamically update ho raha hai
+    setInterval(function () {
+        if ($('.total-delivery-price').text().trim() !== '') {
+            $('.subtotal').hide();
+        } else {
+            $('.subtotal').show();
+        }
+    }, 500); // Har 500ms mein check karega
+});
+
 </script>
