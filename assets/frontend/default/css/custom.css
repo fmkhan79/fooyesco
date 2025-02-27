@@ -1243,11 +1243,11 @@ footer ul.footer-links li {
   .item-txt-box h3 {
     font-size: 16px;
   }
-  .order-detail-box svg {
+  /* .order-detail-box svg {
     width: 28px;
     position: absolute;
     left: 85px;
-  }
+  } */
   .order-detail-box-txt .price {
     font-size: 16px;
     min-width: 90px;
@@ -1991,11 +1991,11 @@ footer ul.footer-links li {
     font-size: 16px;
   }
 
-  .order-detail-box svg {
+  /* .order-detail-box svg {
     width: 28px;
     position: absolute!important;
     left: 90px !important;
-  }
+  } */
 
   .order-detail-box-txt .price {
     font-size: 16px;
@@ -2082,32 +2082,46 @@ button:disabled{
   font-size: 0.5em;
   left: 45px;
 }
-
+@media (max-width: 455px) {
+  #order-add{
+    position: absolute;
+    /* left: 100px; */
+    top: 45px;
+  }
+  #order-add svg{
+    margin-left: 100px;
+  }
+}
 @media (max-width: 425px) {
-  .order-detail-box svg {
-      left: 105px !important;
+  #order-add{
+    position: absolute;
+    /* left: 90px; */
+    top: 45px;
   }
-  .order-img-box img {
-    border-radius: 50%;
-    width: 198px;
-    height: 198px;
-    position: relative;
-    top: -17px;
-    right: -25px;
-  }
+  
   #billing-address h4{
     font-size: 25px;
   }
 }
 
 @media (max-width: 375px) {
-  .order-detail-box svg {
-      left: 90px !important;
+  #order-add{
+    position: absolute;
+    /* left: 100px; */
+    top: 45px;
+  }
+  #order-add svg{
+    margin-left: 80px;
   }
 }
 @media (max-width: 320px) {
-  .order-detail-box svg {
-      left: 75px !important;
+  #order-add{
+    position: absolute;
+    /* left: 100px; */
+    top: 45px;
+  }
+  #order-add svg{
+    margin-left: 50px;
   }
 }
 button:focus{

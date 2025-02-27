@@ -242,12 +242,12 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 </style>
 
             <div class="banner-form-box">
-                        <form action="<?php echo site_url('site/restaurants/filter'); ?>" class="form-wrap" method="GET">
+                        <!-- <form action="<?php //echo site_url('site/restaurants/filter'); ?>" class="form-wrap" method="GET">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <div class="form-group has-search">
                                     <span class="fa fa-search form-control-feedback"></span>
                                 </div>
-                                <input type="text" id="address-sc" placeholder="<?php echo site_phrase('which_restaurant_are_you_looking_for'); ?>?"
+                                <input type="text" id="address-sc" placeholder="<?php //echo site_phrase('which_restaurant_are_you_looking_for'); ?>?"
                                     class="btn-group1 banner-search" name="query" onchange="updateButtonStatesc()">
                                 <input type="hidden" name="latitude_1" class="form-control" id="latitude_sc">
                                 <input type="hidden" class="form-control" id="longitude_sc" name="longitude_1">
@@ -262,13 +262,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
                         <div class="slider-link text-left">
                   
-                            <!-- <button class="btn btn-danger banner-btn mb-2">
-                                    
-                                Order now
-                                </button> -->
-
-                            <!-- <span>Or</span>  -->
-                            </form>
+            
+                            </form> -->
 
                         
                         </div>

@@ -654,7 +654,7 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
 ">
                                             <div class="item-img-box mr-3"><a><img class="rounded-circle"
                                                         src="<?php echo base_url('uploads/menu/') . $menu['thumbnail']; ?>" height="80  px" width="80px" /></a></div>
-                                                        <div class="order col-md-2 d-md-none">
+                                                        <div class="order col-md-2 d-md-none" id="order-add">
                                             <a href="#" data-toggle="modal"
                                                 onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
                                                                                                         echo $price->menu; ?>)">
@@ -681,7 +681,7 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
     Owner <br> can't <br> order
 </button>
 <?php else: ?>
-    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none" class="svg-mobile">
+    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="56" viewBox="0 0 56 56" fill="white" class="svg-mobile">
         <g clip-path="url(#clip0_4609_18554)">
             <path d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -1120,57 +1120,37 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
     });
 
     
+    let mybutton = document.getElementById("myBtn");
+const scrollToOrderButton = document.getElementById("scrollToOrderButton");
+const viewOrderButton = document.getElementById("viewOrderButton");
 
-let mybutton = document.getElementById("myBtn");
+// Hide "View My Order" button by default
+scrollToOrderButton.style.display = "none";
 
-// When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function() {scrollFunction()};
-
-function scrollFunction() {
-  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-    mybutton.style.display = "block";
-  } else {
-    mybutton.style.display = "none";
-  }
-}
-
-// When the user clicks on the button, scroll to the top of the document
+// Function to scroll to top smoothly and show "View My Order" button
 function topFunction() {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
+    window.scrollTo({ top: 250, behavior: "smooth" });
+
+    // Wait for scroll to complete before showing "View My Order" button
+    let checkScroll = setInterval(() => {
+        if (window.scrollY === 250) {
+            scrollToOrderButton.style.display = "block"; // Show "View My Order" button
+            clearInterval(checkScroll); // Stop checking once at top
+        }
+    }, 100);
 }
-// function viewtopFunction() {
-//   document.body.scrollTop = 500;
-//   document.documentElement.scrollTop = 500;
-// }
 
-
-const scrollToOrderButton = document.getElementById('scrollToOrderButton');
-const viewOrderButton = document.getElementById('viewOrderButton');
-
-// Function to toggle the visibility of the button based on scroll position
-window.addEventListener('scroll', function() {
-    if (window.scrollY > 0) {
-        // Show the button after scrolling 20px down
-        scrollToOrderButton.style.display = 'block';
-    } else {
-        // Hide the button if the scroll is less than 20px
-        scrollToOrderButton.style.display = 'none';
+// Hide "View My Order" button when user scrolls down
+window.addEventListener("scroll", function () {
+    if (window.scrollY > 20) {
+        scrollToOrderButton.style.display = "none"; // Hide button on scroll down
     }
 });
 
-// Scroll to the "View My Order" button when clicked
-scrollToOrderButton.addEventListener('click', function() {
-    viewOrderButton.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
-    });
-    
+// Attach "Top" button click event
+mybutton.addEventListener("click", topFunction);
 
-    
-    viewOrderButton.click();
 
-});
 
 
 
