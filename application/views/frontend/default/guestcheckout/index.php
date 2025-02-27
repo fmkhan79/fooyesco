@@ -47,6 +47,11 @@ $stripe_settings = json_decode($stripe_settings);
 
     }
 
+    #d-cal{
+    bottom: -0.1em!important;
+  font-size: 0.5em;
+  left: 20px;
+}
     /* .order-delivery-types{
     display:none;
 } */
@@ -402,10 +407,26 @@ $stripe_settings = json_decode($stripe_settings);
                 <div class="subtotal">Subtotal</div>
                 <div class="subtotal-price"></div>
             </div>
+<script>
+    $(document).ready(function () {
+    // Jab bhi delivery price calculate ho jaye
+    if ($('.total-delivery-price').text().trim() !== '') {
+        $('.subtotal').hide();
+    }
 
+    // Agar dynamically update ho raha hai
+    setInterval(function () {
+        if ($('.total-delivery-price').text().trim() !== '') {
+            $('.subtotal').hide();
+        } else {
+            $('.subtotal').show();
+        }
+    }, 500); // Har 500ms mein check karega
+});
+</script>
             <div class="total-price-box d-flex justify-content-between align-items-center">
-            <div class="subtotal">Delivery Charges <sub id="cal">(Calculated On Checkout)</sub></div>
-                <div class="total-delivery-price"></div>
+            <div class="subtotal">Delivery Charges <sub id="d-cal">(Calculated On Checkout)</sub></div>
+                <!-- <div class="total-delivery-price"></div> -->
             </div>
 
             <!-- <div class="total-price-box d-none justify-content-between align-items-center">
