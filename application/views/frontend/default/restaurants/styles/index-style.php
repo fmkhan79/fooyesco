@@ -141,7 +141,7 @@ letter-spacing: 0.16px;
 .special-offer-btnlist ul span{ display: inline-block; margin: 10px 5px;}
 .has-search{
   position: absolute;
-    z-index: 2;
+    z-index: 0;
     display: block;
     line-height: 1.7rem;
     pointer-events: none;

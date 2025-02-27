@@ -258,7 +258,7 @@
 .main-banner h1 .text-warning::after{content: ""; position: absolute; background: no-repeat; width: 257px; height: 9px; left: 10px; bottom: -10px;}
 .has-search {
     position: absolute;
-    z-index: 2;
+    z-index: 0;
     display: block;
     line-height: 1.7rem;
     pointer-events: none;
