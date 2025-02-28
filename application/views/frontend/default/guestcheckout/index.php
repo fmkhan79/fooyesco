@@ -37,7 +37,8 @@ $stripe_settings = json_decode($stripe_settings);
         }
 
         .payment-text {
-            font-size: medium;
+            padding-top: 10px;
+        font-size: 18px;
 
         }
 
@@ -57,7 +58,7 @@ $stripe_settings = json_decode($stripe_settings);
 } */
 </style>
 <section class="detail-wbox mt-4 mb-2 p-5 d-flex justify-content-around">
-    <div class="container bg-white text-dark border border-light p-5 w-75">
+    <div class="container bg-white text-dark border border-light p-3 w-75 p-md-5">
         <ul class="d-flex justify-content-between align-item-center billing-list-topbar p-0">
             <li class="billing acitve">
                 <div class="img-box text-center red">Customer <img class="billing-active"

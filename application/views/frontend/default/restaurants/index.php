@@ -363,7 +363,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                             alt="cheeky-icon" />Cheeky tuesday - 20%
                                         off when you spend</li> -->
                                     <li><img src="<?php echo base_url('assets/frontend/default/images/price-icon.png') ?>"
-                                            alt="price-icon" />$15</li>
+                                            alt="price-icon" />££</li>
                                 </ul>
                             </div>
                         </div>

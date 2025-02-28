@@ -54,7 +54,7 @@
   display: none;
   position: fixed; /* Fix button to the screen */
     bottom: 20px; /* Position from the bottom */
-    right: 30px;
+   
     /* Ensure it's centered */
     z-index: 99; /* Ensure it's on top of other content */
     background-color: #ff4d4d; /* Button background color */
@@ -121,7 +121,7 @@
                             echo $restaurant_details["address"]; ?> - <span class="red">Get
                                 directions</span>
                         <?php } ?>
-                        <div class="red big-txt">
+                        <div class="red big-txt pt-3">
                             <?php
 
                             $cuisines = json_decode($restaurant_details['cuisine']);
@@ -181,26 +181,26 @@
 
                 </div>
 
-                <div class="row my-4 free-delivery-list">
+                <!-- <div class="row my-4 free-delivery-list">
 
-                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
+                    <div class="col-md-4 col-sm-6"><img src="<?php //echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
                         Delivery fee :
                         0-
-                        <?php echo $restaurant_details['delivery_charge']; ?>$
+                        <?php //echo $restaurant_details['delivery_charge']; ?>$
                     </div>
-                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
+                    <div class="col-md-4 col-sm-6"><img src="<?php //echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
                         Order : 10 $
                     </div>
-                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
+                    <div class="col-md-4 col-sm-6"><img src="<?php //echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
                         <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
                             class="collect-box" style="display:none">I
                             want to collect</span>
                     </div>
-                    <!-- <div class="col-md-3 col-sm-6 red"><img src="<?php //echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
+                    <div class="col-md-3 col-sm-6 red"><img src="<?php //echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
                         <?php //echo $restaurant_details['maximum_time_to_deliver']; ?> mins
-                    </div> -->
+                    </div>
 
-                </div>
+                </div> -->
 
                 <div class="order-about">
                     <h3><strong>About"
@@ -219,7 +219,7 @@
 
 <!-- RESTAURANT TITLE HEADER -->
 <section class="detail-wbox mt-4">
-<button onclick="topFunction()" class="border-0 fw-bold d-md-none" id="myBtn" style="background-color: #ff4d4d; display: block; border-radius: 38px;" title="Go to top">Top</button>
+<button onclick="topFunction()" class="border-0 fw-bold d-md-none mybtn" id="myBtn"  style="background-color: #ff4d4d; border-radius: 38px;" title="Go to top">View My Order</button>
 <button onclick="viewtopFunction()" class="border-0 fw-bold d-none d-lg-block" 
     id="viewmyBtn" style="background-color: #ff4d4d; border-radius: 38px; display: none !important;" 
     title="Go to top">
@@ -241,7 +241,7 @@
 
                 <!-- Accordion Section Start -->
                 <div class="accordion" id="restaurantAccordion1">
-    <div class="accordion-item">
+    <div class="accordion-item" style="padding-left: 15px;">
         <h2 class="accordion-header" id="headingRestaurant1">
             <button class="accordion-button order-red-btn text-center mt-2 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRestaurant1" aria-expanded="false" aria-controls="collapseRestaurant1">
                 <h5>Restaurant Details</h5>
@@ -253,7 +253,7 @@
                               
 
                                 <!-- Cuisines Section -->
-                                <div class="red big-txt">
+                                <div class="red big-txt"ds>
                                     <?php
                                     $cuisines = json_decode($restaurant_details['cuisine']);
                                     foreach ($cuisines as $key => $cuisine):
@@ -293,25 +293,25 @@
                                 </div>
 
                                 <!-- Delivery Info -->
-                                <div class="row my-4 free-delivery-list">
+                                <!-- <div class="row my-4 free-delivery-list">
                                     <div class="col-md-3 col-sm-6">
-                                        <img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
-                                        Delivery fee: 0- <?php echo $restaurant_details['delivery_charge']; ?>$
+                                        <img src="<?php //echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
+                                        Delivery fee: 0- <?php //echo $restaurant_details['delivery_charge']; ?>$
                                     </div>
                                     <div class="col-md-3 col-sm-6">
-                                        <img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" />
+                                        <img src="<?php //echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" />
                                         Min Order: 10 $
                                     </div>
                                     <div class="col-md-3 col-sm-6">
-                                        <img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
+                                        <img src="<?php //echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
                                         <span id="delivery" class="collect-box">Delivering now</span>
                                         <span id="collection" class="collect-box" style="display:none">I want to collect</span>
                                     </div>
                                     <div class="col-md-3 col-sm-6 red">
-                                        <img src="<?php echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
-                                        <?php echo $restaurant_details['maximum_time_to_deliver']; ?> mins
+                                        <img src="<?php //echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
+                                        <?php //echo $restaurant_details['maximum_time_to_deliver']; ?> mins
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <!-- About Section -->
                                 <div class="order-about">
@@ -571,14 +571,17 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     
                         <?php else : ?>
 
-                            <div class="button-container d-flex justify-content-between mt-2">
+                            <div class="button-container d-flex justify-content-between mt-2 flex-column">
     
-                            <button id="mobile-only" class="order-red-btn text-center mt-4 border-0 w-50" onclick="window.location.href='<?php echo site_url('auth'); ?>'">
+                            <button id="mobile-only" class="order-red-btn-main text-center mt-4 border-0" onclick="window.location.href='<?php echo site_url('auth'); ?>'">
                                 Login
                             </button>
 
+                            <a href="<?php echo site_url('auth/registration/customer'); ?>" class="order-red-btn-main text-center mt-4">
+                                Sign UP
+                            </a>
                             <!-- Guest Checkout Button (Disabled if not complete) -->
-                            <a href="<?php echo site_url('GuestCheckout'); ?>" class="order-red-btn text-center mt-4 disabled border-0" id="guestCheckoutBtnmobile">
+                            <a href="<?php echo site_url('GuestCheckout'); ?>" class="order-red-btn-main text-center mt-4 disabled border-0" id="guestCheckoutBtnmobile">
                                 Guest Checkout
                             </a>
                             </div>
@@ -1119,47 +1122,66 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
         });
     });
 
-    
-    let mybutton = document.getElementById("myBtn");
-const scrollToOrderButton = document.getElementById("scrollToOrderButton");
-const viewOrderButton = document.getElementById("viewOrderButton");
-
-// Hide "View My Order" button by default
-scrollToOrderButton.style.display = "none";
-
-// Function to scroll to top smoothly and show "View My Order" button
-function topFunction() {
-    window.scrollTo({ top: 250, behavior: "smooth" });
-
-    // Wait for scroll to complete before showing "View My Order" button
-    let checkScroll = setInterval(() => {
-        if (window.scrollY === 250) {
-            scrollToOrderButton.style.display = "block"; // Show "View My Order" button
-            clearInterval(checkScroll); // Stop checking once at top
-        }
-    }, 100);
-}
-
-// Hide "View My Order" button when user scrolls down
-window.addEventListener("scroll", function () {
-    if (window.scrollY > 20) {
-        scrollToOrderButton.style.display = "none"; // Hide button on scroll down
-    }
-});
-
-// Attach "Top" button click event
-mybutton.addEventListener("click", topFunction);
-
-
-
-
-
     function closeModal() {
         var modal = document.getElementById('popup');
         $(modal).modal('hide');
     }
 
     document.querySelector('.close').addEventListener('click', closeModal);
+    
+    
+    const mybutton = document.getElementById("myBtn");
+const scrollToOrderButton = document.getElementById("scrollToOrderButton");
+const viewOrderButton = document.getElementById("viewOrderButton");
+const collapseElement = document.getElementById("collapseOrder1");
+
+// Hide "View My Order" button by default
+mybutton.style.display = "none";
+
+// Function to scroll to top smoothly and then toggle collapse
+function topFunction() {
+    window.scrollTo({ top: 250, behavior: "smooth" });
+  // Check scroll position continuously
+  let checkScroll = setInterval(() => {
+        if (window.scrollY === 250) {
+            mybutton.style.display = "none"; // Hide button when at top
+            clearInterval(checkScroll); // Stop checking
+        }
+    }, 100); // Check every 100ms
+    // Wait for scrolling to complete using setTimeout
+    setTimeout(() => {
+        // Toggle collapse
+        if (collapseElement.classList.contains("show")) {
+            // collapseElement.classList.remove("show");
+            //  // Collapse it
+        } else {
+            collapseElement.classList.add("show"); // Expand it
+        }
+    }, 600); // Delay slightly to allow scrolling to finish
+}
+
+// Hide "View My Order" button when user scrolls down
+window.addEventListener("scroll", function () {
+    if (window.scrollY > 1000) {
+        mybutton.style.display = "block"; // Hide button on scroll down
+    }else{
+        mybutton.style.display = "none"; // Hide button on scroll down
+    }
+});
+
+// Attach "View My Order" button click event to toggle collapse
+viewOrderButton.addEventListener("click", function () {
+    topFunction() // Call function
+});
+
+// Attach "Top" button click event
+mybutton.addEventListener("click", toggleOrderView);
+
+
+
+
+
+ 
 
 
     function getQueryParam(param) {
