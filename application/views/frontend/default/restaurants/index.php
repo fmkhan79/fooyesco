@@ -291,6 +291,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                 <div class="clear"></div>
 
                 <?php foreach ($restaurants as $key => $restaurant): ?>
+                    
+                    
                 <div class="single-item-order">
                     <div class="order-box d-md-flex align-items-center mb-4">
                         <div class="order-img-box main-img">
@@ -354,16 +356,19 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                             src="<?php echo base_url('assets/frontend/default/images/time-icon.png') ?>"
                                             alt="time-icon" /><?php echo $restaurant["maximum_time_to_deliver"]; ?> mins
                                     </li> -->
-                                    <li class="gray"><img
-                                            src="<?php echo base_url('assets/frontend/default/images/delivery-icon.png') ?>"
-                                            alt="delivery-icon" />Delivery fee
-                                        : 0-<?php echo $restaurant["delivery_charge"]; ?> £ Min
-                                        Order : 10£</li>
+                                    <li class="gray">
+    <img src="<?php echo base_url('assets/frontend/default/images/delivery-icon.png'); ?>" alt="delivery-icon" />
+    Delivery fee: <?php echo $restaurant["delivery_charge"]; ?>£ (Per Mile)
+    
+    <?php if ($restaurant["delivery_charge"] == 0) { ?>
+        Free Range: <?php echo $restaurant["free_range"]; ?> Mile
+    <?php } ?>
+</li>
                                     <!-- <li><img src="<?php echo base_url('assets/frontend/default/images/cheeky-icon.png') ?>"
                                             alt="cheeky-icon" />Cheeky tuesday - 20%
                                         off when you spend</li> -->
                                     <li><img src="<?php echo base_url('assets/frontend/default/images/price-icon.png') ?>"
-                                            alt="price-icon" />$15</li>
+                                            alt="price-icon" />££</li>
                                 </ul>
                             </div>
                         </div>

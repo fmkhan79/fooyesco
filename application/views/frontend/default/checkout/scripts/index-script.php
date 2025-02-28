@@ -9,6 +9,13 @@
     defer>
 </script>
 
+
+<style>
+    .pac-container div:not(.pac-item) {
+    display: none;
+}
+</style>
+
 <script>
 "use strict";
 
