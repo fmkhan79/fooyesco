@@ -31,7 +31,7 @@ $stripe_settings = json_decode($stripe_settings);
 
     @media (max-width: 768px) {
         .detail-wbox {
-            margin-top: 0 !important;
+            /* margin-top: 20 !important; */
             margin-bottom: 0 !important;
             padding: 0 !important;
         }

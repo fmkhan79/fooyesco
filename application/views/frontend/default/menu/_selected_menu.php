@@ -32,8 +32,8 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
                     </lineargradient>
                 </defs>
             </svg>
-            <div class="percent-box">%15</div>
-        </a>
+            <div class="percent-box">25% <br> OFF</div>
+            </a>
     </div>
 
 </div>

@@ -234,7 +234,7 @@
                             <?php echo $restaurant_details['name']; ?>
                         </h3>
                         <?php if ($restaurant_details["address"]) { ?>
-                                    <div><?php echo $restaurant_details["address"]; ?> - <span class="red">Get directions</span></div>
+                                    <div><?php echo $restaurant_details["address"]; ?> - <span class="red p-0">Get directions</span></div>
                                 <?php } ?>
                     </div>
                 </div>
@@ -422,7 +422,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <!-- Basket Switcher (Delivery / Collection) -->
                     <div class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-center my-4 mx-4">
                         <!-- Delivery Option -->
-                        <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between mr-4">
+                        <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between mr-1">
                             <input type="radio" name="basket-switcher" value="delivery" checked="checked" class="is-visuallyHidden">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <g clip-path="url(#clip0_4609_18686)">
@@ -1162,7 +1162,7 @@ function topFunction() {
 
 // Hide "View My Order" button when user scrolls down
 window.addEventListener("scroll", function () {
-    if (window.scrollY > 1000) {
+    if (window.scrollY > 400) {
         mybutton.style.display = "block"; // Hide button on scroll down
     }else{
         mybutton.style.display = "none"; // Hide button on scroll down

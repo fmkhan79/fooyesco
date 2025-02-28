@@ -313,7 +313,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                         </lineargradient>
                                     </defs>
                                 </svg>
-                                <div class="percent-box">%15</div>
+                                <div class="percent-box">25% <br> OFF</div>
                             </a>
                         </div>
 
@@ -367,8 +367,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                     <!-- <li><img src="<?php echo base_url('assets/frontend/default/images/cheeky-icon.png') ?>"
                                             alt="cheeky-icon" />Cheeky tuesday - 20%
                                         off when you spend</li> -->
-                                    <li><img src="<?php echo base_url('assets/frontend/default/images/price-icon.png') ?>"
-                                            alt="price-icon" />££</li>
+                                    <!-- <li><img src="<?php //echo base_url('assets/frontend/default/images/price-icon.png') ?>"
+                                            alt="price-icon" />££</li> -->
                                 </ul>
                             </div>
                         </div>

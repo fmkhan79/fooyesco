@@ -972,15 +972,29 @@ footer ul.footer-links li {
 }
 
 .percent-box {
-  font-size: 18px;
+  font-size: 14px;
   color: #fff;
   background: #fdc55e;
   border: 4px solid #fff;
   border-radius: 50px;
-  padding: 12.5px 10.7px;
+  padding: 7px 14px;  
   position: absolute;
   top: 68%;
   right: 40px;
+  width: 60px;
+  height: 60px;
+  word-wrap: normal;
+  /* background-color: red;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.2; */
 }
 
 @media (max-width: 1200px) {
@@ -1030,7 +1044,7 @@ footer ul.footer-links li {
 
   .c-basketSwitcher .c-basketSwitcher-switch--active,
   .c-basketSwitcher {
-    font-size: 8px;
+    font-size: 14px!important;
   }
   .c-basketSwitcher-switch {
     padding: 8px;
@@ -1470,6 +1484,7 @@ footer ul.footer-links li {
 }
 
 .c-basketSwitcher {
+  width: 100%;
   border-radius: 41px;
   background: #d7d7d7;
   color: #797979;
@@ -1479,7 +1494,7 @@ footer ul.footer-links li {
 }
 
 .c-basketSwitcher-switch {
-  padding: 10px 20px;
+  padding: 10px 28px;
   cursor: pointer;
   margin: 0;
 }
@@ -2119,7 +2134,7 @@ button:disabled{
     small{
       font-size: 60%;
     }
-    label{
+    .form-group label{
       font-size: 14px;
     }
     .rr-btn{
@@ -2143,6 +2158,12 @@ button:disabled{
     .mybtn{
       right: 140px!important;
     }
+    .c-basketSwitcher {
+      width: 80%;
+    }
+    #cal {
+      left: 35px !important;
+  }
 }
 @media (max-width: 425px) {
   #order-add{
@@ -2157,6 +2178,9 @@ button:disabled{
   .mybtn{
     right: 140px!important;
   }
+  #cal {
+    left: 35px !important;
+}
 }
 
 @media (max-width: 375px) {
@@ -2171,6 +2195,17 @@ button:disabled{
   .mybtn{
     right: 120px!important;
   }
+  .c-basketSwitcher {
+    width: 80%;
+    font-size: 12px !important;
+}
+#apply_promo{
+  font-size: 12px;
+}
+.total-price-box{
+  font-size: 15px;
+}
+
 }
 @media (max-width: 320px) {
   #order-add{
@@ -2184,6 +2219,24 @@ button:disabled{
   .mybtn{
     right: 100px!important;
   }
+  .c-basketSwitcher {
+    width: 100%;
+    font-size: 12px !important;
+    margin: 5% 0% !important;
+}
+  .c-basketSwitcher .c-basketSwitcher-switch--active, .c-basketSwitcher{
+  font-size: 12px !important;
+}
+  #apply_promo{
+    font-size: 8px;
+  }
+  .total-price-box{
+    font-size: 14px;
+  }
+  #cal {
+    left: 3px !important;
+}
+
 }
 button:focus{
   outline: none!important;
