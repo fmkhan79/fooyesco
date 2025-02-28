@@ -64,11 +64,49 @@
 						<div class="g-recaptcha mb-2" data-sitekey="<?php echo get_system_settings('recaptcha_sitekey') ?>" required></div>
 					</div> -->
 
+					
+
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn">
 							<?php echo get_phrase('register'); ?>
 						</button>
 					</div>
+
+
+					<div class="container-login100-form-btn">
+
+<a href="<?php echo site_url('auth/google_login'); ?>" class="btn btn-danger mt-2" style="color: #FFF;
+display: -webkit-box;
+display: -webkit-flex;
+display: -moz-box;
+display: -ms-flexbox;
+display: flex
+;
+justify-content: center;
+align-items: center;
+padding: 0 16px;
+min-width: 160px;
+height: 50px;
+background-color: #f54748;
+border-radius: 25px;
+font-family: SourceSansPro-SemiBold;
+font-size: 14px;
+color: #fff;
+line-height: 1.2;
+text-transform: uppercase;
+-webkit-transition: all 0.4s;
+-o-transition: all 0.4s;
+-moz-transition: all 0.4s;
+transition: all 0.4s;
+box-shadow: 0 10px 30px 0px rgba(189, 89, 212, 0.5)!important;
+-moz-box-shadow: 0 10px 30px 0px rgba(189, 89, 212, 0.5);
+-webkit-box-shadow: 0 10px 30px 0px rgba(189, 89, 212, 0.5);
+-o-box-shadow: 0 10px 30px 0px rgba(189, 89, 212, 0.5);
+-ms-box-shadow: 0 10px 30px 0px rgba(189, 89, 212, 0.5);
+">
+Continue with Google
+</a> 	
+</div>
 
 					<div class="text-center p-t-57 p-b-20">
 						<span class="txt1 d-block">
