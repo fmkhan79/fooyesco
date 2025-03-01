@@ -166,6 +166,7 @@ class Cart extends Base
     function update_cart()
     {
         $updated_price = $this->cart_model->update_cart();
+        print_r($updated_price);
         echo $updated_price;
     }
 
