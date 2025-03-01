@@ -785,37 +785,49 @@
         $('#cart-quantity-' + cartId).text(currentQuantity);
 
         $.ajax({
-            url: '<?php echo site_url('cart/update_cart'); ?>',
-            type: 'POST',
-            data: {
-                cartId: cartId,
-                quantity: currentQuantity,
-            },
-            success: function(updatedPrice) {
+    url: '<?php echo site_url('cart/update_cart'); ?>',
+    type: 'POST',
+    data: {
+        cartId: cartId,
+        quantity: currentQuantity,
+    },
+    success: function(updatedPrice) {
         // Log the updated price to the console for debugging
+        console.log("Updated Price: ", updatedPrice);
+
+        // Set a breakpoint for debugging
+        debugger; // This will pause the code execution here for you to inspect
 
         // Update the price shown in the cart
         $('#sub-total-' + cartId).text(updatedPrice);
-                // $('#sub-total').text(updatedPrice);
-                // $('#sub-total-' + cartId).text(updatedPrice);
-                viewselected_cat_items_summary_total(); 
-                $.ajax({
-    url: '<?php echo site_url('cart/reload_cart_summary'); ?>',
-    success: function(response) {
 
-        $('#cart-summary').html(response); // Update the HTML content
-        $('.cart-actions').prop('disabled', false);
-        $(".summary-loader").addClass('d-none');
-        // Extract the total menu price using split
-        let firstSplit = response.split('<td class="bill-value font-weight-bold">')[1];
+        // Call another function
+        viewselected_cat_items_summary_total();
 
+        // Make another AJAX request
+        $.ajax({
+            url: '<?php echo site_url('cart/reload_cart_summary'); ?>',
+            success: function(response) {
+                // Log the response for debugging
+                console.log("Cart Summary Response: ", response);
 
-        let result = firstSplit.split("</td>")[0];
+                $('#cart-summary').html(response); // Update the HTML content
+                $('.cart-actions').prop('disabled', false);
+                $(".summary-loader").addClass('d-none');
 
-        document.getElementById("ttprice").innerHTML = result;
-       
+                // Extract the total menu price using split
+                let firstSplit = response.split('<td class="bill-value font-weight-bold">')[1];
+
+                let result = firstSplit.split("</td>")[0];
+
+                // Log the result for debugging
+                console.log("Total Price: ", result);
+
+                // Update the total price in the DOM
+                document.getElementById("ttprice").innerHTML = result;
+            }
+        });
     }
-
 });
 
             }
