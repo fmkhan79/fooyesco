@@ -163,7 +163,7 @@ class Cart extends Base
     }
 
     // Update method is responsible for Updating the restaurant types
-    function update_cart_test()
+    function update_cart()
     {
         $updated_price = $this->cart_model->update_cart();
         echo $updated_price;

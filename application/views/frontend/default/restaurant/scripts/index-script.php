@@ -785,7 +785,7 @@
         $('#cart-quantity-' + cartId).text(currentQuantity);
 
         $.ajax({
-            url: '<?php echo site_url('cart/update_cart_test'); ?>',
+            url: '<?php echo site_url('cart/update_cart'); ?>',
             type: 'POST',
             data: {
                 cartId: cartId,
