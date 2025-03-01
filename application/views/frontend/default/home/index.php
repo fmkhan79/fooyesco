@@ -154,7 +154,7 @@
                                         </linearGradient>
                                     </defs>
                                 </svg>
-                                <div class="percent-box">25% <br> OFF</div>
+                                <div class="percent-box">15%</div>
                             </a>
                         </div>
                         <div class="restaurant-body text-center">
@@ -239,7 +239,7 @@
                     </div>
                 </div>
 
-                <a class="rr-btn mt-4" href="#">About Us</a>
+                <a class="rr-btn mt-4" href="<?php echo site_url('site/about_us'); ?>">About Us</a>
 
             </div>
         </div>
@@ -298,7 +298,7 @@
                                         </linearGradient>
                                     </defs>
                                 </svg>
-                                <div class="percent-box">25% <br> OFF</div>
+                                <div class="percent-box">15%</div>
                             </a>
                         </div>
                         <div class="restaurant-body text-center">

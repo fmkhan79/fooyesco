@@ -46,24 +46,34 @@ class Auth extends Base {
 	{
 		// Handle Google OAuth callback
 		if (isset($_GET['code'])) {
-			$this->google_client->authenticate($_GET['code']);
-			$access_token = $this->google_client->getAccessToken();
-			$this->google_client->setAccessToken($access_token);
-	
-			// Get user info from Google
-			$google_service = new Google_Service_Oauth2($this->google_client);
-			$google_account_info = $google_service->userinfo->get();
-	
-			// Check if email already exists
-			$this->db->where('email', $google_account_info->email);
-			$existing_user = $this->db->get('users')->row_array();
-	
-			if ($existing_user) {
-				// Existing user - log them in
-				$this->session->set_userdata('user_id', $existing_user['id']);
-				$this->session->set_userdata('user_role_id', $existing_user['role_id']);
-				$this->session->set_userdata('is_logged_in', 1);
-				$this->session->set_flashdata('flash_message', 'Welcome back ' . $google_account_info->name);
+            $this->google_client->authenticate($_GET['code']);
+            $access_token = $this->google_client->getAccessToken();
+            $this->google_client->setAccessToken($access_token);
+
+            // Get user info from Google
+            $google_service = new Google_Service_Oauth2($this->google_client);
+            $google_account_info = $google_service->userinfo->get();
+
+            // Check if email already exists
+            $this->db->where('email', $google_account_info->email);
+            $existing_user = $this->db->get('users')->row_array();
+
+            if ($existing_user) {
+
+                $this->db->where('customer_id',  $existing_user['id']);
+                $this->db->delete('cart');
+
+                $this->db->where('customer_id', $this->session->userdata('user_id'));
+                $this->db->update('cart', ['customer_id' => $existing_user['id']]);
+
+				$this->auth_model->auto_login('customer', $existing_user['id']);
+
+                // Existing user - log them in
+                $this->session->set_userdata('user_id', $existing_user['id']);
+                $this->session->set_userdata('user_role_id', $existing_user['role_id']);
+                $this->session->set_userdata('is_logged_in', 1);
+                $this->session->set_flashdata('flash_message', 'Welcome back ' . $google_account_info->name);
+
 				redirect(site_url('/'));
 			} else {
 				// New user - create new entry
