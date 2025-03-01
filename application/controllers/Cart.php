@@ -135,20 +135,20 @@ class Cart extends Base
 
     }
 
-    public function session_destroy() {
-        $user_id = $this->session->userdata('user_id');
+    // public function session_destroy() {
+    //     $user_id = $this->session->userdata('user_id');
 
-        // die();
+    //     // die();
         
-        // Load the user model
-        $this->load->model('User_model');
+    //     // Load the user model
+    //     $this->load->model('User_model');
         
-        if ($this->User_model->is_guest($user_id) == 1){
-        $this->session->sess_destroy();
-        // Optionally return a response
-        echo json_encode(['status' => 'success']);
-        }
-    }
+    //     if ($this->User_model->is_guest($user_id) == 1){
+    //     $this->session->sess_destroy();
+    //     // Optionally return a response
+    //     echo json_encode(['status' => 'success']);
+    //     }
+    // }
 
     // add_to_cart method add items to the cart
     function add_to_cart()
@@ -166,7 +166,6 @@ class Cart extends Base
     function update_cart()
     {
         $updated_price = $this->cart_model->update_cart();
-        print_r($updated_price);
         echo $updated_price;
     }
 

@@ -137,41 +137,47 @@
     }, 8000);
 
     function showNewOrderNotification(data) {
-        const obj = JSON.parse(data);
-        let total = parseFloat(obj.grand_total) + parseFloat(obj.total_delivery_charge);
+    const obj = JSON.parse(data);
+    let total = parseFloat(obj.grand_total) + parseFloat(obj.total_delivery_charge);
 
-console.log(total); // Output: 6.35        const add = JSON.parse(obj.address);
-      console.log(obj.address);
-        const notificationSound = new Audio('<?php echo base_url('assets/auth/audio/foodpanda.mp3'); ?>'); 
-        notificationSound.play();
-        let text;
-        // console.log(obj.address);
-        if(obj.order_type == "delivery"){
-            text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + total +
-                " | Address: " + obj.additional_address ;
-        } else if(obj.order_type == "pickup"){
-            text = "COLLECTION | Order ID: " + obj.id + " | Total Amount: " + obj.grandSubTotalValue; 
-        }
+    console.log(total); // Output: 6.35        
+    const add = JSON.parse(obj.address);
+    console.log(obj.address);
 
-        Swal.fire({
-            title: "New Order Received!",
-            text: text,
-            icon: "success",
-            showCancelButton: true,
-            confirmButtonText: "Accept Order ",
-            cancelButtonText: "Reject Order",
-            allowOutsideClick: false,
-        }).then((result) => {
-            notificationSound.pause();
-            notificationSound.currentTime = 0;
-            if (result.isConfirmed) {
-                updateOrderReadStatus(obj.id, obj.code);
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                cancelOrderAndMarkAsRead(obj.id, obj.code);
-            }
-        });
+    const notificationSound = new Audio('<?php echo base_url('assets/auth/audio/foodpanda.mp3'); ?>');
+    notificationSound.loop = true; // This will automatically loop the sound
+
+    // Play the sound on loop
+    notificationSound.play();
+
+    let text;
+    if (obj.order_type == "delivery") {
+        text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + total +
+            " | Address: " + obj.additional_address;
+    } else if (obj.order_type == "pickup") {
+        text = "COLLECTION | Order ID: " + obj.id + " | Total Amount: " + obj.grandSubTotalValue;
     }
 
+    Swal.fire({
+        title: "New Order Received!",
+        text: text,
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonText: "Accept Order ",
+        cancelButtonText: "Reject Order",
+        allowOutsideClick: false,
+    }).then((result) => {
+        // Stop the sound once the user has either accepted or rejected the order
+        notificationSound.pause();
+        notificationSound.currentTime = 0;
+
+        if (result.isConfirmed) {
+            updateOrderReadStatus(obj.id, obj.code);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            cancelOrderAndMarkAsRead(obj.id, obj.code);
+        }
+    });
+}
     function updateOrderReadStatus(orderId, code) {
       var urls;
       const check = location.origin;

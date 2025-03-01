@@ -584,6 +584,9 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             <a href="<?php echo site_url('GuestCheckout'); ?>" class="order-red-btn-main text-center mt-4 disabled border-0" id="guestCheckoutBtnmobile">
                                 Guest Checkout
                             </a>
+                            <a href="<?php echo site_url('auth/google_login'); ?>" class="order-red-btn-main text-center mt-4">
+    Login with Google
+</a>
                             </div>
 
                          <!-- Checkout Button (Disabled if not complete) -->
@@ -1046,7 +1049,9 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
                             <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn" class="d-block order-red-btn-main text-center mt-4 disabled">
                                 Guest Checkout
                             </a>
-                       
+                            <a href="<?php echo site_url('auth/google_login'); ?>" class="order-red-btn-main text-center mt-4">
+    Login with Google
+</a>
                         <?php endif; ?>
 
 
