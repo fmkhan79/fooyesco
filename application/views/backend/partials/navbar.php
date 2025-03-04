@@ -138,6 +138,7 @@
 
     function showNewOrderNotification(data) {
     const obj = JSON.parse(data);
+    // console.log(obj);
     let total = parseFloat(obj.grand_total) + parseFloat(obj.total_delivery_charge);
 
     console.log(total); // Output: 6.35        
@@ -153,7 +154,7 @@
     let text;
     if (obj.order_type == "delivery") {
         text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + total +
-            " | Address: " + obj.additional_address;
+            " | Addresss: " + add.additional_address;
     } else if (obj.order_type == "pickup") {
         text = "COLLECTION | Order ID: " + obj.id + " | Total Amount: " + obj.grandSubTotalValue;
     }
