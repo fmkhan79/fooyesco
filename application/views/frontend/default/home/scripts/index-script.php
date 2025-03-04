@@ -154,18 +154,24 @@
     }
 
     // Update button state for screen map
-    function updateButtonStatesc(input, latId, longId, buttonId) {
+    function updateButtonStatesc(input, latId, longId, buttonId ,orderId) {
         const address = input.value.trim();
         const latitude = document.getElementById(latId).value.trim();
         const longitude = document.getElementById(longId).value.trim();
         const searchButton = document.getElementById(buttonId);
+        const orderButton = document.getElementById(orderId);
+
 
         if (address && latitude && longitude) {
             searchButton.disabled = false;
             searchButton.classList.remove('disabled');
+            orderButton.classList.remove('disabled');
+
         } else {
             searchButton.disabled = true;
             searchButton.classList.add('disabled');
+            orderButton.classList.add('disabled');
+
         }
     }
 

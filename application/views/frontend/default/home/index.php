@@ -63,7 +63,7 @@
 
 
                         <div class="slider-link text-left">
-                            <button type="submit" class="btn btn-danger banner-btn" style="
+                            <button type="submit" class="btn btn-danger banner-btn disabled" style="
                             color: #FFF;
     font-size: 14px;
     font-style: normal;

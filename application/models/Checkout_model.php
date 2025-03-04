@@ -82,8 +82,6 @@ class Checkout_model extends Base_model
             $public_key = $values[0]->public_key;
             $secret_key = $values[0]->secret_key;
 
-            log_message('debug', "85 L" . print_r($public_key));
-            log_message('debug', "86 L" . print_r($secret_key));
 
 
 
@@ -113,7 +111,6 @@ class Checkout_model extends Base_model
             // Fetch the Checkout Session to display the JSON result on the success page
             try {
                 $checkout_session = \Stripe\Checkout\Session::retrieve($session_id);
-                log_message('debug', print_r($checkout_session, true));
             } catch (Exception $e) {
                 $api_error = "no error";
                 $api_error = $e->getMessage();
@@ -199,8 +196,7 @@ class Checkout_model extends Base_model
           
         $order_type = isset($_POST['order_type']) && $_POST['order_type'] == "collection" && get_order_settings('pickup_order') ? "pickup" : "delivery";
     
-        // print_r($order_type);
-        // die();
+       
 
         if ($order_type == "pickup") {
             $order_data  = $this->order_model->get_by_code($order_code);
