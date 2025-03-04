@@ -571,12 +571,14 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
 
                     <?php if ($customer_details['is_guest'] == 0 && $customer_details['name']) : ?>
-                        
+                        <div class="button-container d-flex justify-content-between mt-2 flex-column">
+
                             <!-- Login Button -->
-                            <a href="<?php echo site_url('checkout'); ?>"  class="order-red-mobile-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtnmobile" style="cursor: pointer;">
+                            <a href="<?php echo site_url('checkout'); ?>"  class="order-red-btn-main text-center mt-4 border-0 disabled" id="CheckoutBtnmobile" style="cursor: pointer;">
     <?php echo site_phrase('checkout', true); ?>
 </a>
 
+                    </div>
                         
                       
                     
