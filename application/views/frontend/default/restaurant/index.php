@@ -101,6 +101,16 @@
     font-size: 0.5em;
     left: 45px;
 }
+
+.order-red-mobile-btn{
+    
+    padding: 11px 22px;
+    background: #f54748;
+    border-radius: 41px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+}
 </style>
 <!-- RESTAURANT GALLERY -->
 
@@ -563,9 +573,10 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <?php if ($customer_details['is_guest'] == 0 && $customer_details['name']) : ?>
                         
                             <!-- Login Button -->
-                            <button class="order-red-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtnmobile" style="cursor: pointer;" disabled>
-                            <?php echo site_phrase('checkout', true); ?>
-                        </button>
+                            <a href="<?php echo site_url('checkout'); ?>"  class="order-red-mobile-btn text-center mt-4 w-100 border-0 disabled" id="CheckoutBtnmobile" style="cursor: pointer;">
+    <?php echo site_phrase('checkout', true); ?>
+</a>
+
                         
                       
                     
@@ -825,6 +836,7 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
 
 
             </div>
+<!-- for screens -->
             <div class="col-md-4 order-summery-box d-none d-md-block" id="order-summary">
                 <div class="sticky-offset">
                     <h3>Order Summary</h3>

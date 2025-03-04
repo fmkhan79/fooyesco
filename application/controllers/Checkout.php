@@ -223,7 +223,7 @@ class Checkout extends Base
     public function pay_with_stripe($address_id, $order_type)
     {
         // CHECK IF THE DELIVERY ADDRESS IS EMPTY OR NOT
-        //$this->check_address_validity($address_id);
+        $this->check_address_validity($address_id);
 
         //checking price
         $page_data['user_details']  = $this->user_model->get_user_by_id($this->session->userdata('user_id'));
@@ -237,7 +237,7 @@ class Checkout extends Base
     public function stripe_payment($address_id, $order_type, $session_id)
     {
         // CHECK IF THE DELIVERY ADDRESS IS EMPTY OR NOT
-        //$this->check_address_validity($address_id);
+        $this->check_address_validity($address_id);
 
         //THIS IS HOW I CHECKED THE STRIPE PAYMENT STATUS
         $response = $this->checkout_model->stripe_payment($session_id);
