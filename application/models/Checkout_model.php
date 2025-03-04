@@ -76,8 +76,17 @@ class Checkout_model extends Base_model
         // var_dump($stripe_keys); die();
         $values = json_decode($stripe_keys);
         if ($values[0]->testmode == 'on') {
+
+
+
             $public_key = $values[0]->public_key;
             $secret_key = $values[0]->secret_key;
+
+            log_message('debug', "85 L" . print_r($public_key));
+            log_message('debug', "86 L" . print_r($secret_key));
+
+
+
         } else {
             $public_key = $values[0]->public_live_key;
             $secret_key = $values[0]->secret_live_key;
@@ -104,6 +113,7 @@ class Checkout_model extends Base_model
             // Fetch the Checkout Session to display the JSON result on the success page
             try {
                 $checkout_session = \Stripe\Checkout\Session::retrieve($session_id);
+                log_message('debug', print_r($checkout_session, true));
             } catch (Exception $e) {
                 $api_error = "no error";
                 $api_error = $e->getMessage();
@@ -118,19 +128,20 @@ class Checkout_model extends Base_model
                 }
 
                 // Retrieves the details of customer
-                try {
-                    // Create the PaymentIntent
-                    $customer = \Stripe\Customer::retrieve($checkout_session->customer);
-                } catch (\Stripe\Exception\ApiErrorException $e) {
-                    $api_error = $e->getMessage();
-                }
+                // try {
+                //     // Create the PaymentIntent
+                //     $customer = \Stripe\Customer::retrieve($checkout_session->customer);
+                // } catch (\Stripe\Exception\ApiErrorException $e) {
+                //     $api_error = $e->getMessage();
+                // }
 
                 if (empty($api_error) && $intent) {
                     // Check whether the charge is successful
                     if ($intent->status == 'succeeded') {
                         // Customer details
-                        $name = $customer->name;
-                        $email = $customer->email;
+                        $name = $checkout_session->customer_details->name;
+                        $email = $checkout_session->customer_details->email;
+                        // $email = $customer->email;
 
                         // Transaction details
                         $transaction_id = $intent->id;
