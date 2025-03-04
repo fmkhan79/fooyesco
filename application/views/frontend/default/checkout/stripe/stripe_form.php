@@ -46,7 +46,7 @@ define('STRIPE_PUBLISHABLE_KEY', $public_key);
 
     function loadFetchedUrl() {
         order_type = document.getElementById('order_type').value;
-        fetchedUrl = "<?= site_url('checkout/pay_with_stripe/' . $_GET['address_number'] . '/'); ?>" + order_type;
+        fetchedUrl = "<?= site_url('GuestCheckout/pay_with_stripe/1/'); ?>" + order_type;
         return fetchedUrl;
     }
 
