@@ -116,7 +116,7 @@
                 }
             ?>
                 <ul class="line-item">
-                    <li><?php echo $ordered_item['quantity'] . "x " . sanitize($menu_details['name']); ?></li>
+                    <li><?php echo $ordered_item['quantity'] . "x " . html_entity_decode(sanitize($menu_details['name'])); ?></li>
                     <li><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></li>  
                 </ul>
                 
