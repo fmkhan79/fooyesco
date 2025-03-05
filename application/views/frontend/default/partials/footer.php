@@ -19,13 +19,16 @@
             <div class="col-md-2 about-box">
                 <h4>About Us</h4>
                 <ul class="footer-links">
-                    <li><a href="<?php echo site_url('site/about_us'); ?>">
+                    <li><a href="<?php echo site_url('site/contact-us'); ?>">
+                            <?php echo site_phrase('contact_us'); ?>
+                        </a></li>
+                    <li><a href="<?php echo site_url('site/about-us'); ?>">
                             <?php echo site_phrase('about_us'); ?>
                         </a></li>
-                    <li><a href="<?php echo site_url('site/privacy_policy'); ?>">
+                    <li><a href="<?php echo site_url('site/privacy-policy'); ?>">
                             <?php echo site_phrase('privacy_policy'); ?>
                         </a></li>
-                    <li><a href="<?php echo site_url('site/terms_and_conditions'); ?>">
+                    <li><a href="<?php echo site_url('site/terms-and-conditions'); ?>">
                             <?php echo site_phrase('terms_and_conditions'); ?>
                         </a></li>
                 </ul>
@@ -33,7 +36,9 @@
             <div class="col-md-2 company-box">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Partnership</a></li>
+                <li><a href="<?php echo site_url('site/become-a-partner'); ?>">
+                            <?php echo site_phrase('become_a_partner'); ?>
+                        </a></li>
                     <li><a href="#">Terms of Use</a></li>
                     <li><a href="#">Privacy</a></li>
                 </ul>

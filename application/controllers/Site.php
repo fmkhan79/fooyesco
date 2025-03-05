@@ -114,10 +114,29 @@ class Site extends Base
      *
      * @return void
      */
-    public function about_us()
-    {
-        $page_data['page_name']        = 'about_us/index';
-        $page_data['page_title']       = site_phrase("about_us", true);
+    public function become_a_partner() {
+        $page_data['page_name'] = 'become_a_partner/index';
+        $page_data['page_title'] = site_phrase("become_a_partner", true);
+        $this->load->view(frontend('index'), $page_data);
+    }
+    /**
+     * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE ABOUT US PAGE
+     *
+     * @return void
+     */
+    public function contact_us() {
+        $page_data['page_name'] = 'contact_us/index';
+        $page_data['page_title'] = site_phrase("contact _us", true);
+        $this->load->view(frontend('index'), $page_data);
+    }
+    /**
+     * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE ABOUT US PAGE
+     *
+     * @return void
+     */
+    public function about_us() {
+        $page_data['page_name'] = 'about_us/index';
+        $page_data['page_title'] = site_phrase("about_us", true);
         $this->load->view(frontend('index'), $page_data);
     }
 

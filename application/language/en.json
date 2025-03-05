@@ -1169,5 +1169,9 @@
     "email_duplication": "Email duplication",
     "this_email_is_already_registered._please_try_another.": "This email is already registered. please try another.",
     "go_to_the_cart_page": "Go to the cart page",
-    "go_to_cart_page": "Go to cart page"
+    "go_to_cart_page": "Go to cart page",
+    "about-us": "About-us",
+    "contact_us": "Contact us",
+    "contact__us": "Contact  us",
+    "become_a_partner": "Become a partner"
 }
