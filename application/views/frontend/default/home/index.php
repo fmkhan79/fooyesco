@@ -154,7 +154,7 @@
                                         </linearGradient>
                                     </defs>
                                 </svg>
-                                <div class="percent-box">15%</div>
+                                <div class="percent-box">20%</div>
                             </a>
                         </div>
                         <div class="restaurant-body text-center">

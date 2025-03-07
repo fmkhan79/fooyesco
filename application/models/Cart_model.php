@@ -482,9 +482,24 @@ public function get_restaurants_by_ids($restaurant_ids) {
     {
         $total_service = 0.00;
         if($this->get_sub_total() > 0) {
-            $total_service = 0.25;
+            $total_service = 1;
         }
         return $total_service;
+    }
+
+    public function get_total_discount_applied()
+    {
+            $total_discount = 0.00;
+            if($this->get_sub_total() > 0){
+                $total_discount = 20;
+
+    //     $restaurant_details = $this->restaurant_model->get_by_id($id);
+    //  $total_discount =  $restaurant_details['res_discount'];
+    //  print_r($total_discount);
+            }
+                // print_r($total_discount);
+                // die();
+        return $total_discount;
     }
 
     /**
@@ -499,21 +514,31 @@ public function get_restaurants_by_ids($restaurant_ids) {
         }
         $sub_total = $this->get_sub_total();
         $total_delivery_charge = $this->get_total_delivery_charge();
-
-        // var_dump();
-        $discount =  $this->get_discound_val();
-        // $grand_total = $sub_total + $total_delivery_charge + $total_service;
-        $grand_total = $sub_total + $total_service;
-        if($discount && $discount > 0){
-        $discountAmount =  ($grand_total * $discount) / 100;
-        }
-        if($discountAmount > 0){
-            return $grand_total - $discountAmount;
-        }
+        //raised dicount in percent 
+        $res_discount = $this->get_total_discount_applied();
         
+        $discounted_amount = $sub_total * ($res_discount/100);
+        $this->discounted_amount = $discounted_amount;
 
-        return $grand_total;
+            // print_r("discount_amount".$discounted_amount);
+        // var_dump();
+        // $discount =  $this->get_discound_val();
+        // $grand_total = $sub_total + $total_delivery_charge + $total_service;
+        $grand_total = $sub_total;
+        // if($discount && $discount > 0){
+        // $discountAmount =  ($grand_total * $discount) / 100;
+        // }
+        // if($discountAmount > 0){
+        //     return $grand_total - $discountAmount;
+        // }
+            
+    
+        return $grand_total-$discounted_amount;
     }
+    public function check_discount() {
+           $grand_total = $this->get_grand_total(); 
+        return $this->discounted_amount;
+        }
 
     /**
      * CLEARING A CART

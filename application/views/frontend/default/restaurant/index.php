@@ -938,6 +938,11 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
                         <div class="total-service-price"></div>
                     </div>
 
+                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                    <div class="subtotal">Discount (20%)</div>
+                    <div class="total-discount-applied"></div>
+                    </div>
+
                     <?php
                     $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
                     ?>

@@ -91,6 +91,7 @@
             $total_amount = 0; // Variable to sum total amount
             foreach ($ordered_items as $ordered_item) : 
                 $restaurant_details = $this->restaurant_model->get_by_id($ordered_item['restaurant_id']);
+                // print_r($restaurant_details);
                 $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']); 
                 $total_items += $ordered_item['quantity']; // Count ordered items
                 $total_amount += $ordered_item['total']; // Sum total amount
@@ -145,6 +146,29 @@
             <span><?php echo currency(number_format(sanitize($order_details['total_menu_price']), 2)); ?></span>
         </div>
         <hr>
+        <div class="did mt-3">
+            <span>20% ONLINE DISCOUNT</span>
+            <span><?php 
+
+                $res_discount = $restaurant_details['res_discount'];
+                    // print_r($res_discount);
+
+                 $discount_amount_show =  $order_details['total_menu_price'] * ($res_discount/100);
+
+
+                $grand_total = sanitize($order_details['grand_total']);
+
+
+                $total_delivery_charge = sanitize($order_details['total_delivery_charge']);
+                
+                $discount_amount = ($grand_total * $res_discount) / 100;
+                
+                // $grand_total_after_discount = $grand_total - $discount_amount + 0.10;
+
+                echo  currency(number_format("-".$discount_amount_show, 2));
+
+        ?></span>
+        </div>
         <?php if($order_details['total_delivery_charge'] != "") { ?>
             <div class="did mt-3">
                 <span>Delivery Charges</span>
@@ -160,7 +184,10 @@
             </div>
 
    <?php } ?>
-
+   <div class="did mt-3">
+   <span>1X CARRY BAG</span>
+                <span><?php echo currency(0.10); ?></span>
+        </div>
 
         <!-- <?php if($order_details['total_vat_amount'] != "") { ?>
             <div class="did mt-3">
@@ -171,19 +198,18 @@
         <?php } ?> -->
         <div class="did mt-3">
             <span>Service Charges</span>
-            <span><?php echo currency(0.25); ?></span>
+            <span><?php echo currency($this->cart_model->get_service_amount()); ?></span>
         </div>
         <hr>
         <div class="did mt-3">
             <span><b>Total </b>(<?php echo $total_items; ?> Items)</span>
-            <span><?php  
+            <span>
+    <?php  
        
-        $grand_total = sanitize($order_details['grand_total']);
-        $total_delivery_charge = sanitize($order_details['total_delivery_charge']);
-        echo currency(number_format($grand_total + $total_delivery_charge, 2));
-        
+        echo currency(number_format($grand_total + $total_delivery_charge+1.1, 2));
     ?> 
-           </span>
+</span>
+                 
             </div>
         <hr>
         <div class="order-details-summary">

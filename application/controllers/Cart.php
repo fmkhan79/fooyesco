@@ -201,6 +201,8 @@ class Cart extends Base
         $data['vat_charges'] =  currency(sanitize($this->cart_model->get_vat_amount()));
         $data['grand_total'] =  currency(sanitize($this->cart_model->get_grand_total()));
         $data['total_service_price'] = currency(sanitize($this->cart_model->get_service_amount()));
+        $data['total_discount_applied'] = currency(sanitize($this->cart_model->get_total_discount_applied()));
+        $data['discounted_amount']  =  currency(sanitize($this->cart_model->check_discount()));
         echo json_encode($data);
     }
 }

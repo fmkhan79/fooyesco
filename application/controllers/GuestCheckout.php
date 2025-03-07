@@ -81,7 +81,20 @@ class GuestCheckout extends Base
             'message' => $fees,
             'miles' => $result['miles']
         ];
+        //bypassing all calculations with the new one
 
+        //$fees have real value but we are bypassing
+
+        $value = round($result['miles']);
+        if ($value <= 3) {
+            $fees = 2;  
+        } else {
+            $fees = 3;  
+        }
+        // print_r($value);
+        // print_r("Fees");
+        // print_r($fees);
+        
         $this->session->set_userdata('delivery_fees', $fees);
     
         echo json_encode($response);
@@ -301,7 +314,10 @@ class GuestCheckout extends Base
     // AFTER PAYING VIA STRIPE, REDIRECT TO THIS FUNCTION
     public function stripe_payment($address_id, $order_type, $session_id)
     {
-        // CHECK IF THE DELIVERY ADDRESS IS EMPTY OR NOT
+        // print_r("test");
+        // print_r($session_id);
+        // die();
+        // CHECK IF THE DELIVEstripe_paymentRY ADDRESS IS EMPTY OR NOT
         $this->check_address_validity($address_id);
 
         //THIS IS HOW I CHECKED THE STRIPE PAYMENT STATUS

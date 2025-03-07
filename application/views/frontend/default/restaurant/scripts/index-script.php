@@ -545,15 +545,14 @@
                 var data = JSON.parse(res);
 
                 // console.log(data)
-
                 // Access the 'sub_total' property and display its value
                 var subTotalValue = data.sub_total;
                 var totalDeliveryValue = data.total_delivery_charge;
                 var totalVatValue = data.vat_charges;
                 var grandSubTotalValue = data.grand_total;
                 var totalServicePrice = data.total_service_price;
-
-
+                var totalDiscountPrice = data.total_discount_applied;
+                var discountP = data.discounted_amount;
                 // Now you can use subTotalValue as needed, for example, displaying it in the console
       
                 $(".subtotal-price").text(subTotalValue);
@@ -561,6 +560,9 @@
                 $(".total-vat-price").text(totalVatValue);
                 $(".grand-product-price").text(grandSubTotalValue);
                 $(".total-service-price").text(totalServicePrice);
+                // $(".total-discount-applied").text(totalDiscountPrice + "%");
+                $(".total-discount-applied").text(discountP + "%");
+
 
                 if (subTotalValue !== "£0") {
     // Get both buttons
@@ -824,7 +826,7 @@
 
     function viewselected_cat_items_summary_total() {
 
-
+//chalo
 $.ajax({
     url: '<?php echo base_url(); ?>cart/get_order_summary/',
     success: function(res) {
@@ -832,13 +834,14 @@ $.ajax({
         var data = JSON.parse(res);
 
         // console.log(data)
-
         // Access the 'sub_total' property and display its value
         var subTotalValue = data.sub_total;
         var totalDeliveryValue = data.total_delivery_charge;
         var totalVatValue = data.vat_charges;
         var grandSubTotalValue = data.grand_total;
         var totalServicePrice = data.total_service_price;
+        var totalDiscountPrice = data.total_discount_applied;
+        var discountP = data.discounted_amount;
 
 
         // Now you can use subTotalValue as needed, for example, displaying it in the console
@@ -848,6 +851,7 @@ $.ajax({
         $(".total-vat-price").text(totalVatValue);
         $(".grand-product-price").text(grandSubTotalValue);
         $(".total-service-price").text(totalServicePrice);
+        $(".total-discount-applied").text("-" + discountP);
 
         if (subTotalValue !== "£0") {
         // Get both buttons
