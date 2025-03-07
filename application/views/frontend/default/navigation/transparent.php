@@ -1,9 +1,14 @@
 <!--============================= HEADER =============================-->
+
 <div class="nav-menu">
     <div class="bg transition">
         <div class="container-fluid fixed">
             <div class="row">
+            <div class="top-bar text-center py-2 w-100 text-white" style="background: #f54748;">
+    <strong>7 DAY 25% OFF</strong>
+</div>
                 <div class="col-md-12">
+   
                     <nav class="navbar navbar-expand-lg navbar-light">
                         <a class="navbar-brand" href="<?php echo site_url(); ?>">
                             <img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>"

@@ -151,8 +151,8 @@ $stripe_settings = json_decode($stripe_settings);
                         <input type="hidden" placeholder="Longitude" id="long_to">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputAddress">Zipcode*</label>
-                        <input type="text" name="zipcode" class="form-control" id="city" placeholder="Zipcode" required>
+                        <label for="inputAddress">Postcode*</label>
+                        <input type="text" name="zipcode" class="form-control" id="city" placeholder="Postcode" required>
                     </div>
 
                     <div class="form-group col-md-6">

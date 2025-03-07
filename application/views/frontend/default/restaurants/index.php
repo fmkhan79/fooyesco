@@ -80,7 +80,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
         <div class="d-md-flex">
 
             <!-- Filter -->
-            <div class="col-md-4 bg-white rounded sidebar p-0">
+            <div class="col-md-4 bg-white rounded sidebar p-0 d-none">
                 <div class="form-group has-search dt-hide">
                     <!-- <input type="text" class="search-box" placeholder="Search for a dish or Restaurant"> -->
                     <!-- <input type="text" id="address" placeholder="<?php //echo site_phrase('which_restaurant_are_you_looking_for'); ?>?"
@@ -234,7 +234,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
             <!-- .// end filter -->
 
 
-            <div class="col-md-8 ml-3">
+            <div class="col-md-12 ml-3">
 <style>
     .btn-search{
         top: 0;
@@ -294,8 +294,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     
                     
                 <div class="single-item-order">
-                    <div class="order-box d-md-flex align-items-center mb-4">
-                        <div class="order-img-box main-img">
+                    <div class="order-box d-md-flex align-items-center mb-4 justify-content-around">
+                        <div class="order-img-box main-img m-0">
                             <a
                                 href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
                                 <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>"
@@ -358,7 +358,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                     </li> -->
                                     <li class="gray">
     <img src="<?php echo base_url('assets/frontend/default/images/delivery-icon.png'); ?>" alt="delivery-icon" />
-    Delivery fee: <?php echo $restaurant["delivery_charge"]; ?>£ (Per Mile)
+    Delivery fee: £ <?php echo $restaurant["delivery_charge"]; ?> (Per Mile)
     
     <?php if ($restaurant["delivery_charge"] == 0) { ?>
         Free Range: <?php echo $restaurant["free_range"]; ?> Mile
