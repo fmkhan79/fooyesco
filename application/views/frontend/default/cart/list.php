@@ -142,7 +142,7 @@ if (count($restaurant_ids) > 0):
             <span class="d-block mt-2">
                 <?php echo site_phrase('your_order_has_been_placed_successfully'); ?>.
             </span>
-            <a href="https://fooyes.co.uk/" class="rr-btn btn-danger mt-4">
+            <a href="<?php echo site_url(); ?>" class="rr-btn btn-danger mt-4">
     Go To Home
 </a>
             <span class="d-block mt-2">
