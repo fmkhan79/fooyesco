@@ -563,30 +563,27 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
 
             // Call the function to calculate distance here
             calculateDistance();
-            // let firstSplit = place.adr_address.split('<span class=\"street-address\">')[1];
-            
-            // if(firstSplit == undefined || firstSplit == "")
-            //     return; 
-
-            // let result = firstSplit.split("</span>")[0];
-            // console.log(result);
-            // // let baba = document.getElementById("street-value");
-            // // console.log(baba)
-            // document.getElementById("street-value").value = result;
+           
         });
             var address = document.querySelector("input[name='additional_address']");
         address.addEventListener('input', function () {
             const value = address.value.trim();
 
-            // If the first character isn't a number, clear the autocomplete predictions
-            if (!/^\d/.test(value)) {
-                autocomplete_to.setOptions({ strictBounds: true });
-                autocomplete_to.setBounds(new google.maps.LatLngBounds()); // Restrict to empty bounds
-            } else {
-                // Reset bounds when valid input starts with a number
-                autocomplete_to.setOptions({ strictBounds: false });
-                autocomplete_to.setBounds(marchBounds);
-            }
+           // Check if the value contains alphabetic characters
+        if (/[a-zA-Z]/.test(value)) {
+            // Simply clear the input or prevent further action without showing any error message
+            address.value = "";
+            return;
+        }
+
+        // Reset bounds if no alphabets are present
+        if (/^\d/.test(value)) {
+            autocomplete_to.setOptions({ strictBounds: false });
+            autocomplete_to.setBounds(marchBounds);
+        } else {
+            autocomplete_to.setOptions({ strictBounds: true });
+            autocomplete_to.setBounds(null); // Restrict to empty bounds if alphabets are present
+        }
 
         });
     });

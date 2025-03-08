@@ -52,9 +52,10 @@ class Auth_model extends CI_Model
      */
     public function registration()
     {
+        // die();
         
         $role = required(sanitize($this->input->post('role')));
-        // print_r($role);
+
         if ($role == "customer" || $role == "owner" || $role == "driver") {
             $user_data['name'] = required(sanitize($this->input->post('name')));
             $user_data['email'] = required(sanitize($this->input->post('email')));
@@ -68,7 +69,6 @@ class Auth_model extends CI_Model
 
           
             if (email_duplication($user_data['email'])) {
-                // print_r($user_data['email']);
                 // die();
                 if ($role == "driver") {
 
@@ -123,7 +123,7 @@ class Auth_model extends CI_Model
                 $this->session->set_userdata('driver_login', 1);
             }
             $this->session->set_userdata('user_id', $user_data['id']);
-            success(get_phrase('congratulations_your_registration_has_been_done_successfully'), site_url('dashboard'));
+            success(get_phrase('congratulations_your_registration_has_been_done_successfully'), site_url('/site/restaurant/chilli-hut-march/3'));
         } else {
             redirect(site_url('auth'), 'refresh');
         }

@@ -586,9 +586,9 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
     });
 
     // Optional: Reset autocomplete on clearing the address field (if needed)
-    address.addEventListener('focus', function () {
-        autocomplete_to.setOptions({ strictBounds: false });
-        autocomplete_to.setBounds(marchBounds);
+    // address.addEventListener('focus', function () {
+    //     autocomplete_to.setOptions({ strictBounds: false });
+    //     autocomplete_to.setBounds(marchBounds);
     });
     
     // Handle button clicks and interactions
