@@ -152,12 +152,9 @@
 
                 $res_discount = $restaurant_details['res_discount'];
                     // print_r($res_discount);
-
                  $discount_amount_show =  $order_details['total_menu_price'] * ($res_discount/100);
 
-
                 $grand_total = sanitize($order_details['grand_total']);
-
 
                 $total_delivery_charge = sanitize($order_details['total_delivery_charge']);
                 
@@ -198,7 +195,10 @@
         <?php } ?> -->
         <div class="did mt-3">
             <span>Service Charges</span>
-            <span><?php echo currency($this->cart_model->get_service_amount()); ?></span>
+            <span>
+                <?php print_r("test" . $this->cart_model->get_service_amount()); ?>
+                
+            <?php echo currency($this->cart_model->get_service_amount()); ?></span>
         </div>
         <hr>
         <div class="did mt-3">
