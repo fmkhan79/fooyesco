@@ -25,6 +25,7 @@
             padding: 0px;
             margin: 10px 0px;
         }
+
         .receipt .total {
             font-weight: bold;
         }
@@ -44,6 +45,13 @@
             margin-top: 20px;
             text-align: center;
         }
+        .font-weight-bold{
+            font-weight: bold;
+        }
+        hr {
+    border-top:1px dotted #000;
+
+}
     </style>
 </head>
 <body>
@@ -75,7 +83,7 @@
 
             // print_r($order_details['total_menu_price']);
         ?>
-            <h3 style="margin-top:0px;"><?= $address["additional_address"] . ", " . $address["street"] ?></h3>
+            <h3 style="margin:0px;"><?= $address["additional_address"] . ", " . $address["street"] ?></h3>
             <h3 style='margin:0px;'><?= $billing["phone_mobile"] ?></h3>
         <?php } ?>
 
@@ -116,7 +124,8 @@
                     $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
                 }
             ?>
-                <ul class="line-item">
+            <hr>
+                <ul class="line-item font-weight-bold">
                     <li><?php echo $ordered_item['quantity'] . "x " . html_entity_decode(sanitize($menu_details['name'])); ?></li>
                     <li><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></li>  
                 </ul>
@@ -141,7 +150,7 @@
             <?php endforeach; ?>
         </div>
         <hr>
-        <div class="did mt-3">
+        <div class="did mt-3 font-weight-bold">
             <span>Subtotal</span>
             <span><?php echo currency(number_format(sanitize($order_details['total_menu_price']), 2)); ?></span>
         </div>
@@ -199,8 +208,8 @@
             <?php echo currency($this->cart_model->get_service_amount()); ?></span>
         </div>
         <hr>
-        <div class="did mt-3">
-            <span><b>Total </b>(<?php echo $total_items; ?> Items)</span>
+        <div class="did mt-3 font-weight-bold">
+            <span>Total (<?php echo $total_items; ?> Items)</span>
             <span>
     <?php  
        

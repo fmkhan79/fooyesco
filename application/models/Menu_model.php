@@ -411,14 +411,14 @@ class Menu_model extends Base_model
      public function addons_grouped_data($arr){
         $result = "<div class='addons'>";
         foreach($arr as $key => $item){      
-            $result .= "<span style='font-weight:bold;'>".$this->variant_name($key).":</span>";
+            // $result .= "<span style='font-weight:bold;'>".$this->variant_name($key).":</span>";
          
             foreach($this->get_addons_value($item) as $addon_ar){
                 
                 // print_r($addon_ar["variant"]);
                 // $result[$variant_name][] = $addon_ar["variant"];
                 $result .= "<div style='display:flex;justify-content:space-between;'>";
-                $result .= "<ul style='margin:0px;list-style:none;padding: 0;'>";
+                $result .= "<ul style='margin: 0px 20px;padding: 0;'>";
                 $result .= "<li>" . 
                 $addon_ar["variant"] . 
                 "</li>".
