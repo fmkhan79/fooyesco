@@ -480,10 +480,9 @@ public function get_restaurants_by_ids($restaurant_ids) {
      
      public function get_service_amount()
     {
-        $total_service = 0.00;
-        if($this->get_sub_total() > 0) {
+        // $total_service = 0.00;
             $total_service = 1;
-        }
+        
         return $total_service;
     }
 

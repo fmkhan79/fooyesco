@@ -195,9 +195,7 @@
         <?php } ?> -->
         <div class="did mt-3">
             <span>Service Charges</span>
-            <span>
-                <?php print_r("test" . $this->cart_model->get_service_amount()); ?>
-                
+            <span>                
             <?php echo currency($this->cart_model->get_service_amount()); ?></span>
         </div>
         <hr>
