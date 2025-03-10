@@ -8,7 +8,7 @@
     <style>
         * {
             font-family: "sans-serif", sans-serif;
-            font-size: 23px;
+            font-size: 18px;
         }
         .receipt {
             width: 270px;
@@ -23,7 +23,7 @@
             justify-content: space-between;
             list-style: none;
             padding: 0px;
-            margin: 10px 0px;
+            margin: 10px 0px; 
         }
         .receipt .total {
             font-weight: bold;
@@ -36,14 +36,28 @@
         }
         h3 {
             font-size: 22px;
+            margin:0px;
         }
         h2 {
             font-size: 24px;
         }
-        .order-details-summary {
-            margin-top: 20px;
-            text-align: center;
+        h4{
+            margin:0px;
         }
+        .order-details-summary {
+            margin-top: 0px;
+            text-align: left;
+        }
+        .font-weight-bold{
+            font-weight: bold;
+        }
+        .text-uppercase{
+            text-transform: uppercase;
+        }
+        hr {
+        border-top:2px dotted #000;
+
+}
     </style>
 </head>
 <body>
@@ -75,7 +89,7 @@
 
             // print_r($order_details['total_menu_price']);
         ?>
-            <h3 style="margin-top:0px;"><?= $address["additional_address"] . ", " . $address["street"] ?></h3>
+            <h3 style="margin:0px;"><?= $address["additional_address"] . ", " . $address["street"] ?></h3>
             <h3 style='margin:0px;'><?= $billing["phone_mobile"] ?></h3>
         <?php } ?>
 
@@ -116,7 +130,8 @@
                     $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
                 }
             ?>
-                <ul class="line-item">
+            <hr>
+                <ul class="line-item font-weight-bold">
                     <li><?php echo $ordered_item['quantity'] . "x " . html_entity_decode(sanitize($menu_details['name'])); ?></li>
                     <li><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></li>  
                 </ul>
@@ -141,11 +156,10 @@
             <?php endforeach; ?>
         </div>
         <hr>
-        <div class="did mt-3">
+        <div class="did mt-3 font-weight-bold text-uppercase">
             <span>Subtotal</span>
             <span><?php echo currency(number_format(sanitize($order_details['total_menu_price']), 2)); ?></span>
         </div>
-        <hr>
         <div class="did mt-3">
             <span>20% ONLINE DISCOUNT</span>
             <span><?php 
@@ -166,21 +180,7 @@
 
         ?></span>
         </div>
-        <?php if($order_details['total_delivery_charge'] != "") { ?>
-            <div class="did mt-3">
-                <span>Delivery Charges</span>
-                <span><?php echo currency(sanitize($order_details['total_delivery_charge']), 2); ?></span>
 
-            </div>
-        <?php } else { ?>
-        
-        <div class="did mt-3">
-                <span style="font-size:20px">Delivery Charges</span>
-                <span style="font-size:17px">Free Delivery</span>
-
-            </div>
-
-   <?php } ?>
    <div class="did mt-3">
    <span>1X CARRY BAG</span>
                 <span><?php echo currency(0.10); ?></span>
@@ -193,14 +193,28 @@
 
             </div>
         <?php } ?> -->
-        <div class="did mt-3">
-            <span>Service Charges</span>
+        <div class="did mt-3 text-uppercase">
+            <span>Service Charge</span>
             <span>                
             <?php echo currency($this->cart_model->get_service_amount()); ?></span>
         </div>
-        <hr>
+        <?php if($order_details['total_delivery_charge'] != "") { ?>
+            <div class="did mt-3 text-uppercase">
+                <span>Delivery Charge</span>
+                <span><?php echo currency(sanitize($order_details['total_delivery_charge']), 2); ?></span>
+
+            </div>
+        <?php } else { ?>
+        
         <div class="did mt-3">
-            <span><b>Total </b>(<?php echo $total_items; ?> Items)</span>
+                <span style="font-size:20px">Delivery Charges</span>
+                <span style="font-size:17px">Free Delivery</span>
+
+            </div>
+
+   <?php } ?>
+        <div class="did mt-3 font-weight-bold">
+            <span>TOTAL (<?php echo $total_items; ?> Items)</span>
             <span>
     <?php  
        
@@ -227,7 +241,7 @@
        
         <?php 
         echo "<hr>";
-        echo "<center>";
+        echo "<left>";
         if($order_details["order_type"] == "delivery") { 
             if($payment["payment_method"] == "cash_on_delivery") {
                 echo "<h3><b>CASH ON DELIVERY</b></h3>";
@@ -242,7 +256,7 @@
                 echo "<h3><b>PAID VIA CARD (COLLECTION)</b></h3>"; 
             }
         }
-        echo "</center>";
+        echo "</left>";
         echo "<hr>";
         ?>
           <?php if (!empty($address['number'])) : ?>
