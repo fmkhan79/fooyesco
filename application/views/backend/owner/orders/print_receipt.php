@@ -183,8 +183,8 @@
 
    <div class="did mt-3">
    <span>1X CARRY BAG</span>
-                <span><?php echo currency(0.10); ?></span>
-        </div>
+  <span>£0.10</span>
+</div>
 
         <!-- <?php if($order_details['total_vat_amount'] != "") { ?>
             <div class="did mt-3">
