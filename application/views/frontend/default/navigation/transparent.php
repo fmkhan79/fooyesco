@@ -4,11 +4,16 @@
     <div class="bg transition">
         <div class="container-fluid fixed">
             <div class="row">
-            <div class="top-bar text-center py-2 w-100 text-white" style="background: #f54748;">
-    <strong>7 DAY 25% OFF</strong>
-</div>
+                <div class="top-bar text-center py-2 w-100 text-white" style="background: #f54748;">
+                    <p style="margin:0px; font-size:18px;">7 DAYS OFFER
+                        <strong>25%</strong>
+                        OFF ON COLLECTION ORDERS -
+                        <strong>20%</strong>
+                        OFF ON DELIVERY ORDERS
+                    </p>
+                </div>
                 <div class="col-md-12">
-   
+
                     <nav class="navbar navbar-expand-lg navbar-light">
                         <a class="navbar-brand" href="<?php echo site_url(); ?>">
                             <img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>"
@@ -53,8 +58,8 @@
                                     </a>
                                 </li>
                                 <li class="cart-menu ml-3">
-                                <a href="<?php echo site_url('site/restaurants/popular'); ?>" class="cart-btn"><span class="cart-items"
-                                id="#cart-items">
+                                    <a href="<?php echo site_url('site/restaurants/popular'); ?>" class="cart-btn"><span
+                                            class="cart-items" id="#cart-items">
                                             <?php echo sanitize($this->cart_model->total_cart_items()); ?>
                                         </span><img
                                             src="<?php echo base_url('assets/frontend/default/images/cart-icon.png') ?>" /></a>

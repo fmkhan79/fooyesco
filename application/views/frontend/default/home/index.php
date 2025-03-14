@@ -127,10 +127,8 @@
 <section class="order-listing featured-responsive-card-section">
     <div class="container p-0">
         <div class="special-offer-titlebox text-center">
-            <h2>Today <span class="red">Special</span> Offers</h2>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                industry's
-                standard dummy text ever since the 1500s</p>
+            <h2>Limited<span style="color:#fdc55e;">-</span>Time<span class="red">Special</span> Offers</h2>
+            <p>7 DAYS ONLY! Enjoy 25% OFF on all collection orders and 20% OFF on delivery orders. Don't miss out—order now and indulge in your favorite flavors at a discounted price!</p>
         </div>
 
         <?php if (!empty($featured_restaurants)): ?>
