@@ -257,27 +257,36 @@ function viewselected_cat_items_summary() {
 
 // GET THE CART total price AND DISPAY IN RIGHT SIDE
 function viewselected_cat_items_summary_total() {
+    
     $.ajax({
+        data: {order_type: document.querySelector("input[name='order_type']").value },
         url: '<?php echo base_url(); ?>cart/get_order_summary/',
+        type: 'POST',
         success: function(res) {
             // Parse the JSON string into a JavaScript object
-            var data = JSON.parse(res);
+        var data = JSON.parse(res);
 
-            // Access the 'sub_total' property and display its value
-            var subTotalValue = data.sub_total;
-            var totalDeliveryValue = data.total_delivery_charge;
-            var totalVatValue = data.vat_charges;
-            var grandSubTotalValue = data.grand_total;
-            var totalServicePrice = data.total_service_price;
+        // console.log(data)
+        // Access the 'sub_total' property and display its value
+        var subTotalValue = data.sub_total;
+        var totalDeliveryValue = data.total_delivery_charge;
+        var totalVatValue = data.vat_charges;
+        var grandSubTotalValue = data.grand_total;
+        var totalServicePrice = data.total_service_price;
+        var totalDiscountPrice = data.total_discount_applied;
+        var discountP = data.discounted_amount;
+        var bagCharges = data.bag_price;
 
+        $(".bag-charges").text(bagCharges);
 
-            // Now you can use subTotalValue as needed, for example, displaying it in the console
-            console.log("Sub Total:", subTotalValue);
-            $(".subtotal-price").text(subTotalValue);
-            // $(".total-delivery-price").text(totalDeliveryValue);
-            $(".total-vat-price").text(totalVatValue);
-            $(".grand-product-price").text(grandSubTotalValue);
-            $(".total-service-price").text(totalServicePrice);
+        // Now you can use subTotalValue as needed, for example, displaying it in the console
+
+        $(".subtotal-price").text(subTotalValue);
+        // $(".total-delivery-price").text(totalDeliveryValue);
+        $(".total-vat-price").text(totalVatValue);
+        $(".grand-product-price").text(grandSubTotalValue);
+        $(".total-service-price").text(totalServicePrice);
+        $(".total-discount-applied").text("-" + discountP);
            
 
         },
@@ -512,6 +521,11 @@ function updateCart(cartId, isIncreased) {
 
 jQuery(document).ready(function() {
     jQuery("input[name$='basket-switcher']").click(function() {
+        
+        if($(".order.last.acitve").length == 1){
+            return;
+        }
+
         var test = $(this).val();
         jQuery("span.collect-box").hide();
         jQuery("#" + test).show();
@@ -519,6 +533,9 @@ jQuery(document).ready(function() {
 });
 
 jQuery('label.c-basketSwitcher-switch').click(function() {
+    if($(".order.last.acitve").length == 1){
+        return;
+    }
     jQuery('label.c-basketSwitcher-switch').removeClass('c-basketSwitcher-switch--active');
     jQuery(this).addClass('c-basketSwitcher-switch--active');
 });
@@ -601,11 +618,33 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
 
     radioButtons.forEach(radio => {
         radio.addEventListener('change', () => {
+            if($(".order.last.acitve").length == 1){
+                return;
+            }
+
             if (radio.checked) {
                 let value = radio.value;
                 hiddenInputs.forEach(hiddenInput => {
                     hiddenInput.value = value;
                     if(value == "collection"){
+                        
+                        document.querySelectorAll(".remove-required-collection").forEach(element => {
+                            element.removeAttribute("required");
+
+                            let id = `label[for="input${element.id}"]`;
+                            let label = document.querySelector(id);
+                            if (label) {
+                                label.textContent = label.textContent.replace("*", "") + " (Optional)";
+                            }
+                        });
+
+                        document.querySelector("#checking").classList.remove("disabled");
+
+
+                        document.getElementById("delivery-charge").classList.add("d-none");
+                        document.getElementById("delivery-charge").classList.remove("d-flex");
+                        document.getElementById("discount-label").innerHTML = "Discount (25%)";
+
                         document.getElementById("collection-time").classList.remove("d-none");
                         document.getElementById("additional-delivery-notes").classList.add("d-none");
                         document.getElementById("cash_button").innerHTML ="Cash On Collection";
@@ -613,6 +652,25 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
                             otype.innerHTML = "Your";
                         });
                     }else{
+
+                        document.querySelector("#checking").classList.add("disabled","true");
+
+
+                        document.querySelectorAll(".remove-required-collection").forEach(element => {
+
+                            element.setAttribute("required", "true");
+
+                            let id = `label[for="input${element.id}"]`;
+                            let label = document.querySelector(id);
+                            if (label) {
+                                label.textContent = label.textContent.replace("(Optional)", "") + "*";
+                            }
+                        });
+
+                        document.getElementById("delivery-charge").classList.remove("d-none");
+                        document.getElementById("delivery-charge").classList.add("d-flex");
+                        document.getElementById("discount-label").innerHTML = "Discount (20%)";
+
                         document.getElementById("collection-time").classList.add("d-none");
                         document.getElementById("additional-delivery-notes").classList.remove("d-none");
                         document.getElementById("cash_button").innerHTML = "Cash On Delivery";
@@ -621,6 +679,8 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
                         });
                     }
                 });
+                
+                viewselected_cat_items_summary_total();
             }
         });
     });
@@ -629,7 +689,14 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
 
     
     document.getElementById("checking").onclick = function(){
-        document.getElementById("show-address").innerHTML = document.querySelector("input[name='additional_address']").value + "<br> House/Street: " + document.querySelector("input[name='street']").value + "<br> Street/Name: " + document.querySelector("input[name='zip_code']").value
+        if(document.querySelector("input[name='additional_address']").value == "" && document.querySelector("input[name='street']").value == "" && document.querySelector("input[name='zip_code']").value == ""){
+            document.getElementById("show-address").innerHTML = "Not Given";    
+        }
+        document.getElementById("show-address").innerHTML = 
+            (document.querySelector("input[name='additional_address']").value || "Not given") + 
+            "<br> House/Street: " + (document.querySelector("input[name='street']").value || "Not given") + 
+            "<br> Street/Name: " + (document.querySelector("input[name='zip_code']").value || "Not given");
+    
     }
   
     const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
@@ -637,6 +704,9 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
 
     radioButtons.forEach(radio => {
         radio.addEventListener('change', () => {
+            if($(".order.last.acitve").length == 1){
+                return;
+            }
             if (radio.checked) {
                 let value = radio.value;
                 // Loop through all hidden inputs and update their value
@@ -799,5 +869,9 @@ $(document).ready(function () {
         }
     }, 500); // Har 500ms mein check karega
 });
+
+
+
+
 
 </script>

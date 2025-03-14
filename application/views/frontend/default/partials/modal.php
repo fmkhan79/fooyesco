@@ -73,13 +73,16 @@ function confirm_modal_withoutPopup(delete_url) {
     })
     .then(response => {
         if (response.ok) {
+            
             // Optionally handle response data if needed
             console.log('Item deleted successfully.');
 
             // Add q=2 to the URL after the item is deleted
             const currentUrl = window.location.href;
             const separator = currentUrl.includes('?') ? '&' : '?';
-            window.location.href = currentUrl + separator + 'q=2'; // Redirect with new query parameter
+            // window.location.href = currentUrl + separator + 'q=2'; // Redirect with new query parameter
+            viewselected_cat_items_summary();
+            viewselected_cat_items_summary_total();
 
         } else {
             console.error('Failed to delete the item:', response);
@@ -88,7 +91,7 @@ function confirm_modal_withoutPopup(delete_url) {
     })
     .catch(error => {
         console.error('Error during the AJAX request:', error);
-        alert('Something went wrong. Please try again later.');
+        // alert('Something went wrong. Please try again later.');
     });
 }
 

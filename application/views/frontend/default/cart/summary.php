@@ -49,9 +49,7 @@
             </tr>
             <?php } ?>
             <tr class="text-danger">
-            <input type="hidden" name="grand_total_code" id="grand_total_code" value="<?php echo sanitize($this->cart_model->get_grand_total()); ?>">
-                <td class="bill-type" style="width:1px"><?php echo site_phrase('grand_total'); ?> :</td>
-                <td class="bill-value font-weight-bold" id="grand_total_label"><?php echo currency(sanitize($this->cart_model->get_grand_total())); ?></td>
+            
             </tr>
             <tr>
             <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>

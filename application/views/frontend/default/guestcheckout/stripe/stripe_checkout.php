@@ -8,7 +8,6 @@ $userName = $user_details['name'];
 // Convert product price to cent
 $stripeAmount = round($amount_to_pay * 100, 2);
 
-// print_r($stripeAmount);
 
 $values = json_decode($stripe_keys);
 $currency = $values[0]->currency;

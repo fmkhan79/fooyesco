@@ -152,7 +152,7 @@ class Checkout extends Base
 
         $page_data['order_type'] = (isset($_GET['order_type']) && $_GET['order_type'] == "pickup") ? "pickup" : "delivery";
 
-        $page_data['page_name']  = 'checkout/index';
+        $page_data['page_name']  = 'guestcheckout/index';
         $page_data['page_title'] = site_phrase("checkout", true);
         $this->load->view(frontend('index'), $page_data);
     }
@@ -185,7 +185,7 @@ class Checkout extends Base
         if ($restaurant_ids && count($restaurant_ids) > 0) {
             if ($this->cart_model->get_grand_total() > 0) {
                 $page_data['user_details'] = $this->user_model->get_user_by_id($this->session->userdata('user_id'));
-                $page_data['amount_to_pay'] = $order_type == "pickup" ? $this->cart_model->get_grand_total() - $this->cart_model->get_total_delivery_charge() : $this->cart_model->get_grand_total();
+                $page_data['amount_to_pay'] = $this->cart_model->get_grand_total();
                 $page_data['address_number'] = $address_id;
                 $page_data['order_type'] = $order_type;
                 $page_data['page_name']  = 'checkout/paypal/paypal';
@@ -228,7 +228,7 @@ class Checkout extends Base
 
         //checking price
         $page_data['user_details']  = $this->user_model->get_user_by_id($this->session->userdata('user_id'));
-        $page_data['amount_to_pay'] = $order_type == "pickup" ? $this->cart_model->get_grand_total() - $this->cart_model->get_total_delivery_charge() : $this->cart_model->get_grand_total();
+        $page_data['amount_to_pay'] = $this->cart_model->get_grand_total();
         $page_data['address_id'] = $address_id;
         $page_data['order_type'] = $order_type;
         $this->load->view(frontend('checkout/stripe/stripe_checkout'), $page_data);
