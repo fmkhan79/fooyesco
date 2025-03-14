@@ -160,25 +160,44 @@
             <span>Subtotal</span>
             <span><?php echo currency(number_format(sanitize($order_details['total_menu_price']), 2)); ?></span>
         </div>
-        <div class="did mt-3">
-            <span>20% ONLINE DISCOUNT</span>
-            <span><?php 
+        <?php if($order_details["order_type"] == "pickup"){ ?>
+ <div class="did mt-3">
+ <span>25% ONLINE DISCOUNT</span>
+ <span>
+    <?php } else { ?>
+ <div class="did mt-3">
+ <span>20% ONLINE DISCOUNT</span>
+ <span>7
+        
+     <?php } ?>
+    
+       
+     <?php 
+    $res_discount = $restaurant_details['res_discount'];
 
-                $res_discount = $restaurant_details['res_discount'];
-                    // print_r($res_discount);
-                 $discount_amount_show =  $order_details['total_menu_price'] * ($res_discount/100);
+    // Check if the order type is 'pickup' and adjust the discount accordingly
+    if ($order_details["order_type"] == "pickup") {
+        $res_discount = 25;  // Set discount to 25% if order type is pickup
+    }
 
-                $grand_total = sanitize($order_details['grand_total']);
+    // Calculate the discount amount to show
+    // print_r($order_details['total_menu_price']);
+    $discount_amount_show =  $order_details['total_menu_price'] * ($res_discount / 100);
+    // print_r($order_details['grand_total']);
+    // Sanitize the grand total and delivery charge
+    $grand_total = sanitize($order_details['grand_total']);
+    $total_delivery_charge = sanitize($order_details['total_delivery_charge']);
+    
+    // Calculate the discount amount
+    $discount_amount = ($grand_total * $res_discount) / 100;
+    
+    // Output the discount amount formatted with currency symbol
+    // print_r($res_discount);
+    echo currency(number_format("-".$discount_amount_show, 2));
 
-                $total_delivery_charge = sanitize($order_details['total_delivery_charge']);
-                
-                $discount_amount = ($grand_total * $res_discount) / 100;
-                
-                // $grand_total_after_discount = $grand_total - $discount_amount + 0.10;
-
-                echo  currency(number_format("-".$discount_amount_show, 2));
-
-        ?></span>
+?>
+    
+</span>
         </div>
 
    <div class="did mt-3">
@@ -198,27 +217,29 @@
             <span>                
             <?php echo currency($this->cart_model->get_service_amount()); ?></span>
         </div>
+        <?php if($order_details["order_type"] == "delivery") {?>
         <?php if($order_details['total_delivery_charge'] != "") { ?>
             <div class="did mt-3 text-uppercase">
                 <span>Delivery Charge</span>
                 <span><?php echo currency(sanitize($order_details['total_delivery_charge']), 2); ?></span>
 
             </div>
-        <?php } else { ?>
-        
+        <?php } 
+        } else { ?>
+           <?php if($order_details["order_type"] == "delivery") {?>
         <div class="did mt-3">
                 <span style="font-size:20px">Delivery Charges</span>
                 <span style="font-size:17px">Free Delivery</span>
 
             </div>
+            <?php } ?>
 
    <?php } ?>
         <div class="did mt-3 font-weight-bold">
             <span>TOTAL (<?php echo $total_items; ?> Items)</span>
             <span>
     <?php  
-       
-        echo currency(number_format($grand_total + $total_delivery_charge+1.1, 2));
+        echo currency(number_format($grand_total, 2));
     ?> 
 </span>
                  

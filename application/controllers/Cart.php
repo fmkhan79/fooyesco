@@ -105,6 +105,8 @@ class Cart extends Base
     // index function responsible for showing the index page.
     function index()
     {
+        // redirect('/site/restaurant/chilli-hut-march/3');
+        
         $user_id = $this->session->userdata('user_id');
 
         // die();
@@ -171,7 +173,7 @@ class Cart extends Base
 
     function reload_cart_summary()
     {
-        $this->load->view(frontend('cart/summary'));
+        return true;
     }
 
     // Delete method is responsible for storing data
@@ -195,14 +197,26 @@ class Cart extends Base
     }
 
     public function get_order_summary(){
-        $data['sub_total'] =  currency(sanitize($this->cart_model->get_total_menu_price()));
-        // $data['total_delivery_charge'] =  currency(sanitize($this->cart_model->get_total_delivery_charge()));
-        $data['total_delivery_charge'] =  0;
-        $data['vat_charges'] =  currency(sanitize($this->cart_model->get_vat_amount()));
-        $data['grand_total'] =  currency(sanitize($this->cart_model->get_grand_total()));
-        $data['total_service_price'] = currency(sanitize($this->cart_model->get_service_amount()));
-        $data['total_discount_applied'] = currency(sanitize($this->cart_model->get_total_discount_applied()));
-        $data['discounted_amount']  =  currency(sanitize($this->cart_model->check_discount()));
+        
+        $order_type = isset($_POST['order_type']) ? sanitize($_POST['order_type']) : '';
+        
+        $subtotal = sanitize($this->cart_model->get_total_menu_price());
+        $serviceCharge = sanitize($this->cart_model->get_service_amount());
+        $bagCharges = number_format((float) sanitize($this->cart_model->get_bag_charges($order_type)), 2, '.', '');
+        $discountedAmount = number_format((float) sanitize($this->cart_model->get_discounted_amount($order_type)), 2, '.', '');
+
+        $data['sub_total'] =  currency($subtotal);
+        
+
+        $data['total_service_price'] = currency($serviceCharge);
+
+        $data['bag_price'] = currency($bagCharges);
+
+        $data['total_discount_applied'] = $this->cart_model->get_total_discount_applied_percentage($order_type) . "%";
+        $data['discounted_amount']  =  currency($discountedAmount);
+
+        $data['grand_total'] = currency($subtotal + $serviceCharge + $bagCharges - $discountedAmount);
+
         echo json_encode($data);
     }
 }

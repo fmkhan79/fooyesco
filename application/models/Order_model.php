@@ -431,9 +431,8 @@ class Order_model extends Base_model
      * 3. CLEAR THE CART TABLE
      * @return bool
      */
-    public function confirm($address_id_arg = "")
+    public function confirm($address_id_arg = "", $order_type)
     {
-        
         $address_id = !empty($address_id_arg) ? $address_id_arg : sanitize($this->input->post('address_number'));
 
         $data['code'] = "OR-" . strtotime(date('D, d-M-Y H:i:s')) . "-" . $this->session->userdata('user_id');
@@ -444,7 +443,9 @@ class Order_model extends Base_model
         $data['total_menu_price'] = $this->cart_model->get_total_menu_price();
         $data['total_delivery_charge'] = $this->cart_model->get_total_delivery_charge();
         $data['total_vat_amount'] = $this->cart_model->get_vat_amount();
-        $data['grand_total'] = $this->cart_model->get_grand_total();
+        
+        $data['grand_total'] = $this->cart_model->get_grand_total($order_type);
+        
         $cart_items = $this->cart_model->get_all();
         if (!empty($cart_items)) {
             $data['restaurant_id'] = $cart_items[0]['restaurant_id']; 

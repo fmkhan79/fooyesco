@@ -297,12 +297,13 @@ class GuestCheckout extends Base
     {
 
         // CHECK IF THE DELIVERY ADDRESS IS EMPTY OR NOT
+        // NOT GOOD FUNCTION we have id = 1 in collection order nothing to worry about
         $this->check_address_validity($address_id);
-        
+  
         //checking price
         $page_data['user_details']  = $this->user_model->get_user_by_id($this->session->userdata('user_id'));
 
-        $page_data['amount_to_pay'] = $order_type == "pickup" ? $this->cart_model->get_grand_total() - $this->cart_model->get_total_delivery_charge() : $this->cart_model->get_grand_total();
+        $page_data['amount_to_pay'] = $this->cart_model->get_grand_total($order_type);
         
         $page_data['address_id'] = $address_id;
 

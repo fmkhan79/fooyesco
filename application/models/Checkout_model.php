@@ -180,13 +180,14 @@ class Checkout_model extends Base_model
     // INSERT TO PAYMENT TABLE
     public function cash_on_delivery()
     {
-        $data['amount_to_pay'] = $this->cart_model->get_grand_total();
+        
+        $data['amount_to_pay'] = $this->cart_model->get_grand_total($_POST['order_type']);
         $data['amount_paid'] = 0;
         $data['payment_method'] = "cash_on_delivery";
         $data['data'] = json_encode([]);
         $data['created_at'] = strtotime(date('D, d-M-Y'));
 
-        $order_code = $this->order_model->confirm();
+        $order_code = $this->order_model->confirm(null, $_POST['order_type']);
         $data['order_code'] = $order_code;
 
         $this->db->insert('payment', $data);
@@ -197,10 +198,9 @@ class Checkout_model extends Base_model
         $order_type = isset($_POST['order_type']) && $_POST['order_type'] == "collection" && get_order_settings('pickup_order') ? "pickup" : "delivery";
     
        
-
         if ($order_type == "pickup") {
             $order_data  = $this->order_model->get_by_code($order_code);
-            $grand_total = $data['amount_to_pay'] - $order_data['total_delivery_charge'];
+            $grand_total = $data['amount_to_pay'];
             $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null];
         } else {
             
@@ -252,7 +252,7 @@ class Checkout_model extends Base_model
         $data['data'] = json_encode(['payment_id' => $paymentID, 'payment_token' => $paymentToken, 'payer_id' => $payerID]);
         $data['created_at'] = strtotime(date('D, d-M-Y'));
 
-        $order_code = $this->order_model->confirm($address_id);
+        $order_code = $this->order_model->confirm($address_id, $order_type);
         $data['order_code'] = $order_code;
 
         $this->db->insert('payment', $data);
@@ -277,7 +277,7 @@ class Checkout_model extends Base_model
             error(site_phrase('invalid_payment'), site_url('cart'));
         }
         // IF THE PAYMENT ID IS UNIQUE
-        $data['amount_to_pay'] = $this->cart_model->get_grand_total();
+        $data['amount_to_pay'] = $this->cart_model->get_grand_total($order_type);
         $data['amount_paid'] = $stripe_payment_data['paid_amount'];
         $data['payment_method'] = "stripe";
         $data['identifier'] = $stripe_payment_data['stripe_session_id'];
@@ -285,7 +285,7 @@ class Checkout_model extends Base_model
         $data['created_at'] = strtotime(date('D, d-M-Y'));
 
         // This is creating a new order row. 
-        $order_code = $this->order_model->confirm($address_id);
+        $order_code = $this->order_model->confirm($address_id, $order_type);
 
         $data['order_code'] = $order_code;
 

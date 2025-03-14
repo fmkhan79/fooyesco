@@ -478,66 +478,42 @@ public function get_restaurants_by_ids($restaurant_ids) {
      }
 
      
-     public function get_service_amount()
+    public function get_service_amount()
     {
         // $total_service = 0.00;
-            $total_service = 1;
-        
+        $total_service = 1;
         return $total_service;
     }
 
-    public function get_total_discount_applied()
+    public function get_bag_charges()
     {
-            $total_discount = 0.00;
-            if($this->get_sub_total() > 0){
-                $total_discount = 20;
+        // $total_service = 0.00;
+        $total_price = 0.10;
+        return $total_price;
+    }
 
-    //     $restaurant_details = $this->restaurant_model->get_by_id($id);
-    //  $total_discount =  $restaurant_details['res_discount'];
-    //  print_r($total_discount);
+    public function get_total_discount_applied_percentage($order_type)
+    {
+        
+        $total_discount = 0.00;
+        if($this->get_sub_total() > 0){
+            if($order_type == "collection" || $order_type == "pickup"){
+                $total_discount = 25;
+            }else{
+                $total_discount = 20;
             }
-                // print_r($total_discount);
-                // die();
+        }
+        
         return $total_discount;
     }
 
     /**
      * GET SMALLER DATA FOR CART PAGE : GRAND TOTAL
      */
-    public function get_grand_total()
-    {
-        $grand_total = 0;
-        $total_service = 0.00;
-        if($this->get_sub_total() > 0) {
-            $total_service = 0.25;
-        }
-        $sub_total = $this->get_sub_total();
-        $total_delivery_charge = $this->get_total_delivery_charge();
-        //raised dicount in percent 
-        $res_discount = $this->get_total_discount_applied();
-        
-        $discounted_amount = $sub_total * ($res_discount/100);
-        $this->discounted_amount = $discounted_amount;
 
-            // print_r("discount_amount".$discounted_amount);
-        // var_dump();
-        // $discount =  $this->get_discound_val();
-        // $grand_total = $sub_total + $total_delivery_charge + $total_service;
-        $grand_total = $sub_total;
-        // if($discount && $discount > 0){
-        // $discountAmount =  ($grand_total * $discount) / 100;
-        // }
-        // if($discountAmount > 0){
-        //     return $grand_total - $discountAmount;
-        // }
-            
-    
-        return $grand_total-$discounted_amount;
+    public function get_discounted_amount($order_type) {
+        return $this->get_sub_total($order_type) * ($this->get_total_discount_applied_percentage($order_type) / 100);
     }
-    public function check_discount() {
-           $grand_total = $this->get_grand_total(); 
-        return $this->discounted_amount;
-        }
 
     /**
      * CLEARING A CART
@@ -662,6 +638,17 @@ public function get_restaurants_by_ids($restaurant_ids) {
         } else {
             return 'null';
         }
+    }
+
+    function get_grand_total($order_type){
+
+        $subtotal = sanitize($this->get_total_menu_price());
+        $serviceCharge = sanitize($this->get_service_amount());
+        $bagCharges = number_format((float) sanitize($this->get_bag_charges($order_type)), 2, '.', '');
+        $discountedAmount = number_format((float) sanitize($this->get_discounted_amount($order_type)), 2, '.', '');
+
+        return $subtotal + $serviceCharge + $bagCharges - $discountedAmount;
+
     }
     
     

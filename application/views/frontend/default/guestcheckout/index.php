@@ -130,7 +130,6 @@ $stripe_settings = json_decode($stripe_settings);
                     <label>Note for Delivery: </label>
                     <textarea class="form-control" name="note" placeholder="Details" rows="5"></textarea>
                 </div> -->
-
                 <button type="submit" class="rr-btn border-0 mt-4">Go to next step: Address Details</button>
             </form>
         </div>
@@ -142,8 +141,8 @@ $stripe_settings = json_decode($stripe_settings);
                 <div class="form-row mt-4">
                     <div class="form-group col-md-6">
 
-                        <label for="inputAddress">Enter Your Address*</label>
-                        <input type="text" name="additional_address" class="form-control" id="to" required
+                        <label for="inputto">Enter Your Address*</label>
+                        <input type="text" name="additional_address" class="form-control remove-required-collection" id="to" required
                             placeholder="Enter Your Address">
 
                         <small class="text-danger d-none" id="not-deliever"> Address not in deliverable range </small>
@@ -151,17 +150,17 @@ $stripe_settings = json_decode($stripe_settings);
                         <input type="hidden" placeholder="Longitude" id="long_to">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputAddress">Postcode*</label>
-                        <input type="text" name="zipcode" class="form-control" id="city" placeholder="Postcode" required>
+                        <label for="inputcity">Postcode*</label>
+                        <input type="text" name="zipcode" class="form-control remove-required-collection" id="city" placeholder="Postcode" required>
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="inputEmail4">House/Flat Number*</label>
-                        <input type="text" class="form-control" name="street" placeholder="House/Flat Number" required>
+                        <label for="inputflat">House/Flat Number*</label>
+                        <input type="text" id="flat" class="form-control remove-required-collection" name="street" placeholder="House/Flat Number" required>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputEmail4">Street Name*</label>
-                        <input type="text" class="form-control" id="street-value" name="zip_code" placeholder="Street Number" required>
+                        <label for="inputstreet-value">Street Name*</label>
+                        <input type="text" class="form-control remove-required-collection" id="street-value" name="zip_code" placeholder="Street Number" required>
                     </div>
                     <!-- <div class="form-group col-md-6">
                         <label for="inputAddress">City</label>
@@ -193,13 +192,13 @@ $stripe_settings = json_decode($stripe_settings);
                 </div>
 
 
-                <div class="form-check mt-4 d-flex">
+                <!-- <div class="form-check mt-4 d-flex">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1"><strong>The shipping address does not
                             match
                             the
                             billing address</strong></label>
-                </div>
+                </div> -->
 
                 <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Go to next step: Place Order</button>
                 <!-- <button id="calculate_distance">Calculate Distance</button> -->
@@ -374,9 +373,11 @@ $stripe_settings = json_decode($stripe_settings);
                     </svg>
                     <div class="c-basketSwitcher-eta-wrapper"><span>
                             Delivery<br />
-                        </span> <span class="c-basketSwitcher-eta">
+                        </span> 
+                        <!-- <span class="c-basketSwitcher-eta">
                             from 7:35
-                        </span></div>
+                        </span> -->
+                    </div>
                 </label> <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between"><input
                         type="radio" name="basket-switcher" value="collection" class="is-visuallyHidden"> <svg
                         xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
@@ -398,16 +399,11 @@ $stripe_settings = json_decode($stripe_settings);
                         </defs>
                     </svg>
                     <div class="c-basketSwitcher-eta-wrapper"><span>
-                            Collection<br />
-                            15 Minutes
+                            Collection
                         </span></div>
                 </label>
             </div>
 
-            <div class="total-price-box d-flex justify-content-between align-items-center">
-                <div class="subtotal">Subtotal</div>
-                <div class="subtotal-price"></div>
-            </div>
 <script>
     $(document).ready(function () {
     // Jab bhi delivery price calculate ho jaye
@@ -425,27 +421,46 @@ $stripe_settings = json_decode($stripe_settings);
     }, 500); // Har 500ms mein check karega
 });
 </script>
-            <div class="total-price-box d-flex justify-content-between align-items-center">
-            <div class="subtotal">Delivery Charges <sub id="d-cal">(Calculated On Checkout)</sub></div>
-                <!-- <div class="total-delivery-price"></div> -->
-            </div>
+<div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="subtotal" id="">Subtotal</div>
 
-            <!-- <div class="total-price-box d-none justify-content-between align-items-center">
-                <div class="subtotal">VAT Charges</div>
-                <div class="total-vat-price"></div>
-            </div> -->
+                        <div id="ttprice" class="subtotal-price"></div>
+                    </div>
+                    <hr>
 
-            <div class="total-price-box d-flex justify-content-between align-items-center">
-                <div class="subtotal">Service Charges</div>
-                <div class="total-service-price"></div>
-            </div>
 
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center" id="delivery-charge">
+                        <div class="subtotal">Delivery Charges <sub id="cal">(Calculated On Checkout)</sub></div>
+                        <div class="total-delivery-price"></div>
+                    </div>
+
+                    <!-- <div class="total-price-box d-none justify-content-between align-items-center">
+                        <div class="subtotal">VAT Charges</div>
+                        <div class="total-vat-price"></div>
+                    </div> -->
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="subtotal">Service Charges</div>
+                        <div class="total-service-price">-</div>
+                    </div>
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="subtotal">Bag Charges</div>
+                        <div class="bag-charges">-</div>
+                    </div>
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="subtotal" id="discount-label">Discount (20%)</div>
+                        <div class="total-discount-applied">-</div>
+                    </div>
+                    
             <?php
             $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
             ?>
 
             <hr />
-            <?php if (sizeof($cart_items) > 0) { ?>
+            <?php if (sizeof($cart_items) > 0 && false) { ?>
                 <div class="row justify-content-md-end">
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -478,55 +493,6 @@ $stripe_settings = json_decode($stripe_settings);
             <?php } ?>
 
             <!-- <div class="offer-spend my-3">Offer Spend £28.05 more to get 10% off</div> -->
-
-            <div class="day-time-box my-4 p-2">
-
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    Day <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <g clip-path="url(#clip0_4609_18708)">
-                            <path
-                                d="M11.795 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V7C3 6.46957 3.21071 5.96086 3.58579 5.58579C3.96086 5.21071 4.46957 5 5 5H17C17.5304 5 18.0391 5.21071 18.4142 5.58579C18.7893 5.96086 19 6.46957 19 7V11"
-                                stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path
-                                d="M18 22C20.2091 22 22 20.2091 22 18C22 15.7909 20.2091 14 18 14C15.7909 14 14 15.7909 14 18C14 20.2091 15.7909 22 18 22Z"
-                                stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M15 3V7" stroke="#F54748" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M7 3V7" stroke="#F54748" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M3 11H19" stroke="#F54748" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M18 16.4961V18.0001L19 19.0001" stroke="#F54748" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </g>
-                        <defs>
-                            <clippath id="clip0_4609_18708">
-                                <rect width="24" height="24" fill="white" />
-                            </clippath>
-                        </defs>
-                    </svg>
-                </div>
-
-                <div class="d-flex align-items-center justify-content-between">
-                    Time <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <g clip-path="url(#clip0_4609_18717)">
-                            <path
-                                d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
-                                stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M12 12L15 10" stroke="#F54748" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M12 7V12" stroke="#F54748" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </g>
-                        <defs>
-                            <clippath id="clip0_4609_18717">
-                                <rect width="24" height="24" fill="white" />
-                            </clippath>
-                        </defs>
-                    </svg>
-                </div>
-
-            </div>
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
                 <div class="subtotal">Total</div>

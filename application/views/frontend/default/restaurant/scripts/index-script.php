@@ -523,8 +523,9 @@
         $.ajax({
             url: '<?php echo base_url(); ?>site/selected_cat_items_summary/',
             success: function(res) {
-                $("#item-list").empty(); // Empty the content of the div
-                $("#item-list").html(res); // Replace with the 'res' response
+                // debugger;
+                $(".item-list").empty(); // Empty the content of the div
+                $(".item-list").html(res); // Replace with the 'res' response
             },
             
             error: function() {
@@ -534,71 +535,6 @@
         // holdModal('popup');
     }
 
-    // GET THE CART total price AND DISPAY IN RIGHT SIDE
-    function viewselected_cat_items_summary_total() {
-
-
-        $.ajax({
-            url: '<?php echo base_url(); ?>cart/get_order_summary/',
-            success: function(res) {
-                // Parse the JSON string into a JavaScript object
-                var data = JSON.parse(res);
-
-                // console.log(data)
-                // Access the 'sub_total' property and display its value
-                var subTotalValue = data.sub_total;
-                var totalDeliveryValue = data.total_delivery_charge;
-                var totalVatValue = data.vat_charges;
-                var grandSubTotalValue = data.grand_total;
-                var totalServicePrice = data.total_service_price;
-                var totalDiscountPrice = data.total_discount_applied;
-                var discountP = data.discounted_amount;
-                // Now you can use subTotalValue as needed, for example, displaying it in the console
-      
-                $(".subtotal-price").text(subTotalValue);
-                // $(".total-delivery-price").text(totalDeliveryValue);
-                $(".total-vat-price").text(totalVatValue);
-                $(".grand-product-price").text(grandSubTotalValue);
-                $(".total-service-price").text(totalServicePrice);
-                // $(".total-discount-applied").text(totalDiscountPrice + "%");
-                $(".total-discount-applied").text(discountP + "%");
-
-
-                if (subTotalValue !== "£0") {
-    // Get both buttons
-    var guestButton = document.getElementById("guestCheckoutBtn");
-    var checkoutButton = document.getElementById("CheckoutBtn");
-    var guestcheckoutButtonmobile = document.getElementById("guestCheckoutBtnmobile");
-    var checkoutButtonmobile = document.getElementById("CheckoutBtnmobile");
-
-    // Check if elements are not null before modifying them
-    if (guestButton) {
-        guestButton.classList.remove("disabled");
-        guestButton.style.pointerEvents = "auto";
-    }
-
-    if (checkoutButton) {
-        checkoutButton.classList.remove("disabled");
-        checkoutButton.style.pointerEvents = "auto";
-    }
-
-    if (guestcheckoutButtonmobile) {
-        guestcheckoutButtonmobile.classList.remove("disabled");
-        guestcheckoutButtonmobile.style.pointerEvents = "auto";
-    }
-
-    if (checkoutButtonmobile) {
-        checkoutButtonmobile.classList.remove("disabled");
-        checkoutButtonmobile.style.pointerEvents = "auto";
-    }
-}
-            },
-            error: function() {
-                alert("<?php echo $this->lang->line('fail'); ?>")
-            }
-        });
-        // holdModal('popup');
-    }
 
     $(document).ready(function() {
         viewselected_cat_items_summary();
@@ -801,6 +737,7 @@
                 // $('#sub-total').text(updatedPrice);
                 // $('#sub-total-' + cartId).text(updatedPrice);
                 viewselected_cat_items_summary_total(); 
+                viewselected_cat_items_summary();
                 $.ajax({
     url: '<?php echo site_url('cart/reload_cart_summary'); ?>',
     success: function(response) {
@@ -825,10 +762,12 @@
     }
 
     function viewselected_cat_items_summary_total() {
-
-//chalo
+        
+//chalo 
 $.ajax({
+    data: {order_type: document.querySelector("input[name='order_type']").value },
     url: '<?php echo base_url(); ?>cart/get_order_summary/',
+    type: 'POST',
     success: function(res) {
         // Parse the JSON string into a JavaScript object
         var data = JSON.parse(res);
@@ -842,7 +781,9 @@ $.ajax({
         var totalServicePrice = data.total_service_price;
         var totalDiscountPrice = data.total_discount_applied;
         var discountP = data.discounted_amount;
+        var bagCharges = data.bag_price;
 
+        $(".bag-charges").text(bagCharges);
 
         // Now you can use subTotalValue as needed, for example, displaying it in the console
 
@@ -852,6 +793,17 @@ $.ajax({
         $(".grand-product-price").text(grandSubTotalValue);
         $(".total-service-price").text(totalServicePrice);
         $(".total-discount-applied").text("-" + discountP);
+
+        
+        if(subTotalValue == "£0"){
+            $(".total-discount-applied").text("-");
+            $(".grand-product-price").text("-");
+            $(".subtotal-price").text("-");
+            $(".grand-product-price").text("-");
+            $(".total-service-price").text("-");
+            $(".bag-charges").text("-");
+
+        }
 
         if (subTotalValue !== "£0") {
         // Get both buttons
@@ -944,10 +896,13 @@ $.ajax({
   function updateItemListId() {
     const itemList = document.getElementById("item-list");
     
+    if(itemList == null)
+        return;
+
     // Check if screen width is at least 768px (md breakpoint for Bootstrap)
     if (window.innerWidth >= 768) {
       // Change the id when not on mobile (>= 768px)
-      itemList.id = "item-list-md";
+      itemList.id = "item-list";
     } else {
       // Reset the id back to item-list for mobile view
       itemList.id = "item-list";
@@ -960,4 +915,32 @@ $.ajax({
   // Add event listener to update on resize
   window.addEventListener("resize", updateItemListId);
 
+
+    const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
+    const hiddenInputs = document.querySelectorAll('input[name="order_type"]');
+
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.checked) {
+                let value = radio.value;
+                hiddenInputs.forEach(hiddenInput => {
+                    hiddenInput.value = value;
+                    if(value == "collection"){
+                        document.getElementById("delivery-charge").classList.add("d-none");
+                        document.getElementById("delivery-charge").classList.remove("d-flex");
+                        document.getElementById("discount-label").innerHTML = "Discount (25%)";
+
+                    }else{
+                        // Delivery
+                        document.getElementById("delivery-charge").classList.remove("d-none");
+                        document.getElementById("delivery-charge").classList.add("d-flex");
+                        document.getElementById("discount-label").innerHTML = "Discount (20%)";
+                        
+                    }
+                });
+                viewselected_cat_items_summary_total();
+            }
+        });
+    });
+    
 </script>

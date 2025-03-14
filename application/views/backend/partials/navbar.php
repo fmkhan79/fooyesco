@@ -156,7 +156,7 @@
         text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + total +
             " | Addresss: " + add.additional_address;
     } else if (obj.order_type == "pickup") {
-        text = "COLLECTION | Order ID: " + obj.id + " | Total Amount: " + obj.grandSubTotalValue;
+        text = "COLLECTION | Order ID: " + obj.id + " | Total Amount:  £" + obj.grand_total;
     }
 
     Swal.fire({

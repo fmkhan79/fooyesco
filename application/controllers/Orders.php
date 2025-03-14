@@ -138,18 +138,7 @@ class Orders extends Authorization
             $check = $_query->row_array();
             echo json_encode($check);
         }
-        // die();
-        // get user_id 
-        // check table of restuarant where owner_id = user_id 
-        // get restuarnat id. 
         
-        // Sample 6
-
-        // Check tbl order_detail
-        // where resturant_id = sample (6)
-        
-        
-
     }
 
     public function mark_order_as_read()
