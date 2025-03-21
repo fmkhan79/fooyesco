@@ -39,8 +39,9 @@
                 <li><a href="<?php echo site_url('site/become-a-partner'); ?>">
                             <?php echo site_phrase('become_a_partner'); ?>
                         </a></li>
-                    <li><a href="#">Terms of Use</a></li>
-                    <li><a href="#">Privacy</a></li>
+                <li><a href="<?php echo site_url('site/terms-of-use'); ?>">
+                            <?php echo site_phrase('terms_of_use'); ?>
+                        </a></li>
                 </ul>
             </div>
             <div class="col-md-4">
