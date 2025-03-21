@@ -114,6 +114,16 @@ class Site extends Base
      *
      * @return void
      */
+    public function terms_of_use() {
+        $page_data['page_name'] = 'terms_of_use/index';
+        $page_data['page_title'] = site_phrase("terms_of_use", true);
+        $this->load->view(frontend('index'), $page_data);
+    }
+    /**
+     * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE ABOUT US PAGE
+     *
+     * @return void
+     */
     public function become_a_partner() {
         $page_data['page_name'] = 'become_a_partner/index';
         $page_data['page_title'] = site_phrase("become_a_partner", true);
