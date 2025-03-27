@@ -167,7 +167,7 @@
     <?php } else { ?>
  <div class="did mt-3">
  <span>20% ONLINE DISCOUNT</span>
- <span>7
+ <span>
         
      <?php } ?>
     
