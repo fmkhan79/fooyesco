@@ -2110,11 +2110,12 @@ button:disabled{
   #order-add svg{
     margin-left: 100px;
   }
+
   .order-red-btn-main {
     padding: 20px 20px;
     background: #f54748;
     border-radius: 41px;
-    font-size: 16px;
+    font-size: 13px;
     color: #fff;
     font-weight: 500;
   }
@@ -2246,4 +2247,13 @@ a:hover {
 }
 .featured-responsive-card a.btn:hover{
   background: #F54748!important;
+}
+
+.order-red-btn-main {
+  padding: 20px 20px;
+  background: #f54748;
+  border-radius: 41px;
+  font-size: 13px;
+  color: #fff;
+  font-weight: 500;
 }
