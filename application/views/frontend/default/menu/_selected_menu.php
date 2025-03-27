@@ -16,7 +16,6 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
     <?PHP   echo  $menu_details["name"];  ?>
 </h3>
 <div class="product-img">
-
     <div class="order-img-box main-img">
         <a href="#"><img class="rounded-circle"
                 src="<?php echo base_url('uploads/menu/') . $menu_details["thumbnail"]; ?>" height="72px"
@@ -182,7 +181,7 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
     </div>
 
     <div class="m-4 d-flex justify-content-between align-items-center add-order-box <?= $hasRequireVariant ? "disabled" : ""?>" id="add-to-order-container" onclick="addToCart()"  >
-    <div class="add-order-txt">Add To Order</div>
+    <div class="add-order-txt">Add To Order asdas</div>
     <div class="add-order-price" id="add-order-price">0</div>
 </div>
 
