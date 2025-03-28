@@ -422,7 +422,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
             <div class="accordion-body">
 
                     <!-- Order Summary Section (only visible on mobile) -->
-                     asdasd
+                    
               
             </div>
         </div>
@@ -609,7 +609,6 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
                 <span aria-hidden="true">&times;</span>
             </button>
             <div class="modal-body p-0" id="getdetails_selected_menu">
-asdasdsa
                                             </div>
                                         </div>
                                     </div>
