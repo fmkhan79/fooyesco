@@ -194,21 +194,21 @@
                                     Login
                                 </a>
                             </div>
-                            <div class="btn-proceed">
+                            <!-- <div class="btn-proceed">
                                 <a href="<?php echo site_url('auth/registration/customer'); ?>" class="d-block order-red-btn-main text-center mt-4">
                                     Sign Up
                                 </a>
-                            </div>
+                            </div> -->
                             <div class="btn-proceed">
                                 <a href="<?php echo site_url('GuestCheckout'); ?>" class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 disabled">
                                     Guest Checkout
                                 </a>
                             </div>
-                            <div class="btn-proceed">
+                            <!-- <div class="btn-proceed">
                                 <a href="<?php echo site_url('auth/google_login'); ?>" class="d-block order-red-btn-main text-center mt-4">
         Login with Google
     </a>
-                            </div>
+                            </div> -->
                             
                         </div>
                         <?php endif; ?>
