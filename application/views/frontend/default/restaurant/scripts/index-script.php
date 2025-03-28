@@ -769,6 +769,7 @@ $.ajax({
     url: '<?php echo base_url(); ?>cart/get_order_summary/',
     type: 'POST',
     success: function(res) {
+        // debugger
         // Parse the JSON string into a JavaScript object
         var data = JSON.parse(res);
 
@@ -807,20 +808,29 @@ $.ajax({
 
         if (subTotalValue !== "£0") {
         // Get both buttons
-        var guestButton = document.getElementById("guestCheckoutBtn");
-        var checkoutButton = document.getElementById("CheckoutBtn");
+        var guestButtons = document.querySelectorAll(".guestCheckoutBtn");
+        var checkoutButton = document.querySelectorAll("CheckoutBtn");
         var guestcheckoutButtonmobile = document.getElementById("guestCheckoutBtnmobile");
         var checkoutButtonmobile = document.getElementById("CheckoutBtnmobile");
 
         // Check if elements are not null before modifying them
-        if (guestButton) {
-        guestButton.classList.remove("disabled");
-        guestButton.style.pointerEvents = "auto";
+        if (guestButtons) {
+            guestButtons.forEach(function(button) {
+                button.classList.remove("disabled");
+                button.classList.add("enabled");
+            });
+        // guestButton.classList.remove("disabled");
+        // guestButton.style.pointerEvents = "auto";
         }
 
         if (checkoutButton) {
-        checkoutButton.classList.remove("disabled");
-        checkoutButton.style.pointerEvents = "auto";
+            
+            checkoutButton.forEach(function(button) {
+                button.classList.remove("disabled");
+                button.classList.add("enabled");
+            });
+        // checkoutButton.classList.remove("disabled");
+        // checkoutButton.style.pointerEvents = "auto";
         }
 
         if (guestcheckoutButtonmobile) {
@@ -831,6 +841,32 @@ $.ajax({
         if (checkoutButtonmobile) {
         checkoutButtonmobile.classList.remove("disabled");
         checkoutButtonmobile.style.pointerEvents = "auto";
+        }
+        }else{
+            // Get both buttons
+        var guestButtons = document.querySelectorAll(".guestCheckoutBtn");
+        var checkoutButton = document.querySelectorAll("CheckoutBtn");
+        var guestcheckoutButtonmobile = document.getElementById("guestCheckoutBtnmobile");
+        var checkoutButtonmobile = document.getElementById("CheckoutBtnmobile");
+
+        // Check if elements are not null before modifying them
+        if (guestButtons) {
+            guestButtons.forEach(function(button) {
+                button.classList.add("disabled");
+                button.classList.remove("enabled");
+            });
+        // guestButton.classList.remove("disabled");
+        // guestButton.style.pointerEvents = "auto";
+        }
+
+        if (checkoutButton) {
+            
+            checkoutButton.forEach(function(button) {
+                button.classList.add("disabled");
+                button.classList.remove("enabled");
+            });
+        // checkoutButton.classList.remove("disabled");
+        // checkoutButton.style.pointerEvents = "auto";
         }
         }
             },
@@ -924,18 +960,35 @@ $.ajax({
             if (radio.checked) {
                 let value = radio.value;
                 hiddenInputs.forEach(hiddenInput => {
+                    // debugger;
                     hiddenInput.value = value;
                     if(value == "collection"){
-                        document.getElementById("delivery-charge").classList.add("d-none");
-                        document.getElementById("delivery-charge").classList.remove("d-flex");
-                        document.getElementById("discount-label").innerHTML = "Discount (25%)";
-
-                    }else{
-                        // Delivery
-                        document.getElementById("delivery-charge").classList.remove("d-none");
-                        document.getElementById("delivery-charge").classList.add("d-flex");
-                        document.getElementById("discount-label").innerHTML = "Discount (20%)";
                         
+                        // sessionStorage.setItem("order-type", "collection");
+
+
+                        document.querySelectorAll(".delivery-charge").forEach(function(element) {
+                            element.classList.add("d-none");
+                            element.classList.remove("d-flex");
+                        });
+
+                        document.querySelectorAll(".discount-label").forEach(function(element) {
+                            element.innerHTML = "Discount (25%)";
+                        });
+                    }else{
+
+                        // sessionStorage.setItem("order-type", "delivery");
+
+                    
+                        // Delivery
+                        document.querySelectorAll(".delivery-charge").forEach(function(element) {
+                            element.classList.remove("d-none");
+                            element.classList.add("d-flex");
+                        });
+
+                        document.querySelectorAll(".discount-label").forEach(function(element) {
+                            element.innerHTML = "Discount (20%)";
+                        });    
                     }
                 });
                 viewselected_cat_items_summary_total();

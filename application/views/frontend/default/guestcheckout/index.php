@@ -15,8 +15,9 @@ $stripe_settings = json_decode($stripe_settings);
 ?>
 
 <!-- MAIN CONTENT -->
+
 <style>
-    #item-list .d-flex.p-1,#item-list .product-price img{
+   -list .d-flex.p-1,#item-list .product-price img{
         display:none!important;
     }
     .disabled {
@@ -53,6 +54,9 @@ $stripe_settings = json_decode($stripe_settings);
   font-size: 0.5em;
   left: 20px;
 }
+    .d-flex.p-1 {
+        display: none !important;
+    }   
     /* .order-delivery-types{
     display:none;
 } */
@@ -510,9 +514,27 @@ $stripe_settings = json_decode($stripe_settings);
         </div>
     </div>
 </section>
-
+<!-- 
 <script>
-    // var checking = $("#")
-</script>
+    document.addEventListener("DOMContentLoaded", function () {
+    
+        var orderType = sessionStorage.getItem("order-type");
+
+        if(orderType == "collection"){
+            const input = document.querySelector("input[value='collection']");
+            if(input)
+            {
+                input.click();   
+            }
+        }
+        else{
+            const input = document.querySelector("input[value='delivery']");
+            if(input)
+            {
+                input.click();   
+            }
+        }
+    });
+</script> -->
 
 <!-- END MAIN CONTENT -->

@@ -86,7 +86,7 @@
 
 
 
-                    <div class="total-price-box d-flex justify-content-between align-items-center" id="delivery-charge">
+                    <div class="total-price-box d-flex justify-content-between align-items-center delivery-charge">
                         <div class="subtotal">Delivery Charges <sub id="cal">(Calculated On Checkout)</sub></div>
                         <div class="total-delivery-price"></div>
                     </div>
@@ -107,7 +107,7 @@
                     </div>
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
-                        <div class="subtotal" id="discount-label">Discount (20%)</div>
+                        <div class="subtotal discount-label">Discount (20%)</div>
                         <div class="total-discount-applied">-</div>
                     </div>
                     
@@ -181,7 +181,7 @@
                     <?php if ($customer_details['is_guest'] == 0 && $customer_details['name']) : ?>
 
                         <div class="btn-proceed" style="width:100%">
-                            <a href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn-main text-center mt-4 w-100 border-0 disabled" id="CheckoutBtn" style="cursor: pointer;" role="button">
+                            <a href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn-main text-center mt-4 w-100 border-0 disabled CheckoutBtn" style="cursor: pointer;" role="button">
                                     <?php echo site_phrase('checkout', true); ?>
                                 </a>
                             
@@ -200,7 +200,7 @@
                                 </a>
                             </div>
                             <div class="btn-proceed">
-                                <a href="<?php echo site_url('GuestCheckout'); ?>" id="guestCheckoutBtn" class="d-block order-red-btn-main text-center mt-4 disabled">
+                                <a href="<?php echo site_url('GuestCheckout'); ?>" class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 disabled">
                                     Guest Checkout
                                 </a>
                             </div>
@@ -224,9 +224,12 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-                    const input = document.querySelector("input[value='delivery']");
-                    if (input) {
-                        input.click();
+                    // Check if the device is mobile (screen width <= 768px is commonly used for mobile)
+                    if (window.innerWidth <= 768) {
+                        const input = document.querySelector("input[value='delivery']");
+                        if (input) {
+                            input.click();
+                        }
                     }
                 });
             </script>
