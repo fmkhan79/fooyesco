@@ -136,16 +136,16 @@
     <div class="row general-info-section">
         <div class="col-md-6 general-info-left">
             <h5 class="general-info-heading">General Information</h5>
-            <p class="general-info-text">Eu dictumst cum at sed euismod condimentum?</p>
-            <p class="general-info-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Trincidunt sed tristique mollis vitae, consequat gravida sagittis.</p>
-            <p class="general-info-text">Magna bibendum est fermentum eros.</p>
+            <p class="general-info-text">Have questions about our menu, services, or ingredients?</p>
+            <p class="general-info-text">We’re here to help! Whether it's about orders, catering, or dietary preferences, we’ve got you covered.</p>
+            <p class="general-info-text">Feel free to reach out, and we’ll get back to you as soon as possible</p>
         </div>
 
         <div class="col-md-6 contact-form-container bg-light">
             <h5 class="form-heading">Ask a Question</h5>
             <p class="form-description">
-                <strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</strong><br>
-                Mattis neque ultrices mattis aliquam, malesuada diam est.
+                <strong>Got a question? Let’s talk!</strong><br>
+                Drop us a message, and our team will be happy to assist you.
             </p>
             <form class="contact-form">
                 <div class="form-group">

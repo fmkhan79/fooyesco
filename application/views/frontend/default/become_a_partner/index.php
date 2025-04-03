@@ -115,7 +115,35 @@
 partners who share our passion for quality food and innovation. Check below a few benefits
 your business could gain by working with us.</p>
         </div>
-        <div class="about-bot-txt">
+        <div style="display: flex; justify-content: center;">
+    <div class="col-md-8 contact-form-container bg-light">
+            <h5 class="form-heading">Send us a Partnership request</h5>
+            <p class="form-description">
+                <strong>Please provide your Name, Email, Contact & Meassage so we will be in touch with you.</strong><br>
+            </p>
+            <form class="contact-form">
+            <div class="form-group d-flex" style="gap:20px">
+    <input type="text" class="form-control contact-form-input" placeholder="First Name" style="width: 50%;">
+    <input type="text" class="form-control contact-form-input" placeholder="Last Name" style="width: 50%;">
+</div>
+<div class="form-group">
+    <input type="email" class="form-control contact-form-input" placeholder="Email">
+</div>
+<div class="form-group">
+    <input type="tel" class="form-control contact-form-input" placeholder="Phone Number">
+</div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control contact-form-input" placeholder="Subject">
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control contact-form-textarea" rows="4" placeholder="Type Your Message"></textarea>
+                </div>
+                <button type="submit" class="btn contact-form-submit-btn">Submit</button>
+            </form>
+        </div>
+        </div>
+        <div class="about-bot-txt my-5">
            <h3>Why Partner with Fooyes UK?</h3>
         <ul style="gap: 10px; display: grid;">
             <li> <b>Market Reach: </b>Gain exposure through our growing customer base across Peterborough.</li>
@@ -168,27 +196,7 @@ your business could gain by working with us.</p>
     </div> -->
 
     <!-- General Information and Contact Form -->
-     <div style="display: flex; justify-content: center;">
-    <div class="col-md-8 contact-form-container bg-light">
-            <h5 class="form-heading">Ask a Question</h5>
-            <p class="form-description">
-                <strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</strong><br>
-                Mattis neque ultrices mattis aliquam, malesuada diam est.
-            </p>
-            <form class="contact-form">
-                <div class="form-group">
-                    <input type="text" class="form-control contact-form-input" placeholder="Your Name">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control contact-form-input" placeholder="Subject">
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control contact-form-textarea" rows="4" placeholder="Type Your Message"></textarea>
-                </div>
-                <button type="submit" class="btn contact-form-submit-btn">Submit</button>
-            </form>
-        </div>
-        </div>
+   
     <div class="row general-info-section">
         <!-- <div class="col-md-6 general-info-left">
             <h5 class="general-info-heading">General Information</h5>
