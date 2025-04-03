@@ -6,7 +6,7 @@
         <div class="d-md-flex">
             <div class="col-md-4">
                 <h3>FooYes</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor </p>
+                <p>Bringing you the best flavors with fresh ingredients and passion. </p>
                 <ul class="footer-social-links">
                     <li><a href="<?php echo sanitize($social_links['facebook']); ?>"><span
                                 class="ti-facebook"></span></a></li>
@@ -46,7 +46,7 @@
             </div>
             <div class="col-md-4">
                 <h4>Get in touch</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                <p>Stay updated with our latest recipes, offers, and news.</p>
                 <form class="d-flex subscribe-form">
                     <input type="text" placeholder="Email" /> <input type="submit" value="Subscribe" />
                 </form>
