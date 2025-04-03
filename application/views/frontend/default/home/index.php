@@ -7,6 +7,163 @@
         cursor: not-allowed;
 
     }
+    .fooyes-welcome {
+    background: #fff;
+    padding: 60px 20px;
+    position: relative;
+}
+
+.fooyes-welcome-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.fooyes-welcome-content {
+    max-width: 550px;
+    text-align: left;
+}
+
+.fooyes-welcome-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #222;
+}
+
+.fooyes-text-red {
+    color: #e63946;
+}
+
+.fooyes-text-yellow {
+    color: #f4a261;
+}
+
+.fooyes-welcome-description {
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 15px;
+    line-height: 1.6;
+}
+
+.fooyes-welcome-image {
+    max-width: 400px;
+    position: relative;
+}
+
+.fooyes-welcome-image img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+.fooyes-highlight-red {
+    color: #e63946;
+}
+.fooyes-highlight-yellow {
+    color:#fdc55e;
+}
+.fooyes-section-title {
+    font-weight: 700;
+}
+
+.fooyes-why-choose {
+    background: #fff;
+    padding: 0px 20px 60px 20px;
+    text-align: center;
+}
+
+.fooyes-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.fooyes-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 40px;
+}
+
+.text-red {
+    color: #e63946;
+}
+
+.text-yellow {
+    color: #fdc55e;
+}
+
+.fooyes-why-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    text-align: center;
+}
+
+.fooyes-why-card {
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.fooyes-why-card:hover {
+    transform: translateY(-5px);
+}
+
+.fooyes-why-icon {
+    width: 50px;
+    margin-bottom: 15px;
+}
+
+.fooyes-why-card h3 {
+    font-size: 1.5rem;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.fooyes-why-card p {
+    font-size: 18px;
+    color: #191919;
+    line-height: 1.5;
+}
+
+.fooyes-why-icon {
+    font-size: 2.5rem;
+    color: #e63946;
+    margin-bottom: 15px;
+}
+.fooyes-icon {
+    color: #e63946;
+    margin-right: 8px;
+}
+.fooyes-offerings {
+    background: #f44647;
+    padding: 60px 20px;
+    text-align: center;
+    margin-bottom:150px;
+}
+
+.fooyes-offerings-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.fooyes-offerings-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+.fooyes-offerings-text {
+    font-size: 1.2rem;
+    color: #fff;
+    line-height: 1.5;
+}
+
 </style>
 <!-- SLIDER -->
 <section class="main-banner d-flex align-items-center">
@@ -124,6 +281,26 @@
 <!--// SLIDER -->
 <!--//END HEADER -->
 <!--============================= FEATURED CUISINES =============================-->
+
+<div class="container-fluid px-5" style="padding-bottom: 20px">
+<div class="about-txt my-5 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right; height: 60vh;
+    display: flex;
+    align-items: center;">
+            <div class="row" style="margin-left: 0px;">
+                <div class="col-md-6">
+                <h2 class="fooyes-section-title">
+            Welcome to <span class="fooyes-highlight-red">Fooyes</span> <span class="fooyes-highlight-yellow">UK</span>
+        </h2>
+                    <p style="font-size: 20px; line-height: 31px;">At <b>Fooyes UK</b>, we bring you an unforgettable food experience, combining the finest ingredients,
+bold flavors, and a passion for culinary excellence. Whether you're craving classic British
+favorites or globally inspired delights, we've got something to satisfy every palate.</p>
+            </div>
+        </div>
+        </div>
+</div>
+
+
+
 <section class="order-listing featured-responsive-card-section">
     <div class="container p-0">
         <div class="special-offer-titlebox text-center">
@@ -198,6 +375,48 @@
 </section>
 
 
+<section class="fooyes-offerings">
+    <div class="fooyes-offerings-container">
+        <h2 class="fooyes-offerings-title"><span class="yellow">Explore</span> <span style="color:white;">Our Offerings</span></h2>
+        <p class="fooyes-offerings-text">
+            <strong>Dine-In & Takeaway –</strong> Experience our food at your convenience. <br>
+            <strong>Fast & Reliable Delivery –</strong> Get your favorite dishes straight to your door.
+        </p>
+    </div>
+</section>
+
+
+<section class="fooyes-why-choose">
+    <div class="fooyes-container">
+        <h2 class="fooyes-title">
+            <span class="text-red">Why</span> Choose <span class="text-yellow">Fooyes UK?</span>
+        </h2>
+        <div class="fooyes-why-grid">
+            <div class="fooyes-why-card">
+            <i class="fas fa-check-circle fooyes-why-icon"></i>
+                <h3>Quality You Can Trust</h3>
+                <p>We source the best ingredients to ensure every bite is fresh and delicious.</p>
+            </div>
+            <div class="fooyes-why-card">
+            <i class="fas fa-utensils fooyes-why-icon"></i>
+                <h3>Innovative & Exciting Menus</h3>
+                <p>From timeless dishes to creative new flavors, we’re always pushing boundaries.</p>
+            </div>
+            <div class="fooyes-why-card">
+            <i class="fas fa-leaf fooyes-why-icon"></i>  
+                <h3>Sustainability Matters</h3>
+                <p>We are committed to eco-friendly practices, reducing waste, and supporting local producers.</p>
+            </div>
+            <div class="fooyes-why-card">
+            <i class="fas fa-heart fooyes-why-icon"></i>
+                <h3>Customer-First Approach</h3>
+                <p>Your satisfaction is at the heart of everything we do.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 <section class="multi-service-box">
     <div class="container-fluid">
         <div class="d-md-flex align-items-center">
@@ -245,7 +464,7 @@
 </section>
 
 
-<section class="featured-responsive-card-section">
+<!-- <section class="featured-responsive-card-section">
     <div class="container p-0">
         <div class="special-offer-titlebox text-center">
             <h2>
@@ -255,7 +474,7 @@
             </h2>
         </div>
 
-        <!-- Featured Resturants -->
+    
         <div class="special-offer-btnlist mt-5">
             <ul class="m-0 p-0 text-center filtering">
                 <span data-filter="*" class="gb-btn active" href="#">All</span>
@@ -338,29 +557,22 @@
             </div>
         <?php endif; ?>
 
-
-        <!-- ./Featured Resturants loop -->
-
     </div>
-</section>
+</section> -->
 
 
 <section class="dt-hide"><img class="img-fluid"
         src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" /></section>
-<section class="footer-top mt-4">
+<section class="before-footer mt-4">
     <div class="container-fluid">
         <div class="d-md-flex ">
             <div class="col-md-6">
-                <h3>It’s Now <span class="red">More Easy</span> to <span class="yellow">Order</span> by Our Mobile <span
-                        class="red">App</span></h3>
-                <p>All you need to do is downlode one of the best delivery apps, make a and most companies are opting
-                    for mobile
-                    app devlopment for food delivery</p>
-                <div class="google-btns"><a href="#" class="goole-play-btn"><img
-                            src="<?php echo base_url('assets/frontend/default/images/google-play-icon.png') ?>" /></a>
-                    <a href="#"><img
-                            src="<?php echo base_url('assets/frontend/default/images/app-store-icon.png') ?>" /></a>
-                </div>
+                <h3>Join the <span class="red">Fooyes</span> Community </span></h3>
+                <p>Follow us on social media and sign up for exclusive offers, new menu launches, and foodie events.</p>
+                <p><i class="fas fa-map-marker-alt fooyes-icon"></i> <strong>Find Us:</strong> 40 High St, March PE15 9JR, United Kingdom</p>
+    <p><i class="fas fa-phone-alt fooyes-icon"></i> <strong>Contact Us:</strong> <a href="tel:+44 1354 654992" style="color:#191919">+44 1354 654992</a></p>
+    <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:chillihutmarchonline.com" style="color:#191919">chillihutmarchonline.com</a></p>
+    <p style="font-size:18px"> <b>Delicious moments start here. Welcome to Fooyes UK!</b></p>
             </div>
             <div class="col-md-6 mob-hide"><img class="img-fluid"
                     src="<?php echo base_url('assets/frontend/default/images/footer-top-img.png') ?>" /></div>

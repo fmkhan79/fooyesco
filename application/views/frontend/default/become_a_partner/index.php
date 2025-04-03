@@ -108,6 +108,37 @@
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
     <h4 class="contact-heading">Become a Partner</h4>
+    <div class="about-bot-txt my-5">
+            <h3>Partnership Opportunities with Fooyes UK
+            </h3>
+            <p> At Fooyes UK, we believe in the power of collaboration and are always looking for strategic
+partners who share our passion for quality food and innovation. Check below a few benefits
+your business could gain by working with us.</p>
+        </div>
+        <div class="about-bot-txt">
+           <h3>Why Partner with Fooyes UK?</h3>
+        <ul style="gap: 10px; display: grid;">
+            <li> <b>Market Reach: </b>Gain exposure through our growing customer base across Peterborough.</li>
+            <li> <b>Quality Assurance:</b>  We prioritize excellence, ensuring our partners meet the highest standards.</li>
+            <li> <b>Sustainable Growth:</b> We aim to build long-term, mutually beneficial relationships.</li>
+            <li> <b>Innovation and Support:</b> Benefit from our expertise, marketing initiatives, and logistical support.</li>
+        </ul>
+        </div>
+        <div class="about-bot-txt">
+           <h3>Types of Partnerships We Offer</h3>
+        <ul style="gap: 10px; display: grid;">
+            <li> <b>Restaurant and Takeaway Partnerships: </b>Use our premium food offerings to enhance your menu and delight your customers.</li>
+        </ul>
+        </div>
+        <div class="about-bot-txt">
+           <h3>How to Get Started</h3>
+        <ul style="gap: 10px; display: grid;">
+            <li> Interested in partnering with us? Reach out to our team by sending an inquiry to [ Contact ] with details about your business and how we can work together.</li>
+        </ul>
+        </div>
+        <div style="padding: 30px 0px; display: flex; justify-content: center;">
+        <p style="font-size: 30px;"><b>Join us in shaping the future of the food industry with Fooyes UK!</b></p>
+        </div>
     <div class="row contact-info-section">
         <!-- <div class="col-md-6 contact-info-left">
             <h4 class="contact-heading">Become a Partner</h4>
