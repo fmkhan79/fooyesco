@@ -819,8 +819,23 @@ a.w-rounded-btn:hover {
 .order-time-delivery-list li img {
   margin-right: 6px;
 }
+.percent-box{
+  display: flex;
+  align-items: center;
+}
 
 .footer-top {
+  display: none;
+  position: relative;
+  padding: 88px 50px 0 70px;
+  background: url(../images/footer-top-bg.fw.png) no-repeat bottom center;
+  background-size: cover;
+  font-size: 18px;
+  font-weight: 400;
+  color: #191919;
+}
+.before-footer {
+
   position: relative;
   padding: 88px 50px 0 70px;
   background: url(../images/footer-top-bg.fw.png) no-repeat bottom center;
@@ -830,7 +845,7 @@ a.w-rounded-btn:hover {
   color: #191919;
 }
 
-.footer-top::after {
+.before-footer::after {
   content: "";
   position: absolute;
   top: -70px;
@@ -840,7 +855,7 @@ a.w-rounded-btn:hover {
   background: url(../images/footer-top-desg1.png) no-repeat;
 }
 
-.footer-top::before {
+.before-footer::before {
   content: "";
   position: absolute;
   bottom: -90px;
@@ -850,7 +865,7 @@ a.w-rounded-btn:hover {
   background: url(../images/footer-top-desg3.png) no-repeat;
 }
 
-.footer-top h3 {
+.before-footer h3 {
   font-size: 48px;
   font-weight: 700;
   padding: 0;

@@ -1,53 +1,212 @@
 <!-- NAVIGATION BAR -->
 <?php include APPPATH . 'views/frontend/default/navigation/dark.php'; ?>
+<style>
+
+/* .fooyes-faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+} */
+
+.fooyes-faq-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 30px;
+}
+
+.fooyes-text-red {
+    color: #e63946;
+}
+
+.fooyes-text-yellow {
+    color: #fdc55e;
+}
+
+.fooyes-faq-list {
+    text-align: left;
+}
+
+.fooyes-faq-item {
+    background: #f8f8f8;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.fooyes-faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: #333;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+.fooyes-faq-question:hover {
+    background: #f54748;
+    color: #fff;
+}
+
+.faq-icon {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.fooyes-faq-answer {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+    display: none;
+}
+
+.fooyes-faq-item.active .fooyes-faq-answer {
+    display: block;
+    padding:15px;
+}
+
+</style>
 <!--============================= RESERVE A SEAT =============================-->
 
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
-        <h4 class="mt-5 mb-5 text-dark"><?php echo site_phrase('about_us', true) ?></h4>
+        <h1 class="mt-5 mb-5 text-dark"><?php echo site_phrase('about_us', true) ?></h1>
         <div class="about-txt my-4 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right">
-            <div class="row">
+            <div class="row" style="margin-left: 0px;">
                 <div class="col-md-6">
-                    <p >This is a type of resturent which typically serves food and drink, in addition to light
-                        refreshments such as baked goods or snacks. The term comes frome the rench word meaning food Are
-                        you hungry? Did you have a long and stressful day? Interested in getting a cheesy pizza
-                        delivered to your office or looking to avoid the weekly shop? Then Pakistan is the right
-                        destination for you! offers you a long and detailed list of the best restaurants and shops near
-                        you to help make your everyday easier.</p>
-                    <p> Our online food delivery service has it all, whether you fancy Indian, Pakistani or Afghan
-                        cuisine, Pakistan has over 15,000 restaurants available in top cities like Islamabad, Lahore,
-                        Rawalpindi, and Karachi. Did you know you can order your groceries and more from , too? Check
-                        out shops for favourite partners like Al-Fatah, Greenvalley and more. Sit back and relax – let
-                        Pakistan take the pressure off your shoulders.</p>
+                    <p >Welcome to Fooyes – where great food meets convenience! Based in the heart of the UK,
+                        Peterborough, we are your go-to solution for satisfying cravings and enjoying delicious meals,
+                        anytime, anywhere. Whether you’re at home, at work, or on the go, Fooyes brings your favourite
+                        dishes straight to your doorstep with just a few clicks.</p>
+                        <h2>Who We Are</h2>
+                    <p> Fooyes was born from a simple idea: to connect people with amazing food experiences while
+                        supporting local restaurants and takeaways. Our passion for food, combined with our
+                        commitment to quality and reliability, drives us to deliver not just meals but moments of joy to
+                        your table. We’re a team of food enthusiasts, tech innovators, and customer service champions
+                        who believe that everyone deserves access to good food effortlessly.</p>
                 </div>
             </div>
         </div>
 
         <div class="about-bot-txt my-5">
-            <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments such
-                as baked goods or snacks. The term comes frome the rench word meaning food Are you hungry? Did you have
-                a long and stressful day? Interested in getting a cheesy pizza delivered to your office or looking to
-                avoid the weekly shop? Then Pakistan is the right destination for you! offers you a long and detailed
-                list of the best restaurants and shops near you to help make your everyday easier.</p>
-            <p> Our online food delivery service has it all, whether you fancy Indian, Pakistani or Afghan cuisine,
-                Pakistan has over 15,000 restaurants available in top cities like Islamabad, Lahore, Rawalpindi, and
-                Karachi. Did you know you can order your groceries and more from , too? Check out shops for favourite
-                partners like Al-Fatah, Greenvalley and more. Sit back and relax, let Pakistan take the pressure off
-                your shoulders.</p>
+            <h3>What We Do</h3>
+            <p> From comforting classics to global cuisines, Fooyes partners with a wide variety of restaurants
+                and takeaways to cater to every palate and preference. Our easy-to-use platform ensures a
+                seamless ordering experience.</p>
+            <p> At Fooyes, we’re more than just a delivery app, we’re a community builder. By partnering with
+                local businesses, we help them grow and thrive while giving customers access to unique and
+                diverse dining options.</p>
         </div>
-
-        <ul>
-            <li>This is a type of resturent which typically serves food and drink, in addition to light refreshments
-                such as baked goods or snacks. The term comes frome the rench word meaning food Are you hungry? Did you
-                have a long and stressful</li>
-            <li>Our online food delivery service has it all, whether you fancy Indian, Pakistani or Afghan cuisine,
-                Pakistan has over 15,000 restaurants available in top cities like Islamabad, Lahore, Rawalpindi, and
-                Karachi. Did you know you can order your groceries and more from , too?</li>
-            <li>Check out shops for favourite partners like Al-Fatah, Greenvalley and more. Sit back and relax, let
-                Pakistan take the pressure off your shoulders.</li>
+        <div class="about-bot-txt">
+           <h3>Why Choose Us?</h3>
+        <ul style="gap: 10px; display: grid;">
+            <li> <b>Fast & Reliable: </b>Timely deliveries you can trust, no matter where you are.</li>
+            <li> <b>Quality Assurance:</b> We handpick our products to ensure the highest standards</li>
+            <li> <b>Diverse Options:</b> A vast menu from local favourites to top-notch restaurants.</li>
+            <li> <b>Customer First:</b> Our customers are at the heart of everything we do. From intuitive ordering to responsive support, we’re here for you.</li>
+            <li> <b>Passion for Food:</b> We love food as much as you do and strive to make every meal special.</li>
+            <li> <b>Sustainability:</b> We care about the planet. Fooyes is committed to reducing food waste and adopting eco-friendly practices across our operations.</li>
         </ul>
+        </div>
+        <div class="about-bot-txt my-5">
+            <h3>What We Do</h3>
+            <p> Our mission is simple: to deliver outstanding food and take your dining experience to the next
+            level.</p>
+            <p> We make mealtime moments effortless and enjoyable while empowering local communities
+                through innovative food delivery solutions. At Fooyes, we don’t just deliver food; we deliver
+                happiness, one meal at a time.
+            </p>
+        </div>
+        <div class="about-bot-txt my-5">
+            <h2>Join Us on the Journey</h2>
+            <p> Join us on our journey to make food more exciting, sustainable, and accessible</p>
+            <p> Hungry for more? Whether you’re a foodie looking to explore new tastes or a restaurant seeking
+                a reliable partner, Fooyes is here to make your dining dreams come true. Let’s say “yes” to good
+                food together!
+            </p>
+            <p> For inquiries or collaborations, feel free to contact us at tel no.</p>
+            <p> Fooyes – Food that says yes!</p>
+        </div>
+        <section class="fooyes-faq">
+    <div class="fooyes-faq-container">
+        <h2> Frequently Asked Questions (FAQs) - Fooyes UK  </h2>
+        
+        <div class="fooyes-faq-list">
+            <div class="fooyes-faq-item">
+                <button class="fooyes-faq-question">
+                What is Fooyes UK? <span class="faq-icon">+</span>
+                </button>
+                <div class="fooyes-faq-answer">
+                Fooyes UK is a premium food ordering app,we partner with a wide variety of restaurants and
+takeaways to cater to every palate and preference. Our easy-to-use platform ensures a
+seamless ordering experience.
+
+                </div>
+            </div>
+
+            <div class="fooyes-faq-item">
+                <button class="fooyes-faq-question">
+                How can I place an order?
+                <span class="faq-icon">+</span>
+                </button>
+                <div class="fooyes-faq-answer">
+                You can place an order directly through our website. Simply browse our selection, add items to
+your cart, and proceed to checkout.
+
+                </div>
+            </div>
+
+            <div class="fooyes-faq-item">
+                <button class="fooyes-faq-question">
+                What payment methods do you accept?
+                <span class="faq-icon">+</span>
+                </button>
+                <div class="fooyes-faq-answer">
+                We accept major credit and debit cards, PayPal, and other secure payment options available at
+                checkout.
+                </div>
+            </div>
+
+            <div class="fooyes-faq-item">
+                <button class="fooyes-faq-question">
+                Can I track my order? <span class="faq-icon">+</span>
+                </button>
+                <div class="fooyes-faq-answer">
+                Yes, once your order is dispatched, you will receive a tracking link via email to monitor your
+                delivery status.
+                </div>
+            </div>
+            <div class="fooyes-faq-item">
+                <button class="fooyes-faq-question">
+                How can I contact customer support? <span class="faq-icon">+</span>
+                </button>
+                <div class="fooyes-faq-answer">
+                You can reach our support team on our website’s contact us form
+                </div>
+            </div>
+            <div class="fooyes-faq-item">
+                <button class="fooyes-faq-question">
+                Do you offer business partnerships?<span class="faq-icon">+</span>
+                </button>
+                <div class="fooyes-faq-answer">
+    Yes, we collaborate with businesses. Click here to join the Fooyes family.<a href="become-a-partner">Become a partner</a>
+</div>
+            </div>
+        </div>
     </div>
 </section>
+
+    </div>
+</section>
+
+
 
 <section class="dt-hide">
     <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" />
@@ -73,6 +232,18 @@
         </div>
     </div>
 </section>
+<script>
+    document.querySelectorAll(".fooyes-faq-question").forEach(button => {
+    button.addEventListener("click", () => {
+        const faqItem = button.parentElement;
+        faqItem.classList.toggle("active");
+
+        const icon = button.querySelector(".faq-icon");
+        icon.textContent = faqItem.classList.contains("active") ? "-" : "+";
+    });
+});
+
+</script>
 
 <!-- <section class="reserve-block">
     <div class="container">
