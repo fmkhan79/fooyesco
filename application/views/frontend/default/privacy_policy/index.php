@@ -4,52 +4,82 @@
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
 
-        <h4 class="mt-5 mb-5 text-dark"><?php echo site_phrase('privacy_policy', true) ?></h4>
+        <h2 class="mt-5 mb-5 text-dark"><?php echo site_phrase('privacy_policy', true) ?></h2>
 
         <div class="about-bot-txt my-5">
-            <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments such
-                as baked goods or snacks. The term comes frome the rench word meaning food Are you hungry? Did you have
-                a long and stressful day? Interested in getting a cheesy pizza delivered to your office or looking to
-                avoid the weekly shop? Then Pakistan is the right destination for you! offers you a long and detailed
-                list of the best restaurants and shops near you to help make your everyday easier. Our online food
-                delivery service has it all, whether you fancy Indian, Pakistani or Afghan cuisine, Pakistan has over
-                15,000 restaurants available in top cities like Islamabad, Lahore, Rawalpindi, and Karachi. Did you know
-                you can order your groceries and more from , too? Check out shops for favourite partners like Al-Fatah,
-                Greenvalley and more. Sit back and relax, let Pakistan take the pressure off your shoulders.</p>
-            <p>It is a long established fact that a reader will be distracted by the readable content of a page when
-                looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution
-                of letters, as opposed to using 'Content here, content here', making it look like readable English. Many
-                desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a
-                search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have
-                evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).It is
-                a long established fact that a reader will be distracted by the readable content of a page when looking
-                at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of
-                letters, as opposed to using 'Content here, content here', making it look like readable English. Many
-                desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a
-                search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have
-                evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-            <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments such
-                as baked goods or snacks. The term comes frome the rench word meaning food Are you hungry? Did you have
-                a long and stressful day? Interested in getting a cheesy pizza delivered to your office or looking to
-                avoid the weekly shop? Then foodpanda Pakistan is the right destination for you! foodpanda offers you a
-                long and detailed list of the best restaurants and shops near you to help make your everyday easier. Our
-                online food delivery service has it all, whether you fancy Indian, Pakistani or Afghan cuisine,
-                foodpanda Pakistan has over 15,000 restaurants available in top cities like Islamabad, Lahore,
-                Rawalpindi, and Karachi. Did you know you can order your groceries and more from foodpanda, too? Check
-                out foodpanda shops for favourite partners like Al-Fatah, Greenvalley and more. Sit back and relax – let
-                foodpanda Pakistan take the pressure off your shoulders.</p>
-            <p>It is a long established fact that a reader will be distracted by the readable content of a page when
-                looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution
-                of letters, as opposed to using 'Content here, content here', making it look like readable English. Many
-                desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a
-                search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have
-                evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).It is
-                a long established fact that a reader will be distracted by the readable content of a page when looking
-                at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of
-                letters, as opposed to using 'Content here, content here', making it look like readable English. Many
-                desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a
-                search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have
-                evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+            <p>At Fooyes UK, we value your privacy and are committed to protecting your personal data. This
+                Privacy Policy outlines how we collect, use, store, and safeguard your information when you
+                visit our website or interact with our services.
+            </p>
+            <br>
+            <span><h3 style="display: inline;">1. Information We Collect <span style="font-weight:300; font-size:30px;">We may collect and process the following types of personal data:
+            </span></h3></span>
+            <br>
+            <br>
+            <div class="about-bot-txt">
+        <ul style="gap: 10px; display: grid;">
+            <li> <b>Personal Information: </b>Name, email address, phone number, and delivery address.</li>
+            <li> <b>Payment Information:</b>  Billing details and payment method (processed securely through third-party providers).</li>
+            <li> <b>Usage Data:</b> Information about how you use our website, including browsing history and preferences.</li>
+            <li> <b> Cookies and Tracking Technologies:</b> To improve user experience and analyze website traffic.</li>
+        </ul>
+            <span><h3 style="display: inline;">2. How We Use Your Information <span style="font-weight:300; font-size:30px;">We use your personal data for the following purposes:
+            </span></h3></span>
+            <br>
+            <br>
+            <div class="about-bot-txt">
+        <ul style="gap: 10px; display: grid;">
+            <li>To process and fulfill orders</li>
+            <li>To communicate with you about your purchases and provide customer support.</li>
+            <li>To improve our website, products, and services</li>
+            <li>To send promotional offers and marketing communications (with your consent).</li>
+            <li>To comply with legal obligations and prevent fraudulent activity.</li>
+        </ul>
+            <span><h3 style="display: inline;">3. Data Sharing and Security</h3></span>
+            <br>
+            <br>
+            <div class="about-bot-txt">
+        <ul style="gap: 10px; display: grid;">
+            <li>We do not sell or rent your personal data to third parties</li>
+            <li>Your information may be shared with trusted service providers (e.g., payment processors and delivery services) for operational purposes.</li>
+            <li>We implement strict security measures to protect your data from unauthorized access or breaches</li>
+        </ul>
+        <span><h3 style="display: inline;">4. Your Rights <span style="font-weight:300; font-size:30px;">You have the right to:
+            </span></h3></span>
+            <br>
+            <br>
+            <div class="about-bot-txt">
+        <ul style="gap: 10px; display: grid;">
+            <li>Access, update, or delete your personal information.</li>
+            <li>Opt-out of marketing communications at any time.</li>
+            <li> Request details about the data we hold about you.</li>
+            <li>To send promotional offers and marketing communications (with your consent).</li>
+            <li>Lodge a complaint with a data protection authority if you believe your rights have been violated.</li>
+        </ul>
+        <span><h3 style="display: inline;">5. Cookies Policy</h3></span>
+            <br>
+            <br>
+            <div class="about-bot-txt">
+        <ul style="gap: 10px; display: grid;">
+            <li>We use cookies to enhance your browsing experience. You can manage your cookie
+            preferences through your browser settings.</li>
+        </ul>
+        <span><h3 style="display: inline;">6. Updates to This Policy</h3></span>
+            <br>
+            <br>
+            <div class="about-bot-txt">
+        <ul style="gap: 10px; display: grid;">
+            <li>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date.</li>
+        </ul>
+        <span><h3 style="display: inline;">7. Contact Us</h3></span>
+            <br>
+            <br>
+            <div class="about-bot-txt">
+        <ul style="gap: 10px; display: grid;">
+            <li>If you have any questions about our Privacy Policy or how we handle your data, please
+            contact us at Contact Information].</li>
+        </ul>
+        </div>
         </div>
     </div>
 </section>
