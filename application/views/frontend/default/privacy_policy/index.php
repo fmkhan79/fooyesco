@@ -4,7 +4,7 @@
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
 
-        <h2 class="mt-5 mb-5 text-dark"><?php echo site_phrase('privacy_policy', true) ?></h2>
+        <h1 style="font-size:50px; font-weight:700;" class="mt-5 mb-5 text-dark"><?php echo site_phrase('privacy_policy', true) ?></h1>
 
         <div class="about-bot-txt my-5">
             <p>At Fooyes UK, we value your privacy and are committed to protecting your personal data. This

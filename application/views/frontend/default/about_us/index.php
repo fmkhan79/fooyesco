@@ -77,7 +77,7 @@
 
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
-        <h1 class="mt-5 mb-5 text-dark"><?php echo site_phrase('about_us', true) ?></h1>
+        <h1 style="font-size:50px; font-weight:700;" class="mt-5 mb-5 text-dark"><?php echo site_phrase('about_us', true) ?></h1>
         <div class="about-txt my-4 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right">
             <div class="row" style="margin-left: 0px;">
                 <div class="col-md-6">

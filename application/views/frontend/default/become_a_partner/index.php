@@ -107,7 +107,7 @@
 
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
-    <h4 class="contact-heading">Become a Partner</h4>
+    <h1 style="font-size:50px; font-weight:700; color: black;" class="contact-heading">Become a Partner</h1>
     <div class="about-bot-txt my-5">
             <h3>Partnership Opportunities with Fooyes UK
             </h3>
