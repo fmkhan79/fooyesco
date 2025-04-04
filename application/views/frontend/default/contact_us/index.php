@@ -98,6 +98,23 @@
 .contact-form-submit-btn:hover {
     background-color: #c00;
 }
+.map-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio (adjust as needed) */
+    height: 0;
+    overflow: hidden;
+}
+
+.map-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
 </style>
 
 
@@ -126,9 +143,14 @@
     <!-- Map -->
     <div class="map-section">
         <h5 class="map-heading">Get In Touch</h5>
-        <iframe class="contact-map" 
-                src="https://www.google.com/maps/embed?pb=YOUR_MAP_EMBED_URL"
-                width="100%" height="300" frameborder="0" style="border:0;" allowfullscreen="">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9704.708455350967!2d0.08780340590186579!3d52.5483211021251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8060dd3ce87df%3A0x83acc609f4b4e6dc!2s40%20High%20St%2C%20March%20PE15%209JR%2C%20UK!5e0!3m2!1sen!2s!4v1743754894298!5m2!1sen!2s" 
+            width="100%" 
+            height="450" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
         </iframe>
     </div>
 

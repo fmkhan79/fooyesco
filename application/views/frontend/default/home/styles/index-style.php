@@ -249,7 +249,7 @@
         font-weight: 400;}
 
     .main-banner h1{color: #191919;
-        font-size: 58px;
+        font-size: 50px;
         font-style: normal;
         font-weight: 900; margin-bottom: 55px;}
 .svg-devider-box{ margin: 15px 0 20px;}

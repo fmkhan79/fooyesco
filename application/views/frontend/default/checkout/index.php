@@ -382,8 +382,8 @@ $stripe_settings = json_decode($stripe_settings);
             </div>
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
-            <div class="subtotal">Delivery Charges <sub id="d-cal">(Calculated On Checkout)</sub></div>
-                <div class="total-delivery-price"></div>
+            <div class="subtotal">Delivery Charges <sub id="d-cal"></sub></div>
+                <div class="total-delivery-price"></div>-
             </div>
 
             <!-- <div class="total-price-box d-none justify-content-between align-items-center">

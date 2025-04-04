@@ -5,7 +5,7 @@
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
 
-        <h2 class="mt-5 mb-5 text-dark"><?php echo site_phrase('terms_and_conditions', true) ?></h2>
+        <h1 style="font-size:50px; font-weight:700;" class="mt-5 mb-5 text-dark"><?php echo site_phrase('terms_and_conditions', true) ?></h1>
         <div class="about-bot-txt my-5">
             <p>Welcome to Fooyes UK! By accessing and using our website, you agree to comply with the following Terms and Conditions. Please read them carefully before using our services.
             </p>
