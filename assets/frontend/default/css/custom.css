@@ -2272,3 +2272,38 @@ a:hover {
   color: #fff;
   font-weight: 500;
 }
+.text-privacy{
+  color: #e63946;
+}
+.about-bot-txt{
+  color: #666;
+}
+.txt-fo{
+  color: #fdc55e;
+}
+.txt-up-fo{
+  color: #000;
+  
+  
+}
+/* .text-up{
+  color: #666;
+  font-size: 16px;
+} */
+ .txt-up-fo{
+  font-size:24px;
+ }
+ .text-fo{
+  font-size: 16px;
+  font-weight: 500;
+ }
+ .head-1{
+  color: #000;
+  font-weight: bold;
+  font-size: 24px;
+ }
+ .red-fo{
+  color: #e63946;
+  font-weight: bold;
+  font-size: 18px;
+ }
