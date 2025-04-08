@@ -2276,29 +2276,26 @@ a:hover {
   color: #e63946;
 }
 .about-bot-txt{
-  color: #666;
+  color: #343a40;
 }
 .txt-fo{
   color: #fdc55e;
 }
-.txt-up-fo{
-  color: #000;
-  
-  
-}
+
 /* .text-up{
   color: #666;
   font-size: 16px;
 } */
  .txt-up-fo{
   font-size:24px;
+  color: #343a40!important;
  }
  .text-fo{
   font-size: 16px;
   font-weight: 500;
  }
  .head-1{
-  color: #000;
+  color: #343a40;
   font-weight: bold;
   font-size: 24px;
  }
@@ -2307,3 +2304,26 @@ a:hover {
   font-weight: bold;
   font-size: 18px;
  }
+ /* .about-txt{
+  background-position: right;
+ } */
+ @media (max-width: 480px) {
+  .about-txt {
+    background-position: 70%!important;
+    border-radius: 0%;
+  }
+}
+@media (max-width: 480px) {
+.before-footer{
+  padding: 0px;
+
+  
+
+}
+.before-footer::after{
+  z-index: -1;
+}
+.before-footer::before {
+  bottom: -169px;
+  right: -6px;
+}

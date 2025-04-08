@@ -8,15 +8,10 @@
 
         <div class="about-bot-txt my-4 ">
             <p><span class="txt-fo " style="font-weight:700;">At Fooyes UK,</span><p style="font-weight:500;" > we value your privacy and are committed to protecting your personal data. ThisPrivacy Policy outlines how we collect, use, store, and safeguard your information when you visit our website or interact with our services.</p>
-            </p>
-            <br>
             <span class="txt-up-fo">Information We Collect </span> 
-            <br>
             <span class="text-fo" >We may collect and process the following types of personal data:</span >
-            <br>
-            <br>
             <div class="about-bot-txt">
-        <ul style="gap: 10px; display: grid;">
+        <ul style=" display: grid;">
              <p class="head-1" >Personal Information: </p ><p style="font-weight:500;"> Name, email address, phone number, and delivery address.</p>
              <p class="head-1" >Payment Information: </p ><p  style="font-weight:500;"> Billing details and payment method (processed securely through third-party providers).</p>
              <p class="head-1" >Usage Data: </p ><p  style="font-weight:500;">Information about how you use our website, including browsing history and preferences.</p>
@@ -29,11 +24,11 @@
             <!-- <span><h3 style="display: inline;">2. How We Use Your Information <span>We use your personal data for the following purposes:
             </span></h3></span> -->
             <span class="txt-up-fo">How We Use Your Information </span> 
-            <br>
+
             <span class="text-fo" >We use your personal data for the following purposes:</span >
-            <br>
+
             <div class="about-bot-txt">
-        <ul style="gap: 10px; display: grid;">
+        <ul style=" display: grid;">
         <p class="head-1" ><p style="font-weight:500;"> To process and fulfill orders</p>
         <p class="head-1" ><p style="font-weight:500;"> To communicate with you about your purchases and provide customer support.</p>
         <p class="head-1" ><p style="font-weight:500;"> To send promotional offers and marketing communications (with your consent).</p>
@@ -45,9 +40,9 @@
             <li>To comply with legal obligations and prevent fraudulent activity.</li> -->
         </ul>
             <span class="txt-up-fo">Data Sharing and Security </span> 
-            <br>
+
             <div class="about-bot-txt">
-        <ul style="gap: 10px;display: grid;">
+        <ul style="display: grid;">
         <p class="head-1" ><p style="font-weight:500;"> We do not sell or rent your personal data to third parties</p>
         <p class="head-1" ><p style="font-weight:500;"> Your information may be shared with trusted service providers (e.g., payment processors and delivery services) for operational purposes.</p>
         <p class="head-1" ><p style="font-weight:500;"> We implement strict security measures to protect your data from unauthorized access or breaches</p>
@@ -58,9 +53,8 @@
         <span class="txt-up-fo">Your Rights  </span> <span class="red-fo" >You have the right to:</span >
         <!-- <span><h3 style="display: inline;">4. Your Rights <span style="font-weight:300; font-size:30px;">You have the right to:
             </span></h3></span> -->
-            <br>
             <div class="about-bot-txt">
-        <ul style="gap: 10px; display: grid;">
+        <ul style=" display: grid;">
         <p class="head-1" ><p style="font-weight:500;"> Access, update, or delete your personal information.</p>
         <p class="head-1" ><p style="font-weight:500;"> Opt-out of marketing communications at any time.</p>
         <p class="head-1" ><p style="font-weight:500;"> Request details about the data we hold about you.</p>
@@ -73,9 +67,8 @@
             <li>Lodge a complaint with a data protection authority if you believe your rights have been violated.</li> -->
         </ul>
         <span class="txt-up-fo">Cookies Policy </span> 
-            <br>
             <div class="about-bot-txt">
-        <ul style="gap: 10px; display: grid;">
+        <ul style="display: grid;">
         <p class="head-1" ><p style="font-weight:500;"> We use cookies to enhance your browsing experience. You can manage your cookie
         preferences through your browser settings.</p>
 
@@ -85,13 +78,12 @@
         <span class="txt-up-fo">Updates to This Policy </span>
             <br>
             <div class="about-bot-txt">
-        <ul style="gap: 10px; display: grid;">
+        <ul style=" display: grid;">
         <p class="head-1" ><p style="font-weight:500;"> We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date.</p>
         </ul>
         <span class="txt-up-fo"> Contact Us</></span>
-            <br>
             <div class="about-bot-txt">
-        <ul style="gap: 10px; display: grid;">
+        <ul style=" display: grid;">
             <p class="head-1"><p style="font-weight:500;"> If you have any questions about our Privacy Policy or how we handle your data, please
             contact us at Contact Information].
             <!-- <li>If you have any questions about our Privacy Policy or how we handle your data, please

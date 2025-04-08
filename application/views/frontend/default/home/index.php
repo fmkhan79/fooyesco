@@ -96,7 +96,7 @@
 
 .fooyes-why-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1 , 1fr);
     gap: 20px;
     text-align: center;
 }
@@ -282,16 +282,16 @@
 <!--//END HEADER -->
 <!--============================= FEATURED CUISINES =============================-->
 
-<div class="container-fluid px-5" style="padding-bottom: 20px">
+<div class="container-fluid px-0 pt-md-5 px-md-5 " style="padding-bottom: 20px">
 <div class="about-txt my-5 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right; height: 60vh;
     display: flex;
     align-items: center;">
-            <div class="row" style="margin-left: 0px;">
-                <div class="col-md-6">
+            <div class="row p-0 m-0" style="margin-left: 0px;">
+                <div class="col-md-6 px-3">
                 <h2 class="fooyes-section-title">
             Welcome to <span class="fooyes-highlight-red">Fooyes</span> <span class="fooyes-highlight-yellow">UK</span>
         </h2>
-                    <p style="font-size: 20px; line-height: 31px;">At <b>Fooyes UK</b>, we bring you an unforgettable food experience, combining the finest ingredients,
+                    <p style="font-size: 18px; line-height: 31px;">At <b>Fooyes UK</b>, we bring you an unforgettable food experience, combining the finest ingredients,
 bold flavors, and a passion for culinary excellence. Whether you're craving classic British
 favorites or globally inspired delights, we've got something to satisfy every palate.</p>
             </div>
@@ -428,29 +428,29 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                     such as
                     baked goods or snacks. The term comes frome the rench word meaning food</p>
                 <div class="row multi-service-list mt-4 mb-3">
-                    <div class="col-lg-4 col-md-6"><img
+                    <div class="col-lg-4 col-md-6 pl-3"><img
                             src="<?php echo base_url('assets/frontend/default/images/online-order-icon.png') ?>" />
                         Online Order</div>
-                    <div class="col-lg-4 col-md-6"><img
+                    <div class="col-lg-4 col-md-6 pl-3"><img
                             src="<?php echo base_url('assets/frontend/default/images/24-7-icon.png') ?>" /> 24/7 Service
                     </div>
                 </div>
-                <div class="row multi-service-list mb-3">
-                    <div class="col-lg-4 col-md-6"><img
+                <div class="row multi-service-list mb-3 ">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
                             src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
                         Pre-Reservation
                     </div>
-                    <div class="col-lg-5 col-md-6"><img
+                    <div class="col-lg-5 col-md-6 pl-3"><img
                             src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
                         Oragonized
                         Foodhut Place</div>
                 </div>
-                <div class="row multi-service-list mb-3">
-                    <div class="col-lg-4 col-md-6"><img
+                <div class="row multi-service-list mb-3 ">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
                             src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
                         Super Chef
                     </div>
-                    <div class="col-lg-4 col-md-6"><img
+                    <div class="col-lg-4 col-md-6 pl-3"><img
                             src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
                         Clean Kitchen
                     </div>
