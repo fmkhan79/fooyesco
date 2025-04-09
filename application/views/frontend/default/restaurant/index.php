@@ -191,31 +191,31 @@
 
                 </div>
 
-                <!-- <div class="row my-4 free-delivery-list">
+                <div class="row my-4 free-delivery-list">
 
-                    <div class="col-md-4 col-sm-6"><img src="<?php //echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
+                    <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
                         Delivery fee :
-                        0-
-                        <?php //echo $restaurant_details['delivery_charge']; ?>$
+                   
+                        <?php echo $restaurant_details['delivery_charge']; ?>$
                     </div>
-                    <div class="col-md-4 col-sm-6"><img src="<?php //echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
+                    <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
                         Order : 10 $
                     </div>
-                    <div class="col-md-4 col-sm-6"><img src="<?php //echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
+                    <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
                         <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
                             class="collect-box" style="display:none">I
                             want to collect</span>
                     </div>
-                    <div class="col-md-3 col-sm-6 red"><img src="<?php //echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
-                        <?php //echo $restaurant_details['maximum_time_to_deliver']; ?> mins
+                    <div class="col-md-3 col-sm-6 red"><img src="<?php echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
+                        <?php echo $restaurant_details['maximum_time_to_deliver']; ?> mins
                     </div>
 
-                </div> -->
+                </div>
 
                 <div class="order-about">
-                    <h3><strong>About"
+                    <h5><strong>About"
                             <?php echo $restaurant_details['name']; ?>"
-                        </strong></h3>
+                        </strong></h5>
                     <?php echo $restaurant_details['restaurant_about']; ?>. 
                     <!-- <a class="red" href="#"> READ MORE</a> -->
                 </div>
@@ -303,25 +303,25 @@
                                 </div>
 
                                 <!-- Delivery Info -->
-                                <!-- <div class="row my-4 free-delivery-list">
-                                    <div class="col-md-3 col-sm-6">
-                                        <img src="<?php //echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
-                                        Delivery fee: 0- <?php //echo $restaurant_details['delivery_charge']; ?>$
-                                    </div>
-                                    <div class="col-md-3 col-sm-6">
-                                        <img src="<?php //echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" />
-                                        Min Order: 10 $
-                                    </div>
-                                    <div class="col-md-3 col-sm-6">
-                                        <img src="<?php //echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
-                                        <span id="delivery" class="collect-box">Delivering now</span>
-                                        <span id="collection" class="collect-box" style="display:none">I want to collect</span>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6 red">
-                                        <img src="<?php //echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
-                                        <?php //echo $restaurant_details['maximum_time_to_deliver']; ?> mins
-                                    </div>
-                                </div> -->
+                            <div class="row my-4 free-delivery-list">
+                                   <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
+                        Delivery fee :
+                   
+                        <?php echo $restaurant_details['delivery_charge']; ?>$
+                    </div>
+                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
+                        Order : 10 $
+                    </div>
+                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
+                        <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
+                            class="collect-box" style="display:none">I
+                            want to collect</span>
+                    </div>
+                    <div class="col-md-3 col-sm-6 red"><img src="<?php echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
+                        <?php echo $restaurant_details['maximum_time_to_deliver']; ?> mins
+                    </div>
+
+                                </div> 
 
                                 <!-- About Section -->
                                 <div class="order-about">
