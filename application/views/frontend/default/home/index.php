@@ -96,9 +96,15 @@
 
 .fooyes-why-grid {
     display: grid;
-    grid-template-columns: repeat(1 , 1fr);
+    grid-template-columns: repeat(2 , 1fr);
     gap: 20px;
     text-align: center;
+}
+@media (max-width: 480px) {
+.fooyes-why-grid{
+    grid-template-columns: repeat(1 , 1fr);
+
+}
 }
 
 .fooyes-why-card {

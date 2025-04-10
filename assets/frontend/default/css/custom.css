@@ -2276,9 +2276,10 @@ a:hover {
   color: #e63946;
 }
 .about-bot-txt{
-  color: #343a40;
+  color: #666;
 }
 .txt-fo{
+  font-size: 15px;
   color: #fdc55e;
 }
 
@@ -2287,22 +2288,25 @@ a:hover {
   font-size: 16px;
 } */
  .txt-up-fo{
-  font-size:24px;
+  font-size:20px;
   color: #343a40!important;
+  font-weight: 500;
+  
  }
  .text-fo{
   font-size: 16px;
   font-weight: 500;
+  color: #666;
  }
  .head-1{
   color: #343a40;
-  font-weight: bold;
-  font-size: 24px;
+  font-weight: 500;
+  font-size: 20px;
  }
  .red-fo{
-  color: #e63946;
+  color: #343a40;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
  }
  /* .about-txt{
   background-position: right;
@@ -2326,4 +2330,22 @@ a:hover {
 .before-footer::before {
   bottom: -169px;
   right: -6px;
+}
+.remove-padding{
+  padding: 0px!important;
+}
+}
+.about-bot-txt{
+  color: #343a40;
+  font-size: 20px;
+}
+.head-b{
+  color:#343a40;
+  font-size: 20px;
+  font-weight: 500;
+}
+.text-new{
+  color: #666;
+  font-weight: 500;
+  font-size: 15px;
 }
