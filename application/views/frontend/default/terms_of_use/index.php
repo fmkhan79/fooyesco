@@ -4,132 +4,120 @@
 <section class="detail-wbox mt-4 mb-2">
 <div class="container bg-white text-dark border border-light">
 
-<h1 style="font-size:50px; font-weight:700;" class="mt-5 mb-5 text-dark"><?php echo site_phrase('terms_of_use', true) ?></h1>
-<div class="about-bot-txt my-5">
-    <p>Welcome to Fooyes UK! We value your privacy and are committed to protecting your personal
+<h1 style="font-size:40px; font-weight:600;" class=" text-dark"><span class="text-privacy">Terms</span>  <span class="text-policy">Of Use</span></h1>
+<div class="about-bot-txt my-4"style="width:80%;">
+    <p class="text-new">Welcome to Fooyes UK! We value your privacy and are committed to protecting your personal
 data. By using our website, you agree to comply with the following Terms of Privacy Use. Please
 read them carefully before using our services.
     </p>
-    <br>
-    <span><h3 style="display: inline;">1. General Information</h3></span>
-    <br>
-    <br>
+
+    <span><h3 class="head-1">General Information</h3></span>
+
+
     <div class="about-bot-txt">
-<ul style="gap: 10px; display: grid;">
-    <li> These Terms of Privacy Use govern how we collect, store, use, and
+<ul  class="p-0">
+    <span class="text-new">These Terms of Privacy Use govern how we collect, store, use, and
 protect your personal information. By using our platform, you acknowledge and accept these
 terms in full.
-</li>
+</span> 
 </ul>
-    <span><h3 style="display: inline;">2.  Information Collection and Use</h3></span>
-    <br>
-    <br>
-    <div class="about-bot-txt">
-<ul style="gap: 10px; display: grid;">
-    <li>We collect personal data such as name, email, address, and payment details to provide
-    our services.</li>
-    <li>Data is used for order processing, customer support, marketing (with consent), and
-website improvement.
-</li>
-    <li> We do not sell or rent your personal information to third parties.
-    </li>
-</ul>
-    <span><h3 style="display: inline;">3. Data Security and Protection
-    </h3></span>
-    <br>
-    <br>
-    <div class="about-bot-txt">
-<ul style="gap: 10px; display: grid;">
-    <li>We implement robust security measures to safeguard your data.
-    </li>
-    <li>Your information is stored securely and only accessible to authorized personnel.</li>
-    <li>While we strive for high security, we cannot guarantee complete protection from cyber
-threats.
-</li>
-</ul>
-<span><h3 style="display: inline;">4. Cookies and Tracking Technologies</h3></span>
-    <br>
-    <br>
-    <div class="about-bot-txt">
-<ul style="gap: 10px; display: grid;">
-    <li>Our website uses cookies to enhance your experience.
-    </li>
-    <li>You can manage your cookie preferences via your browser settings.</li>
-    <li> Tracking technologies help us analyze website usage and improve our services.</li>
-</ul>
-<span><h3 style="display: inline;">5. Third-Party Sharing
-</h3></span>
-    <br>
-    <br>
-    <div class="about-bot-txt">
-<ul style="gap: 10px; display: grid;">
-    <li>We may share data with trusted partners, including payment processors and delivery
-    services, to facilitate transactions.</li>
-    <li>Legal requirements may necessitate data disclosure to regulatory authorities.
-    </li>
-</ul>
-<span><h3 style="display: inline;">6. User Rights
-</h3></span>
-    <br>
-    <br>
-    <div class="about-bot-txt">
-<ul style="gap: 10px; display: grid;">
-    <li> You have the right to access, update, or delete your personal data.
-    </li>
-    <li> You can opt out of marketing communications at any time.
+    <span><h3 class="head-1">Information Collection and Use</h3></span>
 
-    </li>
-    <li> If you believe your data rights have been violated, you may contact relevant data
+
+    <div class="about-bot-txt">
+<ul  class="p-0">
+    <span  class="text-new">We collect personal data such as name, email, address, and payment details to provide
+    our services.</span>
+    <span class="text-new"> Data is used for order processing, customer support, marketing (with consent), and
+    website improvement.</span>
+     <span class="text-new"> We do not sell or rent your personal information to third parties.
+    </span>
+</ul>
+    <span><h3 class="head-1">Data Security and Protection
+    </h3></span>
+    <div class="about-bot-txt">
+<ul class="p-0">
+    <span class="text-new">We implement robust security measures to safeguard your data.
+    </span>
+    <span class="text-new">Your information is stored securely and only accessible to authorized personnel.</span>
+    <span class="text-new">While we strive for high security, we cannot guarantee complete protection from cyber
+threats.
+</span>
+</ul>
+<span><h3  class="head-1">Cookies and Tracking Technologies</h3></span>
+
+    <div class="about-bot-txt">
+<ul class="p-0">
+    <span class="text-new">ur website uses cookies to enhance your experience.
+    </span>
+    <span class="text-new">You can manage your cookie preferences via your browser settings.</span>
+    <span class="text-new"> Tracking technologies help us analyze website usage and improve our services.</span>
+</ul>
+<span><h3 class="head-1">Third-Party Sharing
+</h3></span>
+    <div class="about-bot-txt">
+<ul  class="p-0">
+<span class="text-new">We may share data with trusted partners, including payment processors and delivery
+    services, to facilitate transactions.</span>
+    <span class="text-new">Legal requirements may necessitate data disclosure to regulatory authorities.
+    </span>
+</ul>
+<span><h3 class="head-1">User Rights
+</h3></span>
+    <div class="about-bot-txt">
+<ul class="p-0">
+<span class="text-new"> You have the right to access, update, or delete your personal data.
+    </span>
+    <span class="text-new"> You can opt out of marketing communications at any time.
+
+    </span>
+    <span class="text-new"> If you believe your data rights have been violated, you may contact relevant data
 protection authorities.
 
-    </li>
+   </span>
 </ul>
-<span><h3 style="display: inline;">7. Changes to Terms of Privacy Use</h3></span>
-    <br>
-    <br>
+<span><h3 class="head-1">Changes to Terms of Privacy Use</h3></span>
+
+
     <div class="about-bot-txt">
-<ul style="gap: 10px; display: grid;">
-    <li>We reserve the right to update these terms at any time. Continued use of our
-    website signifies acceptance of any changes.</li>
+<ul  class="p-0">
+    <span class="text-new">We reserve the right to update these terms at any time. Continued use of our
+    website signifies acceptance of any changes.</span>
 </ul>
-<span><h3 style="display: inline;">8. Feedback</h3></span>
-    <br>
-    <br>
+    <span><h3 class="head-1">Feedback</h3></span>
     <div class="about-bot-txt">
-<ul style="gap: 10px; display: grid;">
-    <li> If the order received does not meet your expectations you can provide feedback to
+<ul  class="p-0">
+<span class="text-new"> If the order received does not meet your expectations you can provide feedback to
 the Takeaway via the feedback page Fooyes's website or the mobile app.
-</li>
-    <li> Feedback submitted will be reviewed and displayed on the respective Takeaway's
+</span>
+    <span class="text-new"> Feedback submitted will be reviewed and displayed on the respective Takeaway's
 profile page, subject to Customer Support team's discretion.
-</li>
+</span>
 </ul>
-<span><h3 style="display: inline;">9. Limitation of Liability </h3></span>
-    <br>
-    <br>
+<span><h3 class="head-1">Limitation of Liability </h3></span>
+
     <div class="about-bot-txt">
-<ul style="gap: 10px; display: grid;">
-    <li>Fooyes UK is not responsible for indirect, incidental, or consequential damages arising
+<ul  class="p-0">
+<span class="text-new">Fooyes UK is not responsible for indirect, incidental, or consequential damages arising
 from the use of our services.
-</li>
-    <li>We do not guarantee uninterrupted or error-free access to our website.</li>
+</span>
+<span class="text-new">We do not guarantee uninterrupted or error-free access to our website.</span>
 </ul>
-<span><h3 style="display: inline;">9. Law and Jurisdiction
+<span><h3  class="head-1">Law and Jurisdiction
 </h3></span>
-    <br>
-    <br>
+
     <div class="about-bot-txt">
-<ul style="gap: 10px; display: grid;">
-    <li>These Terms and Conditions, and the relationship between you and us (whether
+<ul  class="p-0">
+<span class="text-new">These Terms and Conditions, and the relationship between you and us (whether
 contractual or otherwise) shall be governed by and construed in accordance with the
 laws of England & Wales.
-</li>
-    <li> Any dispute, controversy, proceedings or claim between you and us relating to these
+</span>
+<span class="text-new"> Any dispute, controversy, proceedings or claim between you and us relating to these
 Terms and Conditions, or the relationship between you and us (whether contractual
 or otherwise) shall be subject to the jurisdiction of the courts of England, Wales,
 Scotland, or Northern Ireland, as determined by your residency.
 
-</li>
+</span>
 </ul>
 </div>
 </div>
