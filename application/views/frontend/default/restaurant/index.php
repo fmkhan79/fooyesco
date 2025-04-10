@@ -196,10 +196,10 @@
                     <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
                         Delivery fee :
                    
-                        <?php echo $restaurant_details['delivery_charge']; ?>$
+                        <?php echo $restaurant_details['delivery_charge']; ?>£
                     </div>
                     <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
-                        Order : 10 $
+                        Order : 10 £
                     </div>
                     <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
                         <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
@@ -307,10 +307,10 @@
                                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
                         Delivery fee :
                    
-                        <?php echo $restaurant_details['delivery_charge']; ?>$
+                        <?php echo $restaurant_details['delivery_charge']; ?>£
                     </div>
                     <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
-                        Order : 10 $
+                        Order : 10 £
                     </div>
                     <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
                         <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
