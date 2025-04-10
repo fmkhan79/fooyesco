@@ -266,6 +266,36 @@
     font-size: 18px;
     padding: 15px;
 }
+
+@media (max-width: 480px) {
+    .main-banner h1 {
+        font-size:45px!important;
+}
+.special-offer-titlebox h2{
+    font-size:35px!important;
+}
+.fooyes-offerings-title{
+    font-size:35px!important;
+}
+.fooyes-title{
+    font-size:35px!important;
+
+}
+.multi-service-box h3{
+    font-size:35px!important;
+
+}
+.before-footer h3{
+    font-size:35px!important;
+
+}
+.fooyes-section-title{
+    font-size:35px!important;
+
+}
+}
+
+
 .banner-search {
     border: 1px solid #191919;
     border-radius: 100px;
