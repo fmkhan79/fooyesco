@@ -837,7 +837,7 @@ a.w-rounded-btn:hover {
 .before-footer {
 
   position: relative;
-  padding: 88px 50px 0 70px;
+  padding: 88px 50px 0 0px;
   background: url(../images/footer-top-bg.fw.png) no-repeat bottom center;
   background-size: cover;
   font-size: 18px;
@@ -1182,9 +1182,6 @@ footer ul.footer-links li {
     display: none;
   }
 
-  footer {
-    padding: 116px 0 30px;
-  }
 
   .copyright-box {
     margin-top: 80px;
@@ -1829,7 +1826,6 @@ footer ul.footer-links li {
   .free-delivery-section p {
     margin: 25px 0 !important;
   }
-
   .free-delivery-section .text-center {
     text-align: left !important;
   }
@@ -1923,7 +1919,7 @@ footer ul.footer-links li {
   }
 
   footer {
-    padding: 116px 0 30px;
+    padding: 180px 0 30px !important;
   }
 
   .copyright-box {
@@ -2258,7 +2254,7 @@ button:focus{
   outline: none!important;
 }
 a:hover {
-  color: rgb(255, 255, 255)!important;
+  color: #f54748!important;
 }
 .featured-responsive-card a.btn:hover{
   background: #F54748!important;
@@ -2324,6 +2320,9 @@ a:hover {
   
 
 }
+.before-footer h3{
+  margin: 0px 0 37px!important;
+}
 .before-footer::after{
   z-index: -1;
 }
@@ -2333,6 +2332,9 @@ a:hover {
 }
 .remove-padding{
   padding: 0px!important;
+}
+.multi-service-box{
+  padding: 35px 0 30px!important;
 }
 }
 .about-bot-txt{
@@ -2349,3 +2351,4 @@ a:hover {
   font-weight: 500;
   font-size: 15px;
 }
+

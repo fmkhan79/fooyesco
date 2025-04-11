@@ -115,8 +115,8 @@
 partners who share our passion for quality food and innovation. Check below a few benefits
 your business could gain by working with us.</p>
         </div>
-        <div style="display: flex; justify-content: center;">
-    <div class="col-md-8 contact-form-container bg-light">
+        <div >
+    <div class="col-md-8 contact-form-container bg-light pl-0">
             <h5 class="form-heading">Send us a Partnership request</h5>
             <p class="form-description">
                 <strong style="color:#666!important;font-weight:500;font-size:15px">Please provide your Name, Email, Contact & Meassage so we will be in touch with you.</strong><br>
@@ -164,7 +164,7 @@ your business could gain by working with us.</p>
             <span style="font-size:15px;font-weight:500;color:#666;"><p> Interested in partnering with us? Reach out to our team by sending an inquiry to [ Contact ] with details about your business and how we can work together.</span></p>
         </ul>
         </div>
-        <div style="padding: 30px 0px; display: flex; justify-content: center;width: 80%;">
+        <div style="padding: 30px 0px; display: flex; justify-content: center;">
         <p style="font-size: 20px;"><b>Join us in shaping the future of the food industry with Fooyes UK!</b></p>
         </div>
     <div class="row contact-info-section">
