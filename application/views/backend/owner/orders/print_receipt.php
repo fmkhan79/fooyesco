@@ -71,9 +71,10 @@
 
     // print_r($ordered_items);
     ?>
+
     <div class="receipt">
         <center>
-            <h2><?php echo $order_details['id']; ?></h2>
+        <h2><?php echo $daily_order_number; ?></h2>
         </center>
 
         <?php 
