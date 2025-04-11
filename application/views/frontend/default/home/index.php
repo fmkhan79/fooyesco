@@ -165,15 +165,24 @@
     color: #fff;
     line-height: 1.5;
 }
+/* @media (min-width: 480px) {
+.welcome-foo {
+    padding-left: 7rem !important
+}
+
+  
+
+} */
+
 
 </style>
 <!-- SLIDER -->
 <section class="main-banner d-flex align-items-center">
-    <div class="container-fluid m-5">
+    <div class="container my-5" style="max-width: 1000px!important">
         <div class="row d-flex justify-content-center">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-5 pl-3 pl-md-0">
                         <div class="slider-content_wrap">
                             <div class="people-trust">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
@@ -184,15 +193,16 @@
                                         fill="#FDC55E" />
                                 </svg> People Trust us
                             </div>
+                            <div>
+
+                      
                             <h1>We're
                                 <span class="text-danger">Serious</span> For
                                 <span class="text-danger">Food</span> &amp;
                                 <span class="text-warning">Delivery</span>.
                             </h1>
-                            <h5 class="text-dark font-weight-light">
-                                Best cooks and best delivery guys all at your service. Hot tasty food will reach you in
-                                60 minutes.
-                            </h5>
+                         
+                            </div>
                         </div>
 
                         <!-- for mobile  -->
@@ -202,8 +212,13 @@
 
 
                      <!-- start for desktop -->
-                    <div class="banner-form-box d-md-block">
+                    <div class="banner-form-box d-md-block d-flex  flex-column-reverse">
+                    <h5 class="text-dark font-weight-light pt-4 pt-md-0 " style="font-size:18px;">
+                                Best cooks and best delivery guys all at your service. Hot tasty food will reach you in
+                                60 minutes.
+                            </h5>
                         <form action="<?php echo site_url('site/restaurants/filter'); ?>" class="form-wrap mt-4" method="GET">
+                            
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <div class="form-group has-search">
                                     <span class="fa fa-search form-control-feedback"></span>
@@ -221,7 +236,7 @@
                             </div>
 
 
-                        <div class="slider-link text-left">
+                        <div class="slider-link text-left mt-4 !important">
                             <button type="submit" class="btn btn-danger banner-btn disabled" style="
                             color: #FFF;
     font-size: 14px;
@@ -270,26 +285,31 @@
                         </div>
                     </div>
                 </div>
+               
                 <div class="col-md-7 text-md-right">
                     <!-- add ? <.?.php -->
                     <img class="img-fluid"
                         src="<?php echo base_url('assets/frontend/default/images/main-banner-img.png') ?>" />
                 </div>
+                
             </div>
+            
         </div>
+        
     </div>
+    
     </div>
 </section>
 <!--// SLIDER -->
 <!--//END HEADER -->
 <!--============================= FEATURED CUISINES =============================-->
-
-<div class="container-fluid px-0 pt-md-5 px-md-5 " style="padding-bottom: 20px">
 <div class="about-txt my-5 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right; height: 60vh;
     display: flex;
     align-items: center;">
-            <div class="row p-0 m-0" style="margin-left: 0px;">
-                <div class="col-md-6 px-3">
+<div class="container px-0 pt-md-5 px-md-5 " style="padding-bottom: 20px  max-width: 1000px!important">
+
+            <div class="p-0 m-0 " style="margin-left: 0px;">
+                <div class="welcome-foo col-md-6 ">
                 <h2 class="fooyes-section-title">
             Welcome to <span class="fooyes-highlight-red">Fooyes</span> <span class="fooyes-highlight-yellow">UK</span>
         </h2>
@@ -304,14 +324,14 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 
 
 <section class="order-listing featured-responsive-card-section">
-    <div class="container p-0">
-        <div class="special-offer-titlebox text-center">
+    <div class="container p-0" style="max-width: 1045px!important">
+        <div class="special-offer-titlebox ">
             <h2>Limited<span style="color:#fdc55e;">-</span>Time<span class="red">Special</span> Offers</h2>
             <p>7 DAYS ONLY! Enjoy 25% OFF on all collection orders and 20% OFF on delivery orders. Don't miss out—order now and indulge in your favorite flavors at a discounted price!</p>
         </div>
 
         <?php if (!empty($featured_restaurants)): ?>
-            <div class="grid gallery featured-responsive-card">
+            <div class=" gallery featured-responsive-card">
                 <?php foreach ($featured_restaurants as $key => $restaurant): ?>
                     <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
                         <div class="order-img-box main-img">
@@ -389,7 +409,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 
 
 <section class="fooyes-why-choose">
-    <div class="fooyes-container">
+    <div class="fooyes-container pl-2 pl-md-0" style="max-width: 1000px!important">
         <h2 class="fooyes-title">
             <span class="text-red">Why</span> Choose <span class="text-yellow">Fooyes UK?</span>
         </h2>
@@ -420,7 +440,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 
 
 <section class="multi-service-box">
-    <div class="container-fluid">
+    <div class="container" style="max-width: 1000px!important pl-0!important">
         <div class="d-md-flex align-items-center">
             <div class="col-md-5"><img class="img-fluid"
                     src="<?php echo base_url('assets/frontend/default/images/multi-services-img.png') ?>"></div>
@@ -563,10 +583,10 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 </section> -->
 
 
-<section class="dt-hide"><img class="img-fluid"
+<section class="dt-hide d-none"><img class="img-fluid"
         src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" /></section>
 <section class="before-footer mt-4">
-    <div class="container-fluid">
+    <div class="container" style="max-width: 1000px!important">
         <div class="d-md-flex ">
             <div class="col-md-6">
                 <h3>Join the <span class="red">Fooyes</span> Community </span></h3>

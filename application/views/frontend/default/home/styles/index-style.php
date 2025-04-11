@@ -251,7 +251,7 @@
     .main-banner h1{color: #191919;
         font-size: 50px;
         font-style: normal;
-        font-weight: 900; margin-bottom: 55px;}
+        font-weight: 900; margin-bottom: 20px;}
 .svg-devider-box{ margin: 15px 0 20px;}
 .main-banner .text-danger{color:#F54748!important;}
 .main-banner h1 .text-warning{color:#FDC55E!important; position: relative;}
@@ -330,7 +330,7 @@
     font-size: 15px;
 }
 .slider-link {
-    margin: 45px 0 0;
+    /* margin: 45px 0 0; */
 }
 
 .slider-link-mobile {
@@ -363,7 +363,7 @@ letter-spacing: 0.16px;
     .special-offer-titlebox p{color: #191919;
     font-size: 18px;
     font-style: normal;
-    font-weight: 400; max-width: 856px; margin: 0 auto;}
+    font-weight: 400; max-width: 856px; }
 
     .featured-responsive-card-section {
         margin-top: 60px;

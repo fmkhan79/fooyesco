@@ -48,7 +48,7 @@
     font-size: 15px;
 }
 .slider-link {
-    margin: 45px 0 0;
+    margin: 30px 0 0;
 }
 
 .slider-link-mobile {

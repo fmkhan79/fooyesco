@@ -2,7 +2,7 @@
 <?php $social_links = json_decode(get_website_settings('social_links'), true); ?>
 <footer>
 
-    <div class="container">
+    <div class="container"style="max-width: 1045px!important">
         <div class="d-md-flex">
             <div class="col-md-4">
                 <h3>FooYes</h3>
