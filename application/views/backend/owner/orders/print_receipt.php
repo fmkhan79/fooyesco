@@ -13,7 +13,7 @@
         .receipt {
             width: 270px;
             margin: auto;
-            padding: 20px;
+            /* padding: 20px; */
         }
         .receipt h6 {
             text-align: center;
