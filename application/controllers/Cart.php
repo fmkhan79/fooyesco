@@ -106,9 +106,11 @@ class Cart extends Base
     function index()
     {
         // redirect('/site/restaurant/chilli-hut-march/3');
-        
-        $user_id = $this->session->userdata('user_id');
+        // $user_id = $this->session->userdata('user_id'); // or null for guest
+    //    die();
 
+        $user_id = $this->session->userdata('user_id');
+      
         // die();
         
         // Load the user model
@@ -155,6 +157,22 @@ class Cart extends Base
     // add_to_cart method add items to the cart
     function add_to_cart()
     {
+        $user_id = $this->session->userdata('user_id');
+        $session_id = session_id();
+        
+        // Set visited_at with Europe/London timezone
+        $dt = new DateTime('now', new DateTimeZone('Europe/London'));
+        $visited_at = $dt->format('Y-m-d H:i:s');
+        
+        $this->db->insert('cart_visits', [
+            'user_id' => $user_id,
+            'session_id' => $session_id,
+            'visited_at' => $visited_at,
+            'info_add' => 0,
+            'order_placed' => 0,
+            'name_add' => 0
+            
+        ]);
        
         if ($this->cart_model->add_to_cart()) {
             echo sanitize($this->cart_model->total_cart_items());

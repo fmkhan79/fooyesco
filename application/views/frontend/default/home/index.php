@@ -103,7 +103,7 @@
 
 .fooyes-why-card {
     background: #f8f8f8;
-    padding: 20px;
+    padding: 1px;
     border-radius: 12px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;

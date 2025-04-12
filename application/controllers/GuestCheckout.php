@@ -38,7 +38,7 @@ class GuestCheckout extends Base
         // print_r($restaurant_ids);
         $restaurant_details = $this->cart_model->get_restaurants_by_ids($restaurant_ids);
        
-
+    
         $maximum_range = $restaurant_details[0]->maximum_range;
         $free_range = $restaurant_details[0]->free_range;
         $rate_per_mile = $restaurant_details[0]->rate_per_mile;
@@ -96,7 +96,12 @@ class GuestCheckout extends Base
         // print_r($fees);
         
         $this->session->set_userdata('delivery_fees', $fees);
-    
+
+        $this->db->where('session_id', session_id());
+        $this->db->update('cart_visits', ['info_add' => 1]);
+
+        
+
         echo json_encode($response);
         exit;
     }
@@ -133,12 +138,16 @@ class GuestCheckout extends Base
             'note' => $note
         );
 
-        $this->session->set_userdata('billing', $billing_data);
+        
 
+        $this->session->set_userdata('billing', $billing_data);
+        $this->db->where('session_id', session_id());
+        $this->db->update('cart_visits', ['name_add' => $first_name]);
         // Send a response (if needed)
   }
 	public function validate()
 	{
+
 		// if ($this->session->userdata('is_logged_in')) {
 		// 	redirect(site_url('dashboard'), 'refresh');
 		// }
@@ -167,7 +176,7 @@ class GuestCheckout extends Base
 
     public function save_address_data() {
         // Retrieve form data
-
+        
         try{
             $street = $this->input->post('street');
             $number = $this->input->post('number');
@@ -189,7 +198,8 @@ class GuestCheckout extends Base
 
     
             $this->session->set_userdata('address', $address_data);
-    
+            $this->db->where('session_id', session_id());
+            $this->db->update('cart_visits', ['user_address' => $additional_address]);
             // Send a response (if needed)
             echo json_encode(array('success' => true));
         }catch(\Exception $e){
