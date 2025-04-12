@@ -585,10 +585,10 @@ jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwit
     address.addEventListener('input', function () {
         const value = address.value.trim();
 
-        if (/[a-zA-Z]/.test(value[value.length - 1]) && !/\d/.test(value)) {
-      // Remove the letter just typed
-      address.value = value.slice(0, -1);
-    }
+    //     if (/[a-zA-Z]/.test(value[value.length - 1]) && !/\d/.test(value)) {
+    //   // Remove the letter just typed
+    //   address.value = value.slice(0, -1);
+    // }
         // Reset bounds if no alphabets are present
         if (/^\d/.test(value)) {
             autocomplete_to.setOptions({ strictBounds: false });
