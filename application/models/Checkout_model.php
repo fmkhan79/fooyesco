@@ -210,6 +210,7 @@ class Checkout_model extends Base_model
 
             $address_data = $this->session->userdata('address');
             $json_address_data = json_encode($address_data);
+            
             $updater = ['order_type' => $order_type,'billing'=> $json_billing_data,'address'=> $json_address_data];
         }
         $this->db->where('code', $order_code);
@@ -222,6 +223,9 @@ class Checkout_model extends Base_model
                 $this->customer_model->update_is_complete($user_id, 1);
             }
         }
+        $this->db->where('session_id', session_id());
+$this->db->update('cart_visits', ['order_placed' => 1]);
+
         return true;
     }
 
@@ -265,6 +269,9 @@ class Checkout_model extends Base_model
         }
         $this->db->where('code', $order_code);
         $this->db->update('orders', $updater);
+        $this->db->where('session_id', session_id());
+$this->db->update('cart_visits', ['order_placed' => 1]);
+
         return true;
     }
 
@@ -306,6 +313,9 @@ class Checkout_model extends Base_model
 
             // $updater = ['order_type' => $order_type];
         }
+        $this->db->where('session_id', session_id());
+        $this->db->update('cart_visits', ['order_placed' => 1]);
+
         $this->db->where('code', $order_code);
         $this->db->update('orders', $updater);
 
