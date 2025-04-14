@@ -846,8 +846,8 @@ $.ajax({
             // Get both buttons
         var guestButtons = document.querySelectorAll(".guestCheckoutBtn");
         var checkoutButton = document.querySelectorAll(".CheckoutBtn");
-        var guestcheckoutButtonmobile = document.getElementById(".guestCheckoutBtnmobile");
-        var checkoutButtonmobile = document.getElementById(".CheckoutBtnmobile");
+        var guestcheckoutButtonmobile = document.getElementById("guestCheckoutBtnmobile");
+        var checkoutButtonmobile = document.getElementById("CheckoutBtnmobile");
 
         // Check if elements are not null before modifying them
         if (guestButtons) {
