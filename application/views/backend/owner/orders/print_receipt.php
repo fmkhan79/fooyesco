@@ -74,7 +74,7 @@
 
     <div class="receipt">
         <center>
-        <h2><?php echo $daily_order_number; ?></h2>
+        <h2><?php echo "<h3 style='margin:0px;'>".$order_details["daily_order_number"]."</h3>"; ?></h2>
         </center>
 
         <?php 

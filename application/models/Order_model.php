@@ -433,11 +433,21 @@ class Order_model extends Base_model
      */
     public function confirm($address_id_arg = "", $order_type)
     {
+        $today = date('Y-m-d');
+
+        // Count how many orders have been placed today
+        $this->db->where('DATE(created_at)', $today);
+        $count = $this->db->count_all_results('orders');
+    
+        // New order number for the day
+        $daily_order_number = $count + 1;
         $address_id = !empty($address_id_arg) ? $address_id_arg : sanitize($this->input->post('address_number'));
 
         $data['code'] = "OR-" . strtotime(date('D, d-M-Y H:i:s')) . "-" . $this->session->userdata('user_id');
         $data['customer_id'] = $this->logged_in_user_id;
         $data['customer_address_id'] = $address_id;
+        $data['daily_order_number'] = $daily_order_number;
+        
         $data['order_placed_at'] = strtotime(date('D, d-M-Y H:i:s'));
         $data['order_status'] = get_order_settings('auto_approve_order') ? "approved" : "pending";
         $data['total_menu_price'] = $this->cart_model->get_total_menu_price();

@@ -227,29 +227,15 @@ class Orders extends Authorization
         $ordered_items = $this->order_model->details($order_code);
     
         // --- START: Calculate daily order number ---
-        $today_start = date('Y-m-d 00:00:00');
-        $today_end   = date('Y-m-d 23:59:59');
-    
-        $this->db->where('created_at >=', $today_start);
-        $this->db->where('created_at <=', $today_end);
-        $this->db->order_by('created_at', 'asc');
-        $orders_today = $this->db->get('orders')->result_array();
-    
-        $daily_order_number = 1;
-        foreach ($orders_today as $index => $order) {
-            if ($order['order_code'] == $order_code) {
-                $daily_order_number = $index + 1;
-                break;
-            }
-        }
+       
         // --- END ---
     
         // Prepare data for the view
         $data['order_details'] = $order_details;
         $data['ordered_items'] = $ordered_items;
         $data['payment']       = $payment;
-        $data['daily_order_number'] = $daily_order_number;
-    
+        $data['daily_order_number'] = $order_details->daily_order_number;
+
         // Load the view for printing
         $this->load->view('backend/owner/orders/print_receipt', $data);
     }
