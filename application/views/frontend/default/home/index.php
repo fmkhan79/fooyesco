@@ -346,7 +346,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                                     <defs>
                                         <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
                                             y2="280.046" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#F54748" stop-opacity="0"></stop>
+                                            <stop stop-color="#F57484" stop-opacity="0"></stop>
                                             <stop offset="1" stop-color="#FDC55E"></stop>
                                         </linearGradient>
                                     </defs>

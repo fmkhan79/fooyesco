@@ -2254,10 +2254,13 @@ button:focus{
   outline: none!important;
 }
 a:hover {
-  color: #f54748!important;
+  color: #ffffff!important;
+}
+.footer-links li a:hover{
+  color: #e63946!important;
 }
 .featured-responsive-card a.btn:hover{
-  background: #F54748!important;
+  background: #000000!important;
 }
 
 .order-red-btn-main {
