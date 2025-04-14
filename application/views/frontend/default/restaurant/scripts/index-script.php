@@ -845,7 +845,7 @@ $.ajax({
         }else{
             // Get both buttons
         var guestButtons = document.querySelectorAll(".guestCheckoutBtn");
-        var checkoutButton = document.querySelectorAll("CheckoutBtn");
+        var checkoutButton = document.querySelectorAll(".CheckoutBtn");
         var guestcheckoutButtonmobile = document.getElementById("guestCheckoutBtnmobile");
         var checkoutButtonmobile = document.getElementById("CheckoutBtnmobile");
 
