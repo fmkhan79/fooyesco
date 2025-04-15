@@ -88,13 +88,15 @@
 
 
      
-        <?php 
-        if($order_details['order_type'] == "delivery") {
-            echo "<h3>DELIVERY</h3>";
-        }
+     <?php 
+    if ($order_details['order_type'] == "delivery") {
+        echo "<h3>DELIVERY</h3>";
+    }
 
-        echo "<h3 style='margin:0px;'>".$order_details["customer_name"]."</h3>";
-        ?>
+    echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
+    echo "<h3 style='margin:0px;'>" . $address["additional_address"] . ", " . $address["street"] . "</h3>";
+?>
+
         
         <?php  
         if($order_details['order_type'] != "pickup") {
@@ -102,7 +104,6 @@
             // print_r($order_details['total_menu_price']);
         ?>
             
-            <h3 style="margin:0px;"><?= $address["additional_address"] . ", " . $address["street"] ?></h3>
             <h3 style='margin:0px;'><?= $billing["phone_mobile"] ?></h3>
         <?php } ?>
 
