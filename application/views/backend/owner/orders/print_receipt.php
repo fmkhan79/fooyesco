@@ -96,7 +96,7 @@
     }
 
     echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
-    echo "<h3 style='margin:0px;'>" . $address["additional_address"] . ", " . $address["street"] . "</h3>";
+    echo "<h3 style='margin:0px;'>" . $address["additional_address"]  . $address["street"] . "</h3>";
 ?>
 
         
