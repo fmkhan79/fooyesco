@@ -56,7 +56,12 @@
         }
         hr {
         border-top:2px dotted #000;
-
+            
+}
+.img-qr {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px; /* optional spacing */
 }
     </style>
 </head>
@@ -77,6 +82,11 @@
         <h2><?php echo "<h3 style='margin:0px;'>".$order_details["daily_order_number"]."</h3>"; ?></h2>
         </center>
 
+        <img class="img-qr" width="110px" height="130px"
+     style="float: right;"
+     src="<?php echo base_url('assets/frontend/default/images/img-qr.png') ?>" />
+
+
         <?php 
         if($order_details['order_type'] == "delivery") {
             echo "<h3>DELIVERY</h3>";
@@ -90,6 +100,7 @@
 
             // print_r($order_details['total_menu_price']);
         ?>
+            
             <h3 style="margin:0px;"><?= $address["additional_address"] . ", " . $address["street"] ?></h3>
             <h3 style='margin:0px;'><?= $billing["phone_mobile"] ?></h3>
         <?php } ?>
