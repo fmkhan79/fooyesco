@@ -84,9 +84,10 @@
 
         <img class="img-qr" width="110px" height="130px"
      style="float: right;"
-     src="<?php echo base_url('assets/frontend/default/images/img-qr.png') ?>" />
+     src="<?php echo base_url('assets/frontend/default/images/chili-qr.png') ?>" />
 
 
+     
         <?php 
         if($order_details['order_type'] == "delivery") {
             echo "<h3>DELIVERY</h3>";
