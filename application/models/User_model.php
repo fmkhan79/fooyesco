@@ -96,8 +96,8 @@ public function check_user_role($user_id) {
         // Check if the role_id is 3 (owner)
         if ($role->role_id == 3) {
             return true; // Return true if the user is an owner
-        } else {
-            return false; // Return false if the user is not an owner
+        } else if($role->role_id == 1) {
+            return true; 
         }
     } else {
         return false; // User not found, return false
