@@ -169,12 +169,15 @@ class Cart extends Base
 
         $ip_address = $this->get_user_ip();
 
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
         
         $this->db->insert('cart_visits', [
             'user_id' => $user_id,
             'session_id' => $session_id,
             'visited_at' => $visited_at,
             'ip_address'   => $ip_address, // <-- new field
+            'user_agent'   => $user_agent, // <-- new field
             'info_add' => 0,
             'order_placed' => 0,
             'name_add' => 0
