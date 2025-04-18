@@ -105,6 +105,7 @@ class Cart extends Base
     // index function responsible for showing the index page.
     function index()
     {
+        
         // redirect('/site/restaurant/chilli-hut-march/3');
         // $user_id = $this->session->userdata('user_id'); // or null for guest
     //    die();
@@ -157,17 +158,23 @@ class Cart extends Base
     // add_to_cart method add items to the cart
     function add_to_cart()
     {
+
+        
         $user_id = $this->session->userdata('user_id');
         $session_id = session_id();
         
         // Set visited_at with Europe/London timezone
         $dt = new DateTime('now', new DateTimeZone('Europe/London'));
         $visited_at = $dt->format('Y-m-d H:i:s');
+
+        $ip_address = $this->get_user_ip();
+
         
         $this->db->insert('cart_visits', [
             'user_id' => $user_id,
             'session_id' => $session_id,
             'visited_at' => $visited_at,
+            'ip_address'   => $ip_address, // <-- new field
             'info_add' => 0,
             'order_placed' => 0,
             'name_add' => 0
@@ -181,6 +188,29 @@ class Cart extends Base
             echo "multi_restaurant";
         }
     }
+
+    private function get_user_ip()
+    {
+        $ip = '';
+    
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            // Could contain multiple IPs: client, proxy1, proxy2...
+            $ip_list = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $ip = trim($ip_list[0]); // First one is the real client IP
+        } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+    
+        // Handle localhost during testing
+        if ($ip === '::1') {
+            $ip = '127.0.0.1';
+        }
+    
+        return $ip;
+    }
+    
 
     // Update method is responsible for Updating the restaurant types
     function update_cart()
