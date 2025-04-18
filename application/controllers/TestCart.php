@@ -29,16 +29,23 @@ class Testcart extends Base {
             $visitedAt->setTimezone(new DateTimeZone('Europe/London'));
             $visitedTime = $visitedAt->format('Y-m-d H:i:s');
         
+            // Get user agent and IP address
+            $user_agent = $cart->user_agent; // Assuming 'user_agent' column exists
+            $ip_address = $cart->ip_address; // Assuming 'ip_address' column exists
+
             if ($cart->info_add == 0 && $cart->order_placed == 0) {
                 $message .= "{$numbering}. Added to cart only — Visited at: {$visitedTime}\n";
+                $message .= "   User Agent: {$user_agent}\n";
+                $message .= "   IP Address: {$ip_address}\n";
             } elseif ($cart->info_add == 1 && $cart->order_placed == 0) {
                 $message .= "{$numbering}. {$cart->user_address} — Entered address but didn't place the order — Visited at: {$visitedTime}\n";
+                $message .= "   User Agent: {$user_agent}\n";
+                $message .= "   IP Address: {$ip_address}\n";
             }
             $abandoned_count++;
             $numbering++;
         }
         
-
         if ($abandoned_count == 0) {
             $message .= "No Abandoned Carts Found Today.";
         } else {
