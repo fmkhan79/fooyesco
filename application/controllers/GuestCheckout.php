@@ -181,7 +181,7 @@ class GuestCheckout extends Base
             $street = $this->input->post('street');
             $number = $this->input->post('number');
             $additional_address = $this->input->post('additional_address');
-            $zip_code = $this->input->post('zip_code');
+            $zip_code = $this->input->post('zipcode');
             $city = $this->input->post('city');
             $country = $this->input->post('country');
             
