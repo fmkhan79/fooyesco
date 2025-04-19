@@ -68,6 +68,8 @@ class Testcart extends Base {
         $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
         $mail->addAddress('fmkhan79@gmail.com');
         $mail->addAddress('fooyesuk@gmail.com');
+        $mail->addAddress('website25developer@gmail.com');
+
         $mail->Subject = 'Abandoned Cart Summary (Manual Test)';
         $mail->Body    = $message;
 
