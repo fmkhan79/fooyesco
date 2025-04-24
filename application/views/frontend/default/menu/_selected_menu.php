@@ -205,13 +205,13 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
             jQuery("#" + test).show();
         });
     });
-
+    // alert("Chalo")
     jQuery('label.c-basketSwitcher-switch').click(function() {
         jQuery('label.c-basketSwitcher-switch').removeClass('c-basketSwitcher-switch--active');
         jQuery(this).addClass('c-basketSwitcher-switch--active');
     });
 
-    jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwitcher-switch--active');
+    // jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwitcher-switch--active');
 
 
     //add change event action on checkbox
@@ -363,5 +363,7 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
     function updateOrderButton() {
         document.querySelector("#add-to-order-container").classList.remove("disabled");
 }   
+
+
 
     </script>

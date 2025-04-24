@@ -868,6 +868,27 @@ $(document).ready(function () {
 });
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
+    const orderTypeMessage = document.getElementById("orderTypeMessage");
+
+    function updateMessage() {
+        const selected = document.querySelector('input[name="basket-switcher"]:checked');
+        if (selected) {
+            orderTypeMessage.textContent = `Selected Order Type = "${selected.value}"`;
+        }
+    }
+
+    // Initial call
+    updateMessage();
+
+    // Update message when radio button is changed
+    radioButtons.forEach((radio) => {
+        radio.addEventListener("change", updateMessage);
+    });
+});
+
+
 
 
 
