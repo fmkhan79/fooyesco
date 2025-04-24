@@ -22,6 +22,12 @@
     background: #FDC55E;
 }
 
+    .basket-error-border {
+    border: 1px solid red;
+    border-radius: 8px;
+    padding: 8px;
+}
+
 
 .popup {
     width: 100%;

@@ -351,7 +351,9 @@ $stripe_settings = json_decode($stripe_settings);
 
             </div>
 
-            <div class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-between my-4">
+            <div id="orderTypeMessage" class="text-center text-danger my-4"></div>
+
+            <div class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-between my-4 my-display-none">
                 <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between">
                     <input type="radio" name="basket-switcher" value="delivery" checked="checked"
                         class="is-visuallyHidden"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

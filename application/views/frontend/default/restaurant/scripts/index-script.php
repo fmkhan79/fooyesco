@@ -53,7 +53,21 @@
         jQuery(this).addClass('c-basketSwitcher-switch--active');
     });
 
-    jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwitcher-switch--active');
+    // Guest checkout button click
+    // jQuery('.guestCheckoutBtn').click(function(e) {
+    //     e.preventDefault(); // prevent default anchor behavior
+
+    //     // Only proceed if button is not disabled
+    //     if (!jQuery(this).hasClass('disabled')) {
+    //         var guestCheckoutUrl = jQuery(this).attr('data-href');
+    //         window.location.href = guestCheckoutUrl;
+    //     } else {
+    //         // Optional: show error message
+    //         $(".basket-switcher-error").text("Please select a basket option before continuing.").show();
+    //     }
+    // });
+
+    // jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwitcher-switch--active');
 
 
     //add change event action on checkbox
@@ -768,107 +782,48 @@ $.ajax({
     data: {order_type: document.querySelector("input[name='order_type']").value },
     url: '<?php echo base_url(); ?>cart/get_order_summary/',
     type: 'POST',
-    success: function(res) {
-        // debugger
-        // Parse the JSON string into a JavaScript object
-        var data = JSON.parse(res);
+  success: function(res) {
+    var data = JSON.parse(res);
 
-        // console.log(data)
-        // Access the 'sub_total' property and display its value
-        var subTotalValue = data.sub_total;
-        var totalDeliveryValue = data.total_delivery_charge;
-        var totalVatValue = data.vat_charges;
-        var grandSubTotalValue = data.grand_total;
-        var totalServicePrice = data.total_service_price;
-        var totalDiscountPrice = data.total_discount_applied;
-        var discountP = data.discounted_amount;
-        var bagCharges = data.bag_price;
+    var subTotalValue = data.sub_total;
+    var totalVatValue = data.vat_charges;
+    var grandSubTotalValue = data.grand_total;
+    var totalServicePrice = data.total_service_price;
+    var discountP = data.discounted_amount;
+    var bagCharges = data.bag_price;
 
-        $(".bag-charges").text(bagCharges);
+    $(".bag-charges").text(bagCharges);
+    $(".subtotal-price").text(subTotalValue);
+    $(".total-vat-price").text(totalVatValue);
+    $(".grand-product-price").text(grandSubTotalValue);
+    $(".total-service-price").text(totalServicePrice);
+    $(".total-discount-applied").text("-" + discountP);
 
-        // Now you can use subTotalValue as needed, for example, displaying it in the console
+    if (subTotalValue == "£0") {
+        $(".total-discount-applied, .grand-product-price, .subtotal-price, .total-service-price, .bag-charges").text("-");
+    }
 
-        $(".subtotal-price").text(subTotalValue);
-        // $(".total-delivery-price").text(totalDeliveryValue);
-        $(".total-vat-price").text(totalVatValue);
-        $(".grand-product-price").text(grandSubTotalValue);
-        $(".total-service-price").text(totalServicePrice);
-        $(".total-discount-applied").text("-" + discountP);
+    // const notActive = document.querySelector(".c-basketSwitcher-switch.c-basketSwitcher-switch--active") == null;
 
-        
-        if(subTotalValue == "£0"){
-            $(".total-discount-applied").text("-");
-            $(".grand-product-price").text("-");
-            $(".subtotal-price").text("-");
-            $(".grand-product-price").text("-");
-            $(".total-service-price").text("-");
-            $(".bag-charges").text("-");
+    // if (notActive) {
+    //     // Disable buttons if switch is not active
+    //     // disableCheckoutButtons();
 
-        }
+    //     // Show error message on frontend
+    //     // $(".basket-switcher-error").text("Please select a basket option before proceeding.").show();
 
-        if (subTotalValue !== "£0") {
-        // Get both buttons
-        var guestButtons = document.querySelectorAll(".guestCheckoutBtn");
-        var checkoutButton = document.querySelectorAll(".CheckoutBtn");
-        var guestcheckoutButtonmobile = document.getElementById(".guestCheckoutBtnmobile");
-        var checkoutButtonmobile = document.getElementById(".CheckoutBtnmobile");
+    //     return; // Stop further execution
+    // }
 
-        // Check if elements are not null before modifying them
-        if (guestButtons) {
-            guestButtons.forEach(function(button) {
-                button.classList.remove("disabled");
-                button.classList.add("enabled");
-            });
-        // guestButton.classList.remove("disabled");
-        // guestButton.style.pointerEvents = "auto";
-        }
+    // // Hide error if switcher is active
+    // $(".basket-switcher-error").hide();
 
-        if (checkoutButton) {
-            
-            checkoutButton.forEach(function(button) {
-                button.classList.remove("disabled");
-                button.classList.add("enabled");
-            });
-        // checkoutButton.classList.remove("disabled");
-        // checkoutButton.style.pointerEvents = "auto";
-        }
+    if (subTotalValue !== "£0") {
+        enableCheckoutButtons();
+    } else {
+        disableCheckoutButtons();
+    }
 
-        if (guestcheckoutButtonmobile) {
-        guestcheckoutButtonmobile.classList.remove("disabled");
-        guestcheckoutButtonmobile.style.pointerEvents = "auto";
-        }
-
-        if (checkoutButtonmobile) {
-        checkoutButtonmobile.classList.remove("disabled");
-        checkoutButtonmobile.style.pointerEvents = "auto";
-        }
-        }else{
-            // Get both buttons
-        var guestButtons = document.querySelectorAll(".guestCheckoutBtn");
-        var checkoutButton = document.querySelectorAll(".CheckoutBtn");
-        var guestcheckoutButtonmobile = document.getElementById("guestCheckoutBtnmobile");
-        var checkoutButtonmobile = document.getElementById("CheckoutBtnmobile");
-
-        // Check if elements are not null before modifying them
-        if (guestButtons) {
-            guestButtons.forEach(function(button) {
-                button.classList.add("disabled");
-                button.classList.remove("enabled");
-            });
-        // guestButton.classList.remove("disabled");
-        // guestButton.style.pointerEvents = "auto";
-        }
-
-        if (checkoutButton) {
-            
-            checkoutButton.forEach(function(button) {
-                button.classList.add("disabled");
-                button.classList.remove("enabled");
-            });
-        // checkoutButton.classList.remove("disabled");
-        // checkoutButton.style.pointerEvents = "auto";
-        }
-        }
             },
             error: function() {
                 alert("<?php echo $this->lang->line('fail'); ?>")
@@ -883,6 +838,48 @@ $.ajax({
     //         // console.log("make price");
     //     }
     // });
+    
+    function disableCheckoutButtons() {
+    document.querySelectorAll(".guestCheckoutBtn, .CheckoutBtn").forEach(function(button) {
+        button.classList.add("disabled");
+        button.classList.remove("enabled");
+    });
+
+    var guestBtnMobile = document.getElementById("guestCheckoutBtnmobile");
+    var checkoutBtnMobile = document.getElementById("CheckoutBtnmobile");
+
+    if (guestBtnMobile) {
+        guestBtnMobile.classList.add("disabled");
+        guestBtnMobile.style.pointerEvents = "none";
+    }
+
+    if (checkoutBtnMobile) {
+        checkoutBtnMobile.classList.add("disabled");
+        checkoutBtnMobile.style.pointerEvents = "none";
+    }
+}
+
+function enableCheckoutButtons() {
+    document.querySelectorAll(".guestCheckoutBtn, .CheckoutBtn").forEach(function(button) {
+        button.classList.remove("disabled");
+        button.classList.add("enabled");
+    });
+
+    var guestBtnMobile = document.getElementById("guestCheckoutBtnmobile");
+    var checkoutBtnMobile = document.getElementById("CheckoutBtnmobile");
+
+    if (guestBtnMobile) {
+        guestBtnMobile.classList.remove("disabled");
+        guestBtnMobile.style.pointerEvents = "auto";
+    }
+
+    if (checkoutBtnMobile) {
+        checkoutBtnMobile.classList.remove("disabled");
+        checkoutBtnMobile.style.pointerEvents = "auto";
+    }
+}
+
+
 
     document.addEventListener('DOMContentLoaded', function() {
         const checkoutButton = document.getElementById('checkout-button');
@@ -964,6 +961,8 @@ $.ajax({
                     hiddenInput.value = value;
                     if(value == "collection"){
                         
+                        localStorage.setItem("order-type", "collection");
+
                         // sessionStorage.setItem("order-type", "collection");
 
 
@@ -975,11 +974,15 @@ $.ajax({
                         document.querySelectorAll(".discount-label").forEach(function(element) {
                             element.innerHTML = "Discount (25%)";
                         });
+                        
+                    
                     }else{
+
+                        localStorage.setItem("order-type", "delivery");
 
                         // sessionStorage.setItem("order-type", "delivery");
 
-                    
+
                         // Delivery
                         document.querySelectorAll(".delivery-charge").forEach(function(element) {
                             element.classList.remove("d-none");

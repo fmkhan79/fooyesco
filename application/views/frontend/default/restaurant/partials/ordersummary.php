@@ -1,3 +1,15 @@
+
+
+<style>
+ .basket-error-border {
+    border: 1px solid red;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+
+
+</style>
 <div class="col-md-4 order-summery-box" id="order-summary">
                 <div class="sticky-offset">
                     <h3>Order Summary</h3>
@@ -7,10 +19,11 @@
 
                     </div>
                     <div class="d-flex justify-content-center">
+                        
                     <div
-                        class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-between my-4">
+                        class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-between mt-4 my-display-none">
                         <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between">
-                            <input type="radio" name="basket-switcher" value="delivery" checked="checked"
+                            <input type="radio" name="basket-switcher" value="delivery" checked="checked" 
                                 class="is-visuallyHidden"> <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                 height="24" viewBox="0 0 24 24" fill="none">
                                 <g clip-path="url(#clip0_4609_18686)">
@@ -73,11 +86,22 @@
                                     <!-- 15 Minutes -->
                                 </span>
                             </div>
+
                         </label>
-                    </div>
+
+
                     </div>
 
-                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                    
+                </div>
+                
+                        <div class="basket-switcher-error text-danger" style="
+                             display: none;
+                              margin-top: 7px;
+                                justify-content: center;"></div>
+
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center mt-4">
                         <div class="subtotal" id="">Subtotal</div>
 
                         <div id="ttprice" class="subtotal-price"></div>
@@ -200,9 +224,13 @@
                                 </a>
                             </div> -->
                             <div class="btn-proceed">
-                                <a href="<?php echo site_url('GuestCheckout'); ?>" class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 disabled">
-                                    Guest Checkout
-                                </a>
+
+
+                            <a onclick="red(this)"
+   data-href="<?php echo site_url('GuestCheckout'); ?>" 
+   class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4">
+   Guest Checkout
+</a>
                             </div>
                             <!-- <div class="btn-proceed">
                                 <a href="<?php echo site_url('auth/google_login'); ?>" class="d-block order-red-btn-main text-center mt-4">
@@ -233,3 +261,36 @@
                     }
                 });
             </script>
+
+<script>
+ function red(param) {
+    const isActive = document.querySelector(".c-basketSwitcher-switch.c-basketSwitcher-switch--active") !== null;
+    const switcherBox = document.querySelector(".c-basketSwitcher");
+    
+    if (!isActive) {
+        // Add red border to switcher box
+        document.querySelectorAll(".c-basketSwitcher-switch").forEach(function(switcherBox) {
+    switcherBox.classList.add("basket-error-border");
+});
+
+        // Show error message
+        document.querySelectorAll(".basket-switcher-error").forEach(el => {
+            el.textContent = "Please Select Order Type.";
+            el.style.display = "flex";
+        });
+        return;
+    }
+
+    // Remove error border and hide error message
+    switcherBox.classList.remove("basket-error-border");
+    document.querySelectorAll(".basket-switcher-error").forEach(el => {
+        el.style.display = "none";
+        el.textContent = "";
+    });
+
+    // Redirect
+    const href = param.getAttribute("data-href");
+    window.location.href = href;
+}
+
+</script>

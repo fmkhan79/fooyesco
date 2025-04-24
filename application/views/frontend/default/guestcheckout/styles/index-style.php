@@ -12,7 +12,11 @@
     margin: 5px 0px;
 }
 
+.my-display-none{
+    display: none !important;
+    /* visibility: hidden; */
 
+}
     .form-control.invalid {
         border-color: red;
     }
