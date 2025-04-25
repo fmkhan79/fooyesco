@@ -117,7 +117,9 @@
     text-decoration: none;
     border-color: #f00;
 }
-
+.color-white{
+    color: white !important;
+}
 .popup-close:hover:after,
 .popup-close:hover:before {
     background: #fff;

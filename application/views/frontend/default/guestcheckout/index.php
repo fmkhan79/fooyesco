@@ -351,7 +351,7 @@ $stripe_settings = json_decode($stripe_settings);
 
             </div>
 
-            <div id="orderTypeMessage" class="text-center text-danger my-4"></div>
+            <div id="orderTypeMessage" class="text-center font-weight-bold mb-2"></div>
 
             <div class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-between my-4 my-display-none">
                 <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between">

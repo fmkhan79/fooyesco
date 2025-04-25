@@ -228,7 +228,7 @@
 
                             <a onclick="red(this)"
    data-href="<?php echo site_url('GuestCheckout'); ?>" 
-   class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4">
+   class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 color-white">
    Guest Checkout
 </a>
                             </div>

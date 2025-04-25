@@ -869,26 +869,39 @@ $(document).ready(function () {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
     const orderTypeMessage = document.getElementById("orderTypeMessage");
+    const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
 
-    function updateMessage() {
-        const selected = document.querySelector('input[name="basket-switcher"]:checked');
-        if (selected) {
-            orderTypeMessage.textContent = `Selected Order Type = "${selected.value}"`;
+    function updateMessageFromLocalStorage() {
+        const orderType = localStorage.getItem("order-type");
+        if (orderType) {
+            orderTypeMessage.textContent = `Order Type: ${orderType}`;
+
+            // Optionally, check the corresponding radio button if it exists
+            const matchingRadio = document.querySelector(`input[name="basket-switcher"][value="${orderType}"]`);
+            if (matchingRadio) {
+                matchingRadio.checked = true;
+            }
         }
     }
 
-    // Initial call
-    updateMessage();
+    function updateMessageAndSaveToLocalStorage() {
+        const selected = document.querySelector('input[name="basket-switcher"]:checked');
+        if (selected) {
+            const value = selected.value;
+            localStorage.setItem("order-type", value);
+            orderTypeMessage.textContent = `Selected Order Type = "${value}"`;
+        }
+    }
 
-    // Update message when radio button is changed
+    // Set message based on localStorage initially
+    updateMessageFromLocalStorage();
+
+    // Update message and localStorage when radio button changes
     radioButtons.forEach((radio) => {
-        radio.addEventListener("change", updateMessage);
+        radio.addEventListener("change", updateMessageAndSaveToLocalStorage);
     });
 });
-
-
 
 
 
