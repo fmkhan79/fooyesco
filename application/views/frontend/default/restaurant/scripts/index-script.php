@@ -48,10 +48,26 @@
         });
     });
 
-    jQuery('label.c-basketSwitcher-switch').click(function() {
-        jQuery('label.c-basketSwitcher-switch').removeClass('c-basketSwitcher-switch--active');
-        jQuery(this).addClass('c-basketSwitcher-switch--active');
-    });
+    jQuery('label.c-basketSwitcher-switch').click(function(event) {
+
+if(event.timeStamp < 3000){
+    return;
+}
+
+// Remove active class from all, then add to clicked one
+jQuery('label.c-basketSwitcher-switch').removeClass('c-basketSwitcher-switch--active');
+jQuery(this).addClass('c-basketSwitcher-switch--active');
+
+// Remove the error border from all switchers
+jQuery('.c-basketSwitcher-switch').removeClass('basket-error-border');
+
+// Hide basket switcher error message
+document.querySelectorAll(".basket-switcher-error").forEach(el => {
+    el.style.display = "none";
+});
+});
+
+
 
     // Guest checkout button click
     // jQuery('.guestCheckoutBtn').click(function(e) {

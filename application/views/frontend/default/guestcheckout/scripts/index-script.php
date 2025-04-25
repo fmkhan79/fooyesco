@@ -540,7 +540,7 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
     jQuery(this).addClass('c-basketSwitcher-switch--active');
 });
 
-jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwitcher-switch--active');
+// jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwitcher-switch--active');
 </script>
 
 
@@ -875,7 +875,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateMessageFromLocalStorage() {
         const orderType = localStorage.getItem("order-type");
         if (orderType) {
-            orderTypeMessage.textContent = `Order Type: ${orderType}`;
+            orderTypeMessage.textContent = `Order Type: ${orderType.charAt(0).toUpperCase()}${orderType.slice(1)}`;
 
             // Optionally, check the corresponding radio button if it exists
             const matchingRadio = document.querySelector(`input[name="basket-switcher"][value="${orderType}"]`);

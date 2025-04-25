@@ -264,9 +264,10 @@
 
 <script>
  function red(param) {
+    
+    //  debugger;
     const isActive = document.querySelector(".c-basketSwitcher-switch.c-basketSwitcher-switch--active") !== null;
     const switcherBox = document.querySelector(".c-basketSwitcher");
-    
     if (!isActive) {
         // Add red border to switcher box
         document.querySelectorAll(".c-basketSwitcher-switch").forEach(function(switcherBox) {

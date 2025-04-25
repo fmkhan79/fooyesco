@@ -349,13 +349,15 @@ $stripe_settings = json_decode($stripe_settings);
 
             <div id="item-list">
 
+
             </div>
 
-            <div id="orderTypeMessage" class="text-center font-weight-bold mb-2"></div>
+            <div id="orderTypeMessage" class="d-flex text-center font-weight-bold mb-2"></div>
 
             <div class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-between my-4 my-display-none">
                 <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between">
                     <input type="radio" name="basket-switcher" value="delivery" checked="checked"
+                    <input type="radio" name="basket-switcher" value="delivery" 
                         class="is-visuallyHidden"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         viewBox="0 0 24 24" fill="none">
                         <g clip-path="url(#clip0_4609_18686)">

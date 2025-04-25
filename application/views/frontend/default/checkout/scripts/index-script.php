@@ -523,11 +523,12 @@ jQuery(document).ready(function() {
 });
 
 jQuery('label.c-basketSwitcher-switch').click(function() {
+    // debugger;
     jQuery('label.c-basketSwitcher-switch').removeClass('c-basketSwitcher-switch--active');
     jQuery(this).addClass('c-basketSwitcher-switch--active');
 });
 
-jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwitcher-switch--active');
+// jQuery('.c-basketSwitcher-switch input:checked').parent().addClass('c-basketSwitcher-switch--active');
 </script>
 
 <script type="text/javascript">

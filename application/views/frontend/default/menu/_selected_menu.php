@@ -207,6 +207,7 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
     });
     // alert("Chalo")
     jQuery('label.c-basketSwitcher-switch').click(function() {
+        // debugger;
         jQuery('label.c-basketSwitcher-switch').removeClass('c-basketSwitcher-switch--active');
         jQuery(this).addClass('c-basketSwitcher-switch--active');
     });
