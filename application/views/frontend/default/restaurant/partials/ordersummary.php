@@ -23,7 +23,7 @@
                     <div
                         class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-between mt-4 my-display-none">
                         <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between">
-                            <input type="radio" name="basket-switcher" value="delivery" checked="checked" 
+                            <input type="radio" name="basket-switcher" value="delivery"
                                 class="is-visuallyHidden"> <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                 height="24" viewBox="0 0 24 24" fill="none">
                                 <g clip-path="url(#clip0_4609_18686)">
