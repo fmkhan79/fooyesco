@@ -140,8 +140,30 @@ function submitForm() {
 
             jQuery("ul.billing-list-topbar li.billing").removeClass("acitve");
             jQuery("ul.billing-list-topbar li.order").removeClass("acitve");
-            jQuery("#payment-option").show();
-            jQuery("#your-address,#billing-address").hide();
+            // jQuery("#payment-option").show();
+            const orderTypeValue = localStorage.getItem('order-type');
+            if(orderTypeValue == "collection"){
+
+                jQuery("ul.billing-list-topbar li.order").addClass("acitve");
+
+                jQuery("ul.billing-list-topbar li.order .img-box").addClass("red");
+                jQuery("ul.billing-list-topbar li.billing .img-box").removeClass("red");
+                jQuery("ul.billing-list-topbar li.payment .img-box").removeClass("red");
+
+                jQuery("ul.billing-list-topbar li.billing").removeClass("acitve");
+                jQuery("ul.billing-list-topbar li.payment").removeClass("acitve");
+                
+                jQuery("#your-address").show();
+                jQuery("#payment-option,#billing-address").hide();
+
+            }else{
+                
+                jQuery("#your-address,#billing-address").hide();
+                jQuery("#payment-option").show();
+
+            }
+            
+        
         }
     });
 }
@@ -168,6 +190,7 @@ function submitAddressForm() {
             jQuery("ul.billing-list-topbar li.billing").removeClass("acitve");
             jQuery("ul.billing-list-topbar li.payment").removeClass("acitve");
             jQuery("#your-address").show();
+            jQuery("#your-address").removeClass("d-none");
             jQuery("#billing-address,#payment-option").hide();
         }
     });
@@ -696,42 +719,68 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
     
     }
   
-    const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
+   debugger;
+
+// Get value from Local Storage
+const orderTypeValue = localStorage.getItem('order-type');
+
+// Update hidden inputs if value is found
+if (orderTypeValue) {
     const hiddenInputs = document.querySelectorAll('input[name="order_type"]');
-
-    radioButtons.forEach(radio => {
-        radio.addEventListener('change', () => {
-            if($(".order.last.acitve").length == 1){
-                return;
-            }
-            if (radio.checked) {
-                let value = radio.value;
-                // Loop through all hidden inputs and update their value
-                hiddenInputs.forEach(hiddenInput => {
-                    hiddenInput.value = value;
-                    if(value == "collection"){
-                        document.getElementById("collection-time").classList.remove("d-none");
-
-                        document.getElementById("additional-delivery-notes").classList.add("d-none");
-                        document.getElementById("cash_button").innerHTML ="Cash On Collection";
-                          
-                        document.querySelectorAll("span.order_type").forEach(otype => {
-                            
-                            otype.innerHTML = "Your";
-                        });                  
-                    }else{
-                        document.getElementById("collection-time").classList.add("d-none");
-
-                        document.getElementById("additional-delivery-notes").classList.remove("d-none");
-                        document.getElementById("cash_button").innerHTML = "Cash On Delivery";                        
-                        document.querySelectorAll("span.order_type").forEach(otype => {
-                            otype.innerHTML = "Delivery";
-                        });                  
-                    }
-                });
-            }
-        });
+    hiddenInputs.forEach(hiddenInput => {
+        hiddenInput.value = orderTypeValue;
     });
+
+    if (orderTypeValue === "collection") {
+
+        document.querySelectorAll(".payment")[0].style.display = "none";
+        document.querySelectorAll(".billing")[0].style.width = "90%";
+
+
+        document.getElementById("collection-time").classList.remove("d-none");
+        document.getElementById("additional-delivery-notes").classList.add("d-none");
+        document.getElementById("cash_button").innerHTML = "Cash On Collection";
+
+        document.querySelectorAll("span.order_type").forEach(otype => {
+            otype.innerHTML = "Your";
+        });
+
+        // ✅ Hide the Payment Option
+
+        const paymentOptionDiv = document.getElementById('payment-option');
+        if (paymentOptionDiv) {
+            paymentOptionDiv.classList.add('d-none');
+        }
+
+        // ✅ Show Your Address Div
+        const yourAddressDiv = document.getElementById('your-address');
+        if (yourAddressDiv) {
+            yourAddressDiv.classList.remove('d-none');
+        }
+
+    } else {
+        document.getElementById("collection-time").classList.add("d-none");
+        document.getElementById("additional-delivery-notes").classList.remove("d-none");
+        document.getElementById("cash_button").innerHTML = "Cash On Delivery";
+
+        document.querySelectorAll("span.order_type").forEach(otype => {
+            otype.innerHTML = "Delivery";
+        });
+
+        // ✅ Show the Payment Option
+        const paymentOptionDiv = document.getElementById('payment-option');
+        if (paymentOptionDiv) {
+            paymentOptionDiv.classList.remove('d-none');
+        }
+
+        // ✅ Hide Your Address Div
+        const yourAddressDiv = document.getElementById('your-address');
+        if (yourAddressDiv) {
+            yourAddressDiv.classList.add('d-none');
+        }
+    }
+}
+
 
    
     

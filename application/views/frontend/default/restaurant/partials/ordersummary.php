@@ -205,7 +205,7 @@
                     <?php if ($customer_details['is_guest'] == 0 && $customer_details['name']) : ?>
 
                         <div class="btn-proceed" style="width:100%">
-                            <a href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn-main text-center mt-4 w-100 border-0 disabled CheckoutBtn" style="cursor: pointer;" role="button">
+                            <a onclick="red(this)" data-href="<?php echo site_url('checkout'); ?>" class="d-block order-red-btn-main text-center mt-4 w-100 border-0 disabled CheckoutBtn" style="cursor: pointer;" role="button">
                                     <?php echo site_phrase('checkout', true); ?>
                                 </a>
                             
