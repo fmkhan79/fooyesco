@@ -2,8 +2,8 @@
 
 <style>
  .basket-error-border {
-    border: 1px solid red;
-    border-radius: 8px;
+    border: 3px solid red;
+    border-radius: 28px;
     box-sizing: border-box;
 }
 

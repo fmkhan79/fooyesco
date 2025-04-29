@@ -72,8 +72,8 @@
 
     // print_r($address);
 
-    $billing = json_decode($order_details["billing"],true); 
-
+    $billing = json_decode($order_details["billing"],associative: true); 
+    // print_r($billing);
     // print_r($ordered_items);
     ?>
 
@@ -90,28 +90,22 @@
 
 
      
-     <?php 
-if ($order_details['order_type'] == "delivery") {
-    echo "<h3>DELIVERY</h3>";
-}
+        <?php 
+            if ($order_details['order_type'] == "delivery") {
+              echo "<h3>DELIVERY</h3>";
+                }
 
-echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
+            echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
 
-if ($order_details['order_type'] != "pickup") {
-    echo "<h3 style='margin:0px;'>" . $address["street"] . ", " . str_replace(", March, UK", "", $address["additional_address"]) . " - " . $address["zip_code"] . "</h3>";
-}
-?>
+            if ($order_details['order_type'] != "pickup") {
+          echo "<h3 style='margin:0px;'>" . $address["street"] . ", " . str_replace(", March, UK", "", $address["additional_address"]) . " - " . $address["zip_code"] . "</h3>";
+            }
+                ?>
 
 
-        
-        <?php  
-        if($order_details['order_type'] != "pickup") {
-
-            // print_r($order_details['total_menu_price']);
-        ?>
             
             <h3 style='margin:0px;'><?= $billing["phone_mobile"] ?></h3>
-        <?php } ?>
+       
 
         <!-- <p style="margin:0px;"><?php echo date("Y-m-d H:i:s", $order_details['order_placed_at']); ?></p> -->
         <!-- <div class="did">

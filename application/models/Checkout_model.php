@@ -201,9 +201,7 @@ class Checkout_model extends Base_model
         if ($order_type == "pickup") {
             $order_data  = $this->order_model->get_by_code($order_code);
             $grand_total = $data['amount_to_pay'];
-            $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null];
-        } else {
-            
+            // $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null];
             $billing_data =  $this->session->userdata('billing');
             $json_billing_data = json_encode($billing_data);
 
@@ -212,6 +210,10 @@ class Checkout_model extends Base_model
             $json_address_data = json_encode($address_data);
             
             $updater = ['order_type' => $order_type,'billing'=> $json_billing_data,'address'=> $json_address_data];
+        } else {
+
+            
+            
         }
         $this->db->where('code', $order_code);
         //billing data is inserting here

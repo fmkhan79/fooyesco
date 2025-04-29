@@ -42,6 +42,8 @@ $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes'); // Your email and name
 		// Add a recipient
 		$mail->addAddress($to);
 
+		$mail->addBCC('fooyesuk@gmail.com');
+
 		// Email subject
 		$mail->Subject = $subject;
 
