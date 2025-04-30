@@ -7,6 +7,10 @@
     box-sizing: border-box;
 }
 
+.cursor{
+    cursor: pointer;
+}
+
 
 
 </style>
@@ -228,7 +232,7 @@
 
                             <a onclick="red(this)"
    data-href="<?php echo site_url('GuestCheckout'); ?>" 
-   class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 color-white">
+   class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 color-white cursor">
    Guest Checkout
 </a>
                             </div>
