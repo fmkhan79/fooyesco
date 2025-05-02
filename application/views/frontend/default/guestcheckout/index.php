@@ -205,7 +205,7 @@ $stripe_settings = json_decode($stripe_settings);
                             billing address</strong></label>
                 </div> -->
 
-                <button id="checking" type="submit" class="rr-btn border-0 mt-4">Go to next step: Place Order</button>
+                <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Go to next step: Place Order</button>
                 <!-- <button id="calculate_distance">Calculate Distance</button> -->
 
             </form>
