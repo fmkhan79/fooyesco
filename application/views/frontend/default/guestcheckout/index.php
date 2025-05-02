@@ -138,6 +138,7 @@ $stripe_settings = json_decode($stripe_settings);
             </form>
         </div>
 
+
         <div id="payment-option">
             <h4 class="mt-5 text-dark"><span class="order_type">Delivery</span> Address</h4>
 
@@ -204,7 +205,7 @@ $stripe_settings = json_decode($stripe_settings);
                             billing address</strong></label>
                 </div> -->
 
-                <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Go to next step: Place Order</button>
+                <button id="checking" type="submit" class="rr-btn border-0 mt-4">Go to next step: Place Order</button>
                 <!-- <button id="calculate_distance">Calculate Distance</button> -->
 
             </form>
@@ -542,3 +543,6 @@ $stripe_settings = json_decode($stripe_settings);
 </script> -->
 
 <!-- END MAIN CONTENT -->
+
+
+
