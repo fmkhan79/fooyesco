@@ -297,8 +297,8 @@
           <?php if (!empty($address['number'])) : ?>
             <div class="row mt-2">
                 <div class="col note" style="font-size: 18px;">
-                    <span class="text-danger">Note:</span> <?php echo sanitize($address['number']); ?>
-                </div>
+                    <h3><b><span class="text-danger">Note:</span> <?php echo sanitize($address['number']); ?>
+                </div></b></h3>
             </div>
         <?php endif; ?>
 

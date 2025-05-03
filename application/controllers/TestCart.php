@@ -11,6 +11,7 @@ class Testcart extends Base {
         $start_of_day = $today . ' 00:00:00';
         $end_of_day = $today . ' 23:59:59';
 
+
         // Fetch abandoned carts visited today only
         $abandoned_carts = $this->db->where('order_placed', 0)
             ->where('visited_at >=', $start_of_day)
@@ -23,15 +24,21 @@ class Testcart extends Base {
 
         $abandoned_count = 0;
         $numbering = 1;
+        
+        // print_r($abandoned_carts);
+        // die();
 
         foreach ($abandoned_carts as $cart) {
             $visitedAt = new DateTime($cart->visited_at, new DateTimeZone('UTC'));
             $visitedAt->setTimezone(new DateTimeZone('Europe/London'));
             $visitedTime = $visitedAt->format('Y-m-d H:i:s');
-        
+          
             // Get user agent and IP address
             $user_agent = $cart->user_agent; // Assuming 'user_agent' column exists
             $ip_address = $cart->ip_address; // Assuming 'ip_address' column exists
+            $phone_mobile = $cart->phone_mobile;
+            $name_add = $cart->name_add;
+            $email_add = $cart->email_add;
 
             if ($cart->info_add == 0 && $cart->order_placed == 0) {
                 $message .= "{$numbering}. Added to cart only — Visited at: {$visitedTime}\n";
@@ -39,8 +46,12 @@ class Testcart extends Base {
                 $message .= "   IP Address: {$ip_address}\n";
             } elseif ($cart->info_add == 1 && $cart->order_placed == 0) {
                 $message .= "{$numbering}. {$cart->user_address} — Entered address but didn't place the order — Visited at: {$visitedTime}\n";
+                $message .= "   Name: {$name_add}\n";
+                $message .= "   Phone Number: {$phone_mobile}\n";
+                $message .= "   Email: {$email_add}\n";
                 $message .= "   User Agent: {$user_agent}\n";
                 $message .= "   IP Address: {$ip_address}\n";
+
             }
             $abandoned_count++;
             $numbering++;
@@ -51,7 +62,7 @@ class Testcart extends Base {
         } else {
             $message .= "\nTotal Abandoned Carts: {$abandoned_count}";
         }
-
+// die();
         // Load PHPMailer
         $this->load->library('phpmailer_lib');
         $mail = $this->phpmailer_lib->load();
