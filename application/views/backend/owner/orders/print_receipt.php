@@ -83,9 +83,9 @@
         <h2><?php echo "<h3 style='margin:0px;'>".$order_details["daily_order_number"]."</h3>"; ?></h2>
         </center>
         
-        <img class="img-qr" width="70px" height="55px"
+        <img class="img-qr" width="100px" height="100px"
      style="float: right;"
-     src="<?php echo base_url('assets/frontend/default/images/img-chili-qr.png') ?>" />
+     src="<?php echo base_url('assets/frontend/default/images/ilove.png') ?>" />
 
 
 
