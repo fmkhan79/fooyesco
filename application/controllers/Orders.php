@@ -285,37 +285,36 @@ class Orders extends Authorization
         // Optionally return a response
         echo json_encode(['status' => 'success']);
     }
-    
-    public function missedResponseNoti()
+    public function missedresponsenoti()
     {
         $user_id = $this->session->userdata("user_id");
-    
-        // Get restaurant owned by the user
+             // Get restaurant owned by the user 
         $restaurant = $this->db->get_where('restaurants', ['owner_id' => $user_id])->row_array();
-    
+          
         if ($restaurant) {
             $restaurant_id = $restaurant['id'];
-    
+            
             // Fetch all orders where no_response = 1
             $this->db->from('orders');
             $this->db->where('restaurant_id', $restaurant_id);
             $this->db->where('no_response', 1);
             $this->db->order_by('id', 'DESC');
             $orders = $this->db->get()->result_array();
-    
+          
             if (!empty($orders)) {
+              
                 // === Fetch owner email ===
                 $owner = $this->db->get_where('users', ['id' => $user_id])->row_array();
                 if ($owner && !empty($owner['email'])) {
                     $owner_email = $owner['email'];
-    
+                 
                     // === Prepare list of order codes ===
                     $order_codes = array_column($orders, 'code'); // get all codes
                     $order_list = '';
                     foreach ($order_codes as $code) {
                         $order_list .= "- Order <strong>#" . $code . "</strong><br>";
                     }
-    
+                   
                     // === Prepare email content ===
                     $subject = "Missed Orders Notification";
                     $message = "Dear Restaurant Owner " . $owner['name'] . ",<br><br>";
@@ -323,7 +322,7 @@ class Orders extends Authorization
                     $message .= $order_list;
                     $message .= "<br>Please check your orders dashboard.<br><br>";
                     $message .= "Regards,<br>Fooyes Team";
-    
+                  
                     // === Send Email using PHPMailer ===
                     $this->load->library('phpmailer_lib');
                     $mail = $this->phpmailer_lib->load();
@@ -340,22 +339,25 @@ class Orders extends Authorization
                     $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
                     // $mail->addAddress($owner_email); // Send to restaurant owner
                     $mail->addAddress('website25developer@gmail.com'); // For dev monitoring
-    
+                  
                     $mail->isHTML(true);
                     $mail->Subject = $subject;
                     $mail->Body    = $message;
-    
+                    
                     if ($mail->send()) {
+                        echo 'Email Sent Successfully!';
+                      
                         log_message('info', "Missed orders email sent to {$owner_email} for orders: " . implode(', ', $order_codes));
                     } else {
+                        echo 'Mailer Error: ' . $mail->ErrorInfo;
+
                         log_message('error', "Failed to send missed orders email to {$owner_email}. Mailer Error: " . $mail->ErrorInfo);
                     }
                 }
             }
         }
     }
-    
-    
+   
     
 
 
