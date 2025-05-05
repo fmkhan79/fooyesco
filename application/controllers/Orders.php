@@ -149,12 +149,21 @@ class Orders extends Authorization
             $this->db->set('read_status', 1); // Assuming 'read_status' is the field name in the 'orders' table
             $this->db->where('id', $order_id);
             $this->db->update('orders');
+
+            $this->db->set('no_response', 0); // Assuming 'read_status' is the field name in the 'orders' table
+            $this->db->where('id', $order_id);
+            $this->db->update('orders');
+
     
             echo json_encode(['status' => 'success']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Invalid order ID']);
         }
     }
+
+
+
+
     
     // WRITE A NOTE
     public function add_note()
@@ -171,6 +180,8 @@ class Orders extends Authorization
     // CANCEL AN ORDER. BEFORE CANCELING AN ORDER MAKE SURE TO CHECK THE CUSTOMER ID AND THE ORDER STATUS
     public function cancel($order_code)
     {
+        $order_id = $this->input->post('order_id');
+
         authorization(['admin', 'driver', 'cook', 'owner'], true);
         $is_valid = $this->order_model->is_valid($order_code);
         if (!$is_valid) {
@@ -179,6 +190,10 @@ class Orders extends Authorization
 
         $response = $this->order_model->cancel($order_code);
         if ($response) {
+            $this->db->set('no_response', 0); // Assuming 'read_status' is the field name in the 'orders' table
+            $this->db->where('id', $order_id);
+            $this->db->update('orders');
+
             success(get_phrase('order_canceled_successfully'), site_url('orders/details/' . $order_code));
         } else {
             error(get_phrase('the_order_can_not_be_canceled'), site_url('orders/details/' . $order_code));
@@ -270,6 +285,79 @@ class Orders extends Authorization
         // Optionally return a response
         echo json_encode(['status' => 'success']);
     }
+    
+    public function missedResponseNoti()
+    {
+        $user_id = $this->session->userdata("user_id");
+    
+        // Get restaurant owned by the user
+        $restaurant = $this->db->get_where('restaurants', ['owner_id' => $user_id])->row_array();
+    
+        if ($restaurant) {
+            $restaurant_id = $restaurant['id'];
+    
+            // Fetch all orders where no_response = 1
+            $this->db->from('orders');
+            $this->db->where('restaurant_id', $restaurant_id);
+            $this->db->where('no_response', 1);
+            $this->db->order_by('id', 'DESC');
+            $orders = $this->db->get()->result_array();
+    
+            if (!empty($orders)) {
+                // === Fetch owner email ===
+                $owner = $this->db->get_where('users', ['id' => $user_id])->row_array();
+                if ($owner && !empty($owner['email'])) {
+                    $owner_email = $owner['email'];
+    
+                    // === Prepare list of order codes ===
+                    $order_codes = array_column($orders, 'code'); // get all codes
+                    $order_list = '';
+                    foreach ($order_codes as $code) {
+                        $order_list .= "- Order <strong>#" . $code . "</strong><br>";
+                    }
+    
+                    // === Prepare email content ===
+                    $subject = "Missed Orders Notification";
+                    $message = "Dear Restaurant Owner " . $owner['name'] . ",<br><br>";
+                    $message .= "You missed the following orders:<br><br>";
+                    $message .= $order_list;
+                    $message .= "<br>Please check your orders dashboard.<br><br>";
+                    $message .= "Regards,<br>Fooyes Team";
+    
+                    // === Send Email using PHPMailer ===
+                    $this->load->library('phpmailer_lib');
+                    $mail = $this->phpmailer_lib->load();
+    
+                    // SMTP config
+                    $mail->isSMTP();
+                    $mail->Host       = 'mail.fooyes.co.uk';
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = 'no-reply@fooyes.co.uk';
+                    $mail->Password   = '^X{zK)uB%XrS';
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->Port       = 465;
+    
+                    $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
+                    // $mail->addAddress($owner_email); // Send to restaurant owner
+                    $mail->addAddress('website25developer@gmail.com'); // For dev monitoring
+    
+                    $mail->isHTML(true);
+                    $mail->Subject = $subject;
+                    $mail->Body    = $message;
+    
+                    if ($mail->send()) {
+                        log_message('info', "Missed orders email sent to {$owner_email} for orders: " . implode(', ', $order_codes));
+                    } else {
+                        log_message('error', "Failed to send missed orders email to {$owner_email}. Mailer Error: " . $mail->ErrorInfo);
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    
+
 
 }
 
