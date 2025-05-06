@@ -11,10 +11,51 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
         opacity: 0.5;
         pointer-events:none;
     }
+    .parent {
+  height: 90vh; /* Full screen height */
+  
+}
+
+.container-99 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.box {
+  padding: 10px;
+  
+}
+
+.box1{
+  height: 7%;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.box3 {
+  height: 15%;
+  
+}
+
+.box2 {
+  height: 78%;
+  overflow: auto;
+  border: 4px solid #fdc55e;
+  border-right: 0px;
+  border-left: 0px;
+}
     </style>
-<h3 class="text-center my-4">
-    <?PHP   echo  $menu_details["name"];  ?>
-</h3>
+<div class="parent">
+    <div class="container-99">
+    <div class="box box1">
+        <h3 class="text-center">
+            <?PHP   echo  $menu_details["name"];  ?>
+        </h3>
+</div>
+<div class="box box2">
 <div class="product-img">
     <div class="order-img-box main-img">
         <a href="#"><img class="rounded-circle"
@@ -34,6 +75,11 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
             <div class="percent-box">25% <br> OFF</div>
             </a>
     </div>
+
+
+
+
+
 
 </div>
 
@@ -156,12 +202,13 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
     </div>
 
     <?php } ?>
-
+    </div>
 
     <!-- Main Sub Catagories and Items End -->
 
-
-    <div class="qty-box my-4">
+<div class="box box3">
+    <div class="d-flex">
+    <div class="qty-box">
         <div class="input-group">
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default btn-number input-" disabled="disabled" data-type="minus"
@@ -179,13 +226,15 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
             </span>
         </div>
     </div>
-
-    <div class="m-4 d-flex justify-content-between align-items-center add-order-box <?= $hasRequireVariant ? "disabled" : ""?>" id="add-to-order-container" onclick="addToCart()"  >
-    <div class="add-order-txt">Add To Order</div>
-    <div class="add-order-price" id="add-order-price">0</div>
+                
+                    <div class="m-4 d-flex justify-content-between align-items-center add-order-box <?= $hasRequireVariant ? "disabled" : ""?>" id="add-to-order-container" onclick="addToCart()"  >
+                    <div class="add-order-txt">Add To Order</div>
+                    <div class="add-order-price" id="add-order-price">0</div>
+                </div>
+                </div>
+            </div>
+        </div>
 </div>
-
-
     <!-- TODO:: +/- temp solution -->
     <script>
     jQuery(".filter-list.all-other .icon-arrow-down").click(function() {
