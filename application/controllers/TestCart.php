@@ -90,4 +90,72 @@ class Testcart extends Base {
             echo 'Email Sent Successfully!';
         }
     }
+    
+
+    public function missedresponsenoti() 
+    {
+
+        $user_id = 3; // Static user ID (you can adjust if needed)
+    
+        // Get all orders with no response = 1
+        $this->db->from('orders');
+        $this->db->where('no_response', 1);
+        $this->db->order_by('id', 'DESC');
+        $orders = $this->db->get()->result_array();
+        
+        if (!empty($orders)) {
+            // Get user (owner) info
+            $owner = $this->db->get_where('users', ['id' => $user_id])->row_array();
+            if ($owner && !empty($owner['email'])) {
+                $owner_email = $owner['email'];
+    
+                // Prepare order list
+                $order_codes = array_column($orders, 'code');
+                $order_list = '';
+                foreach ($order_codes as $code) {
+                    $order_list .= "- Order <strong>#" . $code . "</strong><br>";
+                }
+    
+                // Prepare email content
+                $subject = "Missed Orders Notification";
+                $message = "Dear Restaurant Owner " . $owner['name'] . ",<br><br>";
+                $message .= "You missed the following orders:<br><br>";
+                $message .= $order_list;
+                $message .= "<br>Please check your orders dashboard.<br><br>";
+                $message .= "Regards,<br>Fooyes Team";
+    
+                // === Send Email using PHPMailer ===
+                $this->load->library('phpmailer_lib');
+                $mail = $this->phpmailer_lib->load();
+    
+                // SMTP config
+                $mail->isSMTP();
+                $mail->Host       = 'mail.fooyes.co.uk';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'no-reply@fooyes.co.uk';
+                $mail->Password   = '^X{zK)uB%XrS';
+                $mail->SMTPSecure = 'ssl';
+                $mail->Port       = 465;
+    
+                $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
+                // $mail->addAddress($owner_email); // Send to restaurant owner
+                $mail->addAddress('website25developer@gmail.com'); // For dev monitoring
+    
+                $mail->isHTML(true);
+                $mail->Subject = $subject;
+                $mail->Body    = $message;
+    
+                if ($mail->send()) {
+                    echo 'Email Sent Successfully!';
+                    log_message('info', "Missed orders email sent to {$owner_email} for orders: " . implode(', ', $order_codes));
+                } else {
+                    echo 'Mailer Error: ' . $mail->ErrorInfo;
+                    log_message('error', "Failed to send missed orders email to {$owner_email}. Mailer Error: " . $mail->ErrorInfo);
+                }
+            }
+        }
+    }
+
+    
+    
 }
