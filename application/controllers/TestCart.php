@@ -78,7 +78,7 @@ class Testcart extends Base {
 
         $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
         $mail->addAddress('fmkhan79@gmail.com');
-        $mail->addAddress('fooyesuk@gmail.com');
+        $mail->addBCC('fooyesuk@gmail.com');  
         $mail->addAddress('website25developer@gmail.com');
 
         $mail->Subject = 'Abandoned Cart Summary (Manual Test)';
@@ -95,7 +95,7 @@ class Testcart extends Base {
     public function missedresponsenoti() 
     {
 
-        $user_id = 3; // Static user ID (you can adjust if needed)
+        $user_id = 3; 
     
         // Get all orders with no response = 1
         $this->db->from('orders');
@@ -108,7 +108,7 @@ class Testcart extends Base {
             $owner = $this->db->get_where('users', ['id' => $user_id])->row_array();
             if ($owner && !empty($owner['email'])) {
                 $owner_email = $owner['email'];
-    
+                
                 // Prepare order list
                 $order_codes = array_column($orders, 'code');
                 $order_list = '';
@@ -127,7 +127,7 @@ class Testcart extends Base {
                 // === Send Email using PHPMailer ===
                 $this->load->library('phpmailer_lib');
                 $mail = $this->phpmailer_lib->load();
-    
+                
                 // SMTP config
                 $mail->isSMTP();
                 $mail->Host       = 'mail.fooyes.co.uk';
@@ -138,8 +138,9 @@ class Testcart extends Base {
                 $mail->Port       = 465;
     
                 $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
-                // $mail->addAddress($owner_email); // Send to restaurant owner
-                $mail->addAddress('website25developer@gmail.com'); // For dev monitoring
+                $mail->addAddress('fmkhan79@gmail.com');
+                $mail->addBCC('fooyesuk@gmail.com');   
+                $mail->addAddress('website25developer@gmail.com'); 
     
                 $mail->isHTML(true);
                 $mail->Subject = $subject;
