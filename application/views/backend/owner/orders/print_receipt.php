@@ -253,8 +253,8 @@
             <span>TOTAL (<?php echo $total_items; ?> Items)</span>
             <span>
     <?php  
-        echo currency(number_format($grand_total, 2));
-    ?> 
+            echo currency(number_format($grand_total, 2)+$total_delivery_charge);
+     ?> 
 </span>
                  
             </div>
