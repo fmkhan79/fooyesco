@@ -438,7 +438,7 @@ public function get_restaurants_by_ids($restaurant_ids) {
      */
     public function get_total_delivery_charge()
     {
-       
+      
         $total_delivery_charge = $this->session->userdata('delivery_fees');
 
         return $total_delivery_charge;
@@ -646,9 +646,16 @@ public function get_restaurants_by_ids($restaurant_ids) {
         $serviceCharge = sanitize($this->get_service_amount());
         $bagCharges = number_format((float) sanitize($this->get_bag_charges($order_type)), 2, '.', '');
         $discountedAmount = number_format((float) sanitize($this->get_discounted_amount($order_type)), 2, '.', '');
-        $total_delivey_charges = number_format((float) sanitize($this->get_total_delivery_charge()),2, '.','');
-        return $subtotal + $total_delivey_charges + $serviceCharge + $bagCharges - $discountedAmount;
+        $total_delivery_charges = number_format((float) sanitize($this->get_total_delivery_charge()),2, '.','');
+        // print_r($order_type);
+        // die();
+       if($order_type == 'delivery'){
+    
+        return $subtotal + $total_delivery_charges + $serviceCharge + $bagCharges - $discountedAmount;
+       }else{
+                return $subtotal + $serviceCharge + $bagCharges - $discountedAmount;
 
+       }
     }
     
     

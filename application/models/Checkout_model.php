@@ -304,7 +304,9 @@ $this->db->update('cart_visits', ['order_placed' => 1]);
 
         $order_type = isset($order_type) && $order_type == "pickup" && get_order_settings('pickup_order') ? "pickup" : "delivery";
         if ($order_type == "pickup") {
-            $updater = ['order_type' => $order_type, 'driver_id' => null];
+            $billing_data =  $this->session->userdata('billing');
+            $json_billing_data = json_encode($billing_data);
+            $updater = ['order_type' => $order_type, 'driver_id' => null, 'billing'=> $json_billing_data, 'total_delivery_charge' => 0, ];
         } else {
                 
             $billing_data =  $this->session->userdata('billing');

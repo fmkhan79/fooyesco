@@ -70,6 +70,14 @@ class Checkout extends Base
             'miles' => $result['miles']
         ];
 
+          $value = round($result['miles']);
+        if ($value <= 3) {
+            $fees = 2;  
+        } else {
+            $fees = 3;  
+        }
+        
+
         $this->session->set_userdata('delivery_fees', $fees);
 
 
