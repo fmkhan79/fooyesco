@@ -646,8 +646,8 @@ public function get_restaurants_by_ids($restaurant_ids) {
         $serviceCharge = sanitize($this->get_service_amount());
         $bagCharges = number_format((float) sanitize($this->get_bag_charges($order_type)), 2, '.', '');
         $discountedAmount = number_format((float) sanitize($this->get_discounted_amount($order_type)), 2, '.', '');
-
-        return $subtotal + $serviceCharge + $bagCharges - $discountedAmount;
+        $total_delivey_charges = number_format((float) sanitize($this->get_total_delivery_charge()),2, '.','');
+        return $subtotal + $total_delivey_charges + $serviceCharge + $bagCharges - $discountedAmount;
 
     }
     
