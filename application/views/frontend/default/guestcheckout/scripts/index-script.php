@@ -719,7 +719,7 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
     
     }
   
-   debugger;
+//    debugger;
 
 // Get value from Local Storage
 const orderTypeValue = localStorage.getItem('order-type');
@@ -806,6 +806,8 @@ if (orderTypeValue) {
                 long_to: long_to,
             },
             success: function(response) {
+                // debugger;
+                
                 if (response.message == 'Not delivery at this location') {
                     // Handle 'Not delivery' error
                     $($(".rr-btn.border-0.mt-4")[1]).prop("disabled", "true"); // Disable button
@@ -823,12 +825,13 @@ if (orderTypeValue) {
                     $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
                     $("#not-deliever").addClass("d-none"); // Show error message
                     $(".total-delivery-price").text("£" + response.message); // Show delivery price
-
+                    // console.log(response.message);
                     // Update the grand total price
                     let subTotal = parseFloat($(".subtotal-price").html().replace("£", ""));
-                    let totalVatPrice = parseFloat($(".total-vat-price").html().replace("£", ""));
+                    // let totalVatPrice = parseFloat($(".total-vat-price").html().replace("£", ""));
                     let totalServicePrice = parseFloat($(".total-service-price").html().replace("£", ""));
-                    let total = subTotal + totalVatPrice + totalServicePrice + parseFloat(response.message);
+
+                    let total = subTotal  + totalServicePrice + parseFloat(response.message);
                     $(".grand-product-price").text("£" + total);
                 }
             },

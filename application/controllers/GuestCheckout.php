@@ -66,21 +66,19 @@ class GuestCheckout extends Base
             return;
         }
 
-        if($result['miles'] <= $free_range){
-            $response = [
-                'message' => 'Free delivery applied',
-                'miles' => $result['miles']
-            ];
-            echo json_encode($response);
-            return; 
-        }
+        // if($result['miles'] <= $free_range){
+        //     $response = [
+        //         'message' => 'Free delivery applied',
+        //         'miles' => $result['miles']
+        //     ];
+        //     echo json_encode($response);
+        //     return; 
+        // }
 
 
         $fees = round($result['miles'] * $rate_per_mile);
-        $response = [
-            'message' => $fees,
-            'miles' => $result['miles']
-        ];
+        
+        
         //bypassing all calculations with the new one
 
         //$fees have real value but we are bypassing
@@ -91,6 +89,12 @@ class GuestCheckout extends Base
         } else {
             $fees = 3;  
         }
+        
+        $response = [
+            'message' => $fees,
+            'miles' => $result['miles']
+        ];
+
         // print_r($value);
         // print_r("Fees");
         // print_r($fees);

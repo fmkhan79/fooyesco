@@ -54,21 +54,18 @@ class Checkout extends Base
             return;
         }
 
-        if($result['miles'] <= $free_range){
-            $response = [
-                'message' => 'Free delivery applied',
-                'miles' => $result['miles']
-            ];
-            echo json_encode($response);
-            return; 
-        }
+        // if($result['miles'] <= $free_range){
+        //     $response = [
+        //         'message' => 'Free delivery applied',
+        //         'miles' => $result['miles']
+        //     ];
+        //     echo json_encode($response);
+        //     return; 
+        // }
 
 
         $fees = round($result['miles'] * $rate_per_mile);
-        $response = [
-            'message' => $fees,
-            'miles' => $result['miles']
-        ];
+       
 
           $value = round($result['miles']);
         if ($value <= 3) {
@@ -77,7 +74,10 @@ class Checkout extends Base
             $fees = 3;  
         }
         
-
+            $response = [
+            'message' => $fees,
+            'miles' => $result['miles']
+                 ];
         $this->session->set_userdata('delivery_fees', $fees);
 
 

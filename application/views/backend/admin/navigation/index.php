@@ -1,3 +1,5 @@
+
+
 <aside class="main-sidebar sidebar-dark-danger elevation-4">
     <!-- Brand Logo -->
     <a href="<?php echo site_url('dashboard'); ?>" class="brand-link">
@@ -5,16 +7,33 @@
         <span class="brand-text font-weight-light"><?php echo get_system_settings('system_name'); ?></span>
     </a>
 
+  
     <!-- Sidebar -->
     <div class="sidebar">
+         
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img src="<?php echo base_url('uploads/user/' . sanitize($current_user['thumbnail'])); ?>" class="img-circle" alt="User Image">
             </div>
+            
+            
+            
             <div class="info">
                 <a href="<?php echo site_url('settings/profile'); ?>" class="d-block"><?php echo sanitize($current_user['name']); ?></a>
             </div>
+          <div class="info">
+    <a href="#">
+        <?php
+            if ($current_user['role_id'] == 1) {
+                echo "(Super Admin)";
+            }else{
+                echo "(Restaurant Owner)";
+            }
+        ?>
+    </a>
+</div>
+
         </div>
 
         <!-- Sidebar Menu -->
@@ -30,6 +49,16 @@
                         </p>
                     </a>
                 </li>
+
+
+                   <li class="nav-item">
+                    <a href="<?php echo site_url('user'); ?>" class="nav-link <?php if ($page_name == "user/index") echo 'active'; ?>">
+                        <i class="fas fa-user nav-icon"></i>
+                        <p><?php echo get_phrase("User"); ?></p>
+                    </a>
+                </li>
+
+
                 <?php $order_type = isset($order_type) ? $order_type : ""; ?>
                 <li class="nav-item has-treeview <?php if ($page_name == "orders/index" && $order_type == "all"  || $order_type == "today" || $order_type == "live" || $page_name == "orders/details") echo 'menu-open'; ?>">
                     <a href="#" class="nav-link <?php if ($page_name == "orders/index" && $order_type == "all"  || $order_type == "today" || $order_type == "live" || $page_name == "orders/details") echo 'active'; ?>">
@@ -101,6 +130,8 @@
                         <p><?php echo get_phrase("restaurants"); ?><span class="badge badge-warning right"><?php echo count($this->restaurant_model->get_all_pending()); ?></span></p>
                     </a>
                 </li>
+
+               
 
                 <!-- <li class="nav-item">
                     <a href="</?php echo site_url('qrmenu'); ?>" class="nav-link </?php if ($page_name == "qrmenu/index" || $page_name == "qrmenu/create") echo 'active'; ?>">

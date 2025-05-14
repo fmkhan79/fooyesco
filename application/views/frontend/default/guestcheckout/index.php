@@ -431,7 +431,7 @@ $stripe_settings = json_decode($stripe_settings);
 });
 </script>
 <div class="total-price-box d-flex justify-content-between align-items-center">
-                        <div class="subtotal" id="">Subtotal</div>
+                        <div class="" id="">Subtotal</div>
 
                         <div id="ttprice" class="subtotal-price"></div>
                     </div>
@@ -440,8 +440,8 @@ $stripe_settings = json_decode($stripe_settings);
 
 
                     <div class="total-price-box d-flex justify-content-between align-items-center" id="delivery-charge">
-                        <div class="subtotal">Delivery Charges <sub id="cal"></sub></div>
-                        <div class="total-delivery-price"></div>-
+                        <div class="">Delivery Charges <sub id="cal"></sub></div>
+                        <div class="total-delivery-price"></div>
                     </div>
 
                     <!-- <div class="total-price-box d-none justify-content-between align-items-center">
@@ -450,17 +450,17 @@ $stripe_settings = json_decode($stripe_settings);
                     </div> -->
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
-                        <div class="subtotal">Service Charges</div>
+                        <div class="">Service Charges</div>
                         <div class="total-service-price">-</div>
                     </div>
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
-                        <div class="subtotal">Bag Charges</div>
+                        <div class="">Bag Charges</div>
                         <div class="bag-charges">-</div>
                     </div>
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
-                        <div class="subtotal" id="discount-label">Discount (20%)</div>
+                        <div class="" id="discount-label">Discount (20%)</div>
                         <div class="total-discount-applied">-</div>
                     </div>
                     
@@ -504,7 +504,7 @@ $stripe_settings = json_decode($stripe_settings);
             <!-- <div class="offer-spend my-3">Offer Spend £28.05 more to get 10% off</div> -->
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
-                <div class="subtotal">Total</div>
+                <div class="">Total</div>
 
                 <div class="grand-product-price"></div>
             </div>
