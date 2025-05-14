@@ -832,9 +832,9 @@ if (orderTypeValue) {
                     // let totalVatPrice = parseFloat($(".total-vat-price").html().replace("£", ""));
                     let totalServicePrice = parseFloat($(".total-service-price").html().replace("£", ""));
                     let totalDiscount = parseFloat($(".total-discount-applied").html().replace("£", ""));
-
+                    let bagcharges = parseFloat($(".bag-charges").html().replace("£" , ""));
                     // NOTE: The adding of totalDiscount is correct, beacuse the discount is in negative. That's why it is added.
-                    let total = subTotal  + totalServicePrice + parseFloat(response.message) + totalDiscount;
+                    let total = subTotal  + totalServicePrice + parseFloat(response.message) + totalDiscount + bagcharges;
                     $(".grand-product-price").text("£" + total);
                 }
             },
