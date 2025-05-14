@@ -806,7 +806,7 @@ if (orderTypeValue) {
                 long_to: long_to,
             },
             success: function(response) {
-                // debugger;
+                 debugger;
                 
                 if (response.message == 'Not delivery at this location') {
                     // Handle 'Not delivery' error
@@ -827,11 +827,14 @@ if (orderTypeValue) {
                     $(".total-delivery-price").text("£" + response.message); // Show delivery price
                     // console.log(response.message);
                     // Update the grand total price
+                    console.log(response.message);
                     let subTotal = parseFloat($(".subtotal-price").html().replace("£", ""));
                     // let totalVatPrice = parseFloat($(".total-vat-price").html().replace("£", ""));
                     let totalServicePrice = parseFloat($(".total-service-price").html().replace("£", ""));
+                    let totalDiscount = parseFloat($(".total-discount-applied").html().replace("£", ""));
 
-                    let total = subTotal  + totalServicePrice + parseFloat(response.message);
+                    // NOTE: The adding of totalDiscount is correct, beacuse the discount is in negative. That's why it is added.
+                    let total = subTotal  + totalServicePrice + parseFloat(response.message) + totalDiscount;
                     $(".grand-product-price").text("£" + total);
                 }
             },
