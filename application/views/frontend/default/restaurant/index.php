@@ -115,7 +115,6 @@
 <!-- RESTAURANT GALLERY -->
 
 
-
 <section class="detail-wbox mt-4 d-none d-md-block">
 
     <div class="container bg-white text-dark border border-light">
@@ -375,8 +374,14 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 </section> -->
 <!-- ./Offer area -->
 
-<?php $restaurant_categories = $this->category_model->get_all(); ?>
+
+<?php $restaurant_categories = $this->category_model->get_categories_by_restaurant_id($restaurant_details["id"]); 
+// print_r($restaurant_categories);
+// die();
+?>
 <!-- Category tabs with scrool nav -->
+
+
 
 <section class="order-detail-btns container d-none d-lg-block " style="border-radius: 20px;">
     <div class="container">
@@ -389,18 +394,6 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
     </div>
     </div>
  
-</section>
-
-<section class="order-detail-btns container-fluid d-lg-none">
-<div class="container">
-    <div class="order-detail-slider owl-carousel owl-theme my-5">
-        <?php foreach ($restaurant_categories as $restaurant_category) { ?>
-            <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
-                <?php echo $restaurant_category['name']; ?>
-            </a>
-        <?php } ?>
-    </div>
-    </div>
 </section>
 
 <!-- ./Category tabs with scrool nav -->

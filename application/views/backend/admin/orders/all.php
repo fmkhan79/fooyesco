@@ -4,7 +4,7 @@
             <div class="card-header"><?php echo get_phrase('filter_orders'); ?></div>
             <div class="card-body">
                 <form action="<?php echo site_url('orders/index'); ?>" method="GET">
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label><?php echo get_phrase('date_range'); ?></label>

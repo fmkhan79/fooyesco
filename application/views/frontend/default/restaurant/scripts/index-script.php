@@ -216,7 +216,7 @@ document.querySelectorAll(".basket-switcher-error").forEach(el => {
 
 
     jQuery('.order-detail-slider').owlCarousel({
-        loop: true,
+        loop: false,
         margin: 13,
         nav: true,
         dots: false,
