@@ -1198,4 +1198,46 @@ class Order_model extends Base_model
         }
         return true;
     }
+
+
+public function get_stripe_payment_sum($restaurant_id)
+{
+    $this->db->select_sum('payment.amount_paid', 'total_sum');
+    $this->db->from('payment');
+    $this->db->join('orders', 'payment.order_code = orders.code');
+    $this->db->where('payment.payment_method', 'stripe');
+    $this->db->where('orders.restaurant_id', $restaurant_id);
+
+    $query = $this->db->get();
+    $result = $query->row_array();
+    return $result['total_sum'] ?? 0;
+}
+
+
+public function get_cash_on_delivery_payment_sum($restaurant_id)
+{
+    $this->db->select_sum('payment.amount_to_pay', 'total_sum');
+    $this->db->from('payment');
+    $this->db->join('orders', 'payment.order_code = orders.code');
+    $this->db->where('payment.payment_method', 'stripe');
+    $this->db->where('orders.restaurant_id', $restaurant_id);
+
+    $query = $this->db->get();
+    $result = $query->row_array();
+    return $result['total_sum'] ?? 0;
+}
+
+    public function get_total_revenue($restaurant_id)
+    {
+        $this->db->select_sum('payment.amount_to_pay', 'total_sum');
+        $this->db->from('payment');
+        $this->db->join('orders', 'payment.order_code = orders.code');
+        $this->db->where('orders.restaurant_id', $restaurant_id);
+
+        $query = $this->db->get();
+        $result = $query->row_array();
+        return $result['total_sum'] ?? 0;
+    }
+
+
 }

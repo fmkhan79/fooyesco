@@ -357,8 +357,41 @@ class Orders extends Authorization
             }
         }
     }
-   
-    
+
+
+                public function get_stripe_payment_total($restaurant_id)
+            {
+                $this->load->model('order_model');
+
+                $total_payment = $this->order_model->get_stripe_payment_sum($restaurant_id);
+
+                echo $total_payment;
+    //    return $total_payment;
+
+            }
+
+             public function get_cash_on_delivery_payment_total($restaurant_id)
+            {
+                     $this->load->model('order_model');
+
+                     $total_payment = $this->order_model->get_cash_on_delivery_payment_sum($restaurant_id);
+
+                     echo $total_payment;
+                     //    return $total_payment;
+
+            }
+            
+
+            public function total_revenue($restaurant_id)
+            {
+                $this->load->model('order_model');
+
+                $total_payment = $this->order_model->get_total_revenue($restaurant_id);
+
+                echo $total_payment;
+                //    return $total_payment;
+
+            }
 
 
 }
