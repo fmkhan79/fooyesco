@@ -94,7 +94,7 @@ class GuestCheckout extends Base
             'message' => $fees,
             'miles' => $result['miles']
         ];
-
+  
         // print_r($value);
         // print_r("Fees");
         // print_r($fees);
@@ -142,11 +142,13 @@ class GuestCheckout extends Base
             'note' => $note
         );
 
-        
+
+
 
         $this->session->set_userdata('billing', $billing_data);
         $this->db->where('session_id', session_id());
-        $this->db->update('cart_visits', ['name_add' => $first_name]);
+        $this->db->update('cart_visits', ['name_add' => $first_name
+        ]);
         // Send a response (if needed)
   }
 	public function validate()
@@ -219,8 +221,13 @@ class GuestCheckout extends Base
 
         // var_dump( $this->session->userdata());
         // die();
+  $click = $this->input->get('guest') == '1' ? 1 : 0;
 
-        // CHECK MULTIPLE RESTAURANT ORDER
+    // Update `cart_visits` with click value
+    $this->db->where('session_id', session_id());
+    $this->db->update('cart_visits', ['click' => $click]);
+        
+            // CHECK MULTIPLE RESTAURANT ORDER
         $multi_restaurant_order_availability = get_order_settings('multi_restaurant_order');
         if (!$multi_restaurant_order_availability) {
             $restaurant_ids = $this->cart_model->get_restaurant_ids();

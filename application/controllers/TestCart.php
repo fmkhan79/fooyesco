@@ -27,7 +27,7 @@ class Testcart extends Base {
         
         // print_r($abandoned_carts);
         // die();
-
+ 
         foreach ($abandoned_carts as $cart) {
             $visitedAt = new DateTime($cart->visited_at, new DateTimeZone('UTC'));
             $visitedAt->setTimezone(new DateTimeZone('Europe/London'));
@@ -39,19 +39,22 @@ class Testcart extends Base {
             $phone_mobile = $cart->phone_mobile;
             $name_add = $cart->name_add;
             $email_add = $cart->email_add;
-
+            $click = $cart->click;
+            $click_message = $click == 1 ? 'Yes' : 'No';
             if ($cart->info_add == 0 && $cart->order_placed == 0) {
                 $message .= "{$numbering}. Added to cart only — Visited at: {$visitedTime}\n";
                 $message .= "   User Agent: {$user_agent}\n";
                 $message .= "   IP Address: {$ip_address}\n";
+                $message .= "   Click on Checkout: {$click_message}\n";
             } elseif ($cart->info_add == 1 && $cart->order_placed == 0) {
                 $message .= "{$numbering}. {$cart->user_address} — Entered address but didn't place the order — Visited at: {$visitedTime}\n";
                 $message .= "   Name: {$name_add}\n";
                 $message .= "   Phone Number: {$phone_mobile}\n";
-                $message .= "   Email: {$email_add}\n";
+                $message .= "   Email: {$email_add}\n";                 
                 $message .= "   User Agent: {$user_agent}\n";
                 $message .= "   IP Address: {$ip_address}\n";
-
+                $message .= "   Click on Checkout: {$click_message}\n";
+                
             }
             $abandoned_count++;
             $numbering++;
@@ -77,8 +80,8 @@ class Testcart extends Base {
         $mail->Port       = 465;
 
         $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
-        $mail->addAddress('fmkhan79@gmail.com');
-        $mail->addBCC('fooyesuk@gmail.com');  
+        // $mail->addAddress('fmkhan79@gmail.com');
+        // $mail->addBCC('fooyesuk@gmail.com');  
         $mail->addAddress('website25developer@gmail.com');
 
         $mail->Subject = 'Abandoned Cart Summary (Manual Test)';
@@ -112,17 +115,29 @@ class Testcart extends Base {
                 // Prepare order list
                 $order_codes = array_column($orders, 'code');
                 $order_list = '';
-                foreach ($order_codes as $code) {
-                    $order_list .= "- Order <strong>#" . $code . "</strong><br>";
-                }
-    
-                // Prepare email content
-                $subject = "Missed Orders Notification";
-                $message = "Dear Restaurant Owner " . $owner['name'] . ",<br><br>";
-                $message .= "You missed the following orders:<br><br>";
-                $message .= $order_list;
-                $message .= "<br>Please check your orders dashboard.<br><br>";
-                $message .= "Regards,<br>Fooyes Team";
+        foreach ($orders as $order) {
+            $code = $order['code'];
+
+            // Decode billing info
+            $billing_data = json_decode($order['billing'], true);
+            $grand_total_amount = $order['grand_total'];
+            $customer_name = trim($billing_data['first_name']) . ' ' . trim($billing_data['last_name']);
+            $customer_phone = $billing_data['phone_mobile'];
+
+            $order_list .= "- Order <strong>#" . $code . "</strong><br>";
+            $order_list .= "&nbsp;&nbsp;&nbsp; Customer: <strong>" . htmlspecialchars($customer_name) . "</strong><br>";
+            $order_list .= "&nbsp;&nbsp;&nbsp; Phone: <strong>" . htmlspecialchars($customer_phone) . "</strong><br><br>";
+            $order_list .= "&nbsp;&nbsp;&nbsp; Total Order Amount: <strong>" . htmlspecialchars($grand_total_amount) . '€'. "</strong><br><br>";
+
+        }
+
+        // Prepare email content
+        $subject = "Missed Orders Notification";
+        $message = "Dear Restaurant Owner " . $owner['name'] . ",<br><br>";
+        $message .= "You missed the following orders:<br><br>";
+        $message .= $order_list;
+        $message .= "<br>Please check your orders dashboard.<br><br>";
+        $message .= "Regards,<br>Fooyes Team";
     
                 // === Send Email using PHPMailer ===
                 $this->load->library('phpmailer_lib');
@@ -138,8 +153,8 @@ class Testcart extends Base {
                 $mail->Port       = 465;
     
                 $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
-                $mail->addAddress('fmkhan79@gmail.com');
-                $mail->addBCC('fooyesuk@gmail.com');   
+                // $mail->addAddress('fmkhan79@gmail.com');
+                // $mail->addBCC('fooyesuk@gmail.com');   
                 $mail->addAddress('website25developer@gmail.com'); 
     
                 $mail->isHTML(true);
