@@ -193,12 +193,10 @@
                 <div class="row my-4 free-delivery-list">
 
                     <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
-                        Delivery fee :
-                   
-                        <?php echo $restaurant_details['delivery_charge']; ?>£
+                        Delivery fee : £ <?php echo $restaurant_details['delivery_charge']; ?>
                     </div>
                     <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
-                        Order : 10 £
+                        Order : £ 10 
                     </div>
                     <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
                         <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
@@ -215,7 +213,7 @@
                     <h5><strong>About"
                             <?php echo $restaurant_details['name']; ?>"
                         </strong></h5>
-                    <?php echo $restaurant_details['restaurant_about']; ?>. 
+                    <span style="font-size: 14px; font-weight:400;"><?php echo $restaurant_details['restaurant_about']; ?>.</span> 
                     <!-- <a class="red" href="#"> READ MORE</a> -->
                 </div>
 
@@ -306,10 +304,10 @@
                                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
                         Delivery fee :
                    
-                        <?php echo $restaurant_details['delivery_charge']; ?>£
+                        £ <?php echo $restaurant_details['delivery_charge']; ?>
                     </div>
                     <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
-                        Order : 10 £
+                        Order : £ 10 
                     </div>
                     <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
                         <span id="delivery" class="collect-box">Delivering now</span><span id="collection"

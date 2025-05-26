@@ -94,6 +94,7 @@
                             <th>Total Order Amount</th>
                             <th>Total Card Payments</th>
                             <th>Total Cash Payments</th>
+                            <th>Total Commision Amount</th>
                             <th>Total Stripe Charges</th>
                             <th>Total Balance Remaining</th>
                         </tr>
@@ -106,6 +107,7 @@
                             <th>Total Order Amount</th>
                             <th>Total Card Payments</th>
                             <th>Total Cash Payments</th>
+                            <th>Total Commision Amount</th>
                             <th>Total Stripe Charges</th>
                             <th>Total Balance Remaining</th>
                         </tr>
@@ -137,7 +139,7 @@
     </div>
 </div>
 
-    <div class="row justify-content-center">
+    <!-- <div class="row justify-content-center">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
@@ -145,7 +147,7 @@
                         <?php echo get_phrase("commission_list_of_restaurant_owners", true); ?>
                     </h3>
                 </div>
-                <!-- /.card-header -->
+                
                 <div class="card-body">
                     <table id="commissions" class="table table-bordered table-hover">
                         <thead>
@@ -200,10 +202,10 @@
                         </tfoot>
                     </table>
                 </div>
-                <!-- /.card-body -->
+                
             </div>
         </div>
-    </div>
+    </div> -->
 <?php endif; ?>
 
 <?php if (!count($commissions)) : ?>

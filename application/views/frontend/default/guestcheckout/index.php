@@ -18,7 +18,7 @@ $stripe_settings = json_decode($stripe_settings);
 
 <style>
    -list .d-flex.p-1,#item-list .product-price img{
-        display:none!important;
+        visibility: collapse;
     }
     .disabled {
         pointer-events: none;
@@ -55,7 +55,8 @@ $stripe_settings = json_decode($stripe_settings);
   left: 20px;
 }
     .d-flex.p-1 {
-        display: none !important;
+        /* display: none !important; */
+        visibility: hidden!important;
     }   
     /* .order-delivery-types{
     display:none;

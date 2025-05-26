@@ -76,11 +76,11 @@
     <!-- TILE 5 STARTS -->
     <div class="col-md-3 col-sm-6 col-12">
         <div class="info-box">
-            <span class="info-box-icon bg-gradient-olive"><i class="fas fa-utensils"></i></span>
+            <span class="info-box-icon bg-gradient-olive"><i class="fas fa-coins"></i></span>
             <div class="info-box-content">
-                <span class="info-box-text"><small class="text-muted"><?php echo get_phrase('approved'); ?></small></span>
+                <span class="info-box-text"><small class="text-muted"><?php echo get_phrase('total'); ?><small>(<?php echo get_phrase('by_now'); ?>)</small></small></span>
                 <span class="progress-description">
-                    <?php echo get_phrase('restaurant', true); ?>
+                    <?php echo get_phrase('revenue', true); ?>
                 </span>
                 <span class="info-box-number">
                     <?php echo sanitize(count($this->restaurant_model->get_all_approved())); ?>
@@ -93,11 +93,11 @@
     <!-- TILE 6 STARTS -->
     <div class="col-md-3 col-sm-6 col-12">
         <div class="info-box">
-            <span class="info-box-icon bg-gray-dark"><i class="fas fa-concierge-bell"></i></span>
+            <span class="info-box-icon bg-gray-dark"><i class="fas fa-money-check-alt"></i></span>
             <div class="info-box-content">
-                <span class="info-box-text"><small class="text-muted"><?php echo get_phrase('pending'); ?></small></span>
+                <span class="info-box-text"><small class="text-muted"><?php echo get_phrase('total'); ?><small>(<?php echo get_phrase('by_now'); ?>)</small></small></span>
                 <span class="progress-description">
-                    <?php echo get_phrase('restaurant', true); ?>
+                    <?php echo get_phrase('payments_in_stripe', true); ?>
                 </span>
                 <span class="info-box-number">
                     <?php echo sanitize(count($this->restaurant_model->get_all_pending())); ?>
@@ -110,11 +110,11 @@
     <!-- TILE 7 STARTS -->
     <div class="col-md-3 col-sm-6 col-12">
         <div class="info-box">
-            <span class="info-box-icon bg-gradient-maroon"><i class="fas fa-users"></i></span>
+            <span class="info-box-icon bg-gradient-maroon"><i class="fas fa-hand-holding-usd"></i></span>
             <div class="info-box-content">
-                <span class="info-box-text"><small class="text-muted"><?php echo get_phrase('registered'); ?></small></span>
+                <span class="info-box-text"><small class="text-muted"><?php echo get_phrase('total'); ?><small>(<?php echo get_phrase('by_now'); ?>)</small ?></small></span>
                 <span class="progress-description">
-                    <?php echo get_phrase('active_customers', true); ?>
+                    <?php echo get_phrase('cash_payments', true); ?>
                 </span>
                 <span class="info-box-number">
                     <?php echo sanitize(count($this->customer_model->get_approved_customers())); ?>
@@ -128,11 +128,11 @@
     <!-- TILE 8 STARTS -->
     <div class="col-md-3 col-sm-6 col-12">
         <div class="info-box">
-            <span class="info-box-icon bg-gradient-gray"><i class="fas fa-biking"></i></span>
+            <span class="info-box-icon bg-gradient-gray"><i class="fas fa-utensils"></i></span>
             <div class="info-box-content">
-                <span class="info-box-text"><small class="text-muted"><?php echo get_phrase('registered'); ?></small></span>
+                <span class="info-box-text"><small class="text-muted"><?php echo get_phrase('total'); ?><small>(<?php echo get_phrase('by_now'); ?>)</small></small></span>
                 <span class="progress-description">
-                    <?php echo get_phrase('delivery_man', true); ?>
+                    <?php echo get_phrase('remaining_restaurant_amount', true); ?>
                 </span>
                 <span class="info-box-number">
                     <?php echo sanitize(count($this->driver_model->get_approved_drivers())); ?>
