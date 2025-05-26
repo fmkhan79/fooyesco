@@ -1,6 +1,6 @@
  <div class="card-header">
      <h3 class="card-title"> 
-         <?php echo get_phrase("Order Wise", true); ?> 
+         <!-- <?php echo get_phrase("Order Wise", true); ?>  -->
         <!-- <small>( <?php echo get_delivery_settings('restaurant_revenue') . '% ' . get_phrase('commission_in_each_order') ?>)</small>  -->
      </h3>
  </div> 
