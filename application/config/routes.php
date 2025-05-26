@@ -14,5 +14,6 @@ $route['site/become-a-partner'] = 'site/become_a_partner';
 $route['site/terms-of-use'] = 'site/terms_of_use';
 
 $route['chilli-hut-march'] = 'site/restaurant/chilli-hut-march/3';
+$route['commision'] = 'report/sales_summary';
 
 // $route['check'] = 'orders/check_new_orders';
