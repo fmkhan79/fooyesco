@@ -688,6 +688,8 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
     document.addEventListener('DOMContentLoaded', function() {
 
         document.querySelectorAll(".owl-item.cloned").forEach(function(element) {
+                    
+            
             let anchor = element.querySelector("a");
             // if(anchor == "")
             if (anchor) {
@@ -713,6 +715,8 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
             }
         });
     });
+
+    
 
     function closeModal() {
         var modal = document.getElementById('popup');

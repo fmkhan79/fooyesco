@@ -967,39 +967,48 @@ class Order_model extends Base_model
 
 
     // DASHBOARD TILE DATA USER AND STATUS WISE
-    public function get_number_of_orders($order_status = "")
-    {
-        $user_role = $this->session->userdata('user_role');
+public function get_number_of_orders($order_status = "", $restaurant_id = "all")
+{
+    $user_role = $this->session->userdata('user_role');
 
-        /*AT FIRST CHECK USER ROLE*/
-        if ($user_role == "customer") {
-            $this->db->where('customer_id', $this->logged_in_user_id);
-        } elseif ($user_role == "owner") {
-            $restaurant_ids = $this->restaurant_model->get_approved_restaurant_ids_by_owner_id($this->logged_in_user_id);
-            if (count($restaurant_ids)) {
-                $order_codes = $this->get_order_code_by_restaurant_id($restaurant_ids);
-                if (count($order_codes) > 0) {
-                    $this->db->where_in('code', $order_codes);
-                } else {
-                    return 0;
-                }
+    /* AT FIRST CHECK USER ROLE */
+    if ($user_role == "customer") {
+        $this->db->where('customer_id', $this->logged_in_user_id);
+    } elseif ($user_role == "owner") {
+        $restaurant_ids = $this->restaurant_model->get_approved_restaurant_ids_by_owner_id($this->logged_in_user_id);
+        if (count($restaurant_ids)) {
+            $order_codes = $this->get_order_code_by_restaurant_id($restaurant_ids);
+            if (count($order_codes) > 0) {
+                $this->db->where_in('code', $order_codes);
             } else {
-                return 0;
+                return 0;  // No orders found
             }
+        } else {
+            return 0;  // No approved restaurants for this owner
         }
-
-        /*THEN CHECK ORDER STATUS*/
-        if (!empty($order_status)) {
-            if ($order_status == "processed") {
-                $this->db->where('order_status', 'preparing');
-                $this->db->or_where('order_status', 'prepared');
-                $this->db->or_where('order_status', 'delivered');
-            } else {
-                $this->db->where('order_status', $order_status);
-            }
-        }
-        return $this->db->get($this->table)->num_rows();
     }
+
+    /* THEN CHECK ORDER STATUS */
+    if (!empty($order_status)) {
+        if ($order_status == "processed") {
+            // Improved query for processed orders
+            $this->db->where_in('order_status', ['preparing', 'prepared', 'delivered']);
+        } else {
+            $this->db->where('order_status', $order_status);
+        }
+    }
+
+    /* FILTER BY RESTAURANT ID IF SELECTED */
+    if ($restaurant_id != "all" && !empty($restaurant_id)) {
+        $this->db->where('restaurant_id', $restaurant_id);
+    }
+
+    // Execute the query and return the number of rows (i.e., the total number of orders)
+    return $this->db->get($this->table)->num_rows();
+}
+
+
+
 
 
     // DASHBOARD TILE DATA USER AND STATUS WISE
@@ -1200,44 +1209,79 @@ class Order_model extends Base_model
     }
 
 
-public function get_stripe_payment_sum($restaurant_id)
+public function get_stripe_payment_sum($restaurant_id = null)
 {
+    // Check if restaurant_id is passed via GET or if it's 'all'
+    $restaurant_id = isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != 'all' ? sanitize($_GET['restaurant_id']) : null;
+
+    // Start building the query
     $this->db->select_sum('payment.amount_paid', 'total_sum');
     $this->db->from('payment');
     $this->db->join('orders', 'payment.order_code = orders.code');
     $this->db->where('payment.payment_method', 'stripe');
-    $this->db->where('orders.restaurant_id', $restaurant_id);
 
+    // If a specific restaurant is selected, add the condition for that restaurant
+    if ($restaurant_id) {
+        $this->db->where('orders.restaurant_id', $restaurant_id);
+    }
+
+    // Execute the query
     $query = $this->db->get();
     $result = $query->row_array();
+
+    // Return the total sum, default to 0 if no result is found
     return $result['total_sum'] ?? 0;
 }
 
 
-public function get_cash_on_delivery_payment_sum($restaurant_id)
+
+public function get_cash_on_delivery_payment_sum($restaurant_id = null)
 {
+    // Check if restaurant_id is provided or if it's 'all'
+    $restaurant_id = isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != 'all' ? sanitize($_GET['restaurant_id']) : null;
+
+    // Start building the query for cash on delivery payment
     $this->db->select_sum('payment.amount_to_pay', 'total_sum');
     $this->db->from('payment');
     $this->db->join('orders', 'payment.order_code = orders.code');
-    $this->db->where('payment.payment_method', 'stripe');
-    $this->db->where('orders.restaurant_id', $restaurant_id);
+    $this->db->where('payment.payment_method', 'cash_on_delivery'); // Corrected payment method
 
+    // If a specific restaurant is selected, filter by restaurant_id
+    if ($restaurant_id) {
+        $this->db->where('orders.restaurant_id', $restaurant_id);
+    }
+
+    // Execute the query
     $query = $this->db->get();
     $result = $query->row_array();
+
+    // Return the total sum, default to 0 if no result is found
     return $result['total_sum'] ?? 0;
 }
 
-    public function get_total_revenue($restaurant_id)
-    {
-        $this->db->select_sum('payment.amount_to_pay', 'total_sum');
-        $this->db->from('payment');
-        $this->db->join('orders', 'payment.order_code = orders.code');
-        $this->db->where('orders.restaurant_id', $restaurant_id);
 
-        $query = $this->db->get();
-        $result = $query->row_array();
-        return $result['total_sum'] ?? 0;
+   public function get_total_revenue($restaurant_id = null)
+{
+    // Check if restaurant_id is provided or if it's 'all'
+    $restaurant_id = isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != 'all' ? sanitize($_GET['restaurant_id']) : null;
+
+    // Start building the query for total revenue
+    $this->db->select_sum('payment.amount_to_pay', 'total_sum');
+    $this->db->from('payment');
+    $this->db->join('orders', 'payment.order_code = orders.code');
+
+    // If a specific restaurant is selected, filter by restaurant_id
+    if ($restaurant_id) {
+        $this->db->where('orders.restaurant_id', $restaurant_id);
     }
+
+    // Execute the query
+    $query = $this->db->get();
+    $result = $query->row_array();
+
+    // Return the total sum, default to 0 if no result is found
+    return $result['total_sum'] ?? 0;
+}
 
 
 }

@@ -46,6 +46,7 @@
                     </div>
                     <!-- /.tab-pane -->
                     <div class="tab-pane <?php if ($active_tab == 'address') echo 'active' ?>" id="address">
+                        
                         <form action="<?php echo site_url('restaurant/update/address'); ?>" method="post">
                             <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
                             <div class="row">
@@ -66,6 +67,13 @@
                                         <label for="restaurant_phone"><?php echo get_phrase("phone"); ?></label>
                                         <input type="text" class="form-control" id="restaurant_phone" name="restaurant_phone" placeholder="<?php echo get_phrase("enter_restaurant_phone"); ?>" value="<?php echo sanitize($restaurant_data['phone']); ?>" required>
                                     </div>
+                                             <?php if ($current_user['role_id'] == 1): ?>
+                         <div class="form-group">
+                             <label for="restaurant_commission"><?php echo get_phrase("Commission"); ?></label>
+                             <input type="text" class="form-control" id="comission_res" name="commission_res" placeholder="<?php echo get_phrase("Enter commission in percentage"); ?>" value="<?php echo sanitize($restaurant_data['commission_res']); ?>" required>
+                            </div>
+                          <?php endif; ?>
+
                                     <div class="form-group">
                                         <label for="restaurant_website_link"><?php echo get_phrase("restaurant_website_link"); ?></label>
                                         <input type="text" class="form-control" id="restaurant_website_link" name="restaurant_website_link" placeholder="<?php echo get_phrase("enter_restaurant_website_link"); ?>" value="<?php echo sanitize($restaurant_data['website']); ?>" required>

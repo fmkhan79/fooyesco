@@ -16,7 +16,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <!-- <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Select Date Range</label>
                                 <input type="text" class="form-control" name="date_range" id="date_range" placeholder="Select date range">
@@ -34,7 +34,7 @@
                                     <option value="canceled">Canceled</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
 
 
                         <div class="col-lg-2">

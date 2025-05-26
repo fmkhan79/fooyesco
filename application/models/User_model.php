@@ -17,6 +17,14 @@ class User_model extends Base_model
     }
 
 
+      public function get_admin_customer_owner_users()
+    {
+        $this->db->where_in('role_id', [1,  3]);
+        $query = $this->db->get('users'); // replace 'users' with your actual table name if different
+        return $query->result();
+    }
+
+
     public function get_user_by_email($email)
     {
         return $this->db->get_where('users', ['email' => $email])->row_array();
@@ -80,6 +88,7 @@ class User_model extends Base_model
     }
     
     // In user_model.php
+
 
 public function check_user_role($user_id) {
     // Query to fetch the role_id of the user based on the user ID

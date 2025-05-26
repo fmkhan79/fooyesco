@@ -2,19 +2,30 @@
 <div class="row">
     <!-- TILE 1 STARTS -->
     <div class="col-md-3 col-sm-6 col-12">
-        <div class="info-box">
-            <span class="info-box-icon bg-lightblue"><i class="fas fa-hamburger"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text"><small class="text-muted"><?php echo get_phrase('total'); ?> <small>(<?php echo get_phrase('by_now'); ?>)</small></small></span>
-                <span class="progress-description">
-                    <?php echo get_phrase('order_placed', true); ?>
-                </span>
-                <span class="info-box-number">
-                    <?php echo sanitize($this->order_model->get_number_of_orders()); ?>
-                </span>
-            </div>
+    <div class="info-box">
+        <span class="info-box-icon bg-lightblue">
+            <i class="fas fa-hamburger"></i>
+        </span>
+        <div class="info-box-content">
+            <span class="info-box-text">
+                <small class="text-muted"><?php echo get_phrase('total'); ?>
+                    <small>(<?php echo get_phrase('by_now'); ?>)</small>
+                </small>
+            </span>
+            <span class="progress-description">
+                <?php echo get_phrase('order_placed', true); ?>
+            </span>
+            <span class="info-box-number">
+                <?php 
+                    // Get the number of orders based on the selected restaurant
+                    $order_count = $this->order_model->get_number_of_orders($order_status, $restaurant_id);
+                    echo sanitize($order_count);
+                ?>
+            </span>
         </div>
     </div>
+</div>
+
     <!-- TILE 1 ENDS -->
 
     <!-- TILE 2 STARTS -->
@@ -27,8 +38,14 @@
                     <?php echo get_phrase('order_processed', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize($this->order_model->get_number_of_orders('processed')); ?>
-                </span>
+                  <span class="info-box-number">
+    <?php 
+        $order_count = $this->order_model->get_number_of_orders('processed', $restaurant_id); 
+        echo sanitize($order_count); 
+    ?>
+</span>
+
+                    </span>
             </div>
         </div>
     </div>
@@ -48,6 +65,7 @@
                 </span>
                 <span class="info-box-number">
                     <?php echo sanitize($this->order_model->get_number_of_orders('delivered')); ?>
+                    
                 </span>
             </div>
         </div>
@@ -64,7 +82,10 @@
                     <?php echo get_phrase('order_canceled', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize($this->order_model->get_number_of_orders('canceled')); ?>
+                <?php 
+                    // Fetch and display the canceled orders count based on selected restaurant
+                    echo sanitize($this->order_model->get_number_of_orders('canceled', $restaurant_id)); 
+                ?>
                 </span>
             </div>
         </div>
@@ -83,8 +104,11 @@
                     <?php echo get_phrase('revenue', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize(count($this->restaurant_model->get_all_approved())); ?>
-                </span>
+                    <?php
+                    // Fetch and display the total revenue based on selected restaurant
+                    echo round($this->order_model->get_total_revenue($restaurant_id));
+                    ?>
+                                  </span>
             </div>
         </div>
     </div>
@@ -100,7 +124,11 @@
                     <?php echo get_phrase('payments_in_stripe', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize(count($this->restaurant_model->get_all_pending())); ?>
+                     <?php 
+                    // Fetch and display the canceled orders count based on selected restaurant
+                    echo round($this->order_model->get_stripe_payment_sum($restaurant_id)); 
+                ?>
+
                 </span>
             </div>
         </div>
@@ -117,7 +145,12 @@
                     <?php echo get_phrase('cash_payments', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize(count($this->customer_model->get_approved_customers())); ?>
+
+                <?php 
+                    // Fetch and display the canceled orders count based on selected restaurant
+                    echo round($this->order_model->get_cash_on_delivery_payment_sum($restaurant_id)); 
+                ?>
+               
 
                 </span>
             </div>
@@ -126,7 +159,7 @@
     <!-- TILE 7 ENDS -->
 
     <!-- TILE 8 STARTS -->
-    <div class="col-md-3 col-sm-6 col-12">
+    <!-- <div class="col-md-3 col-sm-6 col-12">
         <div class="info-box">
             <span class="info-box-icon bg-gradient-gray"><i class="fas fa-utensils"></i></span>
             <div class="info-box-content">
@@ -139,7 +172,7 @@
                 </span>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- TILE 8 ENDS -->
 </div>
 <!-- /.row -->

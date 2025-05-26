@@ -160,7 +160,9 @@ class Restaurant_model extends Base_model
         $data['longitude']  = sanitize($this->input->post('restaurant_longitude'));
         $data['phone']      = sanitize($this->input->post('restaurant_phone'));
         $data['website']    = sanitize($this->input->post('restaurant_website_link'));
+        $data['commission_res'] = sanitize($this->input->post('commission_res'));
         $data['updated_at'] = strtotime(date('D, d-M-Y'));
+     
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
         return true;

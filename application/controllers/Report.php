@@ -89,4 +89,25 @@ class Report extends Authorization
             success(get_phrase('amount_has_been_paid_successfullt'), site_url('report'));
         }
     }
+
+    // Add this function to the existing Report controller
+public function sales_summary($restaurant_id = null)
+{
+    // Check if a specific restaurant is passed, else fetch all approved restaurants
+    if ($restaurant_id) {
+        $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
+    } else {
+        $restaurant_details = $this->restaurant_model->get_all_approved();
+    }
+
+    // Pass the restaurant details to the view
+    $page_data['restaurant_details'] = $restaurant_details;
+    $page_data['page_name'] = 'report/commision_all';
+    $page_data['page_title'] = get_phrase('Comission');
+
+    // Load the view
+    $this->load->view('backend/index', $page_data);
 }
+
+
+    }
