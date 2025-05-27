@@ -39,11 +39,11 @@
                 </span>
                 <span class="info-box-number">
                   <span class="info-box-number">
-    <?php 
-        $order_count = $this->order_model->get_number_of_orders('processed', $restaurant_id); 
-        echo sanitize($order_count); 
-    ?>
-</span>
+                <?php 
+                 $order_count = $this->order_model->get_number_of_orders('processed', $restaurant_id); 
+                 echo sanitize($order_count); 
+                    ?>
+                </span>
 
                     </span>
             </div>
