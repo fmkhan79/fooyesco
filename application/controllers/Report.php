@@ -25,12 +25,14 @@ class Report extends Authorization
     // index function responsible for showing the index page.
     function index()
     {
-        /** CHECK IF THE USER HAS ACCESS TO SEE THIS **/
+
+                /** CHECK IF THE USER HAS ACCESS TO SEE THIS **/
         if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != "all") {
             if (!has_access('restaurants', $_GET['restaurant_id'])) {
                 error(get_phrase('you_are_not_authorized_for_this_action'), site_url('report'));
             }
         }
+        
 
         $page_data['restaurant_id'] = (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != "all") ? sanitize($_GET['restaurant_id']) : "all";
         $page_data['page_name'] = 'report/index';
@@ -38,6 +40,8 @@ class Report extends Authorization
         $page_data['page_title'] = get_phrase("owner_commission_report");
         $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
         $page_data['commissions'] = $this->report_model->filter_commissions();
+        $page_data['orders'] = $this->order_model->filter();
+
         $this->load->view('backend/index', $page_data);
     }
 

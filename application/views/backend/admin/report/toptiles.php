@@ -159,20 +159,20 @@
     <!-- TILE 7 ENDS -->
 
     <!-- TILE 8 STARTS -->
-    <!-- <div class="col-md-3 col-sm-6 col-12">
+    <div class="col-md-3 col-sm-6 col-12">
         <div class="info-box">
             <span class="info-box-icon bg-gradient-gray"><i class="fas fa-utensils"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text"><small class="text-muted"><?php echo get_phrase('total'); ?><small>(<?php echo get_phrase('by_now'); ?>)</small></small></span>
                 <span class="progress-description">
-                    <?php echo get_phrase('remaining_restaurant_amount', true); ?>
+                    <?php echo get_phrase('Amount_to_be_paid', true); ?>
                 </span>
                 <span class="info-box-number">
                     <?php echo sanitize(count($this->driver_model->get_approved_drivers())); ?>
                 </span>
             </div>
         </div>
-    </div> -->
+    </div>
     <!-- TILE 8 ENDS -->
 </div>
 <!-- /.row -->
