@@ -168,7 +168,11 @@
                     <?php echo get_phrase('Amount_to_be_paid', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize(count($this->driver_model->get_approved_drivers())); ?>
+                    <?php 
+                    
+                    echo "£" . round($this->order_model->total_comission_sum($restaurant_id)); 
+                    
+                    ?>
                 </span>
             </div>
         </div>

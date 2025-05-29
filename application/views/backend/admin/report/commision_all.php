@@ -33,10 +33,14 @@
                                     <th><?php echo get_phrase("restaurant_name"); ?></th>
                                     <th><?php echo get_phrase("restaurant_owner"); ?></th>
                                     <th><?php echo get_phrase("Restaurant Commision"); ?></th>
+
                                     <th><?php echo get_phrase("action"); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
+
+
+                            
                                 <?php foreach ($restaurant_details as $restaurant): 
                                         // print_r(value: $restaurant);
                                     ?>
@@ -54,6 +58,8 @@
                                     <td>
                                         <?php echo ($restaurant['commission_res']). "%"; ?>
                                     </td>
+
+                                 
                                     <!-- <td>
                                         <?php ; ?>
                                     </td> -->

@@ -151,6 +151,17 @@ class Restaurant_model extends Base_model
         return true;
     }
 
+    public function commision_check($restaurant_ids)
+    {
+        $this->db->select('commission_res');
+        $this->db->where('id', $restaurant_ids);
+        $query = $this->db->get($this->table);
+        if ($query->num_rows() > 0) {
+            return $query->row()->commission_res;
+        } else {
+            return false;
+        }
+    }
     // UPDATE ADDRESS AND PHONE INFOS FOR A RESTAURANT
     public function update_address()
     {

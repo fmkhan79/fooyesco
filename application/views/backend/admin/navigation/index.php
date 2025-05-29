@@ -229,14 +229,14 @@
                                 </p>
                             </a>
                         </li>
-                         <!-- <li class="nav-item">
+                         <li class="nav-item">
                             <a href="<?php echo site_url('commision'); ?>" class="nav-link <?php if ($report_type == "owner") echo 'active'; ?>">
                             <i class="fas fa-money-bill-wave nav-icon"></i>
                                 <p>
                                     <?php echo get_phrase('Commisions', true); ?>
                                 </p>
                             </a>
-                        </li> -->
+                        </li> 
                     </ul>
                 </li>
 

@@ -106,11 +106,13 @@ public function sales_summary($restaurant_id = null)
 
     // Pass the restaurant details to the view
     $page_data['restaurant_details'] = $restaurant_details;
+    $page_data['order_comission'] = $this->order_model->total_comission_sum($restaurant_id);
     $page_data['page_name'] = 'report/commision_all';
     $page_data['page_title'] = get_phrase('Comission');
 
     // Load the view
     $this->load->view('backend/index', $page_data);
+
 }
 
 

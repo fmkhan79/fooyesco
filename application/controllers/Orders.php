@@ -393,6 +393,17 @@ class Orders extends Authorization
 
             }
 
+            public function get_total_commission($restaurant_id)
+            {
+                $this->load->model('order_model');
+
+                $total_commission = $this->order_model->total_comission_sum($restaurant_id);
+
+                echo $total_commission;
+                //    return $total_payment;
+
+            }
+
 
 }
 

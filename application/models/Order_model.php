@@ -453,14 +453,16 @@ class Order_model extends Base_model
         $data['total_menu_price'] = $this->cart_model->get_total_menu_price();
         $data['total_delivery_charge'] = $this->cart_model->get_total_delivery_charge();
         $data['total_vat_amount'] = $this->cart_model->get_vat_amount();
-        
         $data['grand_total'] = $this->cart_model->get_grand_total($order_type);
         
         $cart_items = $this->cart_model->get_all();
         if (!empty($cart_items)) {
             $data['restaurant_id'] = $cart_items[0]['restaurant_id']; 
         }
-    
+        $data['commission_res'] = $this->restaurant_model->commision_check($data['restaurant_id']);
+        $data['commission_paid'] =  $data['grand_total'] * ($data['commission_res']/100);
+
+            // log_message('error',  $data['commission_res'] ."lol");
         // print_r($data);
         // die();
 
@@ -471,9 +473,9 @@ class Order_model extends Base_model
         // print_r($cart_items);
         // die();   
 
-
         foreach ($cart_items as $cart_item) {
-        
+                    $restaurant_ids = $order_details['restaurant_id'];
+
             $order_details['order_code'] = $data['code'];
             $order_details['menu_id'] = $cart_item['menu_id'];
             $order_details['restaurant_id'] = $cart_item['restaurant_id'];
@@ -485,6 +487,9 @@ class Order_model extends Base_model
             $order_details['addons'] = $cart_item['options_1'];
             $this->db->insert('order_details', $order_details);
         }
+
+
+
 
         $this->cart_model->clearing_cart(); 
 
@@ -1262,25 +1267,47 @@ public function get_cash_on_delivery_payment_sum($restaurant_id = null)
 
    public function get_total_revenue($restaurant_id = null)
 {
-    // Check if restaurant_id is provided or if it's 'all'
     $restaurant_id = isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != 'all' ? sanitize($_GET['restaurant_id']) : null;
 
-    // Start building the query for total revenue
     $this->db->select_sum('payment.amount_to_pay', 'total_sum');
     $this->db->from('payment');
     $this->db->join('orders', 'payment.order_code = orders.code');
 
-    // If a specific restaurant is selected, filter by restaurant_id
+    if ($restaurant_id) {
+        $this->db->where('orders.restaurant_id', $restaurant_id);
+    }
+
+    $query = $this->db->get();
+    $result = $query->row_array();
+
+    return $result['total_sum'] ?? 0;
+}
+
+
+ public function total_comission_sum($restaurant_id = null) {
+    // Sanitize the restaurant_id from the URL if provided
+    $restaurant_id = isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all' 
+       ? sanitize($_GET['restaurant_id']) : null;
+
+    // Start building the query
+    $this->db->select_sum('orders.commission_paid', 'total_sum');
+    $this->db->from('orders');
+    
+    // Apply the filter for a specific restaurant_id if it's provided
     if ($restaurant_id) {
         $this->db->where('orders.restaurant_id', $restaurant_id);
     }
 
     // Execute the query
     $query = $this->db->get();
-    $result = $query->row_array();
 
-    // Return the total sum, default to 0 if no result is found
-    return $result['total_sum'] ?? 0;
+    // Check if the query was successful and if there are results
+    if ($query && $query->num_rows() > 0) {
+        $result = $query->row_array();
+        return $result['total_sum'] ?? 0;  // Return the sum, or 0 if no result
+    } else {
+        return 0;  // Return 0 if no matching rows found
+    }
 }
 
 
