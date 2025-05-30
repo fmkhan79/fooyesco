@@ -11,6 +11,14 @@ $file_name  = $exploded[1];
     <!-- STYLES -->
     <?php include 'partials/styles.php'; ?>
 </head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S5Z3LWGTDL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-S5Z3LWGTDL');
+</script>
 <body>
     <!-- MAIN CONTENT -->
     <?php include $page_name . '.php'; ?>
