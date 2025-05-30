@@ -96,12 +96,14 @@
 
 <script>
 
+  let ShowTest = false;
+    
 
     function showpopup(){
       var urls;
       const check = location.origin;
       if(check == "http://localhost"){
-         urls = '/fooyesco/orders/';
+         urls = '/fooyesco_git/orders/';
       }
       else
       {
@@ -115,6 +117,8 @@
           // url: window.location.origin + '/orders/check_new_order/',  // Dynamically resolve the absolute URL
               method: 'GET',
               success: function(data) {
+
+                // console.log(data);
                   if (data.length > 0) {
                       // Update the dashboard with the new orders
                       showNewOrderNotification(data);
@@ -131,14 +135,19 @@
       showpopup();
     }, false);
 
+
     
     setInterval(function() {
       showpopup();
     }, 8000);
 
     function showNewOrderNotification(data) {
+      // debugger;
     const obj = JSON.parse(data);
-    // console.log(obj);
+    const name = JSON.parse(obj.billing).first_name;
+      if(name == "test" && ShowTest == false){
+        return;
+      }
     let total = parseFloat(obj.grand_total) + parseFloat(obj.total_delivery_charge);
 
     console.log(total); // Output: 6.35        
