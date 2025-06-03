@@ -16,15 +16,17 @@
                                 </select>
                             </div>
                         </div>
-
-                        
-                        <!-- <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Select Date Range</label>
-                                <input type="text" class="form-control" name="date_range" id="date_range" placeholder="Select date range">
+                                <label><?php echo get_phrase('date_range'); ?></label>
+                                <input type="hidden" name="date_range" id="selected-date-range-value" value="<?php echo date('F d, Y', sanitize($starting_timestamp)) . ' - ' . date('F d, Y', sanitize($ending_timestamp)); ?>">
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-default btn-block text-left" id="daterange-btn">
+                                        <i class="far fa-calendar-alt"></i> <span id="selected-date-range"><?php echo date('F d, Y', sanitize($starting_timestamp)) . ' - ' . date('F d, Y', sanitize($ending_timestamp)); ?></span>
+                                        <i class="fas fa-caret-down"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-4">
+                        <!-- <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Status</label>
                                 <select class="form-control select2 w-100" name="status" id="status">
@@ -74,15 +76,20 @@
                                 <th><?php echo get_phrase("order_code"); ?></th>
                                 <th><?php echo get_phrase("ordered_from"); ?></th>
                                 <th><?php echo get_phrase("order_placing_time"); ?></th>
-                                <th><?php echo get_phrase("delivery_details"); ?></th>
-                                <th><?php echo get_phrase("payment_details"); ?></th>
-                                <th><?php echo get_phrase("order_status"); ?></th>
+                                <!-- <th><?php echo get_phrase("delivery_details"); ?></th> -->
+                                <th><?php echo get_phrase("payment method"); ?></th>
+                                <th><?php echo get_phrase("Order Amount"); ?></th> 
+                                <th><?php echo get_phrase("Comission Amount"); ?></th> 
+                                <th><?php echo get_phrase("After Commission"); ?></th>
+
                                 <th><?php echo get_phrase("action"); ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            foreach ($orders as $order) : ?>
+                            foreach ($orders as $order) : 
+                            ?>
+                            
                                 <tr>
                                     <td>
                                         <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>"><?php echo sanitize($order['code']); ?></a>
@@ -104,7 +111,7 @@
                                         <small><i class="far fa-clock"></i> <?php echo date('h:i A', sanitize($order['order_placed_at'])); ?></small><br>
                                         <small><i class="far fa-calendar-alt"></i> <?php echo date('D, d-M-Y', sanitize($order['order_placed_at'])); ?></small>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <?php if ($order['order_type'] == "pickup") : ?>
                                             <small><strong><?php echo get_phrase('order_type'); ?> : </strong> <span class="badge badge-success lighten-success"><?php echo get_phrase('pickup'); ?></span></small>
                                             <small class="d-block">
@@ -127,39 +134,42 @@
                                                 <?php endif; ?>
                                             </small>
                                         <?php endif; ?>
+                                    </td> -->
+                                    <td>
+                                                                                 <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
+                                            <?php if (($payment_data['payment_method']) =="stripe" )  : ?>
+                                                       <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('Card')); ?></span>
+                                            <?php else : ?>
+                                                <span class="badge badge-danger lighten-primary"><?php echo get_phrase(sanitize('Cash')); ?></span>
+                                            <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
                                         <small class="d-block">
-                                            <strong><?php echo get_phrase('amount'); ?> : </strong> <?php echo currency(isset($payment_data['amount_to_pay']) ? sanitize($payment_data['amount_to_pay']) : 0); ?>
+                                            <?php echo currency(isset($payment_data['amount_to_pay']) ? sanitize($payment_data['amount_to_pay']) : 0); ?>
                                         </small>
-                                        <small class="d-block">
-                                            <strong><?php echo get_phrase('status'); ?> : </strong>
-                                            <?php if (isset($payment_data['amount_to_pay']) && $payment_data['amount_to_pay'] == $payment_data['amount_paid']) : ?>
-                                                <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('paid')); ?></span>
-                                            <?php else : ?>
-                                                <span class="badge badge-danger lighten-danger"><?php echo get_phrase(sanitize('unpaid')); ?></span>
-                                            <?php endif; ?>
-                                        </small>
-                                        <small class="d-block">
+                                         
+                                        <!-- <small class="d-block">
                                             <strong><?php echo get_phrase('method'); ?> : </strong>
                                             <?php if (isset($payment_data['payment_method'])) : ?>
                                                 <?php echo ucfirst(str_replace('_', ' ', sanitize($payment_data['payment_method']))); ?>
                                             <?php else : ?>
                                                 <?php echo get_phrase('no_found'); ?>
                                             <?php endif; ?>
+                                        </small> -->
+                                    </td>
+                                    
+                                    
+                                    <td>
+                                        <small class="d-block">
+                                           <?php echo currency(isset($order['commission_paid']) ? sanitize(  $order['commission_paid']) : 0); ?>    
                                         </small>
                                     </td>
+                                     
                                     <td>
-                                        <?php if (sanitize($order['order_status']) == 'pending') : ?>
-                                            <span class="badge badge-warning lighten-warning"><?php echo get_phrase(sanitize($order['order_status'])); ?></span>
-                                        <?php elseif (sanitize($order['order_status']) == 'delivered') : ?>
-                                            <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize($order['order_status'])); ?></span>
-                                        <?php elseif (sanitize($order['order_status']) == 'canceled') : ?>
-                                            <span class="badge badge-danger lighten-danger"><?php echo get_phrase(sanitize($order['order_status'])); ?></span>
-                                        <?php else : ?>
-                                            <span class="badge badge-primary lighten-primary"><?php echo get_phrase(sanitize($order['order_status'])); ?></span>
-                                        <?php endif; ?>
+                                        <small class="d-block">
+                                           <?php echo currency(isset($order['commission_paid']) ? sanitize($order['grand_total'] - $order['commission_paid']) : 0) .  " " . " ("  . ($order['commission_res'] == NULL ? "0" : $order['commission_res']) . "%)"; ?>    
+                                        </small>
                                     </td>
                                     <td class="text-center">
                                         <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>" class="btn btn-rounded btn-outline-primary btn-sm mt-2"><?php echo get_phrase('details'); ?></a>
@@ -201,3 +211,15 @@
 <?php if (!count($commissions)) : ?>
     <?php isEmpty(); ?>
 <?php endif; ?>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#orders').DataTable({
+            pageLength: 5,  
+        });
+    });
+
+</script>
