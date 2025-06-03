@@ -640,14 +640,15 @@ class Order_model extends Base_model
      */
     public function filter_orders_as_admin()
     {
-        // CHECK DATE RANGE
+        // CHECK DATE RANG
         if (isset($_GET['date_range']) && !empty($_GET['date_range'])) {
             $date_range                   = sanitize($this->input->get('date_range'));
             $date_range                   = explode(" - ", $date_range);
             $conditions['order_placed_at >='] = strtotime($date_range[0] . ' 00:00:01');
             $conditions['order_placed_at <=']   = strtotime($date_range[1] . ' 23:59:59');
         } else {
-            $first_day_of_month = "1 " . date("M") . " " . date("Y") . ' 00:00:01';
+            $first_day_of_month = "1 Jan " . date("Y") . ' 00:00:01';
+            // $first_day_of_month = "1 " . date("M") . " " . date("Y") . ' 00:00:01';
             $last_day_of_month = date("t") . " " . date("M") . " " . date("Y") . ' 23:59:59';
             $conditions['order_placed_at >=']   = strtotime($first_day_of_month);
             $conditions['order_placed_at <=']     = strtotime($last_day_of_month);
@@ -656,7 +657,7 @@ class Order_model extends Base_model
         // CHECK RESTAURANT SELECTION
         $restaurant_id = nuller(sanitize($this->input->get('restaurant_id')));
         if ($restaurant_id) {
-            $conditions['code'] = count($this->get_order_code_by_restaurant_id($restaurant_id)) > 0 ? $this->get_order_code_by_restaurant_id($restaurant_id) : array();
+            $conditions['code'] = count($this->get_order_code_by_restaurant_id($restaurant_id)) > 0 ? $this->get_order_code_by_restaurant_id($restaurant_id) :  array();
         }
 
         // CHECK CUSTOMER SELECTION

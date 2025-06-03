@@ -27,21 +27,24 @@ class Orders extends Authorization
      */
     public function index()
     {
+        
         $page_data['restaurant_id'] = isset($_GET['restaurant_id']) ? sanitize($_GET['restaurant_id']) : "all";
         $page_data['customer_id'] = isset($_GET['customer_id']) ? sanitize($_GET['customer_id']) : "all";
         $page_data['driver_id'] = isset($_GET['driver_id']) ? sanitize($_GET['driver_id']) : "all";
         $page_data['status'] = isset($_GET['status']) ? sanitize($_GET['status']) : "all";
 
         if (isset($_GET['date_range']) && !empty($_GET['date_range'])) {
-            $date_range                   = sanitize($this->input->get('date_range'));
-            $date_range                   = explode(" - ", $date_range);
-            $page_data['starting_timestamp'] = strtotime($date_range[0] . ' 00:00:00');
-            $page_data['ending_timestamp']   = strtotime($date_range[1] . ' 23:59:59');
-        } else {
-            $first_day_of_month = "1 " . date("M") . " " . date("Y") . ' 00:00:00';
-            $last_day_of_month = date("t") . " " . date("M") . " " . date("Y") . ' 23:59:59';
-            $page_data['starting_timestamp']   = strtotime($first_day_of_month);
-            $page_data['ending_timestamp']     = strtotime($last_day_of_month);
+            $date_range_raw = sanitize($this->input->get('date_range')); // e.g. "2025-06-01 - 2025-06-02"
+            $date_range = explode(" - ", $date_range_raw);
+
+            if (count($date_range) === 2) {
+                $page_data['starting_timestamp'] = strtotime(trim($date_range[0]) . ' 00:00:00');
+                $page_data['ending_timestamp']   = strtotime(trim($date_range[1]) . ' 23:59:59');
+            } else {
+                // fallback if date range format is unexpected
+                $page_data['starting_timestamp'] = strtotime("first day of this month");
+                $page_data['ending_timestamp']   = strtotime("last day of this month 23:59:59");
+            }
         }
 
         $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
@@ -403,7 +406,6 @@ class Orders extends Authorization
                 //    return $total_payment;
 
             }
-
 
 }
 
