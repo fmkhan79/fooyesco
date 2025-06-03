@@ -26,6 +26,19 @@ class Report extends Authorization
     function index()
     {
 
+        
+        if (isset($_GET['date_range']) && !empty($_GET['date_range'])) {
+            $date_range                   = sanitize($this->input->get('date_range'));
+            $date_range                   = explode(" - ", $date_range);
+            $page_data['starting_timestamp'] = strtotime($date_range[0] . ' 00:00:00');
+            $page_data['ending_timestamp']   = strtotime($date_range[1] . ' 23:59:59');
+        } else {
+            $first_day_of_month = "1" . date("M") . " " . date("Y") . ' 00:00:00';
+            $last_day_of_month = date("t") . " " . date("M") . " " . date("Y") . ' 23:59:59';
+            $page_data['starting_timestamp']   = strtotime($first_day_of_month);
+            $page_data['ending_timestamp']     = strtotime($last_day_of_month);
+        }
+
                 /** CHECK IF THE USER HAS ACCESS TO SEE THIS **/
         if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != "all") {
             if (!has_access('restaurants', $_GET['restaurant_id'])) {
@@ -35,14 +48,19 @@ class Report extends Authorization
         
 
         $page_data['restaurant_id'] = (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != "all") ? sanitize($_GET['restaurant_id']) : "all";
+       
+        // print_r($page_data['restaurant_id']);
+
+        // die();
         $page_data['page_name'] = 'report/index';
         $page_data['report_type'] = 'owner';
         $page_data['page_title'] = get_phrase("owner_commission_report");
         $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
         $page_data['commissions'] = $this->report_model->filter_commissions();
         $page_data['orders'] = $this->order_model->filter();
+    // print_r($page_data['orders']);
 
-        $this->load->view('backend/index', $page_data);
+     $this->load->view('backend/index', $page_data);
     }
 
     // Admin FUNCTION WILL SHOW THE ADMIN REVENUE LIST
@@ -61,6 +79,7 @@ class Report extends Authorization
             $page_data['starting_timestamp']   = strtotime($first_day_of_month);
             $page_data['ending_timestamp']     = strtotime($last_day_of_month);
         }
+        
         $page_data['page_name'] = 'report/index';
         $page_data['report_type'] = 'admin';
         $page_data['page_title'] = get_phrase("admin_commission_report");
