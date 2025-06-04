@@ -89,7 +89,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="orders" class="table table-bordered table-hover">
+                    <table id="ordersTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th><?php echo get_phrase("order_code"); ?></th>
@@ -210,3 +210,15 @@
 <?php if (!count($orders)) : ?>
     <?php isEmpty(); ?>
 <?php endif; ?>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#ordersTable').DataTable({
+            pageLength: 5,  
+        });
+    });
+
+</script>

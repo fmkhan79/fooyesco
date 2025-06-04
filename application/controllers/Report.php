@@ -51,9 +51,20 @@ class Report extends Authorization
        
         // print_r($page_data['restaurant_id']);
 
-        // die();
-        $page_data['page_name'] = 'report/index';
-        $page_data['report_type'] = 'owner';
+
+
+      if($this->session->userdata('user_role')== 'owner')
+      {
+             $page_data['report_type'] = 'owner_report';
+      }
+      else
+      {
+     $page_data['report_type'] = 'owner';
+
+      }
+
+
+      $page_data['page_name'] = 'report/index';
         $page_data['page_title'] = get_phrase("owner_commission_report");
         $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
         $page_data['commissions'] = $this->report_model->filter_commissions();

@@ -43,6 +43,18 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                                 <b><?php echo get_phrase('total_delivery_charge'); ?>: </b> <a class="float-right"><?php echo currency(sanitize($order_data['total_delivery_charge'])); ?></a>
                             </li>
                             <li class="list-group-item">
+                                <b><?php echo get_phrase('Commission'); ?>: </b>
+                                <a class="float-right">
+                                    <?php
+                                        $commission_amount = isset($order_data['commission_paid']) ? sanitize($order_data['grand_total'] - $order_data['commission_paid']) : 0;
+                                        $commission_percentage = $order_data['commission_res'] == NULL ? "0" : $order_data['commission_res'];
+
+                                        echo currency(number_format($commission_amount, 2)) . " (" . number_format($commission_percentage, 2) . "%)";
+                                    ?>
+                                </a>
+                            </li>
+                            
+                            <li class="list-group-item">
                                 <b><?php echo get_phrase('grand_total'); ?>: </b> <a class="float-right"><?php echo currency(sanitize($order_data['grand_total'])); ?></a>
                             </li>
                             <li class="list-group-item">

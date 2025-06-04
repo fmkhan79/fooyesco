@@ -109,7 +109,7 @@
                                     </td>
                                     <td>
                                         <i class="far fa-calendar-alt"></i> <?php echo date('D, d-M-Y', sanitize($order['order_placed_at'])); ?>
-                                        <small><i class="far fa-clock"></i> <?php echo date('h:i A', sanitize($order['order_placed_at'])); ?></small>
+                                        <small><i class="far fa-clock"></i> <?php echo date('h:i A', sanitize($order['order_placed_at'])); ?></small><br>
                                     </td>
                                     <!-- <td>
                                         <?php if ($order['order_type'] == "pickup") : ?>
