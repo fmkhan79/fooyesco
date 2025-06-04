@@ -73,6 +73,7 @@ class Report extends Authorization
 
      $this->load->view('backend/index', $page_data);
     }
+   
 
     // Admin FUNCTION WILL SHOW THE ADMIN REVENUE LIST
     function admin()
