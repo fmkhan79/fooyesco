@@ -405,6 +405,24 @@ class Orders extends Authorization
 
             }
 
+        public function mark_as_paid()
+        {
+            $this->load->model('order_model');
+
+            $order_ids = $this->input->post('order_ids');
+       
+
+            if (!empty($order_ids)) {
+                    $this->order_model->mark_as_paid($order_ids); 
+                $this->session->set_flashdata('success_message', get_phrase('orders_updated_successfully'));
+            } else {
+                $this->session->set_flashdata('error_message', get_phrase('no_orders_selected'));
+            }
+
+            redirect(site_url('report/index'));
+        }
+            
+
 }
 
 /* End of file Orders.php */

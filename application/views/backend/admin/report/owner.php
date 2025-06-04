@@ -1,3 +1,4 @@
+
 <div class="row justify-content-center">
     <div class="col-lg-12">
         <div class="card">
@@ -70,133 +71,160 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="orders" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th><?php echo get_phrase("order_code"); ?></th>
-                                <th><?php echo get_phrase("ordered_from"); ?></th>
-                                <th><?php echo get_phrase("order_placing_time"); ?></th>
-                                <!-- <th><?php echo get_phrase("delivery_details"); ?></th> -->
-                                <th><?php echo get_phrase("payment method"); ?></th>
-                                <th><?php echo get_phrase("Order Amount"); ?></th> 
-                                <th><?php echo get_phrase("Comission Amount"); ?></th> 
-                                <th><?php echo get_phrase("After Commission"); ?></th>
-
-                                <th><?php echo get_phrase("action"); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($orders as $order) : 
-                            ?>
-                            
-                                <tr>
-                                    <td>
-                                        <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>"><?php echo sanitize($order['code']); ?></a>
-                                    </td>
-                                    <td>
-                                        <?php
-                                        $restaurant_ids = $this->order_model->get_restaurant_ids($order['code']);
-                                        foreach ($restaurant_ids as $restaurant_id) :
-                                            $restaurant_detail = $this->restaurant_model->get_by_id($restaurant_id); ?>
-                                            <?php if (isset($restaurant_detail['id'])) : ?>
-                                                <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant_detail['slug'])) . '/' . sanitize($restaurant_detail['id'])); ?>" class="text-dark" target="_blank"><small class="d-block"> ∙ <?php echo sanitize($restaurant_detail['name']); ?></small></a>
-                                            <?php else : ?>
-                                                <a href="javascript:void(0)" class="text-red"><small class="d-block"> ∙ <?php echo get_phrase("not_found");; ?></small></a>
-                                            <?php endif; ?>
-
-                                        <?php endforeach; ?>
-                                    </td>
-                                    <td>
-                                        <i class="far fa-calendar-alt"></i> <?php echo date('D, d-M-Y', sanitize($order['order_placed_at'])); ?>
-                                        <small><i class="far fa-clock"></i> <?php echo date('h:i A', sanitize($order['order_placed_at'])); ?></small>
-                                    </td>
-                                    <!-- <td>
-                                        <?php if ($order['order_type'] == "pickup") : ?>
-                                            <small><strong><?php echo get_phrase('order_type'); ?> : </strong> <span class="badge badge-success lighten-success"><?php echo get_phrase('pickup'); ?></span></small>
-                                            <small class="d-block">
-                                                <strong><?php echo get_phrase('customer'); ?> : </strong> <?php echo sanitize($order['customer_name']); ?>
-                                            </small>
-                                        <?php else : ?>
-                                            <small><strong><?php echo get_phrase('order_type'); ?> : </strong> <span class="badge badge-warning lighten-warning"><?php echo get_phrase('delivery'); ?></span></small>
-                                            <small class="d-block">
-                                                <strong><?php echo get_phrase('customer'); ?> : </strong> <?php echo sanitize($order['customer_name']); ?>
-                                            </small>
-                                            <small data-toggle="tooltip" data-placement="top" title="<?php echo sanitize($order['delivery_address']); ?>">
-                                                <strong><?php echo get_phrase('address'); ?> : </strong> <?php echo ellipsis(sanitize($order['delivery_address'])); ?>
-                                            </small>
-                                            <small class="d-block">
-                                                <strong><?php echo get_phrase('assigned_driver'); ?> : </strong>
-                                                <?php if (isset($order['driver_id']) && !empty($order['driver_id'])) : ?>
-                                                    <?php echo sanitize($order['driver_name']); ?>
-                                                <?php else : ?>
-                                                    <span class="badge badge-danger lighten-danger"><?php echo get_phrase('not_assigned_yet'); ?></span>
-                                                <?php endif; ?>
-                                            </small>
-                                        <?php endif; ?>
-                                    </td> -->
-                                    <td>
-                                                                                 <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
-                                            <?php if (($payment_data['payment_method']) =="stripe" )  : ?>
-                                                       <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('Card')); ?></span>
-                                            <?php else : ?>
-                                                <span class="badge badge-danger lighten-primary"><?php echo get_phrase(sanitize('Cash')); ?></span>
-                                            <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
-                                        <small class="d-block">
-                                            <?php echo currency(isset($payment_data['amount_to_pay']) ? sanitize($payment_data['amount_to_pay']) : 0); ?>
-                                        </small>
+                    <form id="bulk-update-form" method="post" action="<?php echo site_url('orders/mark_as_paid'); ?>">
                                          
-                                        <!-- <small class="d-block">
-                                            <strong><?php echo get_phrase('method'); ?> : </strong>
-                                            <?php if (isset($payment_data['payment_method'])) : ?>
-                                                <?php echo ucfirst(str_replace('_', ' ', sanitize($payment_data['payment_method']))); ?>
-                                            <?php else : ?>
-                                                <?php echo get_phrase('no_found'); ?>
-                                            <?php endif; ?>
-                                        </small> -->
-                                    </td>
-                                    
-                                    
-                                    <td>
-                                        <small class="d-block">
-                                           <?php echo currency(isset($order['commission_paid']) ? sanitize(  $order['commission_paid']) : 0); ?>    
-                                        </small>
-                                    </td>
-                                     
-                                    <td>
-                                       <small class="d-block">
-                                            <?php
-                                                $commission_amount = isset($order['commission_paid']) ? sanitize($order['grand_total'] - $order['commission_paid']) : 0;
-                                                $commission_percentage = $order['commission_res'] == NULL ? 0 : $order['commission_res'];
-
-                                                echo currency(number_format($commission_amount, 2)) . " (" . number_format($commission_percentage, 2) . "%)";
-                                            ?>
-                                        </small>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>" class="btn btn-rounded btn-outline-primary btn-sm mt-2"><?php echo get_phrase('details'); ?></a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th><?php echo get_phrase("order_code"); ?></th>
-                                <th><?php echo get_phrase("ordered_from"); ?></th>
-                                <th><?php echo get_phrase("order_placing_time"); ?></th>
-                                <!-- <th><?php echo get_phrase("delivery_details"); ?></th> -->
-                                <th><?php echo get_phrase("payment method"); ?></th>
-                                <th><?php echo get_phrase("Order Amount"); ?></th> 
-                                <th><?php echo get_phrase("Comission Amount"); ?></th> 
-                                <th><?php echo get_phrase("After Commission"); ?></th>
-
-                                <th><?php echo get_phrase("action"); ?></th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                        <div class="row">
+                            <div class="col-12">
+                                <table id="orders_table" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="select-all"></th>
+                                            <th><?php echo get_phrase("order_code"); ?></th>
+                                            <th><?php echo get_phrase("ordered_from"); ?></th>
+                                            <th><?php echo get_phrase("order_placing_time"); ?></th>
+                                            <!-- <th><?php echo get_phrase("delivery_details"); ?></th> -->
+                                            <th><?php echo get_phrase("payment method"); ?></th>
+                                            <th><?php echo get_phrase("Order Amount"); ?></th> 
+                                            <th><?php echo get_phrase("Comission Amount"); ?></th> 
+                                            <th><?php echo get_phrase("After Commission"); ?></th>
+                                            <th><?php echo get_phrase("Is Paid"); ?></th>
+            
+                                            <th><?php echo get_phrase("action"); ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($orders as $order) : 
+                                        ?>
+                                        
+                                            <tr>
+                                                <td><input type="checkbox" class="order-checkbox" name="order_ids[]" value="<?php echo $order['id']; ?>"></td>
+                                                <td>
+                                                    <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>"><?php echo sanitize($order['code']); ?></a>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                    $restaurant_ids = $this->order_model->get_restaurant_ids($order['code']);
+                                                    foreach ($restaurant_ids as $restaurant_id) :
+                                                        $restaurant_detail = $this->restaurant_model->get_by_id($restaurant_id); ?>
+                                                        <?php if (isset($restaurant_detail['id'])) : ?>
+                                                            <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant_detail['slug'])) . '/' . sanitize($restaurant_detail['id'])); ?>" class="text-dark" target="_blank"><small class="d-block"> ∙ <?php echo sanitize($restaurant_detail['name']); ?></small></a>
+                                                        <?php else : ?>
+                                                            <a href="javascript:void(0)" class="text-red"><small class="d-block"> ∙ <?php echo get_phrase("not_found");; ?></small></a>
+                                                        <?php endif; ?>
+            
+                                                    <?php endforeach; ?>
+                                                </td>
+                                                <td>
+                                                    <i class="far fa-calendar-alt"></i> <?php echo date('D, d-M-Y', sanitize($order['order_placed_at'])); ?>
+                                                    <small><i class="far fa-clock"></i> <?php echo date('h:i A', sanitize($order['order_placed_at'])); ?></small>
+                                                </td>
+                                                <!-- <td>
+                                                    <?php if ($order['order_type'] == "pickup") : ?>
+                                                        <small><strong><?php echo get_phrase('order_type'); ?> : </strong> <span class="badge badge-success lighten-success"><?php echo get_phrase('pickup'); ?></span></small>
+                                                        <small class="d-block">
+                                                            <strong><?php echo get_phrase('customer'); ?> : </strong> <?php echo sanitize($order['customer_name']); ?>
+                                                        </small>
+                                                    <?php else : ?>
+                                                        <small><strong><?php echo get_phrase('order_type'); ?> : </strong> <span class="badge badge-warning lighten-warning"><?php echo get_phrase('delivery'); ?></span></small>
+                                                        <small class="d-block">
+                                                            <strong><?php echo get_phrase('customer'); ?> : </strong> <?php echo sanitize($order['customer_name']); ?>
+                                                        </small>
+                                                        <small data-toggle="tooltip" data-placement="top" title="<?php echo sanitize($order['delivery_address']); ?>">
+                                                            <strong><?php echo get_phrase('address'); ?> : </strong> <?php echo ellipsis(sanitize($order['delivery_address'])); ?>
+                                                        </small>
+                                                        <small class="d-block">
+                                                            <strong><?php echo get_phrase('assigned_driver'); ?> : </strong>
+                                                            <?php if (isset($order['driver_id']) && !empty($order['driver_id'])) : ?>
+                                                                <?php echo sanitize($order['driver_name']); ?>
+                                                            <?php else : ?>
+                                                                <span class="badge badge-danger lighten-danger"><?php echo get_phrase('not_assigned_yet'); ?></span>
+                                                            <?php endif; ?>
+                                                        </small>
+                                                    <?php endif; ?>
+                                                </td> -->
+                                                <td>
+                                                        <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
+                                                        <?php if (($payment_data['payment_method']) =="stripe" )  : ?>
+                                                                <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('Card')); ?></span>
+                                                        <?php else : ?>
+                                                            <span class="badge badge-danger lighten-primary"><?php echo get_phrase(sanitize('Cash')); ?></span>
+                                                        <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
+                                                    <small class="d-block">
+                                                        <?php echo currency(isset($payment_data['amount_to_pay']) ? sanitize($payment_data['amount_to_pay']) : 0); ?>
+                                                    </small>
+                                                    
+                                                    <!-- <small class="d-block">
+                                                        <strong><?php echo get_phrase('method'); ?> : </strong>
+                                                        <?php if (isset($payment_data['payment_method'])) : ?>
+                                                            <?php echo ucfirst(str_replace('_', ' ', sanitize($payment_data['payment_method']))); ?>
+                                                        <?php else : ?>
+                                                            <?php echo get_phrase('no_found'); ?>
+                                                        <?php endif; ?>
+                                                    </small> -->
+                                                </td>
+                                                
+                                                
+                                                <td>
+                                                    <small class="d-block">
+                                                    <?php echo currency(isset($order['commission_paid']) ? sanitize(  $order['commission_paid']) : 0); ?>    
+                                                    </small>
+                                                </td>
+                                                
+                                                <td>
+                                                <small class="d-block">
+                                                        <?php
+                                                            $commission_amount = isset($order['commission_paid']) ? sanitize($order['grand_total'] - $order['commission_paid']) : 0;
+                                                            $commission_percentage = $order['commission_res'] == NULL ? 0 : $order['commission_res'];
+            
+                                                            echo currency(number_format($commission_amount, 2)) . " (" . number_format($commission_percentage, 2) . "%)";
+                                                        ?>
+                                                    </small>
+                                                </td>
+                                                <td>
+                                                    <small>
+                                                        <?php if (($order['is_paid']) == 1 ) : ?>
+                                                            <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('paid')); ?></span>
+                                                        <?php else : ?>
+                                                            <span class="badge badge-danger lighten-danger"><?php echo get_phrase(sanitize('unpaid')); ?></span>
+                                                        <?php endif; ?>
+                                                    </small>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>" class="btn btn-rounded btn-outline-primary btn-sm mt-2"><?php echo get_phrase('details'); ?></a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th><?php echo get_phrase("order_code"); ?></th>
+                                            <th><?php echo get_phrase("ordered_from"); ?></th>
+                                            <th><?php echo get_phrase("order_placing_time"); ?></th>
+                                            <!-- <th><?php echo get_phrase("delivery_details"); ?></th> -->
+                                            <th><?php echo get_phrase("payment method"); ?></th>
+                                            <th><?php echo get_phrase("Order Amount"); ?></th> 
+                                            <th><?php echo get_phrase("Comission Amount"); ?></th> 
+                                            <th><?php echo get_phrase("After Commission"); ?></th>
+                                            <th><?php echo get_phrase("Ispaid"); ?></th>
+            
+                                            <th><?php echo get_phrase("action"); ?></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-success mb-3" id="bulk-paid-btn">
+                                    <i class="fas fa-check"></i> <?php echo get_phrase('mark_selected_as_paid'); ?>
+                                </button>   
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -225,8 +253,23 @@
 
 <script>
     $(document).ready(function() {
-        $('#orders').DataTable({
+        $('#orders_table').DataTable({
             pageLength: 5,  
+        });
+
+        $('#select-all').click(function () {
+            $('.order-checkbox').prop('checked', this.checked);
+        });
+
+        $('#bulk-update-form').submit(function (e) {
+            if ($('.order-checkbox:checked').length === 0) {
+                alert('Please select at least one order.');
+                e.preventDefault();
+            }
+        });
+
+        $('#orders').DataTable({
+            pageLength: 5,
         });
     });
 
