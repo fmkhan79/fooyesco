@@ -607,6 +607,7 @@ class Order_model extends Base_model
         return $this->$dynamic_function_name();
     }
 
+
     /**
      * filter_orders_as_customer FUNCTION
      * THIS FUNCTION FILTERS ONLY CUSTOMERS ORDERS
@@ -656,8 +657,17 @@ class Order_model extends Base_model
 
         // CHECK RESTAURANT SELECTION
         $restaurant_id = nuller(sanitize($this->input->get('restaurant_id')));
-        if ($restaurant_id) {
-            $conditions['code'] = count($this->get_order_code_by_restaurant_id($restaurant_id)) > 0 ? $this->get_order_code_by_restaurant_id($restaurant_id) :  array();
+        // if ($restaurant_id) {
+        //     $conditions['code'] = count($this->get_order_code_by_restaurant_id($restaurant_id)) > 0 ? $this->get_order_code_by_restaurant_id($restaurant_id) :  array();
+        // }
+
+        if ($restaurant_id && $restaurant_id != "all") {
+            $order_codes = $this->get_order_code_by_restaurant_id($restaurant_id);
+            if (count($order_codes) > 0) {
+                $conditions['code'] = $order_codes;
+            } else {
+                $conditions['code'] = array();
+            }
         }
 
         // CHECK CUSTOMER SELECTION
@@ -973,9 +983,24 @@ class Order_model extends Base_model
 
 
     // DASHBOARD TILE DATA USER AND STATUS WISE
-public function get_number_of_orders($order_status = "", $restaurant_id = "all")
+public function get_number_of_orders($order_status = "", $restaurant_id = "all", $starting_timestamp = null, $ending_timestamp = null)
 {
     $user_role = $this->session->userdata('user_role');
+
+    // Parse date range from GET if timestamps are not provided
+    if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
+        if (isset($_GET['date_range'])) {
+            $dates = explode(' - ', $_GET['date_range']);
+            if (count($dates) === 2) {
+                $starting_timestamp = strtotime($dates[0]);
+                $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+                if (!$starting_timestamp || !$ending_timestamp) {
+                    $starting_timestamp = null;
+                    $ending_timestamp = null;
+                }
+            }
+        }
+    }
 
     /* AT FIRST CHECK USER ROLE */
     if ($user_role == "customer") {
@@ -997,7 +1022,6 @@ public function get_number_of_orders($order_status = "", $restaurant_id = "all")
     /* THEN CHECK ORDER STATUS */
     if (!empty($order_status)) {
         if ($order_status == "processed") {
-            // Improved query for processed orders
             $this->db->where_in('order_status', ['preparing', 'prepared', 'delivered']);
         } else {
             $this->db->where('order_status', $order_status);
@@ -1009,9 +1033,18 @@ public function get_number_of_orders($order_status = "", $restaurant_id = "all")
         $this->db->where('restaurant_id', $restaurant_id);
     }
 
-    // Execute the query and return the number of rows (i.e., the total number of orders)
+    /* FILTER BY DATE RANGE */
+    if (!empty($starting_timestamp)) {
+        $this->db->where('order_placed_at >=', $starting_timestamp);
+    }
+    if (!empty($ending_timestamp)) {
+        $this->db->where('order_placed_at <=', $ending_timestamp);
+    }
+
+    // Execute the query and return the number of rows
     return $this->db->get($this->table)->num_rows();
 }
+
 
 
 
@@ -1215,89 +1248,180 @@ public function get_number_of_orders($order_status = "", $restaurant_id = "all")
     }
 
 
-public function get_stripe_payment_sum($restaurant_id = null)
-{
-    // Check if restaurant_id is passed via GET or if it's 'all'
-    $restaurant_id = isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != 'all' ? sanitize($_GET['restaurant_id']) : null;
+   public function get_stripe_payment_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null) {
+    // Agar restaurant_id GET se aaye aur 'all' na ho to sanitize karo
+   if (is_null($restaurant_id)) {
+        if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
+            $restaurant_id = sanitize($_GET['restaurant_id']);
+        }
+    }
 
-    // Start building the query
+    // Parse date range from GET if timestamps are not provided
+    if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
+        if (isset($_GET['date_range'])) {
+            $dates = explode(' - ', $_GET['date_range']);
+            if (count($dates) === 2) {
+                $starting_timestamp = strtotime($dates[0]);
+                $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+
+                // If parsing fails, return 0 to avoid bad query
+                if (!$starting_timestamp || !$ending_timestamp) {
+                    return 0;
+                }
+            }
+        }
+    }
+
     $this->db->select_sum('payment.amount_paid', 'total_sum');
     $this->db->from('payment');
     $this->db->join('orders', 'payment.order_code = orders.code');
     $this->db->where('payment.payment_method', 'stripe');
 
-    // If a specific restaurant is selected, add the condition for that restaurant
-    if ($restaurant_id) {
+  if (!is_null($restaurant_id)) {
         $this->db->where('orders.restaurant_id', $restaurant_id);
     }
 
-    // Execute the query
+    if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+        $this->db->where('payment.created_at >=', $starting_timestamp);
+        $this->db->where('payment.created_at <=', $ending_timestamp);
+    }
+
     $query = $this->db->get();
     $result = $query->row_array();
 
-    // Return the total sum, default to 0 if no result is found
     return $result['total_sum'] ?? 0;
 }
 
 
-
-public function get_cash_on_delivery_payment_sum($restaurant_id = null)
+public function get_cash_on_delivery_payment_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null)
 {
-    // Check if restaurant_id is provided or if it's 'all'
-    $restaurant_id = isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != 'all' ? sanitize($_GET['restaurant_id']) : null;
+    // Use restaurant_id from GET if not provided as argument
+    if (is_null($restaurant_id)) {
+        if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
+            $restaurant_id = sanitize($_GET['restaurant_id']);
+        }
+    }
 
-    // Start building the query for cash on delivery payment
+    // Parse date range from GET if timestamps are not provided
+    if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
+        if (isset($_GET['date_range'])) {
+            $dates = explode(' - ', $_GET['date_range']);
+            if (count($dates) === 2) {
+                $starting_timestamp = strtotime($dates[0]);
+                $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+
+                // If parsing fails, return 0 to avoid bad query
+                if (!$starting_timestamp || !$ending_timestamp) {
+                    return 0;
+                }
+            }
+        }
+    }
+
+    // Build query
     $this->db->select_sum('payment.amount_to_pay', 'total_sum');
     $this->db->from('payment');
     $this->db->join('orders', 'payment.order_code = orders.code');
-    $this->db->where('payment.payment_method', 'cash_on_delivery'); // Corrected payment method
+    $this->db->where('payment.payment_method', 'cash_on_delivery');
 
-    // If a specific restaurant is selected, filter by restaurant_id
-    if ($restaurant_id) {
+    if (!is_null($restaurant_id)) {
         $this->db->where('orders.restaurant_id', $restaurant_id);
     }
 
-    // Execute the query
+    if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+        $this->db->where('payment.created_at >=', $starting_timestamp);
+        $this->db->where('payment.created_at <=', $ending_timestamp);
+    }
+    
     $query = $this->db->get();
     $result = $query->row_array();
 
-    // Return the total sum, default to 0 if no result is found
+    // Return the sum, or 0 if no data found
     return $result['total_sum'] ?? 0;
 }
 
 
-   public function get_total_revenue($restaurant_id = null)
-{
-    $restaurant_id = isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != 'all' ? sanitize($_GET['restaurant_id']) : null;
 
-    $this->db->select_sum('payment.amount_to_pay', 'total_sum');
-    $this->db->from('payment');
-    $this->db->join('orders', 'payment.order_code = orders.code');
 
-    if ($restaurant_id) {
+    public function get_total_revenue($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null) {
+       if (is_null($restaurant_id)) {
+        if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
+            $restaurant_id = sanitize($_GET['restaurant_id']);
+        }
+    }
+
+    // Parse date range from GET if timestamps are not provided
+    if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
+        if (isset($_GET['date_range'])) {
+            $dates = explode(' - ', $_GET['date_range']);
+            if (count($dates) === 2) {
+                $starting_timestamp = strtotime($dates[0]);
+                $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+
+                // If parsing fails, return 0 to avoid bad query
+                if (!$starting_timestamp || !$ending_timestamp) {
+                    return 0;
+                }
+            }
+        }
+    }
+        $this->db->select_sum('payment.amount_to_pay', 'total_sum');
+        $this->db->from('payment');
+        $this->db->join('orders', 'payment.order_code = orders.code');
+  if (!is_null($restaurant_id)) {
         $this->db->where('orders.restaurant_id', $restaurant_id);
     }
 
-    $query = $this->db->get();
-    $result = $query->row_array();
+    if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+        $this->db->where('payment.created_at >=', $starting_timestamp);
+        $this->db->where('payment.created_at <=', $ending_timestamp);
+    }
 
-    return $result['total_sum'] ?? 0;
-}
+        $query = $this->db->get();
+        $result = $query->row_array();
+        return $result['total_sum'] ?? 0;
+    }
 
 
- public function total_comission_sum($restaurant_id = null) {
+
+ public function total_comission_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null) {
     // Sanitize the restaurant_id from the URL if provided
-    $restaurant_id = isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all' 
-       ? sanitize($_GET['restaurant_id']) : null;
+   if (is_null($restaurant_id)) {
+        if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
+            $restaurant_id = sanitize($_GET['restaurant_id']);
+        }
+    }
 
+    // Parse date range from GET if timestamps are not provided
+    if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
+        if (isset($_GET['date_range'])) {
+            $dates = explode(' - ', $_GET['date_range']);
+            if (count($dates) === 2) {
+                $starting_timestamp = strtotime($dates[0]);
+                $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+
+                // If parsing fails, return 0 to avoid bad query
+                if (!$starting_timestamp || !$ending_timestamp) {
+                    return 0;
+                }
+            }
+        }
+    }
     // Start building the query
     $this->db->select_sum('orders.commission_paid', 'total_sum');
     $this->db->from('orders');
+    $this->db->join('payment', 'payment.order_code = orders.code');
     
     // Apply the filter for a specific restaurant_id if it's provided
-    if ($restaurant_id) {
+     if (!is_null($restaurant_id)) {
         $this->db->where('orders.restaurant_id', $restaurant_id);
     }
+
+
+if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+    $this->db->where('payment.created_at >=', $starting_timestamp);
+    $this->db->where('payment.created_at <=', $ending_timestamp);
+}
 
     // Execute the query
     $query = $this->db->get();

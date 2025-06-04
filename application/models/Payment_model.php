@@ -127,4 +127,24 @@ class Payment_model extends Base_model
         $this->db->where('id', $payment_data['id']);
         $this->db->update('payment', $updater);
     }
+
+    public function get_transtion_id_from_payment_table($order_code)
+    {
+        $payment_data = $this->db->get_where('payment', array('order_code' => $order_code))->row_array();
+           
+        if ($payment_data) {
+            $json = $payment_data['data'];
+            $payment_method = json_decode($json, true);
+            // print_r($payment_method);
+            
+            echo $payment_method['transaction_id'];
+            die();
+            if($payment_method['transaction_id'] != null){
+                $payData = $payment_method['transaction_id'];
+                return $payData;
+            }
+        }
+        
+        return null;
+    }
 }

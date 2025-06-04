@@ -43,4 +43,14 @@ class Payment extends Authorization
         }
         redirect(site_url('payment'), 'refresh');
     }
+
+    public function get_payment_settings($order_code)
+    {
+        $payment_res = $this->payment_model->get_transtion_id_from_payment_table($order_code);
+        if($payment_res != null){
+            echo "Transaction ID: " . $payment_res;
+        }else{
+            echo "No transaction ID found for this order.";
+        }
+    }
 }
