@@ -250,8 +250,8 @@
                 <div class="accordion" id="restaurantAccordion1">
     <div class="accordion-item" style="padding-left: 15px;">
         <h2 class="accordion-header" id="headingRestaurant1">
-            <button class="accordion-button order-red-btn text-center mt-2 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRestaurant1" aria-expanded="false" aria-controls="collapseRestaurant1">
-                <h5>Restaurant Details</h5>
+            <button class="accordion-button order-red-btn d-flex justify-content-center align-items-center mt-2 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRestaurant1" aria-expanded="false" aria-controls="collapseRestaurant1" >
+                <h5 class="m-0">Restaurant Details</h5>
             </button>
         </h2>
         <div id="collapseRestaurant1" class="accordion-collapse collapse" aria-labelledby="headingRestaurant1" data-bs-parent="#restaurantAccordion1">

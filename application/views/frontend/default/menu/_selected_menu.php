@@ -227,9 +227,11 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
         </div>
     </div>
                 
-                    <div class="m-4 d-flex justify-content-between align-items-center add-order-box <?= $hasRequireVariant ? "disabled" : ""?>" id="add-to-order-container" onclick="addToCart()"  >
-                    <div class="add-order-txt">Add To Order</div>
-                    <div class="add-order-price" id="add-order-price">0</div>
+                    <div class="d-flex justify-content-between align-items-center add-order-box <?= $hasRequireVariant ? "disabled" : ""?>" id="add-to-order-container" onclick="addToCart()"  >
+                    <div class="d-block">
+                        <div class="add-order-txt">Add To Order</div>
+                        <div class="add-order-price text-center" id="add-order-price">0</div>
+                    </div>
                 </div>
                 </div>
             </div>
