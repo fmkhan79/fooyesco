@@ -1347,7 +1347,7 @@ public function get_number_of_orders($order_status = "", $restaurant_id = "all",
     $this->db->join('orders', 'payment.order_code = orders.code');
     $this->db->where('payment.payment_method', 'stripe');
 
-  if (!is_null($restaurant_id)) {
+  if (($restaurant_id) !== "all") {
         $this->db->where('orders.restaurant_id', $restaurant_id);
     }
 
@@ -1365,12 +1365,16 @@ public function get_number_of_orders($order_status = "", $restaurant_id = "all",
 
 public function get_cash_on_delivery_payment_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null)
 {
+    
     // Use restaurant_id from GET if not provided as argument
     if (is_null($restaurant_id)) {
         if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
+            print_r("dsa");
             $restaurant_id = sanitize($_GET['restaurant_id']);
         }
     }
+            
+
 
     // Parse date range from GET if timestamps are not provided
     if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
@@ -1394,8 +1398,9 @@ public function get_cash_on_delivery_payment_sum($restaurant_id = null, $startin
     $this->db->join('orders', 'payment.order_code = orders.code');
     $this->db->where('payment.payment_method', 'cash_on_delivery');
 
-    if (!is_null($restaurant_id)) {
+    if (($restaurant_id) !=="all") {
         $this->db->where('orders.restaurant_id', $restaurant_id);
+
     }
 
     if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
@@ -1414,7 +1419,7 @@ public function get_cash_on_delivery_payment_sum($restaurant_id = null, $startin
 
 
 
-    public function get_total_revenue($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null) {
+    public function get_total_revenue($restaurant_id = "all", $starting_timestamp = null, $ending_timestamp = null) {
        if (is_null($restaurant_id)) {
         if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
             $restaurant_id = sanitize($_GET['restaurant_id']);
@@ -1439,9 +1444,10 @@ public function get_cash_on_delivery_payment_sum($restaurant_id = null, $startin
         $this->db->select_sum('payment.amount_to_pay', 'total_sum');
         $this->db->from('payment');
         $this->db->join('orders', 'payment.order_code = orders.code');
-  if (!is_null($restaurant_id)) {
-        $this->db->where('orders.restaurant_id', $restaurant_id);
-    }
+
+ if ($restaurant_id !== "all") {
+    $this->db->where('orders.restaurant_id', $restaurant_id);
+}
 
     if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
         $this->db->where('payment.created_at >=', $starting_timestamp);
@@ -1478,13 +1484,14 @@ public function get_cash_on_delivery_payment_sum($restaurant_id = null, $startin
             }
         }
     }
+    
     // Start building the query
     $this->db->select_sum('orders.commission_paid', 'total_sum');
     $this->db->from('orders');
     $this->db->join('payment', 'payment.order_code = orders.code');
     
     // Apply the filter for a specific restaurant_id if it's provided
-     if (!is_null($restaurant_id)) {
+     if (($restaurant_id) !== "all") {
         $this->db->where('orders.restaurant_id', $restaurant_id);
     }
 
