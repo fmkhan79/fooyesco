@@ -106,7 +106,7 @@
                 <span class="info-box-number">
                     <?php
                     // Fetch and display the total revenue based on selected restaurant
-                    echo  "£" . ($this->order_model->get_total_revenue($restaurant_id));
+                    echo  "£" . number_format((float) $this->order_model->get_total_revenue($restaurant_id), 2, '.', '');
                     ?>
                                   </span>
             </div>
@@ -126,7 +126,7 @@
                 <span class="info-box-number">
                      <?php 
                     // Fetch and display the canceled orders count based on selected restaurant
-                    echo "£" . ($this->order_model->get_stripe_payment_sum($restaurant_id)); 
+                    echo "£" . number_format((float) $this->order_model->get_stripe_payment_sum($restaurant_id), 2, '.', ''); 
                 ?>
 
                 </span>
@@ -148,7 +148,7 @@
 
                 <?php 
                     // Fetch and display the canceled orders count based on selected restaurant
-                    echo "£" . ($this->order_model->get_cash_on_delivery_payment_sum($restaurant_id)); 
+                    echo "£" . number_format((float) $this->order_model->get_cash_on_delivery_payment_sum($restaurant_id), 2, '.', ''); 
                 ?>
                
 
@@ -179,4 +179,4 @@
     </div>
     <!-- TILE 8 ENDS -->
 </div>
-<!-- /.row -->
+<!-- /.row --> 
