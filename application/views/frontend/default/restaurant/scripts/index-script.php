@@ -482,7 +482,7 @@ document.querySelectorAll(".basket-switcher-error").forEach(el => {
                 calculatePrice();
             },
             error: function() {
-                alert("<?php echo $this->lang->line('fail'); ?>")
+                // alert("<?php echo $this->lang->line('fail'); ?>")
             }
         });
 
@@ -541,7 +541,7 @@ document.querySelectorAll(".basket-switcher-error").forEach(el => {
                 // console.log(res);
             },
             error: function() {
-                alert("<?php echo $this->lang->line('fail'); ?>")
+                // alert("<?php echo $this->lang->line('fail'); ?>")
             }
         });
         // holdModal('popup');
@@ -559,7 +559,7 @@ document.querySelectorAll(".basket-switcher-error").forEach(el => {
             },
             
             error: function() {
-                alert("<?php echo $this->lang->line('fail'); ?>")
+                // alert("<?php echo $this->lang->line('fail'); ?>")
             }
         });
         // holdModal('popup');
@@ -842,7 +842,7 @@ $.ajax({
 
             },
             error: function() {
-                alert("<?php echo $this->lang->line('fail'); ?>")
+                // alert("<?php echo $this->lang->line('fail'); ?>")
             }
         });
     // holdModal('popup');

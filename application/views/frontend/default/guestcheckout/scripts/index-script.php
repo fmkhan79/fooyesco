@@ -255,7 +255,7 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
             // console.log(res);
         },
         error: function() {
-            alert("<?php echo $this->lang->line('fail'); ?>")
+            // alert("<?php echo $this->lang->line('fail'); ?>")
         }
     });
     // holdModal('popup');
@@ -272,7 +272,7 @@ function viewselected_cat_items_summary() {
             $("#item-list").html(res); // Replace with the 'res' response
         },
         error: function() {
-            alert("<?php echo $this->lang->line('fail'); ?>")
+            // alert("<?php echo $this->lang->line('fail'); ?>")
         }
     });
     // holdModal('popup');
@@ -314,7 +314,7 @@ function viewselected_cat_items_summary_total() {
 
         },
         error: function() {
-            alert("<?php echo $this->lang->line('fail'); ?>")
+            // alert("<?php echo $this->lang->line('fail'); ?>")
         }
     });
     // holdModal('popup');

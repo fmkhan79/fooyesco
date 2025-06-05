@@ -9,9 +9,16 @@
 <style>
 
 #bulk-paid-btn{
-    background-color: seagreen !important;
+    background-color: #f54748 !important;
     border-radius: 2rem;
     border: none;
 }
+.page-link{
+    color: black !important;
+}
+.page-item:has(.active) {
+    background-color: #ffc107 !important;
+}
+
 
 </style>

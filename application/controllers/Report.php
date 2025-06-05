@@ -63,14 +63,15 @@ class Report extends Authorization
 
       }
 
+     $page_data['status'] = isset($_GET['status']) ? sanitize($_GET['status']) : "all";
 
       $page_data['page_name'] = 'report/index';
-        $page_data['page_title'] = get_phrase("owner_commission_report");
-        $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
-        $page_data['commissions'] = $this->report_model->filter_commissions();
-        $page_data['orders'] = $this->order_model->filter();
-    // print_r($page_data['orders']);
-
+    $page_data['page_title'] = get_phrase("owner_commission_report");
+    $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
+    $page_data['commissions'] = $this->report_model->filter_commissions();
+    $page_data['orders'] = $this->order_model->filter();
+    // print_r($page_data['status']);
+    //   die();
      $this->load->view('backend/index', $page_data);
     }
    

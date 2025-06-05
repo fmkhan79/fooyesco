@@ -106,33 +106,102 @@ class Order_model extends Base_model
         return $order_codes;
     }
     // GET DATA BY A CONDITION ARRAY
+    // public function get_by_condition($conditions = [])
+    // {
+    //     /**
+    //      * THIS LOOP CHECKS IF GIVEN CONDITION HAS ANY EMPTY ARRAY. IF IT DOES IT WILL RETURN EMPTY ARRAY.
+    //      */
+    //     foreach ($conditions as $key => $value) {
+    //         if (is_array($value)) {
+    //             if (count($value) == 0) {
+    //                 return array();
+    //             }
+    //         }
+    //     }
+
+    //     // foreach ($conditions as $key => $value) {
+    //     //     if (!is_null($value)) {
+    //     //         if (is_array($value)) {
+    //     //             $this->db->where_in($key, $value);
+    //     //         } else {
+    //     //             $this->db->where($key, $value);
+    //     //         }
+    //     //     }
+    //     // }
+
+    //     // foreach ($conditions as $key => $value) {
+    //     //     if (!is_null($value)) {
+    //     //         // Custom logic for order_status
+    //     //         if ($key === 'order_status') {
+    //     //             // assuming 'is_paid' column must be equal to value of order_status
+                    
+    //     //             if($value === "paid"){
+    //     //                 $this->db->where('is_paid', 1);
+    //     //             }else{
+    //     //                 $this->db->where('is_paid', 0);
+    //     //             }
+
+    //     //         } elseif (is_array($value)) {
+    //     //             $this->db->where_in($key, $value);
+    //     //         } else {
+    //     //             $this->db->where($key, $value);
+    //     //         }
+    //     //     }
+    //     // }
+
+    //     $this->db->order_by("id", "desc");
+    //     $obj = $this->db->get($this->table);
+        
+    //     return $this->order_merger($obj);
+        
+    // }
+
     public function get_by_condition($conditions = [])
     {
         /**
          * THIS LOOP CHECKS IF GIVEN CONDITION HAS ANY EMPTY ARRAY. IF IT DOES IT WILL RETURN EMPTY ARRAY.
          */
         foreach ($conditions as $key => $value) {
-            if (is_array($value)) {
-                if (count($value) == 0) {
-                    return array();
+            if (is_array($value) && count($value) == 0) {
+                return array();
+            }
+        }
+
+        // Check if 'order_status' is set and has a valid value
+        if (isset($conditions['order_status']) && in_array($conditions['order_status'], ['paid', 'unpaid'])) {
+            foreach ($conditions as $key => $value) {
+                if (!is_null($value)) {
+                    if ($key === 'order_status') {
+                        if ($value === 'paid') {
+                            $this->db->where('is_paid', 1);
+                        } else {
+                            $this->db->where('is_paid', 0);
+                        }
+                    } elseif (is_array($value)) {
+                        $this->db->where_in($key, $value);
+                    } else {
+                        $this->db->where($key, $value);
+                    }
+                }
+            }
+        } else {
+            foreach ($conditions as $key => $value) {
+                if (!is_null($value)) {
+                    if (is_array($value)) {
+                        $this->db->where_in($key, $value);
+                    } else {
+                        $this->db->where($key, $value);
+                    }
                 }
             }
         }
 
-        foreach ($conditions as $key => $value) {
-            if (!is_null($value)) {
-                if (is_array($value)) {
-                    $this->db->where_in($key, $value);
-                } else {
-                    $this->db->where($key, $value);
-                }
-            }
-        }
         $this->db->order_by("id", "desc");
         $obj = $this->db->get($this->table);
+
         return $this->order_merger($obj);
-        
     }
+
 
     public function newOrder($restaurant_id){
 
@@ -223,6 +292,7 @@ class Order_model extends Base_model
         $this->db->where('order_status', 'delivered');
         $obj = $this->db->get('orders');
         $orders['delivered'] = $this->order_merger($obj);
+        
 
         return $orders;
     }
@@ -1337,6 +1407,7 @@ public function get_cash_on_delivery_payment_sum($restaurant_id = null, $startin
     $result = $query->row_array();
 
     // Return the sum, or 0 if no data found
+        // print_r($result['total_sum']);
     return $result['total_sum'] ?? 0;
 }
 

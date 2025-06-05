@@ -24,4 +24,30 @@
 
     // initialize tooltips
     initToolTip();
+
+     $(document).ready(function() {
+
+        $('#orders_table').DataTable({
+            pageLength: 5,
+            columnDefs: [
+                {
+                    targets: 0,
+                    visible: true, 
+                    orderData: [0, 1], 
+                }
+            ],
+            order: [[0, 'desc']]
+        });
+
+        $('#select-all').click(function () {
+            $('.order-checkbox').prop('checked', this.checked);
+        });
+
+        $('#bulk-update-form').submit(function (e) {
+            if ($('.order-checkbox:checked').length === 0) {
+                alert('Please select at least one order.');
+                e.preventDefault();
+            }
+        });
+    });
 </script>

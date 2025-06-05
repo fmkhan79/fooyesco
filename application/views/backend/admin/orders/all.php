@@ -122,8 +122,14 @@
                                         <?php endforeach; ?>
                                     </td>
                                     <td>
-                                        <small><i class="far fa-clock"></i> <?php echo date('h:i A', sanitize($order['order_placed_at'])); ?></small><br>
+                                        <!-- Hidden date column for sorting -->
+                                        <span class="hidden-date" style="display: none;">
+                                            <?php echo date('Y-m-d', sanitize($order['order_placed_at'])); ?>
+                                        </span>
+                                        
+                                        <!-- Display the formatted date in the user-friendly format -->
                                         <small><i class="far fa-calendar-alt"></i> <?php echo date('D, d-M-Y', sanitize($order['order_placed_at'])); ?></small>
+                                        <small><i class="far fa-clock"></i> <?php echo date('h:i A', sanitize($order['order_placed_at'])); ?></small><br>
                                     </td>
                                     <td>
                                         <?php if ($order['order_type'] == "pickup") : ?>
@@ -217,7 +223,15 @@
 <script>
     $(document).ready(function() {
         $('#ordersTable').DataTable({
-            pageLength: 5,  
+            pageLength: 5,
+            columnDefs: [
+                {
+                    targets: 0,
+                    visible: true, 
+                    orderData: [0, 1], 
+                }
+            ],
+            order: [[0, 'desc']]
         });
     });
 

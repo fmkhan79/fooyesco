@@ -17,6 +17,7 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label><?php echo get_phrase('date_range'); ?></label>
                                 <input type="hidden" name="date_range" id="selected-date-range-value" value="<?php echo date('F d, Y', sanitize($starting_timestamp)) . ' - ' . date('F d, Y', sanitize($ending_timestamp)); ?>">
@@ -27,6 +28,17 @@
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label><?php echo get_phrase('status'); ?></label>
+                                <select class="form-control select2 w-100" name="status" id="status">
+                                    <option value="" <?php if ($status == "all") echo "selected"; ?>><?php echo get_phrase('all'); ?></option>
+                                    <option value="paid" <?php if ($status == "paid") echo "selected"; ?>><?php echo get_phrase('paid'); ?></option>
+                                    <option value="unpaid" <?php if ($status == "unpaid") echo "selected"; ?>><?php echo get_phrase('unpaid'); ?></option>
+                                </select>
+                            </div>
+                        </div>
                         <!-- <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Status</label>
@@ -72,13 +84,19 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <form id="bulk-update-form" method="post" action="<?php echo site_url('orders/mark_as_paid'); ?>">
-                                         
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success mb-3" id="bulk-paid-btn">
+                                    <i class="fas fa-check"></i> <?php echo get_phrase('mark_selected_as_paid'); ?>
+                                </button>   
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-12">
                                 <table id="orders_table" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox" id="select-all"></th>
+                                            <th><input type="checkbox" id="select-all"> <?php echo get_phrase(""); ?></th>
                                             <th><?php echo get_phrase("order_code"); ?></th>
                                             <th><?php echo get_phrase("ordered_from"); ?></th>
                                             <th><?php echo get_phrase("order_placing_time"); ?></th>
@@ -115,9 +133,15 @@
             
                                                     <?php endforeach; ?>
                                                 </td>
-                                                <td>
-                                                    <i class="far fa-calendar-alt"></i> <?php echo date('D, d-M-Y', sanitize($order['order_placed_at'])); ?>
-                                                    <small><i class="far fa-clock"></i> <?php echo date('h:i A', sanitize($order['order_placed_at'])); ?></small>
+                                               <td>
+                                                    <!-- Hidden date column for sorting -->
+                                                    <span class="hidden-date" style="display: none;">
+                                                        <?php echo date('Y-m-d', sanitize($order['order_placed_at'])); ?>
+                                                    </span>
+                                                    
+                                                    <!-- Display the formatted date in the user-friendly format -->
+                                                    <small><i class="far fa-calendar-alt"></i> <?php echo date('D, d-M-Y', sanitize($order['order_placed_at'])); ?></small>
+                                                    <small><i class="far fa-clock"></i> <?php echo date('h:i A', sanitize($order['order_placed_at'])); ?></small><br>
                                                 </td>
                                                 <!-- <td>
                                                     <?php if ($order['order_type'] == "pickup") : ?>
@@ -201,6 +225,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
+                                            <th><?php echo get_phrase(""); ?></th>
                                             <th><?php echo get_phrase("order_code"); ?></th>
                                             <th><?php echo get_phrase("ordered_from"); ?></th>
                                             <th><?php echo get_phrase("order_placing_time"); ?></th>
@@ -215,13 +240,6 @@
                                         </tr>
                                     </tfoot>
                                 </table>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button type="submit" class="btn btn-success mb-3" id="bulk-paid-btn">
-                                    <i class="fas fa-check"></i> <?php echo get_phrase('mark_selected_as_paid'); ?>
-                                </button>   
                             </div>
                         </div>
                     </form>
@@ -249,28 +267,3 @@
 <?php endif; ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        $('#orders_table').DataTable({
-            pageLength: 5,  
-        });
-
-        $('#select-all').click(function () {
-            $('.order-checkbox').prop('checked', this.checked);
-        });
-
-        $('#bulk-update-form').submit(function (e) {
-            if ($('.order-checkbox:checked').length === 0) {
-                alert('Please select at least one order.');
-                e.preventDefault();
-            }
-        });
-
-        $('#orders').DataTable({
-            pageLength: 5,
-        });
-    });
-
-</script>
