@@ -171,12 +171,14 @@
                 </li>
 
                 <?php $report_type = isset($report_type) ? $report_type : ""; ?>
+
                 <li class="nav-item">
                     <a href="<?php echo site_url('report'); ?>" class="nav-link <?php if ($page_name == "report/index" && $report_type == "owner" || $report_type == "details") echo 'active'; ?>">
                         <i class="nav-icon fas fa-receipt"></i>
                         <p><?php echo get_phrase("report"); ?></p>
                     </a>
                 </li>
+                
 
                 <li class="nav-header"><?php echo get_phrase("user_section", true); ?></li>
 
