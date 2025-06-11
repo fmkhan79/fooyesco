@@ -28,7 +28,7 @@
      $(document).ready(function() {
 
         $('#orders_table').DataTable({
-            pageLength: 5,
+            pageLength: 25,
             columnDefs: [
                 {
                     targets: 0,
@@ -36,7 +36,7 @@
                     orderData: [0, 1], 
                 }
             ],
-            order: [[0, 'desc']]
+            order: [[3, 'desc']]
         });
 
         $('#select-all').click(function () {
@@ -48,6 +48,21 @@
                 alert('Please select at least one order.');
                 e.preventDefault();
             }
+        });
+
+
+        const $form = $('#bulk-update-form');
+        const $paidBtn = $('#bulk-paid-btn');
+        const $unpaidBtn = $('#bulk-unpaid-btn');
+        
+        $paidBtn.on('click', function () {
+            $form.attr('action', $(this).data('action'));
+            $form.submit();
+        });
+
+        $unpaidBtn.on('click', function () {
+            $form.attr('action', $(this).data('action'));
+            $form.submit();
         });
     });
 </script>
