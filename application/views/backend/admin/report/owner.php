@@ -1,16 +1,4 @@
-<?php if ($this->session->flashdata('success_message')): ?>
-    <script>
-        alert("<?php echo $this->session->flashdata('success_message'); ?>");
 
-        <?php $this->session->set_flashdata('success_message', ''); ?>
-    </script>
-<?php endif; ?>
-
-<!-- <?php if ($this->session->flashdata('error_message')): ?>
-    <script>
-        alert("<?php echo $this->session->flashdata('error_message'); ?>");
-    </script>
-<?php endif; ?> -->
 
 <div class="row justify-content-center">
     <div class="col-lg-12">
