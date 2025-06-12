@@ -232,7 +232,7 @@
 <script>
     $(document).ready(function() {
         $('#orders').DataTable({
-            pageLength: 5,
+            pageLength: 25,
             columnDefs: [
                 {
                     targets: 0,

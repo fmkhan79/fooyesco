@@ -1,4 +1,4 @@
-
+q
 
 <aside class="main-sidebar sidebar-dark-danger elevation-4">
     <!-- Brand Logo -->
@@ -215,12 +215,12 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="<?php echo site_url('report/admin'); ?>" class="nav-link <?php if ($report_type == "admin") echo 'active'; ?>">
                                 <i class="fas fa-user-shield nav-icon"></i>
                                 <p><?php echo get_phrase('admin_revenue', true); ?></p>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a href="<?php echo site_url('report'); ?>" class="nav-link <?php if ($report_type == "owner" || $report_type == "details") echo 'active'; ?>">
                                 <i class="fas fa-user-tie nav-icon"></i>
