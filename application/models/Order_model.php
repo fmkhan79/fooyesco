@@ -17,7 +17,8 @@ class Order_model extends Base_model
     }
 
 
-    public function saveSettings($key, $value) {
+    public function saveSettings($key, $value)
+    {
         // Check if the key already exists in the table
         $existingKey = $this->db->get_where('system_settings', array('key' => $key))->row();
 
@@ -30,7 +31,8 @@ class Order_model extends Base_model
             $this->db->insert('system_settings', array('key' => $key, 'value' => $value));
         }
     }
-    public function getSetting($key) {
+    public function getSetting($key)
+    {
         // Retrieve the value for the specified key
         $result = $this->db->get_where('system_settings', array('key' => $key))->row();
 
@@ -71,7 +73,8 @@ class Order_model extends Base_model
         return $this->order_merger($obj, true);
     }
 
-    public function get_order_payment($code){
+    public function get_order_payment($code)
+    {
         $this->db->where('order_code', $code);
         $obj = $this->db->get("payment");
         return $this->order_merger($obj, true);
@@ -134,7 +137,7 @@ class Order_model extends Base_model
     //     //         // Custom logic for order_status
     //     //         if ($key === 'order_status') {
     //     //             // assuming 'is_paid' column must be equal to value of order_status
-                    
+
     //     //             if($value === "paid"){
     //     //                 $this->db->where('is_paid', 1);
     //     //             }else{
@@ -151,9 +154,9 @@ class Order_model extends Base_model
 
     //     $this->db->order_by("id", "desc");
     //     $obj = $this->db->get($this->table);
-        
+
     //     return $this->order_merger($obj);
-        
+
     // }
 
     public function get_by_condition($conditions = [])
@@ -203,9 +206,10 @@ class Order_model extends Base_model
     }
 
 
-    public function newOrder($restaurant_id){
+    public function newOrder($restaurant_id)
+    {
 
-        
+
         $thirtyMinutesAgo = date('Y-m-d H:i:s', strtotime('-30 minutes'));
 
         $this->db->where('restaurant_id', $restaurant_id);
@@ -292,7 +296,7 @@ class Order_model extends Base_model
         $this->db->where('order_status', 'delivered');
         $obj = $this->db->get('orders');
         $orders['delivered'] = $this->order_merger($obj);
-        
+
 
         return $orders;
     }
@@ -508,7 +512,7 @@ class Order_model extends Base_model
         // Count how many orders have been placed today
         $this->db->where('DATE(created_at)', $today);
         $count = $this->db->count_all_results('orders');
-    
+
         // New order number for the day
         $daily_order_number = $count + 1;
         $address_id = !empty($address_id_arg) ? $address_id_arg : sanitize($this->input->post('address_number'));
@@ -517,22 +521,22 @@ class Order_model extends Base_model
         $data['customer_id'] = $this->logged_in_user_id;
         $data['customer_address_id'] = $address_id;
         $data['daily_order_number'] = $daily_order_number;
-        
+
         $data['order_placed_at'] = strtotime(date('D, d-M-Y H:i:s'));
         $data['order_status'] = get_order_settings('auto_approve_order') ? "approved" : "pending";
         $data['total_menu_price'] = $this->cart_model->get_total_menu_price();
         $data['total_delivery_charge'] = $this->cart_model->get_total_delivery_charge();
         $data['total_vat_amount'] = $this->cart_model->get_vat_amount();
         $data['grand_total'] = $this->cart_model->get_grand_total($order_type);
-        
+
         $cart_items = $this->cart_model->get_all();
         if (!empty($cart_items)) {
-            $data['restaurant_id'] = $cart_items[0]['restaurant_id']; 
+            $data['restaurant_id'] = $cart_items[0]['restaurant_id'];
         }
         $data['commission_res'] = $this->restaurant_model->commision_check($data['restaurant_id']);
-        $data['commission_paid'] =  $data['grand_total'] * ($data['commission_res']/100);
+        $data['commission_paid'] =  $data['grand_total'] * ($data['commission_res'] / 100);
 
-            // log_message('error',  $data['commission_res'] ."lol");
+        // log_message('error',  $data['commission_res'] ."lol");
         // print_r($data);
         // die();
 
@@ -544,7 +548,7 @@ class Order_model extends Base_model
         // die();   
 
         foreach ($cart_items as $cart_item) {
-                    $restaurant_ids = $order_details['restaurant_id'];
+            $restaurant_ids = $order_details['restaurant_id'];
 
             $order_details['order_code'] = $data['code'];
             $order_details['menu_id'] = $cart_item['menu_id'];
@@ -561,7 +565,7 @@ class Order_model extends Base_model
 
 
 
-        $this->cart_model->clearing_cart(); 
+        $this->cart_model->clearing_cart();
 
 
         // CHECK IF AUTO DRIVER ASSIGNMENT IS ENABLED
@@ -579,15 +583,15 @@ class Order_model extends Base_model
     {
         $order_details = $this->order_model->get_by_code($order_code);
         $payment       = $this->order_model->get_order_payment($order_code);
-        
-       print_r($order_details);
-       die();
-               // Load necessary models
+
+        print_r($order_details);
+        die();
+        // Load necessary models
         $ordered_items = $this->order_model->details($order_code);
         // print_r($ordered_items . "Dass");
         // die();
         // Prepare data for the view
-       
+
 
         // SENDING MAIL TO CUSTOMER
         $customer_details = $this->user_model->get_user_by_id($this->logged_in_user_id);
@@ -603,7 +607,7 @@ class Order_model extends Base_model
         $message .= get_phrase('a_new_order_has_been_placed_by_the_customer_name') . ' <b>' . $customer_details['name'] . '</b>.<br/>';
         $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
         $message .= get_phrase('please_check_the_order_as_soon_as_possible_and_process_the_order') . '.';
-        
+
         $this->email_model->order_pacing($admin_details['email'], $message);
 
         // PUSH ALL THE RESTAURANT IDS TO THIS ARRAY FOR SENDING MAILS TO THE RESTAURANT OWNERS
@@ -1053,67 +1057,81 @@ class Order_model extends Base_model
 
 
     // DASHBOARD TILE DATA USER AND STATUS WISE
-public function get_number_of_orders($order_status = "", $restaurant_id = "all", $starting_timestamp = null, $ending_timestamp = null)
-{
-    $user_role = $this->session->userdata('user_role');
+    public function get_number_of_orders($order_status = "", $restaurant_id = "all", $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
+    {
 
-    // Parse date range from GET if timestamps are not provided
-    if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
-        if (isset($_GET['date_range'])) {
-            $dates = explode(' - ', $_GET['date_range']);
-            if (count($dates) === 2) {
-                $starting_timestamp = strtotime($dates[0]);
-                $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
-                if (!$starting_timestamp || !$ending_timestamp) {
-                    $starting_timestamp = null;
-                    $ending_timestamp = null;
+        $user_role = $this->session->userdata('user_role');
+
+        // Parse date range from GET if timestamps are not provided
+        if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
+            if (isset($_GET['date_range'])) {
+                $dates = explode(' - ', $_GET['date_range']);
+                if (count($dates) === 2) {
+                    $starting_timestamp = strtotime($dates[0]);
+                    $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+                    if (!$starting_timestamp || !$ending_timestamp) {
+                        $starting_timestamp = null;
+                        $ending_timestamp = null;
+                    }
                 }
             }
         }
-    }
 
-    /* AT FIRST CHECK USER ROLE */
-    if ($user_role == "customer") {
-        $this->db->where('customer_id', $this->logged_in_user_id);
-    } elseif ($user_role == "owner") {
-        $restaurant_ids = $this->restaurant_model->get_approved_restaurant_ids_by_owner_id($this->logged_in_user_id);
-        if (count($restaurant_ids)) {
-            $order_codes = $this->get_order_code_by_restaurant_id($restaurant_ids);
-            if (count($order_codes) > 0) {
-                $this->db->where_in('code', $order_codes);
+        /* AT FIRST CHECK USER ROLE */
+        if ($user_role == "customer") {
+            $this->db->where('customer_id', $this->logged_in_user_id);
+        } elseif ($user_role == "owner") {
+            $restaurant_ids = $this->restaurant_model->get_approved_restaurant_ids_by_owner_id($this->logged_in_user_id);
+            if (count($restaurant_ids)) {
+                $order_codes = $this->get_order_code_by_restaurant_id($restaurant_ids);
+                if (count($order_codes) > 0) {
+                    $this->db->where_in('code', $order_codes);
+                } else {
+                    return 0;  // No orders found
+                }
             } else {
-                return 0;  // No orders found
+                return 0;  // No approved restaurants for this owner
             }
-        } else {
-            return 0;  // No approved restaurants for this owner
         }
-    }
 
-    /* THEN CHECK ORDER STATUS */
-    if (!empty($order_status)) {
-        if ($order_status == "processed") {
-            $this->db->where_in('order_status', ['preparing', 'prepared', 'delivered']);
-        } else {
-            $this->db->where('order_status', $order_status);
+        /* THEN CHECK ORDER STATUS */
+        if (!empty($order_status)) {
+            if ($order_status == "processed") {
+                $this->db->where_in('order_status', ['preparing', 'prepared', 'delivered']);
+            } else {
+                $this->db->where('order_status', $order_status);
+            }
         }
-    }
 
-    /* FILTER BY RESTAURANT ID IF SELECTED */
-    if ($restaurant_id != "all" && !empty($restaurant_id)) {
-        $this->db->where('restaurant_id', $restaurant_id);
-    }
+        // Filter by is_paid
+        if (!empty($_GET['status'])) {
+            if ($_GET['status'] === "paid") {
+                $this->db->where('is_paid', 1);
+            } elseif ($_GET['status'] === "unpaid") {
+                $this->db->where('is_paid', 0);
+            }
+        }
 
-    /* FILTER BY DATE RANGE */
-    if (!empty($starting_timestamp)) {
-        $this->db->where('order_placed_at >=', $starting_timestamp);
-    }
-    if (!empty($ending_timestamp)) {
-        $this->db->where('order_placed_at <=', $ending_timestamp);
-    }
+        /* FILTER BY RESTAURANT ID IF SELECTED */
+        if ($restaurant_id != "all" && !empty($restaurant_id)) {
+            $this->db->where('restaurant_id', $restaurant_id);
+        }
 
-    // Execute the query and return the number of rows
-    return $this->db->get($this->table)->num_rows();
-}
+        /* FILTER BY DATE RANGE */
+        if (!empty($starting_timestamp)) {
+            $this->db->where('order_placed_at >=', $starting_timestamp);
+        }
+        if (!empty($ending_timestamp)) {
+            $this->db->where('order_placed_at <=', $ending_timestamp);
+        }
+
+        if (!is_null($is_paid_status)) {
+            $this->db->where('is_paid', $is_paid_status);
+        }
+
+        // Execute the query and return the number of rows
+        return $this->db->get($this->table)->num_rows();
+    }
 
 
 
@@ -1318,141 +1336,173 @@ public function get_number_of_orders($order_status = "", $restaurant_id = "all",
     }
 
 
-   public function get_stripe_payment_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null) {
-    // Agar restaurant_id GET se aaye aur 'all' na ho to sanitize karo
-   if (is_null($restaurant_id)) {
-        if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
-            $restaurant_id = sanitize($_GET['restaurant_id']);
+    public function get_stripe_payment_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
+    {
+        // Agar restaurant_id GET se aaye aur 'all' na ho to sanitize karo
+        if (is_null($restaurant_id)) {
+            if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
+                $restaurant_id = sanitize($_GET['restaurant_id']);
+            }
         }
-    }
 
-    // Parse date range from GET if timestamps are not provided
-    if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
-        if (isset($_GET['date_range'])) {
-            $dates = explode(' - ', $_GET['date_range']);
-            if (count($dates) === 2) {
-                $starting_timestamp = strtotime($dates[0]);
-                $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+        // Parse date range from GET if timestamps are not provided
+        if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
+            if (isset($_GET['date_range'])) {
+                $dates = explode(' - ', $_GET['date_range']);
+                if (count($dates) === 2) {
+                    $starting_timestamp = strtotime($dates[0]);
+                    $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
 
-                // If parsing fails, return 0 to avoid bad query
-                if (!$starting_timestamp || !$ending_timestamp) {
-                    return 0;
+                    // If parsing fails, return 0 to avoid bad query
+                    if (!$starting_timestamp || !$ending_timestamp) {
+                        return 0;
+                    }
                 }
             }
         }
-    }
 
-    $this->db->select_sum('payment.amount_paid', 'total_sum');
-    $this->db->from('payment');
-    $this->db->join('orders', 'payment.order_code = orders.code');
-    $this->db->where('payment.payment_method', 'stripe');
+        $this->db->select_sum('payment.amount_paid', 'total_sum');
+        $this->db->from('payment');
+        $this->db->join('orders', 'payment.order_code = orders.code');
+        $this->db->where('payment.payment_method', 'stripe');
 
-  if (($restaurant_id) !== "all") {
-        $this->db->where('orders.restaurant_id', $restaurant_id);
-    }
-
-    if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
-        $this->db->where('payment.created_at >=', $starting_timestamp);
-        $this->db->where('payment.created_at <=', $ending_timestamp);
-    }
-
-    $query = $this->db->get();
-    $result = $query->row_array();
-
-    return $result['total_sum'] ?? 0;
-}
-
-
-public function get_cash_on_delivery_payment_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null)
-{
-    
-    // Use restaurant_id from GET if not provided as argument
-    if (is_null($restaurant_id)) {
-        if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
-            print_r("dsa");
-            $restaurant_id = sanitize($_GET['restaurant_id']);
+        if (($restaurant_id) !== "all") {
+            $this->db->where('orders.restaurant_id', $restaurant_id);
         }
+
+        if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+            $this->db->where('payment.created_at >=', $starting_timestamp);
+            $this->db->where('payment.created_at <=', $ending_timestamp);
+        }
+        if (!empty($_GET['status'])) {
+            if ($_GET['status'] === "paid") {
+                $this->db->where('is_paid', 1);
+            } elseif ($_GET['status'] === "unpaid") {
+                $this->db->where('is_paid', 0);
+            }
+        }
+        if (!is_null($is_paid_status)) {
+            $this->db->where('is_paid', $is_paid_status);
+        }
+
+        $query = $this->db->get();
+        $result = $query->row_array();
+
+        return $result['total_sum'] ?? 0;
     }
-            
 
 
-    // Parse date range from GET if timestamps are not provided
-    if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
-        if (isset($_GET['date_range'])) {
-            $dates = explode(' - ', $_GET['date_range']);
-            if (count($dates) === 2) {
-                $starting_timestamp = strtotime($dates[0]);
-                $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+    public function get_cash_on_delivery_payment_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
+    {
 
-                // If parsing fails, return 0 to avoid bad query
-                if (!$starting_timestamp || !$ending_timestamp) {
-                    return 0;
+        // Use restaurant_id from GET if not provided as argument
+        if (is_null($restaurant_id)) {
+            if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
+                print_r("dsa");
+                $restaurant_id = sanitize($_GET['restaurant_id']);
+            }
+        }
+
+
+
+        // Parse date range from GET if timestamps are not provided
+        if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
+            if (isset($_GET['date_range'])) {
+                $dates = explode(' - ', $_GET['date_range']);
+                if (count($dates) === 2) {
+                    $starting_timestamp = strtotime($dates[0]);
+                    $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+
+                    // If parsing fails, return 0 to avoid bad query
+                    if (!$starting_timestamp || !$ending_timestamp) {
+                        return 0;
+                    }
                 }
             }
         }
-    }
 
-    // Build query
-    $this->db->select_sum('payment.amount_to_pay', 'total_sum');
-    $this->db->from('payment');
-    $this->db->join('orders', 'payment.order_code = orders.code');
-    $this->db->where('payment.payment_method', 'cash_on_delivery');
+        // Build query
+        $this->db->select_sum('payment.amount_to_pay', 'total_sum');
+        $this->db->from('payment');
+        $this->db->join('orders', 'payment.order_code = orders.code');
+        $this->db->where('payment.payment_method', 'cash_on_delivery');
 
-    if (($restaurant_id) !=="all") {
-        $this->db->where('orders.restaurant_id', $restaurant_id);
+        if (($restaurant_id) !== "all") {
+            $this->db->where('orders.restaurant_id', $restaurant_id);
+        }
 
-    }
+        if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+            $this->db->where('payment.created_at >=', $starting_timestamp);
+            $this->db->where('payment.created_at <=', $ending_timestamp);
+        }
+        if (!empty($_GET['status'])) {
+            if ($_GET['status'] === "paid") {
+                $this->db->where('is_paid', 1);
+            } elseif ($_GET['status'] === "unpaid") {
+                $this->db->where('is_paid', 0);
+            }
+        }
+        if (!is_null($is_paid_status)) {
+            $this->db->where('is_paid', $is_paid_status);
+        }
 
-    if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
-        $this->db->where('payment.created_at >=', $starting_timestamp);
-        $this->db->where('payment.created_at <=', $ending_timestamp);
-    }
-    
-    $query = $this->db->get();
-    $result = $query->row_array();
+        $query = $this->db->get();
+        $result = $query->row_array();
 
-    // Return the sum, or 0 if no data found
+        // Return the sum, or 0 if no data found
         // print_r($result['total_sum']);
-    return $result['total_sum'] ?? 0;
-}
-
-
-
-
-    public function get_total_revenue($restaurant_id = "all", $starting_timestamp = null, $ending_timestamp = null) {
-       if (is_null($restaurant_id)) {
-        if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
-            $restaurant_id = sanitize($_GET['restaurant_id']);
-        }
+        return $result['total_sum'] ?? 0;
     }
 
-    // Parse date range from GET if timestamps are not provided
-    if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
-        if (isset($_GET['date_range'])) {
-            $dates = explode(' - ', $_GET['date_range']);
-            if (count($dates) === 2) {
-                $starting_timestamp = strtotime($dates[0]);
-                $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
 
-                // If parsing fails, return 0 to avoid bad query
-                if (!$starting_timestamp || !$ending_timestamp) {
-                    return 0;
+
+
+    public function get_total_revenue($restaurant_id = "all", $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
+    {
+        if (is_null($restaurant_id)) {
+            if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
+                $restaurant_id = sanitize($_GET['restaurant_id']);
+            }
+        }
+
+        // Parse date range from GET if timestamps are not provided
+        if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
+            if (isset($_GET['date_range'])) {
+                $dates = explode(' - ', $_GET['date_range']);
+                if (count($dates) === 2) {
+                    $starting_timestamp = strtotime($dates[0]);
+                    $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+
+                    // If parsing fails, return 0 to avoid bad query
+                    if (!$starting_timestamp || !$ending_timestamp) {
+                        return 0;
+                    }
                 }
             }
         }
-    }
         $this->db->select_sum('payment.amount_to_pay', 'total_sum');
         $this->db->from('payment');
         $this->db->join('orders', 'payment.order_code = orders.code');
 
- if ($restaurant_id !== "all") {
-    $this->db->where('orders.restaurant_id', $restaurant_id);
-}
+        if ($restaurant_id !== "all") {
+            $this->db->where('orders.restaurant_id', $restaurant_id);
+        }
+        if (!empty($_GET['status'])) {
+            if ($_GET['status'] === "paid") {
+                $this->db->where('is_paid', 1);
+            } elseif ($_GET['status'] === "unpaid") {
+                $this->db->where('is_paid', 0);
+            }
+        }
 
-    if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
-        $this->db->where('payment.created_at >=', $starting_timestamp);
-        $this->db->where('payment.created_at <=', $ending_timestamp);
-    }
+        if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+            $this->db->where('payment.created_at >=', $starting_timestamp);
+            $this->db->where('payment.created_at <=', $ending_timestamp);
+        }
+        if (!is_null($is_paid_status)) {
+            $this->db->where('is_paid', $is_paid_status);
+        }
+
 
         $query = $this->db->get();
         $result = $query->row_array();
@@ -1461,77 +1511,87 @@ public function get_cash_on_delivery_payment_sum($restaurant_id = null, $startin
 
 
 
- public function total_comission_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null) {
-    // Sanitize the restaurant_id from the URL if provided
-   if (is_null($restaurant_id)) {
-        if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
-            $restaurant_id = sanitize($_GET['restaurant_id']);
+    public function total_comission_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
+    {
+        // Sanitize the restaurant_id from the URL if provided
+        if (is_null($restaurant_id)) {
+            if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
+                $restaurant_id = sanitize($_GET['restaurant_id']);
+            }
         }
-    }
 
-    // Parse date range from GET if timestamps are not provided
-    if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
-        if (isset($_GET['date_range'])) {
-            $dates = explode(' - ', $_GET['date_range']);
-            if (count($dates) === 2) {
-                $starting_timestamp = strtotime($dates[0]);
-                $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
+        // Parse date range from GET if timestamps are not provided
+        if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
+            if (isset($_GET['date_range'])) {
+                $dates = explode(' - ', $_GET['date_range']);
+                if (count($dates) === 2) {
+                    $starting_timestamp = strtotime($dates[0]);
+                    $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
 
-                // If parsing fails, return 0 to avoid bad query
-                if (!$starting_timestamp || !$ending_timestamp) {
-                    return 0;
+                    // If parsing fails, return 0 to avoid bad query
+                    if (!$starting_timestamp || !$ending_timestamp) {
+                        return 0;
+                    }
                 }
             }
         }
-    }
-    
-    // Start building the query
-    $this->db->select_sum('orders.commission_paid', 'total_sum');
-    $this->db->from('orders');
-    $this->db->join('payment', 'payment.order_code = orders.code');
-    
-    // Apply the filter for a specific restaurant_id if it's provided
-     if (($restaurant_id) !== "all") {
-        $this->db->where('orders.restaurant_id', $restaurant_id);
-    }
+
+        // Start building the query
+        $this->db->select_sum('orders.commission_paid', 'total_sum');
+        $this->db->from('orders');
+        $this->db->join('payment', 'payment.order_code = orders.code');
+
+        // Apply the filter for a specific restaurant_id if it's provided
+        if (($restaurant_id) !== "all") {
+            $this->db->where('orders.restaurant_id', $restaurant_id);
+        }
 
 
-if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
-    $this->db->where('payment.created_at >=', $starting_timestamp);
-    $this->db->where('payment.created_at <=', $ending_timestamp);
-}
+        if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+            $this->db->where('payment.created_at >=', $starting_timestamp);
+            $this->db->where('payment.created_at <=', $ending_timestamp);
+        }
 
-    // Execute the query
-    $query = $this->db->get();
+         if (!empty($_GET['status'])) {
+            if ($_GET['status'] === "paid") {
+                $this->db->where('is_paid', 1);
+            } elseif ($_GET['status'] === "unpaid") {
+                $this->db->where('is_paid', 0);
+            }
+        }
+        if (!is_null($is_paid_status)) {
+            $this->db->where('is_paid', $is_paid_status);
+        }
 
-    // Check if the query was successful and if there are results
-    if ($query && $query->num_rows() > 0) {
-        $result = $query->row_array();
-        return $result['total_sum'] ?? 0;  // Return the sum, or 0 if no result
-    } else {
-        return 0;  // Return 0 if no matching rows found
-    }
-}
+        // Execute the query
+        $query = $this->db->get();
 
-public function mark_as_paid($order_ids = [])
-{
-    if (!empty($order_ids) && is_array($order_ids)) {
-        foreach ($order_ids as $id) {
-            $this->db->where('id', $id);
-            $this->db->update('orders', ['is_paid' => 1]);
+        // Check if the query was successful and if there are results
+        if ($query && $query->num_rows() > 0) {
+            $result = $query->row_array();
+            return $result['total_sum'] ?? 0;  // Return the sum, or 0 if no result
+        } else {
+            return 0;  // Return 0 if no matching rows found
         }
     }
-}
 
-public function mark_as_unpaid($order_ids = [])
-{
-    if (!empty($order_ids) && is_array($order_ids)) {
-        foreach ($order_ids as $id) {
-            $this->db->where('id', $id);
-            $this->db->update('orders', ['is_paid' => 0]);
+    public function mark_as_paid($order_ids = [])
+    {
+        if (!empty($order_ids) && is_array($order_ids)) {
+            foreach ($order_ids as $id) {
+                $this->db->where('id', $id);
+                $this->db->update('orders', ['is_paid' => 1]);
+            }
         }
     }
-}
 
-
+    public function mark_as_unpaid($order_ids = [])
+    {
+        if (!empty($order_ids) && is_array($order_ids)) {
+            foreach ($order_ids as $id) {
+                $this->db->where('id', $id);
+                $this->db->update('orders', ['is_paid' => 0]);
+            }
+        }
+    }
 }

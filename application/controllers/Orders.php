@@ -27,7 +27,7 @@ class Orders extends Authorization
      */
     public function index()
     {
-        
+
         $page_data['restaurant_id'] = isset($_GET['restaurant_id']) ? sanitize($_GET['restaurant_id']) : "all";
         $page_data['customer_id'] = isset($_GET['customer_id']) ? sanitize($_GET['customer_id']) : "all";
         $page_data['driver_id'] = isset($_GET['driver_id']) ? sanitize($_GET['driver_id']) : "all";
@@ -112,18 +112,17 @@ class Orders extends Authorization
 
     public function check_new_order()
     {
-       
+
         $user_id = $this->session->userdata("user_id");
-        
+
         $this->db->from('restaurants');
-        $this->db->where('owner_id' , $user_id);
+        $this->db->where('owner_id', $user_id);
 
         $query = $this->db->get();
-        
-        if ( $query->num_rows() > 0 )
-        {
+
+        if ($query->num_rows() > 0) {
             $row = $query->row_array();
-            $restaurant_id = $row['id']; 
+            $restaurant_id = $row['id'];
         }
 
         $this->db->from('orders');
@@ -134,12 +133,10 @@ class Orders extends Authorization
         $this->db->limit(1);
         $_query = $this->db->get();
 
-        if ($_query->num_rows() > 0)
-        {
+        if ($_query->num_rows() > 0) {
             $check = $_query->row_array();
             echo json_encode($check);
         }
-        
     }
 
     public function mark_order_as_read()
@@ -155,7 +152,7 @@ class Orders extends Authorization
             $this->db->where('id', $order_id);
             $this->db->update('orders');
 
-    
+
             echo json_encode(['status' => 'success']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Invalid order ID']);
@@ -165,7 +162,7 @@ class Orders extends Authorization
 
 
 
-    
+
     // WRITE A NOTE
     public function add_note()
     {
@@ -204,7 +201,7 @@ class Orders extends Authorization
     // LIVE ORDERS FOR TODAY
     public function live($response = false)
     {
-        
+
         $page_data['page_name'] = 'orders/index';
         $page_data['order_type'] = 'live';
         $page_data['page_title'] = get_phrase("live_orders");
@@ -217,7 +214,7 @@ class Orders extends Authorization
             $this->load->view('backend/index', $page_data);
         }
     }
-  
+
 
     // SENDING ORDER PLACING MAILS FROM THIS FUNCTION
     public function order_placing_mail($order_code)
@@ -234,18 +231,18 @@ class Orders extends Authorization
         // Fetch order details based on the order code
         $order_details = $this->order_model->get_by_code($order_code);
         $payment       = $this->order_model->get_order_payment($order_code);
-    
+
         if (!$order_details) {
             show_404(); // If no order found, show 404 page
         }
-    
+
         // Load necessary models
         $ordered_items = $this->order_model->details($order_code);
-    
+
         // --- START: Calculate daily order number ---
-       
+
         // --- END ---
-    
+
         // Prepare data for the view
         $data['order_details'] = $order_details;
         $data['ordered_items'] = $ordered_items;
@@ -257,8 +254,9 @@ class Orders extends Authorization
     }
 
 
-    public function delete_session() {
-    // echo "das";
+    public function delete_session()
+    {
+        // echo "das";
         print_r($this->session('user_data'));
     }
     // GET NUMBER OF ORDERS SPECIALLY FOR AJAX CALLS
@@ -272,16 +270,17 @@ class Orders extends Authorization
         echo $this->order_model->get_number_of_todays_pending_orders();
     }
 
-    public function delete_cookies_and_session() {
+    public function delete_cookies_and_session()
+    {
         // Delete specific cookies
-        
+
         delete_cookie('__stripe_mid');
         delete_cookie('__stripe_sid');
         delete_cookie('ci_session');
 
         // Destroy the session
         $session->destroy();
-      
+
 
         // Optionally return a response
         echo json_encode(['status' => 'success']);
@@ -289,33 +288,33 @@ class Orders extends Authorization
     public function missedresponsenoti()
     {
         $user_id = $this->session->userdata("user_id");
-             // Get restaurant owned by the user 
+        // Get restaurant owned by the user 
         $restaurant = $this->db->get_where('restaurants', ['owner_id' => $user_id])->row_array();
-          
+
         if ($restaurant) {
             $restaurant_id = $restaurant['id'];
-            
+
             // Fetch all orders where no_response = 1
             $this->db->from('orders');
             $this->db->where('restaurant_id', $restaurant_id);
             $this->db->where('no_response', 1);
             $this->db->order_by('id', 'DESC');
             $orders = $this->db->get()->result_array();
-          
+
             if (!empty($orders)) {
-              
+
                 // === Fetch owner email ===
                 $owner = $this->db->get_where('users', ['id' => $user_id])->row_array();
                 if ($owner && !empty($owner['email'])) {
                     $owner_email = $owner['email'];
-                 
+
                     // === Prepare list of order codes ===
                     $order_codes = array_column($orders, 'code'); // get all codes
                     $order_list = '';
                     foreach ($order_codes as $code) {
                         $order_list .= "- Order <strong>#" . $code . "</strong><br>";
                     }
-                   
+
                     // === Prepare email content ===
                     $subject = "Missed Orders Notification";
                     $message = "Dear Restaurant Owner " . $owner['name'] . ",<br><br>";
@@ -323,11 +322,11 @@ class Orders extends Authorization
                     $message .= $order_list;
                     $message .= "<br>Please check your orders dashboard.<br><br>";
                     $message .= "Regards,<br>Fooyes Team";
-                  
+
                     // === Send Email using PHPMailer ===
                     $this->load->library('phpmailer_lib');
                     $mail = $this->phpmailer_lib->load();
-    
+
                     // SMTP config
                     $mail->isSMTP();
                     $mail->Host       = 'mail.fooyes.co.uk';
@@ -336,18 +335,18 @@ class Orders extends Authorization
                     $mail->Password   = '^X{zK)uB%XrS';
                     $mail->SMTPSecure = 'ssl';
                     $mail->Port       = 465;
-    
+
                     $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
                     // $mail->addAddress($owner_email); // Send to restaurant owner
                     $mail->addAddress('website25developer@gmail.com'); // For dev monitoring
-                  
+
                     $mail->isHTML(true);
                     $mail->Subject = $subject;
                     $mail->Body    = $message;
-                    
+
                     if ($mail->send()) {
                         echo 'Email Sent Successfully!';
-                      
+
                         log_message('info', "Missed orders email sent to {$owner_email} for orders: " . implode(', ', $order_codes));
                     } else {
                         echo 'Mailer Error: ' . $mail->ErrorInfo;
@@ -360,82 +359,80 @@ class Orders extends Authorization
     }
 
 
-                public function get_stripe_payment_total($restaurant_id)
-            {
-                $this->load->model('order_model');
+    public function get_stripe_payment_total($restaurant_id)
+    {
+        $this->load->model('order_model');
 
-                $total_payment = $this->order_model->get_stripe_payment_sum($restaurant_id);
+        $total_payment = $this->order_model->get_stripe_payment_sum($restaurant_id);
 
-                echo $total_payment;
-    //    return $total_payment;
+        echo $total_payment;
+        //    return $total_payment;
 
-            }
+    }
 
-             public function get_cash_on_delivery_payment_total($restaurant_id)
-            {
-                     $this->load->model('order_model');
+    public function get_cash_on_delivery_payment_total($restaurant_id)
+    {
+        $this->load->model('order_model');
 
-                     $total_payment = $this->order_model->get_cash_on_delivery_payment_sum($restaurant_id);
+        $total_payment = $this->order_model->get_cash_on_delivery_payment_sum($restaurant_id);
 
-                     echo $total_payment;
-                     //    return $total_payment;
+        echo $total_payment;
+        //    return $total_payment;
 
-            }
-            
+    }
 
-            public function total_revenue($restaurant_id)
-            {
-                $this->load->model('order_model');
 
-                $total_payment = $this->order_model->get_total_revenue($restaurant_id);
+    public function total_revenue($restaurant_id)
+    {
+        $this->load->model('order_model');
 
-                echo $total_payment;
-                //    return $total_payment;
+        $total_payment = $this->order_model->get_total_revenue($restaurant_id);
 
-            }
+        echo $total_payment;
+        //    return $total_payment;
 
-            public function get_total_commission($restaurant_id)
-            {
-                $this->load->model('order_model');
+    }
 
-                $total_commission = $this->order_model->total_comission_sum($restaurant_id);
+    public function get_total_commission($restaurant_id)
+    {
+        $this->load->model('order_model');
 
-                echo $total_commission;
-                //    return $total_payment;
+        $total_commission = $this->order_model->total_comission_sum($restaurant_id);
 
-            }
+        echo $total_commission;
+        //    return $total_payment;
 
-        public function mark_as_paid()
-        {
-            $this->load->model('order_model');
+    }
 
-            $order_ids = $this->input->post('order_ids');
-       
+    public function mark_as_paid()
+    {
+        $this->load->model('order_model');
 
-            if (!empty($order_ids)) {
-                    $this->order_model->mark_as_paid($order_ids); 
-                $this->session->set_flashdata('success_message', get_phrase('orders_set_as_paid_successfully'));
-            } 
+        $order_ids = $this->input->post('order_ids');
 
-            redirect(site_url('report/index'));
+
+        if (!empty($order_ids)) {
+            $this->order_model->mark_as_paid($order_ids);
+            $this->session->set_flashdata('success_message', get_phrase('orders_set_as_paid_successfully'));
         }
-        
-        public function mark_as_unpaid()
-        {
-            $this->load->model('order_model');
 
-            $order_ids = $this->input->post('order_ids');
-       
+        redirect(site_url('report/index'));
+    }
 
-            if (!empty($order_ids)) {
-                    $this->order_model->mark_as_unpaid($order_ids); 
-                $this->session->set_flashdata('success_message', get_phrase('orders_set_as_unpaid_successfully'));
-            } 
+    public function mark_as_unpaid()
+    {
+        $this->load->model('order_model');
 
-            redirect(site_url('report/index'));
+        $order_ids = $this->input->post('order_ids');
+
+
+        if (!empty($order_ids)) {
+            $this->order_model->mark_as_unpaid($order_ids);
+            $this->session->set_flashdata('success_message', get_phrase('orders_set_as_unpaid_successfully'));
         }
-            
 
+        redirect(site_url('report/index'));
+    }
 }
 
 /* End of file Orders.php */
