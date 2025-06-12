@@ -50,5 +50,20 @@
                 e.preventDefault();
             }
         });
+
+
+        const $form = $('#bulk-update-form');
+        const $paidBtn = $('#bulk-paid-btn');
+        const $unpaidBtn = $('#bulk-unpaid-btn');
+        
+        $paidBtn.on('click', function () {
+            $form.attr('action', $(this).data('action'));
+            $form.submit();
+        });
+
+        $unpaidBtn.on('click', function () {
+            $form.attr('action', $(this).data('action'));
+            $form.submit();
+        });
     });
 </script>

@@ -414,10 +414,23 @@ class Orders extends Authorization
 
             if (!empty($order_ids)) {
                     $this->order_model->mark_as_paid($order_ids); 
-                $this->session->set_flashdata('success_message', get_phrase('orders_updated_successfully'));
-            } else {
-                $this->session->set_flashdata('error_message', get_phrase('no_orders_selected'));
-            }
+                $this->session->set_flashdata('success_message', get_phrase('orders_set_as_paid_successfully'));
+            } 
+
+            redirect(site_url('report/index'));
+        }
+        
+        public function mark_as_unpaid()
+        {
+            $this->load->model('order_model');
+
+            $order_ids = $this->input->post('order_ids');
+       
+
+            if (!empty($order_ids)) {
+                    $this->order_model->mark_as_unpaid($order_ids); 
+                $this->session->set_flashdata('success_message', get_phrase('orders_set_as_unpaid_successfully'));
+            } 
 
             redirect(site_url('report/index'));
         }

@@ -1523,5 +1523,15 @@ public function mark_as_paid($order_ids = [])
     }
 }
 
+public function mark_as_unpaid($order_ids = [])
+{
+    if (!empty($order_ids) && is_array($order_ids)) {
+        foreach ($order_ids as $id) {
+            $this->db->where('id', $id);
+            $this->db->update('orders', ['is_paid' => 0]);
+        }
+    }
+}
+
 
 }

@@ -1,3 +1,16 @@
+<?php if ($this->session->flashdata('success_message')): ?>
+    <script>
+        alert("<?php echo $this->session->flashdata('success_message'); ?>");
+
+        <?php $this->session->set_flashdata('success_message', ''); ?>
+    </script>
+<?php endif; ?>
+
+<!-- <?php if ($this->session->flashdata('error_message')): ?>
+    <script>
+        alert("<?php echo $this->session->flashdata('error_message'); ?>");
+    </script>
+<?php endif; ?> -->
 
 <div class="row justify-content-center">
     <div class="col-lg-12">
@@ -83,14 +96,18 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form id="bulk-update-form" method="post" action="<?php echo site_url('orders/mark_as_paid'); ?>">
+                    <form id="bulk-update-form" method="post" action="">
                         <div class="row mb-4">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success mb-3" id="bulk-paid-btn">
+                                <button type="submit" class="btn btn-success mb-3" id="bulk-paid-btn" data-action="<?php echo site_url('orders/mark_as_paid'); ?>">
                                     <i class="fas fa-check"></i> <?php echo get_phrase('mark_selected_as_paid'); ?>
-                                </button>   
+                                </button>
+                                <button type="submit" class="btn btn-danger mb-3" id="bulk-unpaid-btn" data-action="<?php echo site_url('orders/mark_as_unpaid'); ?>">
+                                    <i class="fas fa-times"></i> <?php echo get_phrase('mark_selected_as_unpaid'); ?>
+                                </button>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-12">
                                 <table id="orders_table" class="table table-bordered table-hover">
