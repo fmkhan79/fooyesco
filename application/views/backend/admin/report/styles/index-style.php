@@ -20,5 +20,11 @@
     background-color: #ffc107 !important;
 }
 
+#bulk-unpaid-btn{
+    background-color: grey !important;
+    border-radius: 2rem;
+    border: none;
+}
+
 
 </style>

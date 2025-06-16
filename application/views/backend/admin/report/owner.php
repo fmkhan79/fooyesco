@@ -1,4 +1,5 @@
 
+
 <div class="row justify-content-center">
     <div class="col-lg-12">
         <div class="card">
@@ -37,6 +38,7 @@
                                     <option value="paid" <?php if ($status == "paid") echo "selected"; ?>><?php echo get_phrase('paid'); ?></option>
                                     <option value="unpaid" <?php if ($status == "unpaid") echo "selected"; ?>><?php echo get_phrase('unpaid'); ?></option>
                                 </select>
+
                             </div>
                         </div>
                         <!-- <div class="col-lg-4">
@@ -55,7 +57,6 @@
 
 
                         <div class="col-lg-2">
-                            <label class="text-white"><?php echo get_phrase('submit'); ?></label>
 
                             <div class="input-group pb-5">
                                 <button type="submit" class="btn btn-primary">
@@ -72,7 +73,7 @@
 </div>
 
 <?php if (count($orders)) :
-    ?>
+?>
     <div class="row justify-content-center">
         <div class="col-lg-12">
             <div class="card">
@@ -83,14 +84,18 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form id="bulk-update-form" method="post" action="<?php echo site_url('orders/mark_as_paid'); ?>">
+                    <form id="bulk-update-form" method="post" action="">
                         <div class="row mb-4">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success mb-3" id="bulk-paid-btn">
+                                <button type="submit" class="btn btn-success mb-3" id="bulk-paid-btn" data-action="<?php echo site_url('orders/mark_as_paid'); ?>">
                                     <i class="fas fa-check"></i> <?php echo get_phrase('mark_selected_as_paid'); ?>
-                                </button>   
+                                </button>
+                                <button type="submit" class="btn btn-danger mb-3" id="bulk-unpaid-btn" data-action="<?php echo site_url('orders/mark_as_unpaid'); ?>">
+                                    <i class="fas fa-times"></i> <?php echo get_phrase('mark_selected_as_unpaid'); ?>
+                                </button>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-12">
                                 <table id="orders_table" class="table table-bordered table-hover">
@@ -102,19 +107,19 @@
                                             <th><?php echo get_phrase("order_placing_time"); ?></th>
                                             <!-- <th><?php echo get_phrase("delivery_details"); ?></th> -->
                                             <th><?php echo get_phrase("payment method"); ?></th>
-                                            <th><?php echo get_phrase("Order Amount"); ?></th> 
-                                            <th><?php echo get_phrase("Comission Amount"); ?></th> 
+                                            <th><?php echo get_phrase("Order Amount"); ?></th>
+                                            <th><?php echo get_phrase("Comission Amount"); ?></th>
                                             <th><?php echo get_phrase("After Commission"); ?></th>
                                             <th><?php echo get_phrase("Is Paid"); ?></th>
-            
+
                                             <th><?php echo get_phrase("action"); ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach ($orders as $order) : 
+                                        foreach ($orders as $order) :
                                         ?>
-                                        
+
                                             <tr>
                                                 <td><input type="checkbox" class="order-checkbox" name="order_ids[]" value="<?php echo $order['id']; ?>"></td>
                                                 <td>
@@ -130,15 +135,15 @@
                                                         <?php else : ?>
                                                             <a href="javascript:void(0)" class="text-red"><small class="d-block"> ∙ <?php echo get_phrase("not_found");; ?></small></a>
                                                         <?php endif; ?>
-            
+
                                                     <?php endforeach; ?>
                                                 </td>
-                                               <td>
+                                                <td>
                                                     <!-- Hidden date column for sorting -->
                                                     <span class="hidden-date" style="display: none;">
                                                         <?php echo date('Y-m-d', sanitize($order['order_placed_at'])); ?>
                                                     </span>
-                                                    
+
                                                     <!-- Display the formatted date in the user-friendly format -->
                                                     <small><i class="far fa-calendar-alt"></i> <?php echo date('D, d-M-Y', sanitize($order['order_placed_at'])); ?></small>
                                                     <small><i class="far fa-clock"></i> <?php echo date('h:i A', sanitize($order['order_placed_at'])); ?></small><br>
@@ -168,19 +173,19 @@
                                                     <?php endif; ?>
                                                 </td> -->
                                                 <td>
-                                                        <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
-                                                        <?php if (($payment_data['payment_method']) =="stripe" )  : ?>
-                                                                <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('Card')); ?></span>
-                                                        <?php else : ?>
-                                                            <span class="badge badge-danger lighten-primary"><?php echo get_phrase(sanitize('Cash')); ?></span>
-                                                        <?php endif; ?>
+                                                    <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
+                                                    <?php if (($payment_data['payment_method']) == "stripe") : ?>
+                                                        <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('Card')); ?></span>
+                                                    <?php else : ?>
+                                                        <span class="badge badge-danger lighten-primary"><?php echo get_phrase(sanitize('Cash')); ?></span>
+                                                    <?php endif; ?>
                                                 </td>
                                                 <td>
                                                     <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
                                                     <small class="d-block">
                                                         <?php echo currency(isset($payment_data['amount_to_pay']) ? sanitize($payment_data['amount_to_pay']) : 0); ?>
                                                     </small>
-                                                    
+
                                                     <!-- <small class="d-block">
                                                         <strong><?php echo get_phrase('method'); ?> : </strong>
                                                         <?php if (isset($payment_data['payment_method'])) : ?>
@@ -190,27 +195,27 @@
                                                         <?php endif; ?>
                                                     </small> -->
                                                 </td>
-                                                
-                                                
+
+
                                                 <td>
                                                     <small class="d-block">
-                                                    <?php echo currency(isset($order['commission_paid']) ? sanitize(  $order['commission_paid']) : 0); ?>    
+                                                        <?php echo currency(isset($order['commission_paid']) ? sanitize($order['commission_paid']) : 0); ?>
                                                     </small>
                                                 </td>
-                                                
+
                                                 <td>
-                                                <small class="d-block">
+                                                    <small class="d-block">
                                                         <?php
-                                                            $commission_amount = isset($order['commission_paid']) ? sanitize($order['grand_total'] - $order['commission_paid']) : 0;
-                                                            $commission_percentage = $order['commission_res'] == NULL ? 0 : $order['commission_res'];
-            
-                                                            echo currency(number_format($commission_amount, 2)) . " (" . number_format($commission_percentage, 2) . "%)";
+                                                        $commission_amount = isset($order['commission_paid']) ? sanitize($order['grand_total'] - $order['commission_paid']) : 0;
+                                                        $commission_percentage = $order['commission_res'] == NULL ? 0 : $order['commission_res'];
+
+                                                        echo currency(number_format($commission_amount, 2)) . " (" . number_format($commission_percentage, 2) . "%)";
                                                         ?>
                                                     </small>
                                                 </td>
                                                 <td>
                                                     <small>
-                                                        <?php if (($order['is_paid']) == 1 ) : ?>
+                                                        <?php if (($order['is_paid']) == 1) : ?>
                                                             <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('paid')); ?></span>
                                                         <?php else : ?>
                                                             <span class="badge badge-danger lighten-danger"><?php echo get_phrase(sanitize('unpaid')); ?></span>
@@ -231,11 +236,11 @@
                                             <th><?php echo get_phrase("order_placing_time"); ?></th>
                                             <!-- <th><?php echo get_phrase("delivery_details"); ?></th> -->
                                             <th><?php echo get_phrase("payment method"); ?></th>
-                                            <th><?php echo get_phrase("Order Amount"); ?></th> 
-                                            <th><?php echo get_phrase("Comission Amount"); ?></th> 
+                                            <th><?php echo get_phrase("Order Amount"); ?></th>
+                                            <th><?php echo get_phrase("Comission Amount"); ?></th>
                                             <th><?php echo get_phrase("After Commission"); ?></th>
                                             <th><?php echo get_phrase("Ispaid"); ?></th>
-            
+
                                             <th><?php echo get_phrase("action"); ?></th>
                                         </tr>
                                     </tfoot>
@@ -252,15 +257,15 @@
 
 
 <div class="card">
-            <div class="card-header">
-                <h3 class="card-title"><i class="far fa-chart-bar"></i> <?php echo get_phrase("admin_income_graph_of_year", true) . ": " . date("Y"); ?></h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div id="sales-graph" class="graph-style"></div>
-                </div>
-            </div>
+    <div class="card-header">
+        <h3 class="card-title"><i class="far fa-chart-bar"></i> <?php echo get_phrase("admin_income_graph_of_year", true) . ": " . date("Y"); ?></h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div id="sales-graph" class="graph-style"></div>
         </div>
+    </div>
+</div>
 
 <?php if (!count($commissions)) : ?>
     <?php isEmpty(); ?>
