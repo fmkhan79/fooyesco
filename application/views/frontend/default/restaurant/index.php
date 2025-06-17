@@ -23,21 +23,31 @@
     } */
 
     .scroll-to-order-btn {
-    position: fixed; /* Fix button to the screen */
-    bottom: 20px; /* Position from the bottom */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Ensure it's centered */
-    z-index: 1000; /* Ensure it's on top of other content */
-    background-color: #ff4d4d; /* Button background color */
-    color: white;
-    padding: 10px 20px; /* Button padding */
-    border-radius: 8px; /* Rounded corners */
-    display: none; /* Initially hide the button */
-    cursor: pointer; /* Pointer on hover */
-}
+        position: fixed;
+        /* Fix button to the screen */
+        bottom: 20px;
+        /* Position from the bottom */
+        left: 50%;
+        /* Center horizontally */
+        transform: translateX(-50%);
+        /* Ensure it's centered */
+        z-index: 1000;
+        /* Ensure it's on top of other content */
+        background-color: #ff4d4d;
+        /* Button background color */
+        color: white;
+        padding: 10px 20px;
+        /* Button padding */
+        border-radius: 8px;
+        /* Rounded corners */
+        display: none;
+        /* Initially hide the button */
+        cursor: pointer;
+        /* Pointer on hover */
+    }
 
     #myBtn {
-  /* display: none;
+        /* display: none;
   position: fixed;
   bottom: 20px;
   right: 30px;
@@ -51,21 +61,30 @@
   padding: 5px 10px;
   border-radius: 4px; */
 
-  display: none;
-  position: fixed; /* Fix button to the screen */
-    bottom: 20px; /* Position from the bottom */
-   
-    /* Ensure it's centered */
-    z-index: 99; /* Ensure it's on top of other content */
-    background-color: #ff4d4d; /* Button background color */
-    color: white;
-    padding: 10px 10px; /* Button padding */
-    border-radius: 8px; /* Rounded corners */
-    display: none; /* Initially hide the button */
-    cursor: pointer; /* Pointer on hover */
-}
+        display: none;
+        position: fixed;
+        /* Fix button to the screen */
+        bottom: 20px;
+        /* Position from the bottom */
+
+        /* Ensure it's centered */
+        z-index: 99;
+        /* Ensure it's on top of other content */
+        background-color: #ff4d4d;
+        /* Button background color */
+        color: white;
+        padding: 10px 10px;
+        /* Button padding */
+        border-radius: 8px;
+        /* Rounded corners */
+        display: none;
+        /* Initially hide the button */
+        cursor: pointer;
+        /* Pointer on hover */
+    }
+
     #viewmyBtn {
-  /* display: none;
+        /* display: none;
   position: fixed;
   bottom: 20px;
   right: 30px;
@@ -79,38 +98,47 @@
   padding: 5px 10px;
   border-radius: 4px; */
 
-  display: none;
-  position: fixed; /* Fix button to the screen */
-    bottom: 20px; /* Position from the bottom */
-    right: 30px;
-    /* Ensure it's centered */
-    z-index: 99; /* Ensure it's on top of other content */
-    background-color: #ff4d4d; /* Button background color */
-    color: white;
-    padding: 10px 10px; /* Button padding */
-    border-radius: 8px; /* Rounded corners */
-    display: none; /* Initially hide the button */
-    cursor: pointer; /* Pointer on hover */
-}
+        display: none;
+        position: fixed;
+        /* Fix button to the screen */
+        bottom: 20px;
+        /* Position from the bottom */
+        right: 30px;
+        /* Ensure it's centered */
+        z-index: 99;
+        /* Ensure it's on top of other content */
+        background-color: #ff4d4d;
+        /* Button background color */
+        color: white;
+        padding: 10px 10px;
+        /* Button padding */
+        border-radius: 8px;
+        /* Rounded corners */
+        display: none;
+        /* Initially hide the button */
+        cursor: pointer;
+        /* Pointer on hover */
+    }
 
-#myBtn:hover {
-  background-color: #555;
-}
-#cal{
-    bottom: -0.1em!important;
-    font-size: 0.5em;
-    left: 45px;
-}
+    #myBtn:hover {
+        background-color: #555;
+    }
 
-.order-red-mobile-btn{
-    
-    padding: 11px 22px;
-    background: #f54748;
-    border-radius: 41px;
-    font-size: 14px;
-    color: #fff;
-    font-weight: 500;
-}
+    #cal {
+        bottom: -0.1em !important;
+        font-size: 0.5em;
+        left: 45px;
+    }
+
+    .order-red-mobile-btn {
+
+        padding: 11px 22px;
+        background: #f54748;
+        border-radius: 41px;
+        font-size: 14px;
+        color: #fff;
+        font-weight: 500;
+    }
 </style>
 <!-- RESTAURANT GALLERY -->
 
@@ -196,7 +224,7 @@
                         Delivery fee : £ <?php echo $restaurant_details['delivery_charge']; ?>
                     </div>
                     <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
-                        Order : £ 10 
+                        Order : £ 10
                     </div>
                     <div class="col-md-3 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
                         <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
@@ -213,7 +241,7 @@
                     <h5><strong>About"
                             <?php echo $restaurant_details['name']; ?>"
                         </strong></h5>
-                    <span style="font-size: 14px; font-weight:400;"><?php echo $restaurant_details['restaurant_about']; ?>.</span> 
+                    <span style="font-size: 14px; font-weight:400;"><?php echo $restaurant_details['restaurant_about']; ?>.</span>
                     <!-- <a class="red" href="#"> READ MORE</a> -->
                 </div>
 
@@ -226,12 +254,12 @@
 
 <!-- RESTAURANT TITLE HEADER -->
 <section class="detail-wbox mt-4">
-<button onclick="topFunction()" class="border-0 fw-bold d-md-none mybtn" id="myBtn"  style="background-color: #ff4d4d; border-radius: 38px;" title="Go to top">View My Order</button>
-<button onclick="viewtopFunction()" class="border-0 fw-bold d-none d-lg-block" 
-    id="viewmyBtn" style="background-color: #ff4d4d; border-radius: 38px; display: none !important;" 
-    title="Go to top">
-    View My Order
-</button>
+    <button onclick="topFunction()" class="border-0 fw-bold d-md-none mybtn" id="myBtn" style="background-color: #ff4d4d; border-radius: 38px;" title="Go to top">View My Order</button>
+    <button onclick="viewtopFunction()" class="border-0 fw-bold d-none d-lg-block"
+        id="viewmyBtn" style="background-color: #ff4d4d; border-radius: 38px; display: none !important;"
+        title="Go to top">
+        View My Order
+    </button>
     <div class="container bg-white text-dark border border-light d-md-none">
         <div class="row">
             <div class="col-md-8">
@@ -241,26 +269,26 @@
                             <?php echo $restaurant_details['name']; ?>
                         </h3>
                         <?php if ($restaurant_details["address"]) { ?>
-                                    <div><?php echo $restaurant_details["address"]; ?> - <span class="red p-0">Get directions</span></div>
-                                <?php } ?>
+                            <div><?php echo $restaurant_details["address"]; ?> - <span class="red p-0">Get directions</span></div>
+                        <?php } ?>
                     </div>
                 </div>
 
                 <!-- Accordion Section Start -->
                 <div class="accordion" id="restaurantAccordion1">
-    <div class="accordion-item" style="padding-left: 15px;">
-        <h2 class="accordion-header" id="headingRestaurant1">
-            <button class="accordion-button order-red-btn d-flex justify-content-center align-items-center mt-2 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRestaurant1" aria-expanded="false" aria-controls="collapseRestaurant1" >
-                <h5 class="m-0">Restaurant Details</h5>
-            </button>
-        </h2>
-        <div id="collapseRestaurant1" class="accordion-collapse collapse" aria-labelledby="headingRestaurant1" data-bs-parent="#restaurantAccordion1">
-            <div class="accordion-body">
+                    <div class="accordion-item" style="padding-left: 15px;">
+                        <h2 class="accordion-header" id="headingRestaurant1">
+                            <button class="accordion-button order-red-btn d-flex justify-content-center align-items-center mt-2 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRestaurant1" aria-expanded="false" aria-controls="collapseRestaurant1">
+                                <h5 class="m-0">Restaurant Details</h5>
+                            </button>
+                        </h2>
+                        <div id="collapseRestaurant1" class="accordion-collapse collapse" aria-labelledby="headingRestaurant1" data-bs-parent="#restaurantAccordion1">
+                            <div class="accordion-body">
                                 <!-- Restaurant Address and Directions -->
-                              
+
 
                                 <!-- Cuisines Section -->
-                                <div class="red big-txt"ds>
+                                <div class="red big-txt" ds>
                                     <?php
                                     $cuisines = json_decode($restaurant_details['cuisine']);
                                     foreach ($cuisines as $key => $cuisine):
@@ -272,7 +300,8 @@
                                             } else {
                                                 echo sanitize($cuisine['name'] . ' |');
                                             } ?>
-                                    <?php endif; endforeach; ?>
+                                    <?php endif;
+                                    endforeach; ?>
                                 </div>
 
                                 <!-- Review Section -->
@@ -300,25 +329,25 @@
                                 </div>
 
                                 <!-- Delivery Info -->
-                            <div class="row my-4 free-delivery-list">
-                                   <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
-                        Delivery fee :
-                   
-                        £ <?php echo $restaurant_details['delivery_charge']; ?>
-                    </div>
-                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
-                        Order : £ 10 
-                    </div>
-                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
-                        <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
-                            class="collect-box" style="display:none">I
-                            want to collect</span>
-                    </div>
-                    <div class="col-md-3 col-sm-6 red"><img src="<?php echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
-                        <?php echo $restaurant_details['maximum_time_to_deliver']; ?> mins
-                    </div>
+                                <div class="row my-4 free-delivery-list">
+                                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/delivery-free-icon.png'); ?>" />
+                                        Delivery fee :
 
-                                </div> 
+                                        £ <?php echo $restaurant_details['delivery_charge']; ?>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/min-order-icon.png'); ?>" /> Min
+                                        Order : £ 10
+                                    </div>
+                                    <div class="col-md-4 col-sm-6"><img src="<?php echo base_url('assets/frontend/default/images/collect-icon.png'); ?>" />
+                                        <span id="delivery" class="collect-box">Delivering now</span><span id="collection"
+                                            class="collect-box" style="display:none">I
+                                            want to collect</span>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6 red"><img src="<?php echo base_url('assets/frontend/default/images/time-icon-red.png'); ?>" />
+                                        <?php echo $restaurant_details['maximum_time_to_deliver']; ?> mins
+                                    </div>
+
+                                </div>
 
                                 <!-- About Section -->
                                 <div class="order-about">
@@ -328,8 +357,8 @@
                                 </div>
 
                                 <div class="col-md-4">
-                <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/detail-wbox-img.png'); ?>" />
-            </div>
+                                    <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/detail-wbox-img.png'); ?>" />
+                                </div>
                             </div>
                         </div>
                     </div> <!-- End of Accordion Item -->
@@ -337,7 +366,7 @@
                 <!-- Accordion Section End -->
             </div>
 
-            
+
         </div>
     </div>
 </section>
@@ -358,14 +387,17 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
     <div class="container bg-red p-4 text-light rounded border-light">
         <div class="d-md-flex align-items-center">
             <div class="col-md-9">
-                <h3><?php //echo !is_null($heading) ? $heading : 'Offers Coming soon'; ?></h3>
+                <h3><?php //echo !is_null($heading) ? $heading : 'Offers Coming soon'; 
+                    ?></h3>
                 <p class="p-0 m-0">
-                    <?php //echo !is_null($description) ? $description : 'Be there, we will have an amazing offer.'; ?>
+                    <?php //echo !is_null($description) ? $description : 'Be there, we will have an amazing offer.'; 
+                    ?>
                 </p>
             </div>
             <div id="viewOrderButton" class="col-md-3 text-center"><a <?php //if (!empty($ctaLink)) {
-                                                        //echo 'href="' . $ctaLink . '"';
-                                                   // } ?> class="w-rounded-btn">More
+                                                                        //echo 'href="' . $ctaLink . '"';
+                                                                        // } 
+                                                                        ?> class="w-rounded-btn">More
                     Offers</a></div>
         </div>
     </div>
@@ -373,7 +405,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 <!-- ./Offer area -->
 
 
-<?php $restaurant_categories = $this->category_model->get_categories_by_restaurant_id($restaurant_details["id"]); 
+<?php $restaurant_categories = $this->category_model->get_categories_by_restaurant_id($restaurant_details["id"]);
 // print_r($restaurant_categories);
 // die();
 ?>
@@ -383,15 +415,15 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 <section class="order-detail-btns container d-none d-lg-block " style="border-radius: 20px;">
     <div class="container">
-    <div class="order-detail-slider owl-carousel owl-theme my-5 ">
-        <?php foreach ($restaurant_categories as $restaurant_category) { ?>
-            <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
-                <?php echo $restaurant_category['name']; ?>
-            </a>
-        <?php } ?>
+        <div class="order-detail-slider owl-carousel owl-theme my-5 ">
+            <?php foreach ($restaurant_categories as $restaurant_category) { ?>
+                <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
+                    <?php echo $restaurant_category['name']; ?>
+                </a>
+            <?php } ?>
+        </div>
     </div>
-    </div>
- 
+
 </section>
 
 <!-- ./Category tabs with scrool nav -->
@@ -399,26 +431,26 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 <div class="container mt-5">
     <!-- Accordion Wrapper -->
     <div class="accordion" id="accordionExample">
-    <div class="accordion-item d-md-none">
-        <h2 class="accordion-header" id="headingOrder1">
-            <button class="accordion-button order-red-btn text-center mt-4 border-0 w-100  d-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrder1" aria-expanded="true" aria-controls="collapseOrder1">
-                <h5>View My Order</h5>
+        <div class="accordion-item d-md-none">
+            <h2 class="accordion-header" id="headingOrder1">
+                <button class="accordion-button order-red-btn text-center mt-4 border-0 w-100  d-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrder1" aria-expanded="true" aria-controls="collapseOrder1">
+                    <h5>View My Order</h5>
+                </button>
+            </h2>
+            <button id="scrollToOrderButton" class="scroll-to-order-btn border-0 fw-bold" style="display: none; border-radius: 38px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrder1" aria-expanded="true" aria-controls="collapseOrder1">
+                View My Order
             </button>
-        </h2>
-        <button id="scrollToOrderButton" class="scroll-to-order-btn border-0 fw-bold" style="display: none; border-radius: 38px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrder1" aria-expanded="true" aria-controls="collapseOrder1">
-            View My Order
-        </button>
-        <?php include(__DIR__ . '/partials/ordersummary.php'); ?>
-        <div id="collapseOrder1" class="accordion-collapse collapse" aria-labelledby="headingOrder1" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
+            <?php include(__DIR__ . '/partials/ordersummary.php'); ?>
+            <div id="collapseOrder1" class="accordion-collapse collapse" aria-labelledby="headingOrder1" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
 
                     <!-- Order Summary Section (only visible on mobile) -->
-                    
-              
+
+
+                </div>
             </div>
-        </div>
-    </div> <!-- End of Accordion Wrapper -->
-</div>
+        </div> <!-- End of Accordion Wrapper -->
+    </div>
 </div>
 <!-- Menu section -->
 
@@ -452,165 +484,165 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
                                 $starts_from = json_decode($menu["price"]);
                             ?>
-                                                                  
- <?php // Load the model
-$this->load->model('user_model');
 
-// Get the current user ID from session (assuming user ID is stored in session)
-$user_id = $this->session->userdata('user_id');
+                                <?php // Load the model
+                                $this->load->model('user_model');
 
-// Check if the user is an owner (role_id = 3)
-$isOwner = $this->user_model->check_user_role($user_id);
+                                // Get the current user ID from session (assuming user ID is stored in session)
+                                $user_id = $this->session->userdata('user_id');
 
-// Pass the result to the view
-$data['isOwner'] = $isOwner; // Pass to the view (if needed)
-// print_r($isOwner);
-                        ?>
+                                // Check if the user is an owner (role_id = 3)
+                                $isOwner = $this->user_model->check_user_role($user_id);
+
+                                // Pass the result to the view
+                                $data['isOwner'] = $isOwner; // Pass to the view (if needed)
+                                // print_r($isOwner);
+                                ?>
 
                                 <?php if ($isOwner): ?>
-    <div data-toggle="" data-menu-id="<?php echo $menu['id']; ?>" data-price="<?php 
-        $price = json_decode($menu['price']);
-        echo $price->menu;?>">
-<?php else: ?>
-    <div data-toggle="modal" onclick="viewselected_menu(<?php echo $menu['id']; ?>, '<?php 
-        $price = json_decode($menu['price']);
-        echo $price->menu; ?>')">
-<?php endif; ?>
-    <!-- Your other content here -->
-                                    <div class="d-flex order-detail-box-txt align-items-center justify-content-between flex-row-reverse flex-md-row">
-                                        <div class="col-md-8 d-flex align-items-center p-0 m-0 flex-md-row flex-row-reverse
+                                    <div data-toggle="" data-menu-id="<?php echo $menu['id']; ?>" data-price="<?php
+                                                                                                                $price = json_decode($menu['price']);
+                                                                                                                echo $price->menu; ?>">
+                                    <?php else: ?>
+                                        <div test data-toggle="modal" onclick="viewselected_menu(<?php echo $menu['id']; ?>, <?php
+                                                                                                                            $price = json_decode($menu['price']);
+                                                                                                                            echo $price->menu; ?>, <?php echo $menu['has_variant'] ?>,false)">
+                                        <?php endif; ?>
+                                        <!-- Your other content here -->
+                                        <div class="d-flex order-detail-box-txt align-items-center justify-content-between flex-row-reverse flex-md-row">
+                                            <div class="col-md-8 d-flex align-items-center p-0 m-0 flex-md-row flex-row-reverse
 ">
-                                            <div class="item-img-box mr-3"><a><img class="rounded-circle"
-                                                        src="<?php echo base_url('uploads/menu/') . $menu['thumbnail']; ?>" height="80  px" width="80px" /></a></div>
-                                                        <div class="order col-md-2 d-md-none" id="order-add">
-                                            <a href="#" data-toggle="modal"
-                                                onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
-                                                                                                        echo $price->menu; ?>)">
+                                                <div class="item-img-box mr-3"><a><img class="rounded-circle"
+                                                            src="<?php // echo base_url('uploads/menu/') . $menu['thumbnail']; ?>" height="80  px" width="80px" /></a></div>
+                                                <div class="order col-md-2 d-md-none" id="order-add">
+                                                    <a href="#"
+                                                        onclick="viewselected_menu(<?php echo $menu['id']; ?>, <?php echo json_decode($menu['price'])->menu; ?>, <?php echo $menu['has_variant'] ?>,true)">
 
 
-                                        
- <?php // Load the model
-$this->load->model('user_model');
 
-// Get the current user ID from session (assuming user ID is stored in session)
-$user_id = $this->session->userdata('user_id');
 
-// Check if the user is an owner (role_id = 3)
-$isOwner = $this->user_model->check_user_role($user_id);
+                                                        <?php // Load the model
+                                                        $this->load->model('user_model');
 
-// Pass the result to the view
-$data['isOwner'] = $isOwner; // Pass to the view (if needed)
-// print_r($isOwner);
-                        ?>
-                                           <?php if ($isOwner): ?>
-                                            <button class="btn" disabled style="width: 114px; height: 70px; padding: 0; word-wrap: break-word;
+                                                        // Get the current user ID from session (assuming user ID is stored in session)
+                                                        $user_id = $this->session->userdata('user_id');
+
+                                                        // Check if the user is an owner (role_id = 3)
+                                                        $isOwner = $this->user_model->check_user_role($user_id);
+
+                                                        // Pass the result to the view
+                                                        $data['isOwner'] = $isOwner; // Pass to the view (if needed)
+                                                        // print_r($isOwner);
+                                                        ?>
+                                                        <?php if ($isOwner): ?>
+                                                            <button class="btn" disabled style="width: 114px; height: 70px; padding: 0; word-wrap: break-word;
  font-size: 14px; color:red; display: flex; align-items: center; justify-content: center; padding-right: 65px;
 " disabled>
-    Owner <br> can't <br> order
-</button>
-<?php else: ?>
-    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="56" viewBox="0 0 56 56" fill="white" class="svg-mobile">
-        <g clip-path="url(#clip0_4609_18554)">
-            <path d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M28 21V35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </g>
-        <defs>
-            <clippath id="clip0_4609_18554" >
-                <rect width="56" height="56" fill="white" />
-            </clippath>
-        </defs>
-    </svg>
-<?php endif; ?>
-                                            </a>
-                                        </div>
-                                            <div class="item-txt-box d-none d-md-block">
-                                                <h3>
-                                                    <span>
-                                                        <?php echo ucfirst($menu['name']); ?>
-                                                    </span>
-                                                </h3>
-                                                <?php echo $menu['details']; ?>
+                                                                Owner <br> can't <br> order
+                                                            </button>
+                                                        <?php else: ?>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="56" viewBox="0 0 56 56" fill="white" class="svg-mobile">
+                                                                <g clip-path="url(#clip0_4609_18554)">
+                                                                    <path d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                    <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                    <path d="M28 21V35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                </g>
+                                                                <defs>
+                                                                    <clippath id="clip0_4609_18554">
+                                                                        <rect width="56" height="56" fill="white" />
+                                                                    </clippath>
+                                                                </defs>
+                                                            </svg>
+                                                        <?php endif; ?>
+                                                    </a>
+                                                </div>
+                                                <div class="item-txt-box d-none d-md-block">
+                                                    <h3>
+                                                        <span>
+                                                            <?php echo ucfirst($menu['name']); ?>
+                                                        </span>
+                                                    </h3>
+                                                    <?php echo $menu['details']; ?>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4 d-flex p-0 m-0 flex-column-reverse flex-md-row align-items-center">
-                                            <!-- <div class="col-md-2 d-md-none"></div> -->
-                                        <div class="price col-md-6 p-0">
-                                            <?php echo currency($starts_from->menu); ?>
-                                        </div>
-                                        <div class="item-txt-box col-md-6 p-0 d-md-none">
-                                                <h3>
-                                                    <span>
-                                                        <?php echo ucfirst($menu['name']); ?>
-                                                    </span>
-                                                </h3>
-                                                <?php echo $menu['details']; ?>
-                                            </div>
-                                        <div class="order col-md-2 d-none d-md-block">
-                                            <a href="#" data-toggle="modal"
-                                                onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
-                                                                                                        echo $price->menu; ?>)">
+                                            <div class="col-md-4 d-flex p-0 m-0 flex-column-reverse flex-md-row align-items-center">
+                                                <!-- <div class="col-md-2 d-md-none"></div> -->
+                                                <div class="price col-md-6 p-0">
+                                                    <?php echo currency($starts_from->menu); ?>
+                                                </div>
+                                                <div class="item-txt-box col-md-6 p-0 d-md-none">
+                                                    <h3>
+                                                        <span>
+                                                            <?php echo ucfirst($menu['name']); ?>
+                                                        </span>
+                                                    </h3>
+                                                    <?php echo $menu['details']; ?>
+                                                </div>
+                                                <div class="order col-md-2 d-none d-md-block">
+                                                    <a href="#" data-toggle="modal"
+                                                        onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
+                                                                                                                echo $price->menu; ?>, <?php echo $menu['has_variant'] ?>)">
 
 
-                                        
- <?php // Load the model
-$this->load->model('user_model');
 
-// Get the current user ID from session (assuming user ID is stored in session)
-$user_id = $this->session->userdata('user_id');
+                                                        <?php // Load the model
+                                                        $this->load->model('user_model');
 
-// Check if the user is an owner (role_id = 3)
-$isOwner = $this->user_model->check_user_role($user_id);
+                                                        // Get the current user ID from session (assuming user ID is stored in session)
+                                                        $user_id = $this->session->userdata('user_id');
 
-// Pass the result to the view
-$data['isOwner'] = $isOwner; // Pass to the view (if needed)
-// print_r($isOwner);
-                        ?>
-                                           <?php if ($isOwner): ?>
-                                            <button class="btn" disabled style="width: 114px; height: 70px; padding: 0; word-wrap: break-word;
+                                                        // Check if the user is an owner (role_id = 3)
+                                                        $isOwner = $this->user_model->check_user_role($user_id);
+
+                                                        // Pass the result to the view
+                                                        $data['isOwner'] = $isOwner; // Pass to the view (if needed)
+                                                        // print_r($isOwner);
+                                                        ?>
+                                                        <?php if ($isOwner): ?>
+                                                            <button class="btn" disabled style="width: 114px; height: 70px; padding: 0; word-wrap: break-word;
  font-size: 14px; color:red; display: flex; align-items: center; justify-content: center; padding-right: 65px;
 " disabled>
-    Owner <br> can't <br> order
-</button>
-<?php else: ?>
-    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none" class="svg-mobile">
-        <g clip-path="url(#clip0_4609_18554)">
-            <path d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M28 21V35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </g>
-        <defs>
-            <clippath id="clip0_4609_18554">
-                <rect width="56" height="56" fill="white" />
-            </clippath>
-        </defs>
-    </svg>
-<?php endif; ?>
-                                            </a>
+                                                                Owner <br> can't <br> order
+                                                            </button>
+                                                        <?php else: ?>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none" class="svg-mobile">
+                                                                <g clip-path="url(#clip0_4609_18554)">
+                                                                    <path d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                    <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                    <path d="M28 21V35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                </g>
+                                                                <defs>
+                                                                    <clippath id="clip0_4609_18554">
+                                                                        <rect width="56" height="56" fill="white" />
+                                                                    </clippath>
+                                                                </defs>
+                                                            </svg>
+                                                        <?php endif; ?>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+
                                         </div>
                                         </div>
-                                  
-                                  
-                                    </div>
-                                </div>
-                                <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <button style="text-align: right; margin: 20px 20px 0 0; cursor: pointer;" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <div class="modal-body p-0" id="getdetails_selected_menu">
+                                        <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <button style="text-align: right; margin: 20px 20px 0 0; cursor: pointer;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <div class="modal-body p-0" id="getdetails_selected_menu">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                            <?php $counter++;
-                            endforeach; ?>
+                                    <?php $counter++;
+                                endforeach; ?>
 
 
-                            <!-- for last time there is class "last in between"  -->
-                            <!-- <div class="d-flex order-detail-box-txt last align-items-center justify-content-between">
+                                    <!-- for last time there is class "last in between"  -->
+                                    <!-- <div class="d-flex order-detail-box-txt last align-items-center justify-content-between">
             <div class="col-md-8 d-flex align-items-center p-0 m-0">
               <div class="item-img-box mr-3"><a href="#"><img
                     src="<.?php echo base_url('assets/frontend/default/images/product-img3.png') ?>" /></a></div>
@@ -639,20 +671,20 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
                 </svg></a></div>
           </div> -->
 
+                                    </div>
+
+                            <?php }
+                    } ?>
+
+
                         </div>
+                        <!-- for screens -->
+                        <?php include(__DIR__ . '/partials/ordersummary.php'); ?>
 
-                <?php }
-                } ?>
-
+                        <input name="order_type" value="delivery" class="d-none">
 
             </div>
-<!-- for screens -->
-<?php include(__DIR__ . '/partials/ordersummary.php'); ?>
-
-            <input name="order_type" value="delivery" class="d-none">
-            
         </div>
-    </div>
 </section>
 <!-- ./Menu section -->
 
@@ -679,7 +711,7 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
         </div>
     </div>
 
-  
+
 
 </section>
 
@@ -688,8 +720,8 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
     document.addEventListener('DOMContentLoaded', function() {
 
         document.querySelectorAll(".owl-item.cloned").forEach(function(element) {
-                    
-            
+
+
             let anchor = element.querySelector("a");
             // if(anchor == "")
             if (anchor) {
@@ -716,7 +748,7 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
         });
     });
 
-    
+
 
     function closeModal() {
         var modal = document.getElementById('popup');
@@ -724,61 +756,64 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
     }
 
     document.querySelector('.close').addEventListener('click', closeModal);
-    
-    
+
+
     const mybutton = document.getElementById("myBtn");
-const scrollToOrderButton = document.getElementById("scrollToOrderButton");
-const viewOrderButton = document.getElementById("viewOrderButton");
-const collapseElement = document.getElementById("collapseOrder1");
+    const scrollToOrderButton = document.getElementById("scrollToOrderButton");
+    const viewOrderButton = document.getElementById("viewOrderButton");
+    const collapseElement = document.getElementById("collapseOrder1");
 
-// Hide "View My Order" button by default
-mybutton.style.display = "none";
+    // Hide "View My Order" button by default
+    mybutton.style.display = "none";
 
-// Function to scroll to top smoothly and then toggle collapse
-function topFunction() {
-    window.scrollTo({ top: 250, behavior: "smooth" });
-  // Check scroll position continuously
-  let checkScroll = setInterval(() => {
-        if (window.scrollY === 250) {
-            mybutton.style.display = "none"; // Hide button when at top
-            clearInterval(checkScroll); // Stop checking
-        }
-    }, 100); // Check every 100ms
-    // Wait for scrolling to complete using setTimeout
-    setTimeout(() => {
-        // Toggle collapse
-        if (collapseElement.classList.contains("show")) {
-            // collapseElement.classList.remove("show");
-            //  // Collapse it
-        } else {
-            collapseElement.classList.add("show"); // Expand it
-        }
-    }, 600); // Delay slightly to allow scrolling to finish
-}
-
-// Hide "View My Order" button when user scrolls down
-window.addEventListener("scroll", function () {
-    if (window.scrollY > 400) {
-        mybutton.style.display = "block"; // Hide button on scroll down
-    }else{
-        mybutton.style.display = "none"; // Hide button on scroll down
+    // Function to scroll to top smoothly and then toggle collapse
+    function topFunction() {
+        window.scrollTo({
+            top: 250,
+            behavior: "smooth"
+        });
+        // Check scroll position continuously
+        let checkScroll = setInterval(() => {
+            if (window.scrollY === 250) {
+                mybutton.style.display = "none"; // Hide button when at top
+                clearInterval(checkScroll); // Stop checking
+            }
+        }, 100); // Check every 100ms
+        // Wait for scrolling to complete using setTimeout
+        setTimeout(() => {
+            // Toggle collapse
+            if (collapseElement.classList.contains("show")) {
+                // collapseElement.classList.remove("show");
+                //  // Collapse it
+            } else {
+                collapseElement.classList.add("show"); // Expand it
+            }
+        }, 600); // Delay slightly to allow scrolling to finish
     }
-});
 
-// Attach "View My Order" button click event to toggle collapse
-// causing issue/
-// viewOrderButton.addEventListener("click", function () {
-//     topFunction() // Call function
-// });
+    // Hide "View My Order" button when user scrolls down
+    window.addEventListener("scroll", function() {
+        if (window.scrollY > 400) {
+            mybutton.style.display = "block"; // Hide button on scroll down
+        } else {
+            mybutton.style.display = "none"; // Hide button on scroll down
+        }
+    });
 
-// Attach "Top" button click event
-// mybutton.addEventListener("click", toggleOrderView);
+    // Attach "View My Order" button click event to toggle collapse
+    // causing issue/
+    // viewOrderButton.addEventListener("click", function () {
+    //     topFunction() // Call function
+    // });
+
+    // Attach "Top" button click event
+    // mybutton.addEventListener("click", toggleOrderView);
 
 
 
 
 
- 
+
 
 
     function getQueryParam(param) {
@@ -787,7 +822,7 @@ window.addEventListener("scroll", function () {
     }
     const status = getQueryParam('q');
 
-console.log(status);
+    console.log(status);
     if (status === '2') {
         var element = document.getElementById("collapseOrder1");
         element.classList.remove("accordion-collapse");
@@ -798,8 +833,7 @@ console.log(status);
         element.classList.add("collapse");
         element.classList.add("show");
 
-    }
-    else{
+    } else {
         console.log("not deleted yet")
     }
 
@@ -808,7 +842,7 @@ console.log(status);
 
     // Jab user scroll kare, function chalay ga
     window.addEventListener("scroll", function() {
-        if (window.scrollY > 100) { 
+        if (window.scrollY > 100) {
             viewmyBtn.style.display = "block"; // 100px scroll hone ke baad dikhayein
         } else {
             viewmyBtn.style.display = "none"; // 100px se kam scroll hone par chupayein
@@ -816,9 +850,11 @@ console.log(status);
     });
 
     function viewtopFunction() {
-        window.scrollTo({ top: 500, behavior: 'smooth' }); // Smooth scrolling effect
+        window.scrollTo({
+            top: 500,
+            behavior: 'smooth'
+        }); // Smooth scrolling effect
     }
-
 </script>
 
 <!-- ./Mobile app section -->

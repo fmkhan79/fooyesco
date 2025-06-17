@@ -389,17 +389,33 @@ document.querySelectorAll(".basket-switcher-error").forEach(el => {
     }
 
     // CART OPERATIONS
-    function addToCart() {
+    function addToCart(menu_id, price, isButton) {
+        if(
+            menu_id != undefined && //If click on when have no variant
+            isButton == false && // clicked on div
+            window.innerWidth > 450
+        ){
+            return;
+        }
 
-        var menuId = $('#menu-id').val();
+        if(
+            window.innerWidth < 450 && 
+            menu_id != undefined && //If click on when have no variant
+            isButton == true // clicked on div
+            
+        ){
+            return;
+        }
 
-        var quantity = $('#quantity_for_menu').val();
+        var menuId = menu_id || $('#menu-id').val();
 
-        var totalprice = $('#totalprice').val();
+        var quantity = menu_id == undefined || null ? $('#quantity_for_menu').val() : 1;
 
-        var variantId = $("input[name=variant]:checked").val();
-        var addons = $('#addons').val();
-        var note = $('#note').val();
+        var totalprice = price || $('#totalprice').val();
+
+        var variantId = $("input[name=variant]:checked").val() || 0;
+        var addons = $('#addons').val() || "";
+        var note = $('#note').val() || "";
 
         // Initialize arrays to store selected items
         var selectedItemsArray1 = [];
@@ -470,9 +486,15 @@ document.querySelectorAll(".basket-switcher-error").forEach(el => {
 
 
     //  GET AND DISPALY THE MENU MAIN CATAGORIES BASED ON THE CLICK MENU 
-    function viewselected_menu(menuid, menuprice) {
+    function viewselected_menu(menuid, menuprice, hasvariant, isButton) {
+        if(hasvariant == 0){
+
+            addToCart(menuid, menuprice,isButton);
+            return;
+        }
 
         let url = '<?php echo base_url(); ?>site/selected_menu/' + menuid;
+
         $.ajax({
             url: url,
             success: function(res) {
