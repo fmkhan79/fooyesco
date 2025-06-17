@@ -111,6 +111,7 @@
     color: #fff;
     font-weight: 500;
 }
+
 </style>
 <!-- RESTAURANT GALLERY -->
 
@@ -647,7 +648,10 @@ $data['isOwner'] = $isOwner; // Pass to the view (if needed)
 
             </div>
 <!-- for screens -->
-<?php include(__DIR__ . '/partials/ordersummary.php'); ?>
+<div class="d-none d-md-flex">
+    <?php include(__DIR__ . '/partials/ordersummary.php'); ?>
+</div>
+
 
             <input name="order_type" value="delivery" class="d-none">
             

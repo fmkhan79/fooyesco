@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-danger elevation-4">
+<aside class="main-sidebar sidebar-dark-danger elevation-4 hold-transition layout-fixed">
     <!-- Brand Logo -->
     <a href="<?php echo site_url('dashboard'); ?>" class="brand-link">
         <img src="<?php echo base_url('uploads/system/' . get_website_settings('backend_logo')); ?>" alt="" class="brand-image img-circle opacity-80">
@@ -223,3 +223,21 @@
     </div>
     <!-- /.sidebar -->
 </aside>
+<script>
+    // Disable AdminLTE sidebar state saving
+    localStorage.removeItem('adminlte_sidebar_state');
+
+    // Force sidebar to stay expanded on load
+    document.body.classList.remove('sidebar-collapse');
+
+     document.addEventListener('DOMContentLoaded', function () {
+        // Remove sidebar-mini to prevent hover expand
+        document.body.classList.remove('sidebar-mini');
+
+        // Optionally ensure the sidebar stays open
+        document.body.classList.remove('sidebar-collapse');
+
+        // Also remove saved state in localStorage if AdminLTE remembers collapse state
+        localStorage.removeItem('adminlte_sidebar_state');
+    });
+</script>
