@@ -228,22 +228,7 @@
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th><?php echo get_phrase(""); ?></th>
-                                            <th><?php echo get_phrase("order_code"); ?></th>
-                                            <th><?php echo get_phrase("ordered_from"); ?></th>
-                                            <th><?php echo get_phrase("order_placing_time"); ?></th>
-                                            <!-- <th><?php echo get_phrase("delivery_details"); ?></th> -->
-                                            <th><?php echo get_phrase("payment method"); ?></th>
-                                            <th><?php echo get_phrase("Order Amount"); ?></th>
-                                            <th><?php echo get_phrase("Comission Amount"); ?></th>
-                                            <th><?php echo get_phrase("After Commission"); ?></th>
-                                            <th><?php echo get_phrase("Ispaid"); ?></th>
-
-                                            <th><?php echo get_phrase("action"); ?></th>
-                                        </tr>
-                                    </tfoot>
+                        
                                 </table>
                             </div>
                         </div>
