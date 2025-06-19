@@ -257,7 +257,37 @@ $(document).on("change",".variant_item",function(){
 		});
 
 
+            });
+
+
+            $(document).on("click", ".add_variant", function() {
+    var variation_item_id = $(".variant_item").data("item-id");  // Assuming .variant_item holds this data
+    var variation_attr_name = $(".variant_item").data("item-name");  // Assuming .variant_item holds this data
+    var variation_attr_value = $(".variant_item").val();  // Value from the .variant_item input/select
+
+    console.log(variation_attr_value);
+
+    $.ajax({
+        url: '<?php echo site_url('variation/udpate_vartiation_item'); ?>',
+        type: 'post',
+        data: {
+            variation_item_id: variation_item_id,
+            variation_attr_name: variation_attr_name,
+            variation_attr_value: variation_attr_value,
+        },
+        success: function(response) {
+            console.log("Updated successfully");
+            // Handle success, maybe show a message to the user or update the UI
+        },
+        error: function() {
+            console.log("An error occurred");
+            // Handle the error case
+        }
+    });
 });
+
+
+            
 
 
 $(document).on("change",".variant_sub_cat",function(){

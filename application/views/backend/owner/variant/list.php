@@ -92,12 +92,17 @@ $menu_variant_options = $this->variation_model->get_variant_options(sanitize($me
            
             <div class="col-sm-4 flex-align">
               
-         
+                <button style="margin:2px;font-size: 18px;" class="btn btn-info btn-sm add_variant">
+Save Varirants
+</button>
             <button style="margin:2px;font-size: 18px;" data-menu-id="<?php echo $menu_option['menu_id']; ?>"
                 data-variation-id="<?php echo $menu_option['id']; ?>"
                 class="btn btn-light duplicate_variant">
                 Duplicate
               </button>
+
+       
+
 
             <button style="float:right;font-size: 18px;" data-menu-id="<?php echo $menu_option['menu_id']; ?>"
                 data-variation-id="<?php echo $menu_option['id']; ?>"
@@ -133,6 +138,7 @@ $menu_variant_options = $this->variation_model->get_variant_options(sanitize($me
                       data-variation-sub-id="<?php echo $variant_sub_option["id"] ?>" class="btn btn-info btn-sm delete_sub_variant">Delete
                     </button>
 
+
                     <!-- <button style="float:right" data-menu-id="<?php echo $variant_sub_option["menu_id"] ?>"
                       data-variation-sub-id="<?php echo $variant_sub_option["id"] ?>" class="btn btn-light btn-sm duplicate_sub_variant">Duplicate
                     </button> -->
@@ -143,6 +149,7 @@ $menu_variant_options = $this->variation_model->get_variant_options(sanitize($me
                       data-variation-sub-id="<?php echo $variant_sub_option["id"] ?>" class="btn btn-primary btn-sm add_variant">Add
                       Food Item
                     </button>
+
                   </div>
                 </div>
                 <div class="v_items variant_items_<?php echo $variant_sub_option["id"]; ?>">

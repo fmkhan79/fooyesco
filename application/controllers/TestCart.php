@@ -122,6 +122,11 @@ class Testcart extends Base {
             $billing_data = json_decode($order['billing'], true);
             $grand_total_amount = $order['grand_total'];
             $customer_name = trim($billing_data['first_name']) . ' ' . trim($billing_data['last_name']);
+
+           // ✅ Skip this order if "test" is in the customer name
+            if (stripos($customer_name, 'test') !== false) {
+                 continue;
+                 }
             $customer_phone = $billing_data['phone_mobile'];
 
             $order_list .= "- Order <strong>#" . $code . "</strong><br>";
@@ -130,6 +135,15 @@ class Testcart extends Base {
             $order_list .= "&nbsp;&nbsp;&nbsp; Total Order Amount: <strong>" . htmlspecialchars($grand_total_amount) . '€'. "</strong><br><br>";
 
         }
+
+        print_r($order_list);
+        if($customer_name == 'test testco' || $customer_name == 'Test') {
+            // If customer name is 'test', skip sending email
+            echo "Skipping email for test customer.";
+            return;
+        }
+
+        die();
 
         // Prepare email content
         $subject = "Missed Orders Notification";

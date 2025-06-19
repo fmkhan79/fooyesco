@@ -74,14 +74,14 @@
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
-                        <tfoot>
+                        <!-- <tfoot>
                             <tr>
                                 <th><?php echo get_phrase("restaurant_name"); ?></th>
                                 <th><?php echo get_phrase("total_payable_commission"); ?></th>
                                 <th><?php echo get_phrase("total_paid_commission"); ?></th>
                                 <th><?php echo get_phrase("action"); ?></th>
                             </tr>
-                        </tfoot>
+                        </tfoot> -->
                     </table>
                 </div>
                 <!-- /.card-body -->
