@@ -11,13 +11,18 @@
 <!-- Initializer -->
 <script src="<?php echo base_url('assets/backend/'); ?>js/init.js"></script>
 
+<!-- Add these CDN links before your script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
+<!-- Also add the CSS for the buttons -->
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
 <script type="text/javascript">
     "use strict";
     //Date range as a button
     initDateRangePicker(['daterange-btn']);
-
-    // initialize datatable
-    initDataTables(['commissions'], 25);
 
     // initialize select2
     initSelect2();
@@ -25,8 +30,8 @@
     // initialize tooltips
     initToolTip();
 
-     $(document).ready(function() {
-
+    $(document).ready(function() {
+        // Initialize DataTable with CSV export button
         $('#orders_table').DataTable({
             dom: '<"top"Bf>rt<"bottom"lip><"clear">',
             buttons: [
@@ -45,6 +50,7 @@
                     targets: 0,
                     visible: true, 
                     orderData: [0, 1], 
+                    orderable: false,
                 }
             ],
             order: [[3, 'desc']]
@@ -60,7 +66,6 @@
                 e.preventDefault();
             }
         });
-
 
         const $form = $('#bulk-update-form');
         const $paidBtn = $('#bulk-paid-btn');
