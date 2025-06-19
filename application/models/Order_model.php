@@ -1513,14 +1513,14 @@ class Order_model extends Base_model
 
     public function total_comission_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
     {
-        // Sanitize the restaurant_id from the URL if provided
+        // Sanitize restaurant ID
         if (is_null($restaurant_id)) {
             if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
                 $restaurant_id = sanitize($_GET['restaurant_id']);
             }
         }
 
-        // Parse date range from GET if timestamps are not provided
+        // Parse date range
         if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
             if (isset($_GET['date_range'])) {
                 $dates = explode(' - ', $_GET['date_range']);
@@ -1528,7 +1528,6 @@ class Order_model extends Base_model
                     $starting_timestamp = strtotime($dates[0]);
                     $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
 
-                    // If parsing fails, return 0 to avoid bad query
                     if (!$starting_timestamp || !$ending_timestamp) {
                         return 0;
                     }
@@ -1536,44 +1535,76 @@ class Order_model extends Base_model
             }
         }
 
-        // Start building the query
-        $this->db->select_sum('orders.commission_paid', 'total_sum');
+        // Get status filter
+        $status_filter = $_GET['status'] ?? null;
+
+        // CASE 1: Show only unpaid commission total
+        if ($status_filter === 'unpaid') {
+            $this->db->select_sum('orders.commission_paid', 'unpaid_commission');
+            $this->db->from('orders');
+            $this->db->join('payment', 'payment.order_code = orders.code');
+            $this->db->where('orders.is_paid', 0); // Only unpaid
+
+            if ($restaurant_id && $restaurant_id !== "all") {
+                $this->db->where('orders.restaurant_id', $restaurant_id);
+            }
+            if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+                $this->db->where('payment.created_at >=', $starting_timestamp);
+                $this->db->where('payment.created_at <=', $ending_timestamp);
+            }
+
+            $query = $this->db->get();
+            $result = $query->row_array();
+            return round($result['unpaid_commission'] ?? 0, 2);
+        }
+
+        // CASE 2: Show only paid commission total
+        if ($status_filter === 'paid') {
+            return 0;
+        }
+
+        // CASE 3: Default (all) – Total - Paid
+        // First: Get total commission
+        $this->db->select_sum('orders.commission_paid', 'total_commission');
         $this->db->from('orders');
         $this->db->join('payment', 'payment.order_code = orders.code');
 
-        // Apply the filter for a specific restaurant_id if it's provided
-        if (($restaurant_id) !== "all") {
+        if ($restaurant_id && $restaurant_id !== "all") {
             $this->db->where('orders.restaurant_id', $restaurant_id);
         }
-
-
         if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
             $this->db->where('payment.created_at >=', $starting_timestamp);
             $this->db->where('payment.created_at <=', $ending_timestamp);
         }
 
-         if (!empty($_GET['status'])) {
-            if ($_GET['status'] === "paid") {
-                $this->db->where('is_paid', 1);
-            } elseif ($_GET['status'] === "unpaid") {
-                $this->db->where('is_paid', 0);
-            }
+        $query_total = $this->db->get();
+        $total = $query_total->row_array();
+        $total_commission = $total['total_commission'] ?? 0;
+
+        // Second: Get paid commission
+        $this->db->select_sum('orders.commission_paid', 'paid_commission');
+        $this->db->from('orders');
+        $this->db->join('payment', 'payment.order_code = orders.code');
+        $this->db->where('orders.is_paid', 1);
+
+        if ($restaurant_id && $restaurant_id !== "all") {
+            $this->db->where('orders.restaurant_id', $restaurant_id);
         }
-        if (!is_null($is_paid_status)) {
-            $this->db->where('is_paid', $is_paid_status);
+        if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+            $this->db->where('payment.created_at >=', $starting_timestamp);
+            $this->db->where('payment.created_at <=', $ending_timestamp);
         }
 
-        // Execute the query
-        $query = $this->db->get();
+        $query_paid = $this->db->get();
+        $paid = $query_paid->row_array();
+        $paid_commission = $paid['paid_commission'] ?? 0;
 
-        // Check if the query was successful and if there are results
-        if ($query && $query->num_rows() > 0) {
-            $result = $query->row_array();
-            return $result['total_sum'] ?? 0;  // Return the sum, or 0 if no result
-        } else {
-            return 0;  // Return 0 if no matching rows found
-        }
+        // Unpaid = total - paid
+        $unpaid_commission = $total_commission - $paid_commission;
+
+        return round(max(0, $unpaid_commission), 2);
     }
+
 
     public function mark_as_paid($order_ids = [])
     {
@@ -1594,4 +1625,6 @@ class Order_model extends Base_model
             }
         }
     }
+
+    
 }
