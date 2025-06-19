@@ -98,47 +98,39 @@
   padding: 5px 10px;
   border-radius: 4px; */
 
-        display: none;
-        position: fixed;
-        /* Fix button to the screen */
-        bottom: 20px;
-        /* Position from the bottom */
-        right: 30px;
-        /* Ensure it's centered */
-        z-index: 99;
-        /* Ensure it's on top of other content */
-        background-color: #ff4d4d;
-        /* Button background color */
-        color: white;
-        padding: 10px 10px;
-        /* Button padding */
-        border-radius: 8px;
-        /* Rounded corners */
-        display: none;
-        /* Initially hide the button */
-        cursor: pointer;
-        /* Pointer on hover */
-    }
+  display: none;
+  position: fixed; /* Fix button to the screen */
+    bottom: 20px; /* Position from the bottom */
+    right: 30px;
+    /* Ensure it's centered */
+    z-index: 99; /* Ensure it's on top of other content */
+    background-color: #ff4d4d; /* Button background color */
+    color: white;
+    padding: 10px 10px; /* Button padding */
+    border-radius: 8px; /* Rounded corners */
+    display: none; /* Initially hide the button */
+    cursor: pointer; /* Pointer on hover */
+}
 
-    #myBtn:hover {
-        background-color: #555;
-    }
+#myBtn:hover {
+  background-color: #555;
+}
+#cal{
+    bottom: -0.1em!important;
+    font-size: 0.5em;
+    left: 45px;
+}
 
-    #cal {
-        bottom: -0.1em !important;
-        font-size: 0.5em;
-        left: 45px;
-    }
+.order-red-mobile-btn{
+    
+    padding: 11px 22px;
+    background: #f54748;
+    border-radius: 41px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+}
 
-    .order-red-mobile-btn {
-
-        padding: 11px 22px;
-        background: #f54748;
-        border-radius: 41px;
-        font-size: 14px;
-        color: #fff;
-        font-weight: 500;
-    }
 </style>
 <!-- RESTAURANT GALLERY -->
 
@@ -677,9 +669,11 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     } ?>
 
 
-                        </div>
-                        <!-- for screens -->
-                        <?php include(__DIR__ . '/partials/ordersummary.php'); ?>
+            </div>
+<!-- for screens -->
+<div class="d-none d-md-flex">
+    <?php include(__DIR__ . '/partials/ordersummary.php'); ?>
+</div>
 
                         <input name="order_type" value="delivery" class="d-none">
 
