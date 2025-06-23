@@ -304,10 +304,19 @@
 
 
     <script>
-    window.print();
-    setTimeout(() => {
-        history.back();
-    }, 1000); 
+   window.print();
+
+window.onafterprint = function () {
+    // Get current URL
+const currentUrl = window.location.href;
+
+// Extract the order ID from the current URL
+const orderId = currentUrl.split('/').pop(); // OR-1748848360-465
+
+// Redirect to new URL
+window.location.href = `/orders/details/${orderId}`;
+
+};
     </script>
 </body>
 </html>
