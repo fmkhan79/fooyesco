@@ -39,12 +39,16 @@ class Variation_model extends Base_model
 
     public function update_sub_variant()
     {
-        $data[required(sanitize($this->input->post('variation_attr_name')))] = required(sanitize($this->input->post('variation_attr_value')));
+        echo "adas";
+
+        $val = $this->input->post('variation_attr_value') == "" ? "0" : $this->input->post('variation_attr_value');
+        $data[required(sanitize($this->input->post('variation_attr_name')))] = required(sanitize($val));
         //  $data['variation_item_id'] = required(sanitize($this->input->post('variation_item_id')));
         //  $data['options'] = required(trim(strtolower(str_replace('-', ' ', sanitize($this->input->post('options'))))));
 
 
         $variation_item_id = required(sanitize($this->input->post('variation_item_id')));
+
         $this->db->where('id', $variation_item_id);
         $this->db->update('variant_sub_options', $data);
         return true;
@@ -207,7 +211,11 @@ class Variation_model extends Base_model
 
     public function update_item()
     {
-        $data[required(sanitize($this->input->post('variation_attr_name')))] = required(sanitize($this->input->post('variation_attr_value')));
+        
+        $val = $this->input->post('variation_attr_value') == "" ? 0 : $this->input->post('variation_attr_value');
+
+        $data[required(sanitize($this->input->post('variation_attr_name')))] = required(sanitize($val));
+        
         //  $data['variation_item_id'] = required(sanitize($this->input->post('variation_item_id')));
         //  $data['options'] = required(trim(strtolower(str_replace('-', ' ', sanitize($this->input->post('options'))))));
 
