@@ -14,7 +14,7 @@
 
 
 </style>
-<div class="col-md-4 order-summery-box" id="order-summary">
+<div class="col-12 order-summery-box" id="order-summary">
                 <div class="sticky-offset">
                     <h3>Order Summary</h3>
                     <p class="green">You're all set</p>
