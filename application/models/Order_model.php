@@ -198,9 +198,15 @@ class Order_model extends Base_model
                 }
             }
         }
-
-        $this->db->order_by("id", "desc");
+        // Main where orders are getting fetched. 
+        
+        $this->db->order_by("orders.id", "desc");
+        
+        $this->db->join('refund_requests', 'refund_requests.order_code = orders.code', 'left');
         $obj = $this->db->get($this->table);
+        
+        // print_r($obj);
+        // die();
 
         return $this->order_merger($obj);
     }
@@ -458,9 +464,28 @@ class Order_model extends Base_model
     // MERGER FUNCTION IS FOR MERGING NECESSARY DATA
     public function order_merger($query_obj, $is_single_row = false)
     {
+       
         if (!$is_single_row) {
             $orders = $query_obj->result_array();
             foreach ($orders as $key => $order) {
+
+               
+                $orders[$key]['request_refund'] = [
+                    'order_code' => $orders[$key]["order_code"],
+                    'refund_amount' => $orders[$key]["refund_amount"],
+                    'status' => $orders[$key]["status"],
+                    'requestedAt' => $orders[$key]["requestedAt"],
+                    'acceptedAt' => $orders[$key]["acceptedAt"],
+                    'rejectedAt' => $orders[$key]["rejectedAt"]
+                ];
+
+                unset($orders[$key]["order_code"]);
+                unset($orders[$key]["refund_amount"]);
+                unset($orders[$key]["status"]);
+                unset($orders[$key]["requestedAt"]);
+                unset($orders[$key]["acceptedAt"]);
+                unset($orders[$key]["rejectedAt"]);
+                
                 $customer_details = $this->customer_model->get_by_id($order['customer_id']);
                 if (!empty($order['driver_id'])) {
                     $driver_details = $this->driver_model->get_by_id($order['driver_id']);

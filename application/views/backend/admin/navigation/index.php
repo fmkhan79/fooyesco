@@ -175,6 +175,15 @@ q
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="<?php echo site_url('refundrequest'); ?>" class="nav-link <?php if ($page_name == "refundrequest/index") echo 'active'; ?>">
+                        <i class="fas fa-pepper-hot nav-icon"></i>
+                        <p>
+                            <?php echo get_phrase('Refund Requests'); ?>
+                        </p>
+                    </a>
+                </li>
+
                 <li class="nav-item has-treeview <?php if ($page_name == "category/index" || $page_name == "category/create" || $page_name == "category/edit" || $page_name == "menu/index" || $page_name == "menu/create" || $page_name == "menu/edit" || $page_name == "menu/report") echo 'menu-open'; ?>">
                     <a href="#" class="nav-link <?php if ($page_name == "category/index" || $page_name == "category/create" || $page_name == "category/edit" || $page_name == "menu/index" || $page_name == "menu/create" || $page_name == "menu/edit" || $page_name == "menu/report") echo 'active'; ?>">
                         <i class="nav-icon fas fa-utensils"></i>

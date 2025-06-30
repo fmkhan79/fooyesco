@@ -90,6 +90,14 @@ class Orders extends Authorization
         $this->load->view('backend/index', $page_data);
     }
 
+    public function request_refund($order_code)
+    {
+        $this->load->model('refund_model');
+
+        $this->refund_model->get_order_details_for_request_refund($order_code);
+
+        redirect(site_url('report/index'));
+    }
 
     // PROCESSING ORDERS MAKE SURE THAT THE USER IS ADMIN
     public function process($order_code, $phase)
@@ -410,7 +418,6 @@ class Orders extends Authorization
 
         $order_ids = $this->input->post('order_ids');
 
-
         if (!empty($order_ids)) {
             $this->order_model->mark_as_paid($order_ids);
             $this->session->set_flashdata('success_message', get_phrase('orders_set_as_paid_successfully'));
@@ -427,8 +434,8 @@ class Orders extends Authorization
 
 
         if (!empty($order_ids)) {
-            $this->order_model->mark_as_unpaid($order_ids);
-            $this->session->set_flashdata('success_message', get_phrase('orders_set_as_unpaid_successfully'));
+             $this->order_model->mark_as_unpaid($order_ids);
+             $this->session->set_flashdata('success_message', get_phrase('orders_set_as_unpaid_successfully'));
         }
 
         redirect(site_url('report/index'));
