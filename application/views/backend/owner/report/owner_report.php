@@ -89,7 +89,20 @@
                             <?php
                             foreach ($orders as $order) : 
                             ?>
-                            
+                                <?php
+                                    $canRequestRefund = false;
+
+                                    if (
+                                        isset($order['is_paid']) && $order['is_paid'] == 1 &&
+                                        (!isset($order['request_refund']['order_code']) ||  $order['code'] !== $order['request_refund']['order_code'])
+                                    ) {
+                                        $canRequestRefund = true;
+                                    }
+
+                                    $isRefundPending = isset($order['request_refund']['status']) && $order['request_refund']['status'] == 0;
+                                    $isRefundAccepted = isset($order['request_refund']['status']) && $order['request_refund']['status'] == 1;
+                                    $isRefundRejected = isset($order['request_refund']['status']) && $order['request_refund']['status'] == 2;
+                                ?>
                                 <tr>
                                     <td>
                                         <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>"><?php echo sanitize($order['code']); ?></a>
@@ -182,8 +195,32 @@
                                             ?>
                                         </small>
                                     </td>
-                                    <td class="text-center">
+                                    <td>
                                         <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>" class="btn btn-rounded btn-outline-primary btn-sm mt-2"><?php echo get_phrase('details'); ?></a>
+                                        
+                                        <?php if ($canRequestRefund): ?>
+                                            <a href="javascript:void(0);" 
+                                            class="btn btn-rounded btn-outline-success btn-sm mt-2 request-refund-btn" 
+                                            data-href="<?php echo site_url('orders/request_refund/' . sanitize($order['code'])); ?>">
+                                                <?php echo get_phrase('request_refund'); ?>
+                                            </a>
+                                        <?php elseif($isRefundPending): ?>
+                                            <button class="btn btn-rounded btn-outline-warning btn-sm mt-2 request-refund-btn" disabled>
+                                                <?php echo get_phrase('request_refund_pending'); ?>
+                                            </button>
+                                        <?php elseif($isRefundAccepted): ?>
+                                            <button class="btn btn-rounded btn-outline-success btn-sm mt-2 request-refund-btn" disabled>
+                                                <?php echo get_phrase('request_refund_accepted'); ?>
+                                            </button>
+                                        <?php elseif($isRefundRejected): ?>
+                                            <button class="btn btn-rounded btn-outline-danger btn-sm mt-2 request-refund-btn" disabled>
+                                                <?php echo get_phrase('request_refund_rejected'); ?>
+                                            </button>
+                                        <?php else: ?>
+                                            <button class="btn btn-rounded btn-outline-secondary btn-sm mt-2 request-refund-btn" disabled>
+                                                <?php echo get_phrase('request_refund'); ?>
+                                            </button>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -222,6 +259,28 @@
             </div>
         </div>
 
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel"><?php echo get_phrase('request_refund_confirmation'); ?></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="<?php echo get_phrase('close'); ?>">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <?php echo get_phrase('are_you_sure_you_want_to_continue'); ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo get_phrase('cancel'); ?></button>
+        <button type="button" class="btn btn-primary" id="confirmActionBtn"><?php echo get_phrase('yes_continue'); ?></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <?php if (!count($commissions)) : ?>
     <?php isEmpty(); ?>
 <?php endif; ?>
@@ -230,6 +289,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
 
 <script>
+    let refundUrl = '';
     $(document).ready(function() {
         $('#orders').DataTable({
             pageLength: 25,
@@ -241,6 +301,20 @@
                 }
             ],
             order: [[0, 'desc']]
+        });
+
+         // Intercept refund button click
+        $('.request-refund-btn').on('click', function (e) {
+            e.preventDefault();
+            refundUrl = $(this).data('href'); // store refund URL
+            $('#confirmModal').modal('show');
+        });
+
+        // When confirm button in modal is clicked
+        $('#confirmActionBtn').on('click', function () {
+            if (refundUrl !== '') {
+                window.location.href = refundUrl;
+            }
         });
     });
 
