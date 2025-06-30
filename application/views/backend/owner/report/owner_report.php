@@ -205,7 +205,7 @@
                                                 <?php echo get_phrase('request_refund'); ?>
                                             </a>
                                         <?php elseif($isRefundPending): ?>
-                                            <button class="btn btn-rounded btn-outline-warning btn-sm mt-2 request-refund-btn" disabled>
+                                            <button class="btn btn-rounded btn-outline-info btn-sm mt-2 request-refund-btn" disabled>
                                                 <?php echo get_phrase('request_refund_pending'); ?>
                                             </button>
                                         <?php elseif($isRefundAccepted): ?>

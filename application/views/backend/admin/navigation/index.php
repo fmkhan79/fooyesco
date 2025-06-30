@@ -176,7 +176,7 @@ q
                 </li>
 
                 <li class="nav-item">
-                    <a href="<?php echo site_url('refundrequest'); ?>" class="nav-link <?php if ($page_name == "refundrequest/index") echo 'active'; ?>">
+                    <a href="<?php echo site_url('refundrequest/index'); ?>" class="nav-link <?php if ($page_name == "refundrequest/index") echo 'active'; ?>">
                         <i class="fas fa-pepper-hot nav-icon"></i>
                         <p>
                             <?php echo get_phrase('Refund Requests'); ?>
