@@ -1651,5 +1651,15 @@ class Order_model extends Base_model
         }
     }
 
+    public function get_order_by_code($order_code){
+        $this->db->where('code', $order_code);
+        $query = $this->db->get('orders');
+        if ($query->num_rows() > 0) {
+            return $query->row_array(); 
+        } else {
+            return false;
+        }
+    }
+
     
 }
