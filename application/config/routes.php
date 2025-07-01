@@ -12,6 +12,7 @@ $route['site/privacy-policy'] = 'site/privacy_policy';
 $route['site/terms-and-conditions'] = 'site/terms_and_conditions';
 $route['site/become-a-partner'] = 'site/become_a_partner';
 $route['site/terms-of-use'] = 'site/terms_of_use';
+$route['refundrequest'] = 'RefundRequest';
 $route['chilli-hut-march'] = 'site/restaurant/chilli-hut-march/3';
 $route['commision'] = 'report/sales_summary';
 

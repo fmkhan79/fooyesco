@@ -20,7 +20,6 @@
                         <h3 class="card-title">
                             <?php echo get_phrase("refund_requests_of_restaurant_owners", true); ?>
                         </h3>
-                        <p>from new dir</p>
                     </div>
                     <div class="card-body">
                         <table id="commissions" class="table table-bordered table-hover">
