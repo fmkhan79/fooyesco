@@ -204,7 +204,7 @@
                                         <?php if ($canRequestRefund): ?>
                                             <a href="javascript:void(0);" 
                                             class="btn btn-rounded btn-outline-success btn-sm mt-2 request-refund-btn" 
-                                            data-href="<?php echo site_url('refundrequest/request_refund/' . sanitize($order['code'])); ?>">
+                                            data-href="<?php echo site_url('RefundRequest/request_refund/' . sanitize($order['code'])); ?>">
                                                 <?php echo get_phrase('request_refund'); ?>
                                             </a>
                                         <?php elseif($isRefundPending): ?>
