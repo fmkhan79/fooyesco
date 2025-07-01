@@ -55,7 +55,7 @@ $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes'); // Your email and name
 		if ($is_password_restting_mail) {
 			$htmlContent = $this->load->view('email/template', array('message' => $message), TRUE);
 		} else {
-			$htmlContent = $this->load->view('email/general', array('subject' => $subject, 'message' => $message), TRUE);
+			$htmlContent = $this->load->view('email/order_placing', array('subject' => $subject, 'message' => $message), TRUE);
 		}
 
 		$mail->Body = $htmlContent;

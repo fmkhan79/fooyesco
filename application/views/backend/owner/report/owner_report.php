@@ -93,7 +93,7 @@
                                     $canRequestRefund = false;
 
                                     if (
-                                        isset($order['is_paid']) && $order['is_paid'] == 1 &&
+                                        isset($order['is_paid']) && $order['is_paid'] == 0 &&
                                         (!isset($order['request_refund']['order_code']) ||  $order['code'] !== $order['request_refund']['order_code'])
                                     ) {
                                         $canRequestRefund = true;
@@ -155,8 +155,11 @@
                                         <?php endif; ?>
                                     </td> -->
                                     <td>
-                                                                                 <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
-                                            <?php if (($payment_data['payment_method']) =="stripe" )  : ?>
+                                                                                 <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']);
+                                                                                //  print_r($payment_data);
+                                                                                //  die();
+                                                                                 ?>
+                                            <?php if ($payment_data['payment_method'] == "stripe" )  : ?>
                                                        <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('Card')); ?></span>
                                             <?php else : ?>
                                                 <span class="badge badge-danger lighten-primary"><?php echo get_phrase(sanitize('Cash')); ?></span>
@@ -201,7 +204,7 @@
                                         <?php if ($canRequestRefund): ?>
                                             <a href="javascript:void(0);" 
                                             class="btn btn-rounded btn-outline-success btn-sm mt-2 request-refund-btn" 
-                                            data-href="<?php echo site_url('orders/request_refund/' . sanitize($order['code'])); ?>">
+                                            data-href="<?php echo site_url('refundrequest/request_refund/' . sanitize($order['code'])); ?>">
                                                 <?php echo get_phrase('request_refund'); ?>
                                             </a>
                                         <?php elseif($isRefundPending): ?>

@@ -30,7 +30,7 @@ class Refund_model extends Base_model
         $order = $this->db->get_where('orders', ['code' => $order_code])->row();
         
         $restaurant_id = $order->restaurant_id;
-        $refund_amount = $order->grand_total;
+        $refund_amount = $order->commission_paid;
 
         $refundData = [
             'order_code'     => $order_code,
@@ -51,10 +51,11 @@ class Refund_model extends Base_model
     {
         $request = $this->db->get_where('refund_requests', ['order_code' => $order_code])->row();
 
-        // print_r($request->order_code);
-        // die();
-
         if ($request) {
+            $order = $this->db->get_where('orders', ['code' => $order_code])->row();
+            $this->load->model('order_model');
+            $this->order_model->mark_as_paid([$order->id]);
+            
             $this->db->where('order_code', $request->order_code);
             $this->db->update('refund_requests', [
                 'status' => 1,
