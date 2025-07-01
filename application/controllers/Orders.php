@@ -90,14 +90,7 @@ class Orders extends Authorization
         $this->load->view('backend/index', $page_data);
     }
 
-    public function request_refund($order_code)
-    {
-        $this->load->model('refund_model');
 
-        $this->refund_model->get_order_details_for_request_refund($order_code);
-
-        redirect(site_url('report/index'));
-    }
 
     // PROCESSING ORDERS MAKE SURE THAT THE USER IS ADMIN
     public function process($order_code, $phase)
