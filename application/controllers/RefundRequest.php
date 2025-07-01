@@ -26,7 +26,7 @@ class RefundRequest extends Authorization
     {
         $this->load->model("refund_model");
             
-        $page_data['page_name'] = 'refund_request/requests';
+        $page_data['page_name'] = 'refund/index';
         $page_data['page_title'] = site_phrase("refund_requests", true);
         $page_data['refund_requests'] = $this->refund_model->get_all_refund_requests();
         
