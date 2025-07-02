@@ -93,7 +93,7 @@
                                     $canRequestRefund = false;
 
                                     if (
-                                        isset($order['is_paid']) && $order['is_paid'] == 0 &&
+                                        isset($order['is_status']) && $order['is_status'] == 0 &&
                                         (!isset($order['request_refund']['order_code']) ||  $order['code'] !== $order['request_refund']['order_code'])
                                     ) {
                                         $canRequestRefund = true;

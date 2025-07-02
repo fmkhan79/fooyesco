@@ -1384,7 +1384,6 @@ class Order_model extends Base_model
                     $starting_timestamp = strtotime($dates[0]);
                     $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
 
-                    // If parsing fails, return 0 to avoid bad query
                     if (!$starting_timestamp || !$ending_timestamp) {
                         return 0;
                     }
@@ -1405,18 +1404,29 @@ class Order_model extends Base_model
             $this->db->where('payment.created_at >=', $starting_timestamp);
             $this->db->where('payment.created_at <=', $ending_timestamp);
         }
-        // Filter by status
+
+        // Check GET status
         if (!empty($_GET['status'])) {
             if ($_GET['status'] === "paid") {
                 $this->db->where('is_status', 1);
-            } elseif ($_GET['status'] === "refund") {
-                $this->db->where('is_status', 2);
             } elseif ($_GET['status'] === "unpaid") {
                 $this->db->where('is_status', 0);
+            } elseif ($_GET['status'] === "refund") {
+                // If status is refund, return 0 directly
+                return 0;
             }
+        } else {
+            // Default behavior: exclude refund
+            $this->db->where('is_status !=', 2);
         }
+
+        // Manual override if passed
         if (!is_null($is_paid_status)) {
-            $this->db->where('is_status', $is_paid_status);
+            if ($is_paid_status == 2) {
+                return 0;
+            } else {
+                $this->db->where('is_status', $is_paid_status);
+            }
         }
 
         $query = $this->db->get();
@@ -1428,16 +1438,12 @@ class Order_model extends Base_model
 
     public function get_cash_on_delivery_payment_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
     {
-
         // Use restaurant_id from GET if not provided as argument
         if (is_null($restaurant_id)) {
             if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
-                // print_r("dsa");
                 $restaurant_id = sanitize($_GET['restaurant_id']);
             }
         }
-
-
 
         // Parse date range from GET if timestamps are not provided
         if (is_null($starting_timestamp) || is_null($ending_timestamp)) {
@@ -1455,6 +1461,16 @@ class Order_model extends Base_model
             }
         }
 
+        // Refund status → no revenue
+        if (!empty($_GET['status']) && $_GET['status'] === 'refund') {
+            return 0;
+        }
+
+        // Manual status override refund check
+        if (!is_null($is_paid_status) && $is_paid_status == 2) {
+            return 0;
+        }
+
         // Build query
         $this->db->select_sum('payment.amount_to_pay', 'total_sum');
         $this->db->from('payment');
@@ -1469,16 +1485,20 @@ class Order_model extends Base_model
             $this->db->where('payment.created_at >=', $starting_timestamp);
             $this->db->where('payment.created_at <=', $ending_timestamp);
         }
-        // Filter by status
+
+        // Apply status from GET (if not refund)
         if (!empty($_GET['status'])) {
             if ($_GET['status'] === "paid") {
                 $this->db->where('is_status', 1);
-            } elseif ($_GET['status'] === "refund") {
-                $this->db->where('is_status', 2);
             } elseif ($_GET['status'] === "unpaid") {
                 $this->db->where('is_status', 0);
             }
+        } else {
+            // Default: exclude refunded payments
+            $this->db->where('is_status !=', 2);
         }
+
+        // Manual status override (except refund, which already returned above)
         if (!is_null($is_paid_status)) {
             $this->db->where('is_status', $is_paid_status);
         }
@@ -1486,8 +1506,6 @@ class Order_model extends Base_model
         $query = $this->db->get();
         $result = $query->row_array();
 
-        // Return the sum, or 0 if no data found
-        // print_r($result['total_sum']);
         return $result['total_sum'] ?? 0;
     }
 
@@ -1510,13 +1528,13 @@ class Order_model extends Base_model
                     $starting_timestamp = strtotime($dates[0]);
                     $ending_timestamp = strtotime($dates[1] . ' 23:59:59');
 
-                    // If parsing fails, return 0 to avoid bad query
                     if (!$starting_timestamp || !$ending_timestamp) {
                         return 0;
                     }
                 }
             }
         }
+
         $this->db->select_sum('payment.amount_to_pay', 'total_sum');
         $this->db->from('payment');
         $this->db->join('orders', 'payment.order_code = orders.code');
@@ -1524,28 +1542,41 @@ class Order_model extends Base_model
         if ($restaurant_id !== "all") {
             $this->db->where('orders.restaurant_id', $restaurant_id);
         }
-        // Filter by status
+
+        // Handle status
         if (!empty($_GET['status'])) {
             if ($_GET['status'] === "paid") {
                 $this->db->where('is_status', 1);
-            } elseif ($_GET['status'] === "refund") {
-                $this->db->where('is_status', 2);
             } elseif ($_GET['status'] === "unpaid") {
                 $this->db->where('is_status', 0);
+            } elseif ($_GET['status'] === "refund") {
+                // Refunds should not be included in revenue → return 0 directly
+                return 0;
             }
+        } else {
+            // If status not passed, then ignore refunded payments by default
+            $this->db->where('is_status !=', 2);
         }
 
+        // Filter by date range
         if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
             $this->db->where('payment.created_at >=', $starting_timestamp);
             $this->db->where('payment.created_at <=', $ending_timestamp);
         }
-        if (!is_null($is_paid_status)) {
-            $this->db->where('is_status', $is_paid_status);
-        }
 
+        // Extra condition if passed manually
+        if (!is_null($is_paid_status)) {
+            // But make sure it is not refund
+            if ($is_paid_status == 2) {
+                return 0; // refunded = no revenue
+            } else {
+                $this->db->where('is_status', $is_paid_status);
+            }
+        }
 
         $query = $this->db->get();
         $result = $query->row_array();
+
         return $result['total_sum'] ?? 0;
     }
 
@@ -1575,9 +1606,9 @@ class Order_model extends Base_model
             }
         }
 
-       $status_filter = $_GET['status'] ?? null;
+        $status_filter = $_GET['status'] ?? null;
 
-        // CASE 1: Show only unpaid commission total
+        // CASE 1: Unpaid commission only
         if ($status_filter === 'unpaid') {
             $this->db->select_sum('orders.commission_paid', 'unpaid_commission');
             $this->db->from('orders');
@@ -1597,36 +1628,23 @@ class Order_model extends Base_model
             return round($result['unpaid_commission'] ?? 0, 2);
         }
 
-        // CASE 2: Show only paid commission total
+        // CASE 2: Paid commission only — return 0 as per your existing logic
         if ($status_filter === 'paid') {
             return 0;
         }
 
-        // CASE 4: Show only refunded commission total
+        // CASE 3: Refund commission only
         if ($status_filter === 'refund') {
-            $this->db->select_sum('orders.commission_paid', 'refund_commission');
-            $this->db->from('orders');
-            $this->db->join('payment', 'payment.order_code = orders.code');
-            $this->db->where('orders.is_status', 2); // Only refund
-
-            if ($restaurant_id && $restaurant_id !== "all") {
-                $this->db->where('orders.restaurant_id', $restaurant_id);
-            }
-            if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
-                $this->db->where('payment.created_at >=', $starting_timestamp);
-                $this->db->where('payment.created_at <=', $ending_timestamp);
-            }
-
-            $query = $this->db->get();
-            $result = $query->row_array();
-            return round($result['refund_commission'] ?? 0, 2);
+            return 0;
         }
 
-        // CASE 3: Default (all) – Total - Paid
-        // First: Get total commission
+        // DEFAULT CASE: Total - Paid - Refund
+
+        // 1. Get total commission (excluding refunded)
         $this->db->select_sum('orders.commission_paid', 'total_commission');
         $this->db->from('orders');
         $this->db->join('payment', 'payment.order_code = orders.code');
+        $this->db->where('orders.is_status !=', 2); // exclude refund
 
         if ($restaurant_id && $restaurant_id !== "all") {
             $this->db->where('orders.restaurant_id', $restaurant_id);
@@ -1640,7 +1658,7 @@ class Order_model extends Base_model
         $total = $query_total->row_array();
         $total_commission = $total['total_commission'] ?? 0;
 
-        // Second: Get paid commission
+        // 2. Get paid commission
         $this->db->select_sum('orders.commission_paid', 'paid_commission');
         $this->db->from('orders');
         $this->db->join('payment', 'payment.order_code = orders.code');
@@ -1658,11 +1676,10 @@ class Order_model extends Base_model
         $paid = $query_paid->row_array();
         $paid_commission = $paid['paid_commission'] ?? 0;
 
-        // Unpaid = total - paid
+        // 3. unpaid = total - paid
         $unpaid_commission = $total_commission - $paid_commission;
 
         return round(max(0, $unpaid_commission), 2);
-
     }
 
 
@@ -1696,5 +1713,10 @@ class Order_model extends Base_model
         }
     }
 
+    public function mark_as_refund($order_code)
+    {
+        $this->db->where('code', $order_code);
+        $this->db->update('orders', ['is_status' => 2]);
+    }
     
 }
