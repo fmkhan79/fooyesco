@@ -74,7 +74,7 @@ class RefundRequest extends Authorization
 
         $this->refund_model->get_order_details_for_request_refund($order_code);
 
-        redirect(site_url('report/index?restaurant_id=all&date_range=June+01%2C+2025+-+June+30%2C+2025'));
+        redirect(site_url('report/index'));
     }
 
 

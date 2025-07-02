@@ -172,7 +172,7 @@
 
                 <?php $report_type = isset($report_type) ? $report_type : ""; ?>
                 <li class="nav-item">
-                    <a href="<?php echo site_url('report/index?restaurant_id=all&date_range=June+01%2C+2025+-+June+30%2C+2025'); ?>" class="nav-link <?php if ($page_name == "report/index" && $report_type == "owner" || $report_type == "details") echo 'active'; ?>">
+                    <a href="<?php echo site_url('report/index'); ?>" class="nav-link <?php if ($page_name == "report/index" && $report_type == "owner" || $report_type == "details") echo 'active'; ?>">
                         <i class="nav-icon fas fa-receipt"></i>
                         <p><?php echo get_phrase("report"); ?></p>
                     </a>
