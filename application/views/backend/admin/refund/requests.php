@@ -22,7 +22,7 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        <table id="commissions" class="table table-bordered table-hover">
+                        <table id="refund_requests" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th><?php echo get_phrase("order_code"); ?></th>
@@ -67,3 +67,15 @@
         </div>
     </div>
 </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+
+   $('#refund_requests').DataTable({
+        pageLength: 25,
+        responsive: true
+    });
+});
+
+</script>

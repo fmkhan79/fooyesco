@@ -122,7 +122,7 @@
                                         ?>
 
                                             <tr>
-                                                <td><input type="checkbox" class="order-checkbox" name="order_ids[]" value="<?php echo $order['id']; ?>"></td>
+                                                <td><input type="checkbox" class="order-checkbox" name="order_ids[]" value="<?php echo $order['id']; ?>" <?php if ($order['is_status'] == 2) echo 'disabled'; ?> ></td>
                                                 <td>
                                                     <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>"><?php echo sanitize($order['code']); ?></a>
                                                 </td>

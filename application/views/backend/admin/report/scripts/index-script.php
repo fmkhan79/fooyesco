@@ -57,7 +57,7 @@
         });
 
         $('#select-all').click(function () {
-            $('.order-checkbox').prop('checked', this.checked);
+            $('.order-checkbox:not(:disabled)').prop('checked', this.checked);
         });
 
         $('#bulk-update-form').submit(function (e) {

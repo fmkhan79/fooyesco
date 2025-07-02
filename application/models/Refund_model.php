@@ -52,9 +52,8 @@ class Refund_model extends Base_model
         $request = $this->db->get_where('refund_requests', ['order_code' => $order_code])->row();
 
         if ($request) {
-            $order = $this->db->get_where('orders', ['code' => $order_code])->row();
             $this->load->model('order_model');
-            $this->order_model->mark_as_paid([$order->id]);
+            $this->order_model->mark_as_refund($order_code);
             
             $this->db->where('order_code', $request->order_code);
             $this->db->update('refund_requests', [
@@ -83,5 +82,12 @@ class Refund_model extends Base_model
 
         return false;
     }
+
+    public function get_all_pending_requests()
+    {
+        $this->db->where('status', 0);
+        return $this->db->count_all_results('refund_requests');
+    }
+
 
 }

@@ -40,144 +40,170 @@ $decoded_address = json_decode($message['address'], true);
     <meta charset="UTF-8">
     <title>Order Confirmation</title>
     <style>
-        body {
-            font-family: "Poppins", sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-            color: #191919;
-        }
+         body {
+      font-family: "Poppins", sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      color: #191919;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #fff;
-            border: 1px solid #ddd;
-        }
+    a{
+        color: #f54748 !important;
+        text-decoration: none;
+    }
 
-        .header {
-            padding: 20px;
-            text-align: center;
-        }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      border: 1px solid #ddd;
+    }
 
-        .header h1 {
-            color: #191919;
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
+    .header {
+      padding: 20px;
+      text-align: center;
+    }
 
-        .header span.highlight {
-            background: #fdc55e;
-            color: #ffffff;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
+    .header h1 {
+      color: #191919;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
 
-        .info {
-            padding: 0 20px 20px;
-            font-size: 14px;
-            line-height: 1.6;
-            font-weight: bold;
-        }
+    .header span.highlight {
+      background: #fdc55e;
+      color: #ffffff;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
 
-        .info a {
-            color: #f54748;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .info {
+      padding: 0 20px 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: bold;
+    }
 
-        .summary-header {
-            background: #f54748;
-            color: #ffffff;
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 20px;
-            font-weight: bold;
-            font-size: 14px;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
+    .info a {
+      color: #f54748;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-        .details {
-            padding: 20px;
-            font-size: 14px;
-        }
+    .summary-header {
+      background: #f54748;
+      color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      font-weight: bold;
+      font-size: 14px;
+      column-gap: 30px; /* added space between ORDER SUMMARY and Order ID */
+      flex-wrap: wrap;
+    }
 
-        .order-items,
-        .totals {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            word-break: break-word;
-        }
+    .details {
+      padding: 20px;
+      font-size: 14px;
+    }
 
-        .order-items td,
-        .totals td {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
+    .addresses {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
 
-        .order-items td:last-child,
-        .totals td:last-child {
-            text-align: right;
-        }
+    .addresses p {
+      flex: 1 1 45%;
+      margin: 0;
+    }
 
-        .totals td strong {
-            font-size: 18px;
-            color: #f54748;
-        }
+    .order-items,
+    .totals {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      word-break: break-word;
+    }
 
-        .footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 12px;
-            color: #999;
-        }
+    .order-items td,
+    .totals td {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
 
-        @media only screen and (max-width: 600px) {
-            .container {
-                width: 90%;
-            }
+    .order-items td:last-child,
+    .totals td:last-child {
+      text-align: right;
+    }
 
-            .header h1 {
-                font-size: 20px;
-            }
+    .totals td strong {
+      font-size: 18px;
+      color: #f54748;
+    }
 
-            .info {
-                font-size: 13px;
-                padding: 0 15px 15px;
-            }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #999;
+    }
 
-            .summary-header {
-                font-size: 13px;
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px 15px;
-            }
+    @media only screen and (max-width: 600px) {
+      .container {
+        width: 90%;
+      }
 
-            .details {
-                padding: 15px;
-                font-size: 13px;
-            }
+      .header h1 {
+        font-size: 20px;
+      }
 
-            .totals td strong {
-                font-size: 16px;
-            }
-        }
+      .info {
+        font-size: 13px;
+        padding: 0 15px 15px;
+      }
+
+      .summary-header {
+        font-size: 13px;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 15px;
+      }
+
+      .details {
+        padding: 15px;
+        font-size: 13px;
+      }
+
+      .addresses {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .totals td strong {
+        font-size: 16px;
+      }
+    }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="header">
-            <h1>Hooray <?= sanitize($customer_details['name']) ?>! <?= sanitize($subject) ?></h1>
+            <h1>Hello <?= sanitize($customer_details['name']) ?>! <?= sanitize($subject) ?></h1>
+            <a href="https://fooyes.co.uk/">
             <img src="https://fooyes.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9G.jpg" alt="Fooyes Logo" style="width:80px; height:auto; margin-top:5px;">
+            </a>
         </div>
 
         <div class="info">
-            <p>Thank you for <span class="highlight">ordering</span> from Fooyes. Your <span class="highlight">order</span> has been placed and sent to the takeaway. If you need to modify your <span class="highlight">order</span>, please call us on <a href="tel:01613711845">01613711845</a>.</p>
-            <p>Please make sure that any modification/cancellation is made within 5 minutes of placing the <span class="highlight">order</span>.</p>
+            <p>Thank you for choosing Fooyes! Your <span class="highlight">order</span> has been successfully placed and forwarded to our kitchen team. If you need to make any changes to your <span class="highlight">order</span>, please contact us immediately at <a href="tel:<?= $restaurant_details['phone'] ?>"><?= $restaurant_details['phone'] ?></a>.</p>
+            <p>Kindly ensure that any modifications or cancellations are requested within 5 minutes of placing your <span class="highlight">order</span> to avoid delays.</p>
         </div>
+
 
         <div class="summary-header">
             <div>ORDER SUMMARY</div>
@@ -186,9 +212,8 @@ $decoded_address = json_decode($message['address'], true);
 
         <div class="details">
             <p><strong>From:</strong><br>
-                Fooyes,<br>
-                152 Market Street,<br>
-                Droylsden, Manchester, M43 7AA
+                <?= $restaurant_details['name'] ?>,<br>
+                <?= $restaurant_details['address'] ?>
             </p>
             <?php if (!empty($decoded_address)) { ?>
                 <p><strong>Delivered to:</strong><br>
@@ -265,7 +290,7 @@ $decoded_address = json_decode($message['address'], true);
         </div>
 
         <div class="footer">
-            &copy; 2025 Fooyes. All rights reserved.
+            &copy; 2025 <a href="https://fooyes.co.uk/">Fooyes</a>. All rights reserved.
         </div>
     </div>
 </body>
