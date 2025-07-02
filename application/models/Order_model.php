@@ -171,15 +171,17 @@ class Order_model extends Base_model
         }
 
         // Check if 'order_status' is set and has a valid value
-        if (isset($conditions['order_status']) && in_array($conditions['order_status'], ['paid', 'unpaid'])) {
+        if (isset($conditions['order_status']) && in_array($conditions['order_status'], ['paid', 'unpaid', 'refund'])) {
             foreach ($conditions as $key => $value) {
                 if (!is_null($value)) {
                     if ($key === 'order_status') {
-                        if ($value === 'paid') {
-                            $this->db->where('is_paid', 1);
-                        } else {
-                            $this->db->where('is_paid', 0);
-                        }
+                        if ($value === 'unpaid') {
+                            $this->db->where('orders.is_status', 0);
+                        } elseif($value === 'paid') {
+                            $this->db->where('orders.is_status', 1);
+                        } elseif($value === 'refund') {
+                            $this->db->where('orders.is_status', 2);
+                        } 
                     } elseif (is_array($value)) {
                         $this->db->where_in($key, $value);
                     } else {
@@ -468,6 +470,8 @@ class Order_model extends Base_model
         if (!$is_single_row) {
             $orders = $query_obj->result_array();
             foreach ($orders as $key => $order) {
+                // print_r($orders);
+                // die();
 
                
                 $orders[$key]['request_refund'] = [
@@ -1128,12 +1132,14 @@ class Order_model extends Base_model
             }
         }
 
-        // Filter by is_paid
+        // Filter by status
         if (!empty($_GET['status'])) {
             if ($_GET['status'] === "paid") {
-                $this->db->where('is_paid', 1);
+                $this->db->where('is_status', 1);
+            } elseif ($_GET['status'] === "refund") {
+                $this->db->where('is_status', 2);
             } elseif ($_GET['status'] === "unpaid") {
-                $this->db->where('is_paid', 0);
+                $this->db->where('is_status', 0);
             }
         }
 
@@ -1151,7 +1157,7 @@ class Order_model extends Base_model
         }
 
         if (!is_null($is_paid_status)) {
-            $this->db->where('is_paid', $is_paid_status);
+            $this->db->where('is_status', $is_paid_status);
         }
 
         // Execute the query and return the number of rows
@@ -1399,15 +1405,18 @@ class Order_model extends Base_model
             $this->db->where('payment.created_at >=', $starting_timestamp);
             $this->db->where('payment.created_at <=', $ending_timestamp);
         }
+        // Filter by status
         if (!empty($_GET['status'])) {
             if ($_GET['status'] === "paid") {
-                $this->db->where('is_paid', 1);
+                $this->db->where('is_status', 1);
+            } elseif ($_GET['status'] === "refund") {
+                $this->db->where('is_status', 2);
             } elseif ($_GET['status'] === "unpaid") {
-                $this->db->where('is_paid', 0);
+                $this->db->where('is_status', 0);
             }
         }
         if (!is_null($is_paid_status)) {
-            $this->db->where('is_paid', $is_paid_status);
+            $this->db->where('is_status', $is_paid_status);
         }
 
         $query = $this->db->get();
@@ -1423,7 +1432,7 @@ class Order_model extends Base_model
         // Use restaurant_id from GET if not provided as argument
         if (is_null($restaurant_id)) {
             if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
-                print_r("dsa");
+                // print_r("dsa");
                 $restaurant_id = sanitize($_GET['restaurant_id']);
             }
         }
@@ -1460,15 +1469,18 @@ class Order_model extends Base_model
             $this->db->where('payment.created_at >=', $starting_timestamp);
             $this->db->where('payment.created_at <=', $ending_timestamp);
         }
+        // Filter by status
         if (!empty($_GET['status'])) {
             if ($_GET['status'] === "paid") {
-                $this->db->where('is_paid', 1);
+                $this->db->where('is_status', 1);
+            } elseif ($_GET['status'] === "refund") {
+                $this->db->where('is_status', 2);
             } elseif ($_GET['status'] === "unpaid") {
-                $this->db->where('is_paid', 0);
+                $this->db->where('is_status', 0);
             }
         }
         if (!is_null($is_paid_status)) {
-            $this->db->where('is_paid', $is_paid_status);
+            $this->db->where('is_status', $is_paid_status);
         }
 
         $query = $this->db->get();
@@ -1512,11 +1524,14 @@ class Order_model extends Base_model
         if ($restaurant_id !== "all") {
             $this->db->where('orders.restaurant_id', $restaurant_id);
         }
+        // Filter by status
         if (!empty($_GET['status'])) {
             if ($_GET['status'] === "paid") {
-                $this->db->where('is_paid', 1);
+                $this->db->where('is_status', 1);
+            } elseif ($_GET['status'] === "refund") {
+                $this->db->where('is_status', 2);
             } elseif ($_GET['status'] === "unpaid") {
-                $this->db->where('is_paid', 0);
+                $this->db->where('is_status', 0);
             }
         }
 
@@ -1525,7 +1540,7 @@ class Order_model extends Base_model
             $this->db->where('payment.created_at <=', $ending_timestamp);
         }
         if (!is_null($is_paid_status)) {
-            $this->db->where('is_paid', $is_paid_status);
+            $this->db->where('is_status', $is_paid_status);
         }
 
 
@@ -1560,15 +1575,14 @@ class Order_model extends Base_model
             }
         }
 
-        // Get status filter
-        $status_filter = $_GET['status'] ?? null;
+       $status_filter = $_GET['status'] ?? null;
 
         // CASE 1: Show only unpaid commission total
         if ($status_filter === 'unpaid') {
             $this->db->select_sum('orders.commission_paid', 'unpaid_commission');
             $this->db->from('orders');
             $this->db->join('payment', 'payment.order_code = orders.code');
-            $this->db->where('orders.is_paid', 0); // Only unpaid
+            $this->db->where('orders.is_status', 0); // Only unpaid
 
             if ($restaurant_id && $restaurant_id !== "all") {
                 $this->db->where('orders.restaurant_id', $restaurant_id);
@@ -1586,6 +1600,26 @@ class Order_model extends Base_model
         // CASE 2: Show only paid commission total
         if ($status_filter === 'paid') {
             return 0;
+        }
+
+        // CASE 4: Show only refunded commission total
+        if ($status_filter === 'refund') {
+            $this->db->select_sum('orders.commission_paid', 'refund_commission');
+            $this->db->from('orders');
+            $this->db->join('payment', 'payment.order_code = orders.code');
+            $this->db->where('orders.is_status', 2); // Only refund
+
+            if ($restaurant_id && $restaurant_id !== "all") {
+                $this->db->where('orders.restaurant_id', $restaurant_id);
+            }
+            if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
+                $this->db->where('payment.created_at >=', $starting_timestamp);
+                $this->db->where('payment.created_at <=', $ending_timestamp);
+            }
+
+            $query = $this->db->get();
+            $result = $query->row_array();
+            return round($result['refund_commission'] ?? 0, 2);
         }
 
         // CASE 3: Default (all) – Total - Paid
@@ -1610,7 +1644,7 @@ class Order_model extends Base_model
         $this->db->select_sum('orders.commission_paid', 'paid_commission');
         $this->db->from('orders');
         $this->db->join('payment', 'payment.order_code = orders.code');
-        $this->db->where('orders.is_paid', 1);
+        $this->db->where('orders.is_status', 1);
 
         if ($restaurant_id && $restaurant_id !== "all") {
             $this->db->where('orders.restaurant_id', $restaurant_id);
@@ -1628,6 +1662,7 @@ class Order_model extends Base_model
         $unpaid_commission = $total_commission - $paid_commission;
 
         return round(max(0, $unpaid_commission), 2);
+
     }
 
 
@@ -1636,7 +1671,7 @@ class Order_model extends Base_model
         if (!empty($order_ids) && is_array($order_ids)) {
             foreach ($order_ids as $id) {
                 $this->db->where('id', $id);
-                $this->db->update('orders', ['is_paid' => 1]);
+                $this->db->update('orders', ['is_status' => 1]);
             }
         }
     }
@@ -1646,7 +1681,7 @@ class Order_model extends Base_model
         if (!empty($order_ids) && is_array($order_ids)) {
             foreach ($order_ids as $id) {
                 $this->db->where('id', $id);
-                $this->db->update('orders', ['is_paid' => 0]);
+                $this->db->update('orders', ['is_status' => 0]);
             }
         }
     }
