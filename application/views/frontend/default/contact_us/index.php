@@ -169,15 +169,15 @@
                 <strong>Got a question? Let’s talk!</strong><br>
                 Drop us a message, and our team will be happy to assist you.
             </p>
-            <form class="contact-form">
+            <form class="contact-form" action="<?php echo site_url('submissions/submit'); ?>" method="post">
                 <div class="form-group">
-                    <input type="text" class="form-control contact-form-input" placeholder="Your Name">
+                    <input type="text" name="name" class="form-control contact-form-input" placeholder="Your Name" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control contact-form-input" placeholder="Subject">
+                    <input type="text" name="subject" class="form-control contact-form-input" placeholder="Subject" required>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control contact-form-textarea" rows="4" placeholder="Type Your Message"></textarea>
+                    <textarea name="message" class="form-control contact-form-textarea" rows="4" placeholder="Type Your Message" required></textarea>
                 </div>
                 <button type="submit" class="btn contact-form-submit-btn">Submit</button>
             </form>
