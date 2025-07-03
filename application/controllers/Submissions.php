@@ -26,9 +26,6 @@ class Submissions extends Base {
 
         $result = $this->submission_model->submit_contact_form($submitData);
 
-        print_r($result);
-        die();
-
         if (!$result) {
             $this->session->set_flashdata('error', 'Submission failed. Please try again.');
         } else {
