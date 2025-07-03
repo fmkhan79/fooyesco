@@ -121,6 +121,7 @@ jQuery("ul.billing-list-topbar li.order .img-box,#paymentbtn").click(function() 
 </script>
 <script>
 function submitForm() {
+    
     // Collect form data
     var formData = $('#billing-form').serialize();
 
@@ -143,7 +144,7 @@ function submitForm() {
             // jQuery("#payment-option").show();
             const orderTypeValue = localStorage.getItem('order-type');
             if(orderTypeValue == "collection"){
-
+                // debugger;
                 jQuery("ul.billing-list-topbar li.order").addClass("acitve");
 
                 jQuery("ul.billing-list-topbar li.order .img-box").addClass("red");
@@ -174,8 +175,8 @@ function submitAddressForm() {
     var addressFormData = $('#address-form').serialize();
 
     // Send data via AJAX
-    $.ajax({
-        type: 'POST',
+    $.ajax({                                                                    
+        type: 'POST',               
         url: '<?= base_url('GuestCheckout/save_address_data') ?>', // Adjust the URL to your controller method
         data: addressFormData,
         success: function(response) {
@@ -724,62 +725,66 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
 // Get value from Local Storage
 const orderTypeValue = localStorage.getItem('order-type');
 
-// Update hidden inputs if value is found
 if (orderTypeValue) {
-    const hiddenInputs = document.querySelectorAll('input[name="order_type"]');
-    hiddenInputs.forEach(hiddenInput => {
-        hiddenInput.value = orderTypeValue;
+    // Update all hidden input fields with the order type
+    document.querySelectorAll('input[name="order_type"]').forEach(input => {
+        input.value = orderTypeValue;
     });
 
     if (orderTypeValue === "collection") {
+        debugger;
+        // Topbar styling
+        const liOrder = document.querySelector('ul.billing-list-topbar li.order');
+        const liBilling = document.querySelector('ul.billing-list-topbar li.billing');
+        const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
 
-        document.querySelectorAll(".payment")[0].style.display = "none";
-        document.querySelectorAll(".billing")[0].style.width = "90%";
+        if (liOrder) liOrder.classList.add("acitve");
+        if (liBilling) liBilling.classList.remove("acitve");
+        if (liPayment) liPayment.classList.remove("acitve");
 
+        const orderImg = document.querySelector('ul.billing-list-topbar li.order .img-box');
+        const billingImg = document.querySelector('ul.billing-list-topbar li.billing .img-box');
+        const paymentImg = document.querySelector('ul.billing-list-topbar li.payment .img-box');
 
-        document.getElementById("collection-time").classList.remove("d-none");
-        document.getElementById("additional-delivery-notes").classList.add("d-none");
-        document.getElementById("cash_button").innerHTML = "Cash On Collection";
+        if (orderImg) orderImg.classList.add("red");
+        if (billingImg) billingImg.classList.remove("red");
+        if (paymentImg) paymentImg.classList.remove("red");
 
-        document.querySelectorAll("span.order_type").forEach(otype => {
-            otype.innerHTML = "Your";
+        // Show/Hide sections
+        const paymentOption = document.getElementById("payment-option");
+        const billingAddress = document.getElementById("billing-address");
+        const yourAddress = document.getElementById("your-address");
+        
+        if (paymentOption) paymentOption.classList.add("d-none");
+        if (billingAddress) billingAddress.classList.add("d-none");
+        if (yourAddress) {
+         yourAddress.classList.remove("d-none");  
+         yourAddress.style.display = "block";    
+            }
+        // Set section display manually if needed
+        const paymentSection = document.querySelector(".payment");
+        if (paymentSection) paymentSection.style.display = "none";
+
+        const billingSection = document.querySelector(".billing");
+        if (billingSection) billingSection.style.width = "90%";
+
+        // Collection time visible, hide additional notes
+        const collectionTime = document.getElementById("collection-time");
+        const deliveryNotes = document.getElementById("additional-delivery-notes");
+        if (collectionTime) collectionTime.classList.remove("d-none");
+        if (deliveryNotes) deliveryNotes.classList.add("d-none");
+
+        // Update cash button text
+        const cashButton = document.getElementById("cash_button");
+        if (cashButton) cashButton.innerHTML = "Cash On Collection";
+
+        // Change order type display label
+        document.querySelectorAll("span.order_type").forEach(span => {
+            span.innerHTML = "Your";
         });
-
-        // ✅ Hide the Payment Option
-
-        const paymentOptionDiv = document.getElementById('payment-option');
-        if (paymentOptionDiv) {
-            paymentOptionDiv.classList.add('d-none');
-        }
-
-        // ✅ Show Your Address Div
-        const yourAddressDiv = document.getElementById('your-address');
-        if (yourAddressDiv) {
-            yourAddressDiv.classList.remove('d-none');
-        }
-
-    } else {
-        document.getElementById("collection-time").classList.add("d-none");
-        document.getElementById("additional-delivery-notes").classList.remove("d-none");
-        document.getElementById("cash_button").innerHTML = "Cash On Delivery";
-
-        document.querySelectorAll("span.order_type").forEach(otype => {
-            otype.innerHTML = "Delivery";
-        });
-
-        // ✅ Show the Payment Option
-        const paymentOptionDiv = document.getElementById('payment-option');
-        if (paymentOptionDiv) {
-            paymentOptionDiv.classList.remove('d-none');
-        }
-
-        // ✅ Hide Your Address Div
-        const yourAddressDiv = document.getElementById('your-address');
-        if (yourAddressDiv) {
-            yourAddressDiv.classList.add('d-none');
-        }
     }
 }
+
 
 
    
