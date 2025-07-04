@@ -28,15 +28,14 @@ class Submissions extends Base {
 
         if (!$result) {
             $this->session->set_flashdata('error', 'Submission failed. Please try again.');
-        } else {
-            $message = $submitData;
-            $subject = $submitData['subject'];
-            $to = "website25developer@gmail.com";
-
-            $this->load->model('email_model');
-            $this->email_model->send_mail_using_php_mailer($message,$subject,$to,false,true);
-            $this->session->set_flashdata('success', 'Submission successful!');
         }
+        $message = $submitData;
+        $subject = $submitData['subject'];
+        $to = "website25developer@gmail.com";
+        
+        $this->load->model('email_model');
+        $this->email_model->send_mail_using_php_mailer($message,$subject,$to,false,true);
+        $this->session->set_flashdata('success', 'Submission successful!');
 
         return redirect(site_url('site/contact-us'));
     }
