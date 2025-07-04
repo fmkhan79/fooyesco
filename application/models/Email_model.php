@@ -21,7 +21,7 @@ class Email_model extends Base_model
 		return $this->send_mail_using_php_mailer($email_message, $email_sub, $email_to);
 	}
 
-	public function send_mail_using_php_mailer($message = NULL, $subject = NULL, $to = NULL, $is_password_restting_mail = false)
+	public function send_mail_using_php_mailer($message = NULL, $subject = NULL, $to = NULL, $is_password_restting_mail = false, $is_contact_submission_mail = false)
 	{
 		// Load PHPMailer library
 		$this->load->library('phpmailer_lib');
@@ -54,6 +54,8 @@ $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes'); // Your email and name
 		$mail->SMTPDebug = false;
 		if ($is_password_restting_mail) {
 			$htmlContent = $this->load->view('email/template', array('message' => $message), TRUE);
+		} elseif($is_contact_submission_mail) {
+			$htmlContent = $this->load->view('email/contact_submission', array('subject' => $subject, 'message' => $message), TRUE);
 		} else {
 			$htmlContent = $this->load->view('email/order_placing', array('subject' => $subject, 'message' => $message), TRUE);
 		}
