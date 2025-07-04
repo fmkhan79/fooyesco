@@ -745,7 +745,7 @@ if (orderTypeValue) {
         const orderImg = document.querySelector('ul.billing-list-topbar li.order .img-box');
         const billingImg = document.querySelector('ul.billing-list-topbar li.billing .img-box');
         const paymentImg = document.querySelector('ul.billing-list-topbar li.payment .img-box');
-
+        
         if (orderImg) orderImg.classList.add("red");
         if (billingImg) billingImg.classList.remove("red");
         if (paymentImg) paymentImg.classList.remove("red");
@@ -760,20 +760,25 @@ if (orderTypeValue) {
         if (yourAddress) {
          yourAddress.classList.remove("d-none");  
          yourAddress.style.display = "block";    
+         document.querySelector('.delivery-text').classList.add('d-none');
+
             }
         // Set section display manually if needed
         const paymentSection = document.querySelector(".payment");
         if (paymentSection) paymentSection.style.display = "none";
 
-        const billingSection = document.querySelector(".billing");
-        if (billingSection) billingSection.style.width = "90%";
+        // const billingSection = document.querySelector(".billing");
+        // if (billingSection) billingSection.style.width = "90%";
+
+        const orderSection = document.querySelector(".billing");
+        if (orderSection) orderSection.style.display = "none";
 
         // Collection time visible, hide additional notes
         const collectionTime = document.getElementById("collection-time");
         const deliveryNotes = document.getElementById("additional-delivery-notes");
         if (collectionTime) collectionTime.classList.remove("d-none");
         if (deliveryNotes) deliveryNotes.classList.add("d-none");
-
+        
         // Update cash button text
         const cashButton = document.getElementById("cash_button");
         if (cashButton) cashButton.innerHTML = "Cash On Collection";
