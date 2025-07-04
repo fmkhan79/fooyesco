@@ -732,13 +732,22 @@ if (orderTypeValue) {
     });
 
     if (orderTypeValue === "collection") {
-        debugger;
+        // debugger;
         // Topbar styling
         const liOrder = document.querySelector('ul.billing-list-topbar li.order');
         const liBilling = document.querySelector('ul.billing-list-topbar li.billing');
         const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
 
+        const paymentGateway = document.getElementById('p-gateways');
+        const paymentMethod = document.getElementById('p-method');
+
         if (liOrder) liOrder.classList.add("acitve");
+        if (liOrder) liOrder.classList.add("col-md-2");
+        if (liOrder) liOrder.classList.add("mx-auto");
+
+        if (paymentGateway) paymentGateway.classList.add("d-none");
+        if (paymentMethod) paymentMethod.classList.add("mx-auto");
+        
         if (liBilling) liBilling.classList.remove("acitve");
         if (liPayment) liPayment.classList.remove("acitve");
 
