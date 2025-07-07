@@ -83,7 +83,7 @@ class Testcart extends Base {
         // $mail->addAddress('fmkhan79@gmail.com');
         $mail->addAddress('fooyesuk@gmail.com');
         // $mail->addBCC('fooyesuk@gmail.com');  
-        // $mail->addAddress('website25developer@gmail.com');
+        $mail->addAddress('website25developer@gmail.com');
 
         $mail->Subject = 'Abandoned Cart Summary';
         $mail->Body    = $message;
@@ -163,7 +163,7 @@ class Testcart extends Base {
                 // $mail->addAddress('fmkhan79@gmail.com');
                 $mail->addAddress('fooyesuk@gmail.com');
                 // $mail->addBCC('fooyesuk@gmail.com');   
-                // $mail->addAddress('website25developer@gmail.com'); 
+                $mail->addAddress('website25developer@gmail.com'); 
     
                 $mail->isHTML(true);
                 $mail->Subject = $subject;
