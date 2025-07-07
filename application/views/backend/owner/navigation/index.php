@@ -14,8 +14,6 @@
             </div>
             <div class="info">
                 <a href="<?php echo site_url('settings/profile'); ?>" class="d-block"><?php echo sanitize($current_user['name']); ?></a>
-            </div>
-            <div class="info">
                 <a href="#">
                     <?php
                         if ($current_user['role_id'] == 1) {
