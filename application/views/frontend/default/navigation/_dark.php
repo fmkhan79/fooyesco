@@ -21,7 +21,7 @@
                                     <span class="icon-arrow-down"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="<?php echo site_url('site/restaurants/popular'); ?>"><?php echo site_phrase('popular'); ?></a>
+                                    <a class="dropdown-item" href="<?php echo site_url('restaurants/popular'); ?>"><?php echo site_phrase('popular'); ?></a>
                                     <a class="dropdown-item" href="<?php echo site_url('site/restaurants/recent'); ?>"><?php echo site_phrase('recently_added'); ?></a>
                                 </div>
                             </li>
