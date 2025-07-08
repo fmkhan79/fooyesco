@@ -80,11 +80,12 @@ class Testcart extends Base {
         $mail->Port       = 465;
 
         $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
-        $mail->addAddress('fmkhan79@gmail.com');
-        $mail->addBCC('fooyesuk@gmail.com');  
+        // $mail->addAddress('fmkhan79@gmail.com');
+        $mail->addAddress('fooyesuk@gmail.com');
+        // $mail->addBCC('fooyesuk@gmail.com');  
         $mail->addAddress('website25developer@gmail.com');
 
-        $mail->Subject = 'Abandoned Cart Summary (Manual Test)';
+        $mail->Subject = 'Abandoned Cart Summary';
         $mail->Body    = $message;
 
         if (!$mail->send()) {
@@ -97,6 +98,7 @@ class Testcart extends Base {
 
     public function missedresponsenoti() 
     {
+        return;
 
         $user_id = 3; 
     
@@ -123,10 +125,9 @@ class Testcart extends Base {
             $grand_total_amount = $order['grand_total'];
             $customer_name = trim($billing_data['first_name']) . ' ' . trim($billing_data['last_name']);
 
-           // ✅ Skip this order if "test" is in the customer name
-            if (stripos($customer_name, 'test') !== false) {
-                 continue;
-                 }
+               if (stripos($customer_name, 'test') !== false) {
+               continue;
+                   }
             $customer_phone = $billing_data['phone_mobile'];
 
             $order_list .= "- Order <strong>#" . $code . "</strong><br>";
@@ -136,14 +137,6 @@ class Testcart extends Base {
 
         }
 
-        print_r($order_list);
-        if($customer_name == 'test testco' || $customer_name == 'Test') {
-            // If customer name is 'test', skip sending email
-            echo "Skipping email for test customer.";
-            return;
-        }
-
-        die();
 
         // Prepare email content
         $subject = "Missed Orders Notification";
@@ -168,6 +161,7 @@ class Testcart extends Base {
     
                 $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
                 // $mail->addAddress('fmkhan79@gmail.com');
+                $mail->addAddress('fooyesuk@gmail.com');
                 // $mail->addBCC('fooyesuk@gmail.com');   
                 $mail->addAddress('website25developer@gmail.com'); 
     

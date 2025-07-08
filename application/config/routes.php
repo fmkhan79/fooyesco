@@ -6,12 +6,19 @@ $route['404_override'] = '';
 $route['login'] = 'auth/index';
 $route['logout'] = 'auth/logout';
 $route['translate_uri_dashes'] = FALSE;
+
 $route['contact_us'] = 'site/contact_us';
 $route['about_us'] = 'site/about_us';
 $route['privacy-policy'] = 'site/privacy_policy';
 $route['terms-and-conditions'] = 'site/terms_and_conditions';
 $route['become-a-partner'] = 'site/become_a_partner';
 $route['terms-of-use'] = 'site/terms_of_use';
+
+$route['refundrequest'] = 'RefundRequest';
+$route['refundrequest/(:any)'] = 'RefundRequest/$1';
+$route['refundrequest/(:any)/(:any)'] = 'RefundRequest/$1/$2';
+$route['submissions'] = 'submissions';
+// $route['submissions/(:any)'] = 'Submissions/$1';
 
 $route['chilli-hut-march'] = 'site/restaurant/chilli-hut-march/3';
 $route['commision'] = 'report/sales_summary';

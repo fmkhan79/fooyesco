@@ -37,6 +37,7 @@
                                     <option value="" <?php if ($status == "all") echo "selected"; ?>><?php echo get_phrase('all'); ?></option>
                                     <option value="paid" <?php if ($status == "paid") echo "selected"; ?>><?php echo get_phrase('paid'); ?></option>
                                     <option value="unpaid" <?php if ($status == "unpaid") echo "selected"; ?>><?php echo get_phrase('unpaid'); ?></option>
+                                    <option value="refund" <?php if ($status == "refund") echo "selected"; ?>><?php echo get_phrase('refund'); ?></option>
                                 </select>
 
                             </div>
@@ -110,7 +111,7 @@
                                             <th><?php echo get_phrase("Order Amount"); ?></th>
                                             <th><?php echo get_phrase("Comission Amount"); ?></th>
                                             <th><?php echo get_phrase("After Commission"); ?></th>
-                                            <th><?php echo get_phrase("Is Paid"); ?></th>
+                                            <th><?php echo get_phrase("status"); ?></th>
 
                                             <th><?php echo get_phrase("action"); ?></th>
                                         </tr>
@@ -121,7 +122,7 @@
                                         ?>
 
                                             <tr>
-                                                <td><input type="checkbox" class="order-checkbox" name="order_ids[]" value="<?php echo $order['id']; ?>"></td>
+                                                <td><input type="checkbox" class="order-checkbox" name="order_ids[]" value="<?php echo $order['id']; ?>" <?php if ($order['is_status'] == 2) echo 'disabled'; ?> ></td>
                                                 <td>
                                                     <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>"><?php echo sanitize($order['code']); ?></a>
                                                 </td>
@@ -215,8 +216,10 @@
                                                 </td>
                                                 <td>
                                                     <small>
-                                                        <?php if (($order['is_paid']) == 1) : ?>
+                                                        <?php if (($order['is_status']) == 1) : ?>
                                                             <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('paid')); ?></span>
+                                                        <?php elseif(($order['is_status']) == 2) : ?>
+                                                            <span class="badge badge-warning lighten-warning text-dark"><?php echo get_phrase(sanitize('refund')); ?></span>
                                                         <?php else : ?>
                                                             <span class="badge badge-danger lighten-danger"><?php echo get_phrase(sanitize('unpaid')); ?></span>
                                                         <?php endif; ?>

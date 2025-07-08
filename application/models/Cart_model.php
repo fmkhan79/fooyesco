@@ -376,12 +376,17 @@ public function get_restaurants_by_ids($restaurant_ids) {
     {
         // SENDING MAIL TO CUSTOMER
         $customer_details = $this->user_model->get_user_by_id($this->logged_in_user_id);
-           
-        $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
-          $message .= get_phrase('your_order_has_been_placed_successfully') . '.<br/>';
-        $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
+        
+        $this->load->model('order_model');
+
+        $order_data = $this->order_model->get_order_by_code($order_code);
+        // print_r($order_data);
+        // die();
+        // $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
+        //   $message .= get_phrase('your_order_has_been_placed_successfully') . '.<br/>';
+        // $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
         // $message .= get_phrase('please_track_down_your_order_status_from_the_order_details_page') . '.';
-        $this->email_model->order_pacing($customer_details['email'], $message);
+        $this->email_model->order_pacing($customer_details['email'], $order_data);
         // SENDING MAIL TO ADMIN
         $admin_details = $this->user_model->get_admin_details();
         $message  = get_phrase('hello') . ' ' . $admin_details['name'] . ', <br/>';
