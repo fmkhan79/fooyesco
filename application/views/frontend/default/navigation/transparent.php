@@ -47,7 +47,7 @@
                                             <?php echo site_phrase('popular'); ?>
                                         </a>
                                         <a class="dropdown-item"
-                                            href="<?php echo site_url('site/restaurants/recent'); ?>">
+                                            href="<?php echo site_url('restaurants/recent'); ?>">
                                             <?php echo site_phrase('recently_added'); ?>
                                         </a>
                                     </div>

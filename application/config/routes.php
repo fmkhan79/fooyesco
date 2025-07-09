@@ -8,10 +8,12 @@ $route['logout'] = 'auth/logout';
 $route['translate_uri_dashes'] = FALSE;
 $route['contact_us'] = 'site/contact_us';
 $route['about_us'] = 'site/about_us';
-$route['site/privacy-policy'] = 'site/privacy_policy';
-$route['site/terms-and-conditions'] = 'site/terms_and_conditions';
-$route['site/become-a-partner'] = 'site/become_a_partner';
-$route['site/terms-of-use'] = 'site/terms_of_use';
+$route['privacy-policy'] = 'site/privacy_policy';
+$route['terms-and-conditions'] = 'site/terms_and_conditions';
+$route['become-a-partner'] = 'site/become_a_partner';
+$route['terms-of-use'] = 'site/terms_of_use';
+$route['restaurants/recent'] = 'site/restaurants/recent';
+
 
 $route['chilli-hut-march'] = 'site/restaurant/chilli-hut-march/3';
 $route['commision'] = 'report/sales_summary';
