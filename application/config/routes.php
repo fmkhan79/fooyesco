@@ -1,4 +1,3 @@
-
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -18,10 +17,9 @@ $route['chilli-hut-march'] = 'site/restaurant/chilli-hut-march/3';
 $route['commision'] = 'report/sales_summary';
 
 
-
 $route['refundrequest'] = 'RefundRequest';
 $route['refundrequest/(:any)'] = 'RefundRequest/$1';
 $route['refundrequest/(:any)/(:any)'] = 'RefundRequest/$1/$2';
 $route['submissions'] = 'submissions';
-// $route['check'] = 'orders/check_new_orders';
+
 // $route['check'] = 'orders/check_new_orders';
