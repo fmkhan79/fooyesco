@@ -297,7 +297,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <div class="order-box d-md-flex align-items-center mb-4 justify-content-around">
                         <div class="order-img-box main-img m-0">
                             <a
-                                href="<?php echo site_url('restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
+                                href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
                                 <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>"
                                     alt="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250"
