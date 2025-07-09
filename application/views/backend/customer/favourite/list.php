@@ -48,7 +48,7 @@
                                     <td class="text-center">
                                         <button class="btn action-dropdown" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="<?php echo site_url('restaurant/' . sanitize(rawurlencode($favourite['restaurant_slug'])) . '/' . sanitize($favourite['restaurant_id'])); ?>"><?php echo get_phrase("go_to_restaurant"); ?></a></li>
+                                            <li><a class="dropdown-item" href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($favourite['restaurant_slug'])) . '/' . sanitize($favourite['restaurant_id'])); ?>"><?php echo get_phrase("go_to_restaurant"); ?></a></li>
                                             <li><a class="dropdown-item" href="javascript:void(0)" onclick="confirm_modal('<?php echo site_url('favourite/update/' . sanitize($favourite['menu_id'])); ?>')"><?php echo get_phrase("remove_from_favourite"); ?></a></li>
                                         </ul>
                                     </td>

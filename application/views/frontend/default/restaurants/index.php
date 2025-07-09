@@ -319,7 +319,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
                         <div class="order-detail">
                             <h4><a
-                                    href="<?php echo site_url('restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
+                                    href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
                                     <?php echo sanitize($restaurant['name']); ?>
                                 </a></h4>
                             <div class="review-grid d-flex justify-content-around align-items-center">

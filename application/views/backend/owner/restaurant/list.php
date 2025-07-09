@@ -33,7 +33,7 @@
                                         <button class="btn action-dropdown" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                         <ul class="dropdown-menu">
                                             <?php if ($restaurant_status) : ?>
-                                                <li><a class="dropdown-item" href="<?php echo site_url('restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>"><?php echo get_phrase("view_on_frontend"); ?></a></li>
+                                                <li><a class="dropdown-item" href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>"><?php echo get_phrase("view_on_frontend"); ?></a></li>
                                             <?php endif; ?>
                                             <li><a class="dropdown-item" href="<?php echo site_url('restaurant/edit/' . sanitize($restaurant['id']) . '/basic'); ?>"><?php echo get_phrase("edit"); ?></a></li>
                                             <li><a class="dropdown-item" href="javascript:void(0)" onclick="confirm_modal('<?php echo site_url('restaurant/delete/' . sanitize($restaurant['id'])); ?>')"><?php echo get_phrase("delete"); ?></a></li>
