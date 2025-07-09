@@ -91,6 +91,7 @@ class Orders extends Authorization
     }
 
 
+
     // PROCESSING ORDERS MAKE SURE THAT THE USER IS ADMIN
     public function process($order_code, $phase)
     {
@@ -410,7 +411,6 @@ class Orders extends Authorization
 
         $order_ids = $this->input->post('order_ids');
 
-
         if (!empty($order_ids)) {
             $this->order_model->mark_as_paid($order_ids);
             $this->session->set_flashdata('success_message', get_phrase('orders_set_as_paid_successfully'));
@@ -427,8 +427,8 @@ class Orders extends Authorization
 
 
         if (!empty($order_ids)) {
-            $this->order_model->mark_as_unpaid($order_ids);
-            $this->session->set_flashdata('success_message', get_phrase('orders_set_as_unpaid_successfully'));
+             $this->order_model->mark_as_unpaid($order_ids);
+             $this->session->set_flashdata('success_message', get_phrase('orders_set_as_unpaid_successfully'));
         }
 
         redirect(site_url('report/index'));

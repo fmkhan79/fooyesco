@@ -115,6 +115,7 @@
     border: 0;
 }
 
+
 </style>
 
 
@@ -132,10 +133,10 @@
         </div>
         <div class="col-md-6 contact-info-right">
             <ul class="contact-details-list list-unstyled">
-                <li><i class="fas fa-phone-alt contact-icon"></i> <span class="contact-detail-text">Tel: 877-67-88-99</span></li>
-                <li><i class="fas fa-envelope contact-icon"></i> <span class="contact-detail-text">E-Mail: shop@fooyes.com</span></li>
-                <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text">20 Margaret St, London, UK</span></li>
-                <li><i class="fas fa-shipping-fast contact-icon"></i> <span class="contact-detail-text">Free standard shipping on all orders.</span></li>
+                <li><i style="font-weight: 900;" class="fab fa-whatsapp bold-whatsapp contact-icon"></i> <span class="contact-detail-text">Tel: 07438797814</span></li>
+                <li><i class="fas fa-envelope contact-icon"></i> <span class="contact-detail-text">E-Mail: Support@fooyes.co.uk</span></li>
+                <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text">110 Eastern Avenue, Peterborough, England, PE1 4PW</span></li>
+                <!-- <li><i class="fas fa-shipping-fast contact-icon"></i> <span class="contact-detail-text">Free standard shipping on all orders.</span></li> -->
             </ul>
         </div>
     </div>
@@ -144,7 +145,7 @@
     <div class="map-section">
         <h5 class="map-heading">Get In Touch</h5>
         <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9704.708455350967!2d0.08780340590186579!3d52.5483211021251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8060dd3ce87df%3A0x83acc609f4b4e6dc!2s40%20High%20St%2C%20March%20PE15%209JR%2C%20UK!5e0!3m2!1sen!2s!4v1743754894298!5m2!1sen!2s" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2423.6450253615!2d-0.22366232387648655!3d52.59411083074067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4877f0eac6b349d7%3A0x3b82c9a230faee40!2s110%20Eastern%20Ave%2C%20Peterborough%20PE1%204PW%2C%20UK!5e0!3m2!1sen!2s!4v1751540971911!5m2!1sen!2s" 
             width="100%" 
             height="450" 
             style="border:0;" 
@@ -169,15 +170,15 @@
                 <strong>Got a question? Let’s talk!</strong><br>
                 Drop us a message, and our team will be happy to assist you.
             </p>
-            <form class="contact-form">
+            <form class="contact-form" action="<?php echo site_url('submissions/submit'); ?>" method="post">
                 <div class="form-group">
-                    <input type="text" class="form-control contact-form-input" placeholder="Your Name">
+                    <input type="text" name="name" class="form-control contact-form-input" placeholder="Your Name" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control contact-form-input" placeholder="Subject">
+                    <input type="text" name="subject" class="form-control contact-form-input" placeholder="Subject" required>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control contact-form-textarea" rows="4" placeholder="Type Your Message"></textarea>
+                    <textarea name="message" class="form-control contact-form-textarea" rows="4" placeholder="Type Your Message" required></textarea>
                 </div>
                 <button type="submit" class="btn contact-form-submit-btn">Submit</button>
             </form>

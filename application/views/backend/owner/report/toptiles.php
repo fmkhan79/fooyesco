@@ -159,7 +159,7 @@
     <!-- TILE 7 ENDS -->
 
     <!-- TILE 8 STARTS -->
-    <div class="col-md-3 col-sm-6 col-12">
+    <div class="col-md-3 col-sm-6 col-12 d-none">
         <div class="info-box">
             <span class="info-box-icon bg-gradient-gray"><i class="fas fa-utensils"></i></span>
             <div class="info-box-content">

@@ -44,7 +44,7 @@ if (count($restaurant_ids) > 0) {
                                     <span class="icon-arrow-down"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="<?php echo site_url('site/restaurants/popular'); ?>">
+                                    <a class="dropdown-item" href="<?php echo site_url('restaurants/popular'); ?>">
                                         <?php echo site_phrase('popular'); ?>
                                     </a>
                                     <a class="dropdown-item" href="<?php echo site_url('site/restaurants/recent'); ?>">
@@ -54,7 +54,7 @@ if (count($restaurant_ids) > 0) {
                             </li>
                             <li class="cart-menu">
                                 <?php if ($restaurant_details): ?>
-                                <a href="<?php echo site_url('site/restaurants/popular'); ?>"
+                                <a href="<?php echo site_url('restaurants/popular'); ?>"
                                     class="cart-btn">
                                     <span class="cart-items" id="#cart-items">
                                         <?php echo sanitize($this->cart_model->total_cart_items()); ?>
@@ -63,7 +63,7 @@ if (count($restaurant_ids) > 0) {
                                         src="<?php echo base_url('assets/frontend/default/images/cart-icon.png'); ?>" />
                                 </a>
                                 <?php else: ?>
-                                <a href="<?php echo site_url('site/restaurants/popular'); ?>" class="cart-btn">
+                                <a href="<?php echo site_url('restaurants/popular'); ?>" class="cart-btn">
                                     <span class="cart-items" id="#cart-items">
                                         <?php echo sanitize($this->cart_model->total_cart_items()); ?>
                                     </span>

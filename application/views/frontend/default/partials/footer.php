@@ -19,16 +19,16 @@
             <div class="col-md-2 about-box">
                 <h4>About Us</h4>
                 <ul class="footer-links">
-                    <li><a href="<?php echo site_url('site/contact-us'); ?>">
+                    <li><a href="<?php echo site_url('contact_us'); ?>">
                             <?php echo site_phrase('contact_us'); ?>
                         </a></li>
-                    <li><a href="<?php echo site_url('site/about-us'); ?>">
+                    <li><a href="<?php echo site_url('about_us'); ?>">
                             <?php echo site_phrase('about_us'); ?>
                         </a></li>
-                    <li><a href="<?php echo site_url('site/privacy-policy'); ?>">
+                    <li><a href="<?php echo site_url('privacy-policy'); ?>">
                             <?php echo site_phrase('privacy_policy'); ?>
                         </a></li>
-                    <li><a href="<?php echo site_url('site/terms-and-conditions'); ?>">
+                    <li><a href="<?php echo site_url('terms-and-conditions'); ?>">
                             <?php echo site_phrase('terms_and_conditions'); ?>
                         </a></li>
                 </ul>
@@ -36,10 +36,10 @@
             <div class="col-md-2 company-box">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                <li><a href="<?php echo site_url('site/become-a-partner'); ?>">
+                <li><a href="<?php echo site_url('become-a-partner'); ?>">
                             <?php echo site_phrase('become_a_partner'); ?>
                         </a></li>
-                <li><a href="<?php echo site_url('site/terms-of-use'); ?>">
+                <li><a href="<?php echo site_url('terms-of-use'); ?>">
                             <?php echo site_phrase('terms_of_use'); ?>
                         </a></li>
                 </ul>
