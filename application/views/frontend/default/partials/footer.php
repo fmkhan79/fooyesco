@@ -19,10 +19,10 @@
             <div class="col-md-2 about-box">
                 <h4>About Us</h4>
                 <ul class="footer-links">
-                    <li><a href="<?php echo site_url('contact_us'); ?>">
+                    <li><a href="<?php echo site_url('contact-us'); ?>">
                             <?php echo site_phrase('contact_us'); ?>
                         </a></li>
-                    <li><a href="<?php echo site_url('about_us'); ?>">
+                    <li><a href="<?php echo site_url('about-us'); ?>">
                             <?php echo site_phrase('about_us'); ?>
                         </a></li>
                     <li><a href="<?php echo site_url('privacy-policy'); ?>">
