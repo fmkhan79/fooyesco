@@ -23,9 +23,5 @@ $route['refundrequest'] = 'RefundRequest';
 $route['refundrequest/(:any)'] = 'RefundRequest/$1';
 $route['refundrequest/(:any)/(:any)'] = 'RefundRequest/$1/$2';
 $route['submissions'] = 'submissions';
-
-
-$route['restaurants/popular'] = 'site/restaurants/popular';
-$orute['site/restaurants/recent'] = 'site/restaurants/recent';
 // $route['check'] = 'orders/check_new_orders';
 // $route['check'] = 'orders/check_new_orders';
