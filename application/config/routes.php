@@ -6,8 +6,8 @@ $route['404_override'] = '';
 $route['login'] = 'auth/index';
 $route['logout'] = 'auth/logout';
 $route['translate_uri_dashes'] = FALSE;
-$route['site/contact-us'] = 'site/contact_us';
-$route['site/about-us'] = 'site/about_us';
+$route['contact_us'] = 'site/contact_us';
+$route['about_us'] = 'site/about_us';
 $route['site/privacy-policy'] = 'site/privacy_policy';
 $route['site/terms-and-conditions'] = 'site/terms_and_conditions';
 $route['site/become-a-partner'] = 'site/become_a_partner';
@@ -21,5 +21,6 @@ $route['refundrequest'] = 'RefundRequest';
 $route['refundrequest/(:any)'] = 'RefundRequest/$1';
 $route['refundrequest/(:any)/(:any)'] = 'RefundRequest/$1/$2';
 $route['submissions'] = 'submissions';
+
 
 // $route['check'] = 'orders/check_new_orders';
