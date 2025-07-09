@@ -16,7 +16,7 @@ $route['site/terms-of-use'] = 'site/terms_of_use';
 $route['chilli-hut-march'] = 'site/restaurant/chilli-hut-march/3';
 $route['commision'] = 'report/sales_summary';
 
-
+$route['restaurants/popular'] = 'site/restaurants/popular';
 $route['refundrequest'] = 'RefundRequest';
 $route['refundrequest/(:any)'] = 'RefundRequest/$1';
 $route['refundrequest/(:any)/(:any)'] = 'RefundRequest/$1/$2';
