@@ -115,6 +115,7 @@
     border: 0;
 }
 
+
 </style>
 
 
@@ -132,10 +133,12 @@
         </div>
         <div class="col-md-6 contact-info-right">
             <ul class="contact-details-list list-unstyled">
+
                 <li><i class="fas fa-phone-alt contact-icon"></i> <a href="https://wa.me/+4407438797814" class="contact-detail-text text-dark"> 07438797814</a></li>
                 <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">support@fooyes.co.uk</a></li>
                 <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text">20 Margaret St, London, UK</span></li>
                 <li><i class="fas fa-shipping-fast contact-icon"></i> <span class="contact-detail-text">Free standard shipping on all orders.</span></li>
+
             </ul>
         </div>
     </div>
@@ -144,7 +147,7 @@
     <div class="map-section">
         <h5 class="map-heading">Get In Touch</h5>
         <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9704.708455350967!2d0.08780340590186579!3d52.5483211021251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8060dd3ce87df%3A0x83acc609f4b4e6dc!2s40%20High%20St%2C%20March%20PE15%209JR%2C%20UK!5e0!3m2!1sen!2s!4v1743754894298!5m2!1sen!2s" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2423.6450253615!2d-0.22366232387648655!3d52.59411083074067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4877f0eac6b349d7%3A0x3b82c9a230faee40!2s110%20Eastern%20Ave%2C%20Peterborough%20PE1%204PW%2C%20UK!5e0!3m2!1sen!2s!4v1751540971911!5m2!1sen!2s" 
             width="100%" 
             height="450" 
             style="border:0;" 

@@ -93,10 +93,9 @@
         <?php 
             if ($order_details['order_type'] == "delivery") {
               echo "<h3>DELIVERY</h3>";
+              echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
+              echo "<h3 style='margin:0px;'>". $billing["phone_mobile"] ."</h3>";
                 }
-
-            echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
-
             if ($order_details['order_type'] != "pickup") {
           echo "<h3 style='margin:0px;'>" . $address["street"] . ", " . str_replace(", March, UK", "", $address["additional_address"]) . " - " . $address["zip_code"] . "</h3>";
             }
@@ -104,7 +103,6 @@
 
 
             
-            <h3 style='margin:0px;'><?= $billing["phone_mobile"] ?></h3>
        
 
         <!-- <p style="margin:0px;"><?php echo date("Y-m-d H:i:s", $order_details['order_placed_at']); ?></p> -->

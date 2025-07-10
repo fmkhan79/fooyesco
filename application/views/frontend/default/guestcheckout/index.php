@@ -238,11 +238,11 @@ $stripe_settings = json_decode($stripe_settings);
                             <div class="booking-checkbox_wrap">
                                 <div class="row">
 
-                                    <div class="col-md-6 payment-gateways">
+                                    <div class="col-md-6 payment-gateways" id="p-gateways">
                                         <h4 class="delivery-text"><span class="order_type">Delivery</span> Address</h4>
                                         <span id="show-address"></span>
                                     </div>
-                                    <div class="col-12 col-md-6">
+                                    <div class="col-12 col-md-6" id="p-method">
                                         <h4 class="payment-text">Choose Payment Method To Proceed</h4>
 
 
