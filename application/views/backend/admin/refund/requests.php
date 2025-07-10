@@ -69,14 +69,4 @@
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-$(document).ready(function () {
 
-   $('#refund_requests').DataTable({
-        pageLength: 25,
-        responsive: true,
-        order: [3, 'desc']
-    });
-});
-
-</script>
