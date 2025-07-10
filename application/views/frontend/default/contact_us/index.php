@@ -132,8 +132,8 @@
         </div>
         <div class="col-md-6 contact-info-right">
             <ul class="contact-details-list list-unstyled">
-                <li><i class="fas fa-phone-alt contact-icon"></i> <span class="contact-detail-text">Tel: 877-67-88-99</span></li>
-                <li><i class="fas fa-envelope contact-icon"></i> <span class="contact-detail-text">E-Mail: shop@fooyes.com</span></li>
+                <li><i class="fas fa-phone-alt contact-icon"></i> <a href="https://wa.me/+4407438797814" class="contact-detail-text text-dark"> 07438797814</a></li>
+                <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">support@fooyes.co.uk</a></li>
                 <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text">20 Margaret St, London, UK</span></li>
                 <li><i class="fas fa-shipping-fast contact-icon"></i> <span class="contact-detail-text">Free standard shipping on all orders.</span></li>
             </ul>
@@ -172,6 +172,9 @@
             <form class="contact-form" action="<?php echo site_url('submissions/submit'); ?>" method="post">
                 <div class="form-group">
                     <input type="text" name="name" class="form-control contact-form-input" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" class="form-control contact-form-input" placeholder="Email" required>
                 </div>
                 <div class="form-group">
                     <input type="text" name="subject" class="form-control contact-form-input" placeholder="Subject" required>
