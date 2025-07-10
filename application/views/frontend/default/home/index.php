@@ -279,7 +279,7 @@
     margin-right: 5px;
     background: #F54748 !important;
     border-color: #F54748 !important;
-                                href="<?php echo site_url('site/how_to_order'); ?>">
+                                href="<?php echo site_url('how_to_order'); ?>">
                                 How to order
                             </button>
                         </div>
@@ -478,7 +478,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                     </div>
                 </div>
 
-                <a class="rr-btn mt-4" href="<?php echo site_url('site/about_us'); ?>">About Us</a>
+                <a class="rr-btn mt-4" href="<?php echo site_url('about_us'); ?>">About Us</a>
 
             </div>
         </div>

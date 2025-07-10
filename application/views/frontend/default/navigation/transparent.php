@@ -43,11 +43,11 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                         <a class="dropdown-item"
-                                            href="<?php echo site_url('site/restaurants/popular'); ?>">
+                                            href="<?php echo site_url('restaurants/popular'); ?>">
                                             <?php echo site_phrase('popular'); ?>
                                         </a>
                                         <a class="dropdown-item"
-                                            href="<?php echo site_url('site/restaurants/recent'); ?>">
+                                            href="<?php echo site_url('restaurants/recent'); ?>">
                                             <?php echo site_phrase('recently_added'); ?>
                                         </a>
                                     </div>
@@ -58,7 +58,7 @@
                                     </a>
                                 </li>
                                 <li class="cart-menu ml-3">
-                                    <a href="<?php echo site_url('site/restaurants/popular'); ?>" class="cart-btn"><span
+                                    <a href="<?php echo site_url('restaurants/popular'); ?>" class="cart-btn"><span
                                             class="cart-items" id="#cart-items">
                                             <?php echo sanitize($this->cart_model->total_cart_items()); ?>
                                         </span><img

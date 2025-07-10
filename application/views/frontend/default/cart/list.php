@@ -159,7 +159,7 @@ if (count($restaurant_ids) > 0):
                             src="<?php echo base_url('assets/frontend/default/images/empty-cart-img.png'); ?>"
                             alt="<?php echo "empty-cart-logo"; ?>" />
                         <p class="my-4"></p>
-                        <a href="<?php echo site_url('site/restaurants/popular'); ?>" class="rr-btn">Continue
+                        <a href="<?php echo site_url('restaurants/popular'); ?>" class="rr-btn">Continue
                             Shopping</a>
                     </div>
                 </div>

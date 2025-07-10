@@ -52,12 +52,12 @@
                             </form>
                             <div class="slider-link text-left">
                                 <a class="btn btn-danger banner-btn mb-2"
-                                    href="<?php echo site_url('site/restaurants/popular'); ?>">
+                                    href="<?php echo site_url('restaurants/popular'); ?>">
                                     <?php echo site_phrase('Order Now'); ?>
                                 </a>
                                 <!-- <span><?php echo site_phrase('or'); ?></span>  -->
                                 <a class="btn btn-danger banner-btn"
-                                    href="<?php echo site_url('site/restaurants/recent'); ?>">
+                                    href="<?php echo site_url('restaurants/recent'); ?>">
                                     <?php echo site_phrase('How to Order'); ?>
                                 </a>
                             </div>
@@ -84,7 +84,7 @@
             <?php foreach ($featured_cuisines as $key => $featured_cuisine): ?>
                 <div class="col-md-3 featured-cuisine-area">
                     <a
-                        href="<?php echo site_url('site/restaurants/filter?cuisine=' . sanitize($featured_cuisine['id'])); ?>">
+                        href="<?php echo site_url('restaurants/filter?cuisine=' . sanitize($featured_cuisine['id'])); ?>">
                         <div class="find-place-img_wrap">
                             <div class="grid">
                                 <figure class="effect-ruby">
@@ -125,7 +125,7 @@
                 ?>
                 <div class="col-md-4 featured-responsive">
                     <div class="featured-place-wrap">
-                        <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($popular_restaurant['slug'])) . '/' . sanitize($popular_restaurant['id'])); ?>">
+                        <a href="<?php echo site_url('restaurant/' . sanitize(rawurlencode($popular_restaurant['slug'])) . '/' . sanitize($popular_restaurant['id'])); ?>">
                             <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($popular_restaurant['thumbnail'])); ?>" class="img-fluid" alt="#">
                             <?php if ($popular_restaurant['rating'] >= 4): ?>
                                 <span class="featured-rating-green"><?php echo sanitize($popular_restaurant['rating']); ?></span>
@@ -244,7 +244,7 @@
                     </div>
                     <?php if (is_open($popular_restaurant['id'])): ?>
                         <a class="btn btn-danger text-light"
-                            href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($popular_restaurant['slug'])) . '/' . sanitize($popular_restaurant['id'])); ?>">Order
+                            href="<?php echo site_url('restaurant/' . sanitize(rawurlencode($popular_restaurant['slug'])) . '/' . sanitize($popular_restaurant['id'])); ?>">Order
                             Now</a>
                     <?php else: ?>
                         <button class="btn btn-warning">Closed Now</button>
@@ -257,7 +257,7 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="featured-btn-wrap">
-                    <a href="<?php echo site_url('site/restaurants'); ?>" class="btn btn-danger">
+                    <a href="<?php echo site_url('restaurants'); ?>" class="btn btn-danger">
                         <?php echo strtoupper(site_phrase('view_all')); ?>
                     </a>
                 </div>
