@@ -25,7 +25,7 @@
         $('#refund_requests').DataTable({
             pageLength: 25,
             responsive: true,
-            order: [3, 'desc']
+            ordering: false
         });
     });
 </script>
