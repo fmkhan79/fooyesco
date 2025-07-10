@@ -74,7 +74,8 @@ $(document).ready(function () {
 
    $('#refund_requests').DataTable({
         pageLength: 25,
-        responsive: true
+        responsive: true,
+        order: [3, 'desc']
     });
 });
 

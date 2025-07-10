@@ -15,6 +15,7 @@ class Refund_model extends Base_model
         $this->db->select('refund_requests.*, restaurants.name as restaurant_name');
         $this->db->from('refund_requests');
         $this->db->join('restaurants', 'refund_requests.restaurant_id = restaurants.id', 'left');
+        $this->db->order_by('refund_requests.requestedAt', 'DESC'); 
         $query = $this->db->get();
 
         if ($query->num_rows() > 0) {
