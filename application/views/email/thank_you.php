@@ -1,15 +1,8 @@
-<?php
-$name = sanitize($message['name']);
-$email = sanitize($message['email']);
-$subject = sanitize($message['subject']);
-$messageText = sanitize($message['message']);
-?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>New Contact Message</title>
+  <title>Thank You for Contacting Us</title>
   <style>
     body {
       font-family: "Poppins", sans-serif;
@@ -31,6 +24,16 @@ $messageText = sanitize($message['message']);
       border: 1px solid #ddd;
     }
 
+    .summary-header {
+      background: #f54748;
+      color: #ffffff;
+      text-align: center !important;
+      padding: 10px 20px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+
     .header {
       padding: 20px;
       text-align: center;
@@ -42,30 +45,19 @@ $messageText = sanitize($message['message']);
       font-size: 24px;
     }
 
+    .header span.highlight {
+      background: #fdc55e;
+      color: #ffffff;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
     .info {
       padding: 0 20px 20px;
       font-size: 14px;
       line-height: 1.6;
       font-weight: bold;
-    }
-
-    .summary-header {
-      background: #f54748;
-      color: #ffffff;
-      padding: 10px 20px;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .details {
-      padding: 20px;
-      font-size: 14px;
-      line-height: 1.8;
-    }
-
-    .details p {
-      margin: 10px 0;
-      word-break: break-word;
+      text-align: center !important;
     }
 
     .footer {
@@ -88,48 +80,30 @@ $messageText = sanitize($message['message']);
         font-size: 13px;
         padding: 0 15px 15px;
       }
-
-      .summary-header {
-        font-size: 13px;
-        padding: 10px 15px;
-      }
-
-      .details {
-        padding: 15px;
-        font-size: 13px;
-      }
     }
   </style>
 </head>
 <body>
-
   <div class="container">
+    <div class="summary-header">
+        <h1>Thank You <?= $name ?>!</h1>
+    </div>
     <div class="header">
-      <h1>You've Received a New Contact Message</h1>
       <a href="https://fooyes.co.uk/">
         <img src="https://fooyes.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9G.jpg" alt="Fooyes Logo" style="width:80px; height:auto; margin-top:5px;">
       </a>
     </div>
 
     <div class="info">
-      <p>This message was submitted through your website's contact form. See the details below:</p>
-    </div>
-
-    <div class="summary-header">
-      CONTACT DETAILS
-    </div>
-
-    <div class="details">
-      <p><strong>Name:</strong> <?= $name ?></p>
-      <p><strong>Email:</strong> <?= $email ?></p>
-      <p><strong>Subject:</strong> <?= $subject ?></p>
-      <p><strong>Message:</strong><br><?= $messageText ?></p>
+      <p>We have received your message and our team will get back to you shortly.</p>
+      <p>Your query is important to us, and we aim to respond within <span class="highlight">24 hours</span>.</p>
+      <p>For urgent assistance, feel free to contact us.</p>
+      <p>Meanwhile, you can explore our <a href="https://fooyes.co.uk/">website</a> for the latest updates and offers.</p>
     </div>
 
     <div class="footer">
       &copy; 2025 <a href="https://fooyes.co.uk/">Fooyes</a>. All rights reserved.
     </div>
   </div>
-
 </body>
 </html>

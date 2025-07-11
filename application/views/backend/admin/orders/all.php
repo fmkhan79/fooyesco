@@ -60,6 +60,7 @@
                                     <option value="prepared" <?php if ($status == "prepared") echo "selected"; ?>><?php echo get_phrase('prepared'); ?></option>
                                     <option value="delivered" <?php if ($status == "delivered") echo "selected"; ?>><?php echo get_phrase('delivered'); ?></option>
                                     <option value="canceled" <?php if ($status == "canceled") echo "selected"; ?>><?php echo get_phrase('canceled'); ?></option>
+                                     <option value="refund" <?php if ($status == "refund") echo "selected"; ?>><?php echo get_phrase('refunded'); ?></option>
                                 </select>
                             </div>
                         </div>
@@ -177,7 +178,7 @@
                                             <?php endif; ?>
                                         </small>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <?php if (sanitize($order['order_status']) == 'pending') : ?>
                                             <span class="badge badge-warning lighten-warning"><?php echo get_phrase(sanitize($order['order_status'])); ?></span>
                                         <?php elseif (sanitize($order['order_status']) == 'delivered') : ?>
@@ -187,7 +188,25 @@
                                         <?php else : ?>
                                             <span class="badge badge-primary lighten-primary"><?php echo get_phrase(sanitize($order['order_status'])); ?></span>
                                         <?php endif; ?>
+                                    </td> -->
+                                    <td>
+                                        <?php if (sanitize($order['is_status']) == 2) : ?>
+                                            <span class="badge badge-info lighten-info"><?php echo get_phrase('refunded'); ?></span>
+
+                                        <?php elseif (sanitize($order['order_status']) == 'pending') : ?>
+                                            <span class="badge badge-warning lighten-warning"><?php echo get_phrase('pending'); ?></span>
+
+                                        <?php elseif (sanitize($order['order_status']) == 'delivered') : ?>
+                                            <span class="badge badge-success lighten-success"><?php echo get_phrase('delivered'); ?></span>
+
+                                        <?php elseif (sanitize($order['order_status']) == 'canceled') : ?>
+                                            <span class="badge badge-danger lighten-danger"><?php echo get_phrase('canceled'); ?></span>
+
+                                        <?php else : ?>
+                                            <span class="badge badge-primary lighten-primary"><?php echo get_phrase(sanitize($order['order_status'])); ?></span>
+                                        <?php endif; ?>
                                     </td>
+
                                     <td class="text-center">
                                         <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>" class="btn btn-rounded btn-outline-primary btn-sm mt-2"><?php echo get_phrase('details'); ?></a>
                                     </td>

@@ -56,6 +56,33 @@ $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes'); // Your email and name
 			$htmlContent = $this->load->view('email/template', array('message' => $message), TRUE);
 		} elseif($is_contact_submission_mail) {
 			$htmlContent = $this->load->view('email/contact_submission', array('subject' => $subject, 'message' => $message), TRUE);
+
+			  // ========== SECOND EMAIL TO USER ==========
+				$mail2 = $this->phpmailer_lib->load();
+				$mail2->isSMTP();
+				$mail2->Host = 'mail.fooyes.co.uk';
+				$mail2->SMTPAuth = true;
+				$mail2->Username = 'no-reply@fooyes.co.uk';
+				$mail2->Password = '^X{zK)uB%XrS';
+				$mail2->SMTPSecure = 'ssl';
+				$mail2->Port = 465;
+				$mail2->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
+				$mail2->isHTML(true);
+				$mail2->SMTPDebug = false;
+
+				$mail2->addAddress($message['email']); 
+				$mail2->Subject = 'Thank You for Contacting Fooyes';
+				$htmlContent2 = $this->load->view('email/thank_you', ['name' => $message['name']], TRUE);
+				$mail2->Body = $htmlContent2;
+
+				$sentToUser = $mail2->send();
+
+				if (!$sentToUser) {
+					log_message('error', 'Thank You Mail to user failed: ' . $mail2->ErrorInfo);
+				} else {
+					log_message('info', 'Thank You Mail to user sent');
+				}
+
 		} else {
 			$htmlContent = $this->load->view('email/order_placing', array('subject' => $subject, 'message' => $message), TRUE);
 		}

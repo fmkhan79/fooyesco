@@ -35,9 +35,8 @@ class Submissions extends Base {
         
         $this->load->model('email_model');
         $this->email_model->send_mail_using_php_mailer($message,$subject,$to,false,true);
-        $this->session->set_flashdata('success', 'Submission successful!');
 
-        return redirect(site_url('site/contact-us'));
+        return redirect(site_url('/contact-us'));
     }
 
 }

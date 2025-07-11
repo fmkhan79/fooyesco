@@ -19,3 +19,13 @@
 <!-- Also add the CSS for the buttons -->
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
+<script>
+    $(document).ready(function() {
+
+        $('#refund_requests').DataTable({
+            pageLength: 25,
+            responsive: true,
+            ordering: false
+        });
+    });
+</script>

@@ -52,9 +52,9 @@
                                                 <a class="btn btn-rounded btn-outline-primary btn-sm" href="<?php echo site_url('refundrequest/accept_refund_request/' . $request->order_code); ?>">Accept</a>
                                                 <a class="btn btn-rounded btn-outline-danger btn-sm" href="<?php echo site_url('refundrequest/reject_refund_request/' . $request->order_code); ?>">Reject</a>
                                             <?php elseif($request->status == 1): ?>
-                                                <button disabled="disabled" class="btn btn-rounded btn-outline-success btn-sm">Accepted at <?= $request->acceptedAt = date('M d Y') ?></button>
+                                                <button disabled="disabled" class="btn btn-rounded btn-outline-success btn-sm">Accepted at <?= date('M d Y', strtotime($request->acceptedAt)) ?></button>
                                             <?php else: ?>
-                                                <button disabled="disabled" class="btn btn-rounded btn-outline-danger btn-sm">Rejected at <?= $request->rejectedAt = date('M d Y') ?></button>
+                                                <button disabled="disabled" class="btn btn-rounded btn-outline-danger btn-sm">Rejected at <?= date('M d Y', strtotime($request->rejectedAt)) ?></button>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -69,13 +69,4 @@
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-$(document).ready(function () {
 
-   $('#refund_requests').DataTable({
-        pageLength: 25,
-        responsive: true
-    });
-});
-
-</script>
