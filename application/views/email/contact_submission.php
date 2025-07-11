@@ -1,5 +1,6 @@
 <?php
 $name = sanitize($message['name']);
+$email = sanitize($message['email']);
 $subject = sanitize($message['subject']);
 $messageText = sanitize($message['message']);
 ?>
@@ -120,6 +121,7 @@ $messageText = sanitize($message['message']);
 
     <div class="details">
       <p><strong>Name:</strong> <?= $name ?></p>
+      <p><strong>Email:</strong> <?= $email ?></p>
       <p><strong>Subject:</strong> <?= $subject ?></p>
       <p><strong>Message:</strong><br><?= $messageText ?></p>
     </div>
