@@ -91,17 +91,17 @@ $stripe_settings = json_decode($stripe_settings);
         <div id="billing-address">
             <h4 class="mt-5 text-dark">Customer Details</h4>
 
-            <form id="billing-form" onsubmit="submitForm(); return false;" method="POST" autocomplete="off">
+            <form id="billing-form" onsubmit="submitForm(); return false;" method="POST" autocomplete="net-password">
                 <div class="form-row mt-4">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">First Name *</label>
                         <input type="text" class="form-control" id="txtfname" name="first_name" required
-                            placeholder="Enter first name..." value="">
+                            placeholder="Enter first name..." value="" autocomplete="new-password">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputPassword4">Last Name *</label>
                         <input type="text" id="txtlname" class="form-control" name="last_name" required
-                            placeholder="Enter last name..." value="">
+                            placeholder="Enter last name..." value="" autocomplete="new-password">
                     </div>
                 </div>
                 <div class="form-row">
@@ -109,7 +109,7 @@ $stripe_settings = json_decode($stripe_settings);
                         <label for="inputAddress">Mobile *</label>
                         <input type="tel" class="form-control" name="phone_mobile" id="mobile" required
                             placeholder="Enter mobile..." pattern="^(\+447\d{9}|07\d{9})$" value=""
-                            title="Please enter a valid mobile number starting with +447 or 07 followed by 9 digits">
+                            title="Please enter a valid mobile number starting with +447 or 07 followed by 9 digits" autocomplete="new-password">
                         <small>Format: +44 7123 456 789 or 07123 456 789</small><br>
                     </div>
 
@@ -117,7 +117,8 @@ $stripe_settings = json_decode($stripe_settings);
                     <div class="form-group col-md-6">
                         <label for="inputAddress">Email *</label>
                         <input type="email" class="form-control" name="email" id="email" required
-                            value="" placeholder="Enter email...">
+                            value="" placeholder="Enter email..." autocomplete="one-time-code"
+                            >
                     </div>
                 </div>
 
@@ -143,13 +144,13 @@ $stripe_settings = json_decode($stripe_settings);
         <div id="payment-option">
             <h4 class="mt-5 text-dark"><span class="order_type">Delivery</span> Address</h4>
 
-            <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="off">
+            <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="new-password">
                 <div class="form-row mt-4">
                     <div class="form-group col-md-6">
 
                         <label for="inputto">Enter Your Address*</label>
                         <input type="text" name="additional_address" class="form-control remove-required-collection" id="to" required
-                            placeholder="Enter Your Address">
+                            placeholder="Enter Your Address" autocomplete="current-password" >
 
                         <small class="text-danger d-none" id="not-deliever"> Address not in deliverable range </small>
                         <input type="hidden" placeholder="Latitude" id="lat_to">
@@ -157,16 +158,16 @@ $stripe_settings = json_decode($stripe_settings);
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputcity">Postcode*</label>
-                        <input type="text" name="zipcode" class="form-control remove-required-collection" id="city" placeholder="Postcode" required>
+                        <input type="text" name="zipcode" class="form-control remove-required-collection" autocomplete="new-password" id="city" placeholder="Postcode" required>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="inputflat">House/Flat Number*</label>
-                        <input type="text" id="flat" class="form-control remove-required-collection" name="street" placeholder="House/Flat Number" required>
+                        <input type="text" id="flat" class="form-control remove-required-collection" autocomplete="new-password" name="street" placeholder="House/Flat Number" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputstreet-value">Street Name*</label>
-                        <input type="text" class="form-control remove-required-collection" id="street-value" name="zip_code" placeholder="Street Number" required>
+                        <input type="text" class="form-control remove-required-collection" id="street-value" name="zip_code" autocomplete="new-password" placeholder="Street Number" required >
                     </div>
                     <!-- <div class="form-group col-md-6">
                         <label for="inputAddress">City</label>
