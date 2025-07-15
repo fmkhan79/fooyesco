@@ -58,7 +58,7 @@
                                     </a>
                                 </li>
                                 <li class="cart-menu ml-3">
-                                    <a href="<?php echo site_url('restaurants/popular'); ?>" class="cart-btn"><span
+                                    <a href="<?php echo site_url('chilli-hut-march'); ?>" class="cart-btn"><span
                                             class="cart-items" id="#cart-items">
                                             <?php echo sanitize($this->cart_model->total_cart_items()); ?>
                                         </span><img

@@ -196,11 +196,16 @@
                                         <label for="food_menu_thumbnail"></label>
                                     </div>
                                     <div class="avatar-preview">
+                                     
                                         <div id="food_menu_thumbnail_preview" thumbnail="<?php echo base_url('uploads/menu/' . sanitize($menu_data['thumbnail'])); ?>"></div>
                                     </div>
                                 </div>
+
                             </div>
+                           
                             <button type="submit" class="btn btn-primary mt-4 float-left"><?php echo get_phrase('update_gallery'); ?></button>
+                        <a class="btn btn-danger" style="margin-top: 1.5rem; margin-left:15px" href="<?php echo site_url('menu/image_remove?id=' . sanitize($id)); ?>">Delete Image</a>
+
                         </form>
                     </div>
                     <!-- /.tab-pane -->
@@ -308,3 +313,4 @@
     </div>
     <!--/. container-fluid -->
 </section>
+

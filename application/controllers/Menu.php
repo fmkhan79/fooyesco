@@ -121,6 +121,27 @@ class Menu extends Authorization
         }
     }
 
+    public function image_remove()
+{
+    $menu_id = required(sanitize($this->input->get('id')));
+    
+    // Check menu authenticity
+    $authenticity = $this->menu_model->authentication($menu_id);
+    if (!$authenticity) {
+        error(get_phrase('you_are_not_authorized'), site_url('menu'));
+    }
+
+    $result = $this->menu_model->remove_thumbnail($menu_id);
+
+    if ($result) {
+        success(get_phrase('image_removed_successfully'), site_url('menu/edit/' . $menu_id . '/gallery'));
+    } else {
+        error(get_phrase('something_went_wrong'), site_url('menu/edit/' . $menu_id . '/gallery'));
+    }
+}
+
+  
+
     // Delete function is responsible for deleting the menu data.
     function delete($id)
     {
