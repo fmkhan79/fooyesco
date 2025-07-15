@@ -123,6 +123,30 @@ class Menu_model extends Base_model
         return true;
     }
 
+    public function remove_thumbnail($menu_id)
+{
+    // Ensure the menu ID is valid
+    if (empty($menu_id)) {
+        return false;
+    }
+  
+    // Optional: Get current thumbnail and delete from disk (if not placeholder)
+    $menu = $this->db->get_where('food_menus', ['id' => $menu_id])->row_array();
+    if ($menu && isset($menu['thumbnail']) && $menu['thumbnail'] != 'placeholder.png') {
+        $file_path = FCPATH . 'uploads/menu/' . $menu['thumbnail'];
+        if (file_exists($file_path)) {
+            @unlink($file_path); // delete the file
+        }
+    }
+
+    // Update to placeholder
+    $this->db->where('id', $menu_id);
+ 
+    return $this->db->update('food_menus', ['thumbnail' => 'placeholder.png']);
+}
+
+
+
     // STORE MENU'S BASIC DATA
     public function store_basic_data()
     {
