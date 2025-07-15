@@ -91,7 +91,7 @@ $stripe_settings = json_decode($stripe_settings);
         <div id="billing-address">
             <h4 class="mt-5 text-dark">Customer Details</h4>
 
-            <form id="billing-form" onsubmit="submitForm(); return false;" method="POST" autocomplete="net-password">
+            <form id="billing-form" onsubmit="submitForm(); return false;" method="POST" autocomplete="new-password">
                 <div class="form-row mt-4">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">First Name *</label>
