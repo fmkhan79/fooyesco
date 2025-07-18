@@ -177,11 +177,11 @@ class Order_model extends Base_model
                     if ($key === 'order_status') {
                         if ($value === 'unpaid') {
                             $this->db->where('orders.is_status', 0);
-                        } elseif($value === 'paid') {
+                        } elseif ($value === 'paid') {
                             $this->db->where('orders.is_status', 1);
-                        } elseif($value === 'refund') {
+                        } elseif ($value === 'refund') {
                             $this->db->where('orders.is_status', 2);
-                        } 
+                        }
                     } elseif (is_array($value)) {
                         $this->db->where_in($key, $value);
                     } else {
@@ -201,12 +201,12 @@ class Order_model extends Base_model
             }
         }
         // Main where orders are getting fetched. 
-        
+
         $this->db->order_by("orders.id", "desc");
-        
+
         $this->db->join('refund_requests', 'refund_requests.order_code = orders.code', 'left');
         $obj = $this->db->get($this->table);
-        
+
         // print_r($obj);
         // die();
 
@@ -466,14 +466,14 @@ class Order_model extends Base_model
     // MERGER FUNCTION IS FOR MERGING NECESSARY DATA
     public function order_merger($query_obj, $is_single_row = false)
     {
-       
+
         if (!$is_single_row) {
             $orders = $query_obj->result_array();
             foreach ($orders as $key => $order) {
                 // print_r($orders);
                 // die();
 
-               
+
                 $orders[$key]['request_refund'] = [
                     'order_code' => $orders[$key]["order_code"],
                     'refund_amount' => $orders[$key]["refund_amount"],
@@ -489,7 +489,7 @@ class Order_model extends Base_model
                 unset($orders[$key]["requestedAt"]);
                 unset($orders[$key]["acceptedAt"]);
                 unset($orders[$key]["rejectedAt"]);
-                
+
                 $customer_details = $this->customer_model->get_by_id($order['customer_id']);
                 if (!empty($order['driver_id'])) {
                     $driver_details = $this->driver_model->get_by_id($order['driver_id']);
@@ -1703,11 +1703,12 @@ class Order_model extends Base_model
         }
     }
 
-    public function get_order_by_code($order_code){
+    public function get_order_by_code($order_code)
+    {
         $this->db->where('code', $order_code);
         $query = $this->db->get('orders');
         if ($query->num_rows() > 0) {
-            return $query->row_array(); 
+            return $query->row_array();
         } else {
             return false;
         }
@@ -1718,5 +1719,12 @@ class Order_model extends Base_model
         $this->db->where('code', $order_code);
         $this->db->update('orders', ['is_status' => 2]);
     }
-    
+
+    public function get_all_orders_for_customer_details()
+    {
+        $this->db->where('order_type', 'delivery');
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('orders');
+        return $query->result_array();
+    }
 }
