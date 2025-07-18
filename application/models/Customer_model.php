@@ -23,6 +23,7 @@ class Customer_model extends Base_model
     {
         $this->db->where('status', 1);
         $this->db->where_in('role_id', [2, 3]);
+        $this->db->order_by('id', 'DESC'); 
         return $this->merger($this->db->get($this->table));
     }
 
