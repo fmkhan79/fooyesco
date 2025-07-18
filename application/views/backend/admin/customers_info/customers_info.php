@@ -1,3 +1,4 @@
+<!-- Filter Customers Data behalf on order_type is delivery -->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -13,31 +14,38 @@
                             <thead>
                                 <tr>
                                     <th><?php echo get_phrase("#"); ?></th>
-                                    <th><?php echo get_phrase("profile"); ?></th>
                                     <th><?php echo get_phrase("name"); ?></th>
                                     <th><?php echo get_phrase("email"); ?></th>
                                     <th><?php echo get_phrase("phone"); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
-                                $index=1;
+                                <?php
+                                $index = 1;
+                                $printed = []; // Array to track unique email/phone
+
                                 foreach ($customers as $customer) {
-                                    if ($customer['name'] == null || $customer['email'] == null) {
-                                        continue;
+
+                                    $billing = json_decode($customer['billing'], true);
+
+                                    // Create unique key using email and phone
+                                    $uniqueKey = $billing['email'] . '|' . $billing['phone'];
+
+                                    if (in_array($uniqueKey, $printed)) {
+                                        continue; // Skip duplicate
                                     }
+
+                                    $printed[] = $uniqueKey; // Mark as printed
                                 ?>
                                     <tr>
                                         <td><?= $index++ ?></td>
-                                        <td>
-                                            <img style="width: 80px;" src="<?php echo base_url('uploads/user/' . sanitize($customer['thumbnail'])); ?>" alt="" class="img-circle img-fluid">
-                                        </td>
-                                        <td><?= $customer['name'] ?></td>
-                                        <td><?= $customer['email'] ?></td>
-                                        <td><?= $customer['phone']  ?? 'No Phone Number' ?></td>
+                                        <td><?= $billing['first_name'] . ' ' . $billing['last_name'] ?></td>
+                                        <td><?= $billing['email'] ?></td>
+                                        <td><?= $billing['phone_mobile'] ?? 'No Phone Number' ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
+
                         </table>
                     </div>
                 </div>
