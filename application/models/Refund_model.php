@@ -48,7 +48,6 @@ class Refund_model extends Base_model
 
         if ($inserted) {
             $mailData = [
-                'host'      => $host,
                 'order_code'      => $order_code,
                 'refund_amount'   => $refund_amount,
                 'restaurant_name' => $restaurant_name
