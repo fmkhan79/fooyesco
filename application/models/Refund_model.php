@@ -28,6 +28,8 @@ class Refund_model extends Base_model
 
     public function get_order_details_for_request_refund($order_code)
     {
+        $host = $_SERVER['HTTP_HOST'];
+
         $order = $this->db->get_where('orders', ['code' => $order_code])->row();
 
         $restaurant_id = $order->restaurant_id;
@@ -46,27 +48,23 @@ class Refund_model extends Base_model
 
         if ($inserted) {
             $mailData = [
+                'host'      => $host,
                 'order_code'      => $order_code,
                 'refund_amount'   => $refund_amount,
                 'restaurant_name' => $restaurant_name
             ];
             $subject = 'New refund request for ' . $order_code . ' from ' . $restaurant_name;
-            $to = 'website25developer@gmail.com';
 
+
+            if ($host === 'fooyes.co.uk') {
+                $to = 'fooyesuk@gmail.com';
+            }else{
+                $to = 'website25developer@gmail.com';
+            }
             $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, true);
         } else {
             log_message('error', 'Refund request insert failed for order: ' . $order_code);
         }
-
-        // $mailData = [
-        //     'order_code' => $order_code,
-        //     'refund_amount'  => $refund_amount,
-        //     'restaurant_name' => $restaurant_name
-        // ];
-        // $subject = 'New refund request for ' . $order_code . ' from ' . $restaurant_name;
-        // $to = 'website25developer@gmail.com';
-
-        // $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, true);
     }
 
     public function get_refund_requests_data_by_order_code($order_code)
