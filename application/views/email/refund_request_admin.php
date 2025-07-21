@@ -90,8 +90,7 @@
     </div>
 
     <div class="footer">
-      <!-- &copy; 2025 <a href="https://fooyes.co.uk/">Fooyes</a>. All rights reserved. -->
-      &copy; 2025 <a href="<?= $message['host'] ?>">Fooyes</a>. All rights reserved.
+      &copy; 2025 <a href="https://fooyes.co.uk/">Fooyes</a>. All rights reserved.
     </div>
   </div>
 </body>

@@ -19,6 +19,8 @@ class Submissions extends Base {
     }
     public function submit()
     {
+        $host = $_SERVER['HTTP_HOST'];
+
        $submitData = $this->input->post();
 
         //    print_r($submitData);
@@ -31,7 +33,11 @@ class Submissions extends Base {
         }
         $message = $submitData;
         $subject = $submitData['subject'];
-        $to = "website25developer@gmail.com";
+        if ($host === 'fooyes.co.uk') {
+            $to = 'fooyesuk@gmail.com';
+        }else{
+            $to = 'website25developer@gmail.com';
+        }
         
         $this->load->model('email_model');
         $this->email_model->send_mail_using_php_mailer($message,$subject,$to,false,true);
