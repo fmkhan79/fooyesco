@@ -138,7 +138,7 @@
         <div class="col-md-6 contact-info-right">
             <ul class="contact-details-list list-unstyled">
 
-                <li><i class="fab fa-whatsapp contact-icon"></i> <a href="https://wa.me/+4407438797814" class="contact-detail-text text-dark"> 07438797814</a></li>
+                <li><i class="fab fa-whatsapp contact-icon"></i> <a href="https://wa.me/+4407438797814" target="_blank" class="contact-detail-text text-dark"> 07438797814</a></li>
                 <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">support@fooyes.co.uk</a></li>
                 <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text">110 Eastern Ave, Peterborough PE1 4PW, UK</span></li>
                 <!-- <li><i class="fas fa-shipping-fast contact-icon"></i> <span class="contact-detail-text">Free standard shipping on all orders.</span></li> -->
