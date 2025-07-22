@@ -592,9 +592,9 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
         if (place.address_components && place.address_components.length > 0) {
             var addressComp = place.address_components[place.address_components.length - 1].short_name;
 
-            document.querySelector("input[name='zipcode']").value = addressComp;
-            document.querySelector("input[name='street']").value = place.address_components[0].short_name;
-            document.querySelector("input[name='zip_code']").value = place.address_components[1].short_name;
+            document.querySelector("input[name='random2']").value = addressComp;
+            document.querySelector("input[name='random3']").value = place.address_components[0].short_name;
+            document.querySelector("input[name='random4']").value = place.address_components[1].short_name;
 
             $("#lat_to").val(place.geometry.location.lat());
             $("#long_to").val(place.geometry.location.lng());
@@ -605,7 +605,7 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
     });
 
     // Address input validation to prevent alphabetic characters
-    var address = document.querySelector("input[name='additional_address']");
+    var address = document.querySelector("input[name='random1']");
     address.addEventListener('input', function () {
         const value = address.value.trim();
 
@@ -631,7 +631,7 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
     
     // Handle button clicks and interactions
     document.getElementById("checking").onclick = function(){
-        document.getElementById("show-address").innerHTML = document.querySelector("input[name='additional_address']").value + "<br> House/Street: " + document.querySelector("input[name='street']").value + "<br> Street/Name: " + document.querySelector("input[name='zip_code']").value;
+        document.getElementById("show-address").innerHTML = document.querySelector("input[name='random1']").value + "<br> House/Street: " + document.querySelector("input[name='random4']").value + "<br> Street/Name: " + document.querySelector("input[name='random2']").value;
     }
 
     const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
