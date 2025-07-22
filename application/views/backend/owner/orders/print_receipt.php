@@ -10,6 +10,9 @@
             font-family: "sans-serif", sans-serif;
             font-size: 18px;
         }
+        body{
+            overflow: hidden;
+        }
         .receipt {
             width: 270px;
             margin: auto;
@@ -300,21 +303,32 @@
             </div>
         <?php endif; ?>
 
-
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
-   window.print();
+          window.onload = function () {
+            const socket = new WebSocket("ws://localhost:8765");
 
-window.onafterprint = function () {
-    // Get current URL
-const currentUrl = window.location.href;
+            socket.onopen = () => {
+                const receiptDiv = document.querySelector('.receipt');
 
-// Extract the order ID from the current URL
-const orderId = currentUrl.split('/').pop(); // OR-1748848360-465
+                html2canvas(receiptDiv, {
+                    scale: 4, // Higher scale = sharper image
+                    useCORS: true
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL("image/png");
+                    const base64Image = imgData.split(',')[1]; // Remove prefix
 
-// Redirect to new URL
-window.location.href = `/orders/details/${orderId}`;
+                    socket.send(base64Image);
+                    console.log("📤 Image of .receipt sent to server.");
+                    window.close();
+                });
+            };
 
-};
+            socket.onmessage = (event) => {
+                console.log("📥 Server:", event.data);
+            };
+        };
     </script>
+
 </body>
 </html>

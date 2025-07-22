@@ -65,8 +65,9 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                                     </strong>
                                 </a>
                             </li>
+
                             <li class="list-group-item border-bottom-0 text-center">
-                                        <a href="<?php echo site_url('orders/print_recipt/' . sanitize($order_data['code'])); ?>" target="_blank" class="btn btn-primary btn-block" "><b> <i class="fas fa-times-rectangle"></i> Print</b></a>
+                                <a href="javascript:void(0)" onclick="openHiddenWindow('<?php echo site_url('orders/print_recipt/' . sanitize($order_data['code'])); ?>'); return false;" class="btn btn-primary btn-block" "><b> <i class="fas fa-times-rectangle"></i> Print</b></a>
                                     </li>
                             <?php if (can_process_order()) : ?>
                                 <?php if ($order_data['order_status'] == "pending" || $order_data['order_status'] == "approved") : ?>
@@ -420,3 +421,16 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
         <!-- /.row -->
     </div><!-- /.container-fluid -->
 </section>
+
+<script>
+function openHiddenWindow(url) {
+    const win = window.open(url, '_blank', 'width=1,height=1,left=0,top=0,resizable=no,scrollbars=no');
+    if (win) {
+        win.blur(); // Focus hata dein
+        window.focus(); // Apni window pe wapas aajaye
+    } else {
+        console.error('Popup blocked! Please allow popups for this website.');
+    }
+}
+
+</script>

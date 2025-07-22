@@ -15,7 +15,7 @@ class Refund_model extends Base_model
         $this->db->select('refund_requests.*, restaurants.name as restaurant_name');
         $this->db->from('refund_requests');
         $this->db->join('restaurants', 'refund_requests.restaurant_id = restaurants.id', 'left');
-        $this->db->order_by('refund_requests.requestedAt', 'DESC'); 
+        $this->db->order_by('refund_requests.requestedAt', 'DESC');
         $query = $this->db->get();
 
         if ($query->num_rows() > 0) {
@@ -28,8 +28,10 @@ class Refund_model extends Base_model
 
     public function get_order_details_for_request_refund($order_code)
     {
+        $host = $_SERVER['HTTP_HOST'];
+
         $order = $this->db->get_where('orders', ['code' => $order_code])->row();
-        
+
         $restaurant_id = $order->restaurant_id;
         $refund_amount = $order->commission_paid;
 
@@ -39,7 +41,29 @@ class Refund_model extends Base_model
             'refund_amount'  => $refund_amount
         ];
 
-        $this->db->insert('refund_requests', $refundData);
+        $restaurant = $this->db->get_where('restaurants', ['id' => $restaurant_id])->row();
+        $restaurant_name = $restaurant ? $restaurant->name : 'Unknown';
+
+        $inserted=$this->db->insert('refund_requests', $refundData);
+
+        if ($inserted) {
+            $mailData = [
+                'order_code'      => $order_code,
+                'refund_amount'   => $refund_amount,
+                'restaurant_name' => $restaurant_name
+            ];
+            $subject = 'New refund request for ' . $order_code . ' from ' . $restaurant_name;
+
+
+            if ($host === 'fooyes.co.uk') {
+                $to = 'fooyesuk@gmail.com';
+            }else{
+                $to = 'website25developer@gmail.com';
+            }
+            $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, true);
+        } else {
+            log_message('error', 'Refund request insert failed for order: ' . $order_code);
+        }
     }
 
     public function get_refund_requests_data_by_order_code($order_code)
@@ -55,7 +79,7 @@ class Refund_model extends Base_model
         if ($request) {
             $this->load->model('order_model');
             $this->order_model->mark_as_refund($order_code);
-            
+
             $this->db->where('order_code', $request->order_code);
             $this->db->update('refund_requests', [
                 'status' => 1,
@@ -67,7 +91,7 @@ class Refund_model extends Base_model
 
         return false;
     }
-    
+
     public function rejected_refund_request_by_order_code($order_code)
     {
         $request = $this->db->get_where('refund_requests', ['order_code' => $order_code])->row();
@@ -89,6 +113,4 @@ class Refund_model extends Base_model
         $this->db->where('status', 0);
         return $this->db->count_all_results('refund_requests');
     }
-
-
 }

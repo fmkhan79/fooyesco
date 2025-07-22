@@ -103,7 +103,7 @@
       var urls;
       const check = location.origin;
       if(check == "http://localhost"){
-         urls = '/fooyesco_git/orders/';
+         urls = '/fooyesco/orders/';
       }
       else
       {
@@ -209,7 +209,14 @@
                     method: 'POST',
                     data: { order_id: orderId },
                     success: function(response) {
-                        window.location.href = urls + "/print_recipt/" + code;
+                        // window.location.href = urls + "/print_recipt/" + code;
+                        
+                        const printUrl = '<?php echo base_url('orders/print_recipt/'); ?>' + code;
+                        const win = window.open(printUrl, '_blank', 'width=1,height=1,left=0,top=0,resizable=no,scrollbars=no');
+
+                        if (!win) {
+                            alert('Popup blocked! Please allow popups for this site.');
+                        }
                         console.log('Order marked as read successfully');
                     },
                     error: function() {
