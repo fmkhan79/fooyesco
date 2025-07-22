@@ -1,50 +1,130 @@
 <!-- Filter Customers Data behalf on order_type is delivery -->
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header"><?php echo get_phrase('filter_orders'); ?></div>
+                    <div class="card-body">
+                        <form action="<?php echo site_url('customers-info/index'); ?>" method="get">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label><?php echo get_phrase('restaurant'); ?></label>
+                                        <select class="form-control select2 w-100" name="restaurant_id" id="restaurant_id">
+                                            <option value="all" <?php if ($restaurant_id == "all") echo "selected"; ?>><?php echo get_phrase('all'); ?></option>
+                                            <?php foreach ($restaurants as $key => $restaurant) : ?>
+                                                <option value="<?php echo sanitize($restaurant['id']); ?>" <?php if ($restaurant_id == $restaurant['id']) echo "selected"; ?>><?php echo sanitize($restaurant['name']); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="input-group pb-5">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search"></i> <?php echo get_phrase('filter'); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <strong><?php echo get_phrase('send_message'); ?></strong>
+                    </div>
+                    <div class="card-body">
+                        <form id="promotionForm" action="<?= site_url('customers-info/send_message') ?>" method="POST">
+                            <input type="hidden" name="selected_customers_data" id="selected_customers_data">
+                            <div class="form-row">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-send-via d-flex mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="send_email" id="send_email">
+                                            <label class="form-check-label" for="send_email">
+                                                <?php echo get_phrase('email'); ?>
+                                            </label>
+                                        </div>
+                                        <div class="form-check mx-3">
+                                            <input class="form-check-input" type="checkbox" name="send_sms" id="send_sms">
+                                            <label class="form-check-label" for="send_sms">
+                                                <?php echo get_phrase('sms'); ?>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <textarea class="form-control" name="message" rows="3" placeholder="<?php echo get_phrase('type_your_message'); ?>"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-row mt-2">
+                                <div class="col-md-12 text-right">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane"></i> <?php echo get_phrase('send_message'); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <?php echo get_phrase("Customers Information", true); ?>
+                            <?php echo get_phrase("Promotions", true); ?>
                         </h3>
                     </div>
                     <div class="card-body">
                         <table id="customers_info" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
+                                    <th><input type="checkbox" id="select_all"></th>
                                     <th><?php echo get_phrase("#"); ?></th>
                                     <th><?php echo get_phrase("name"); ?></th>
                                     <th><?php echo get_phrase("email"); ?></th>
                                     <th><?php echo get_phrase("phone"); ?></th>
+                                    <th><?php echo get_phrase("restaurant"); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 $index = 1;
-                                $printed = []; // Array to track unique email/phone
+                                $printed = [];
+
+                                // Map restaurant IDs to names
+                                $restaurant_map = [];
+                                foreach ($restaurants as $r) {
+                                    $restaurant_map[$r['id']] = $r['name'];
+                                }
 
                                 foreach ($customers as $customer) {
-
                                     $billing = json_decode($customer['billing'], true);
-
-                                    // Create unique key using email and phone
+                                    if($billing['email'] == null && $billing['phone'] == null) continue;
                                     $uniqueKey = $billing['email'] . '|' . $billing['phone'];
 
-                                    if (in_array($uniqueKey, $printed)) {
-                                        continue; // Skip duplicate
-                                    }
+                                    if (in_array($uniqueKey, $printed)) continue;
+                                    $printed[] = $uniqueKey;
 
-                                    $printed[] = $uniqueKey; // Mark as printed
+                                    $restaurantName = isset($restaurant_map[$customer['restaurant_id']]) ? $restaurant_map[$customer['restaurant_id']] : 'Unknown';
                                 ?>
                                     <tr>
+                                        <td>
+                                            <input type="checkbox" class="customer_checkbox" name="selected_customers[]" value="<?= $customer['id'] ?>">
+                                        </td>
                                         <td><?= $index++ ?></td>
                                         <td><?= $billing['first_name'] . ' ' . $billing['last_name'] ?></td>
                                         <td><?= $billing['email'] ?></td>
                                         <td><?= $billing['phone_mobile'] ?? 'No Phone Number' ?></td>
+                                        <td><?= $restaurantName ?></td> <!-- NEW -->
                                     </tr>
                                 <?php } ?>
                             </tbody>
+
 
                         </table>
                     </div>
@@ -55,3 +135,39 @@
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#promotionForm').on('submit', function(e) {
+            let selectedData = [];
+
+            $('.customer_checkbox:checked').each(function() {
+                const row = $(this).closest('tr');
+                const name = row.find('td:eq(2)').text().trim();
+                const email = row.find('td:eq(3)').text().trim();
+                const phone = row.find('td:eq(4)').text().trim();
+                const restaurant = row.find('td:eq(5)').text().trim();
+
+                selectedData.push({
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    restaurant: restaurant
+                });
+            });
+
+            if (selectedData.length === 0) {
+                alert("Please select at least one customer.");
+                e.preventDefault();
+                return;
+            }
+
+            // Put data in hidden input
+            $('#selected_customers_data').val(JSON.stringify(selectedData));
+        });
+
+        $('#select_all').on('change', function() {
+            $('.customer_checkbox').prop('checked', $(this).prop('checked'));
+        });
+    });
+</script>

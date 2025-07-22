@@ -282,7 +282,7 @@
                     <a href="<?php echo site_url('customers-info'); ?>" class="nav-link <?php if ($page_name == "customers_info/index") echo 'active'; ?>">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            <?php echo get_phrase("customers_information"); ?>
+                            <?php echo get_phrase("Promotions"); ?>
                         </p>
                     </a>
                 </li>
