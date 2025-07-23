@@ -25,6 +25,8 @@ $route['refundrequest/(:any)/(:any)'] = 'RefundRequest/$1/$2';
 $route['submissions'] = 'submissions';
 
 $route['customers-info'] = 'CustomersInfo';
+$route['customers-info/(:any)'] = 'CustomersInfo/$1';
+$route['customers-info/(:any)/(:any)'] = 'CustomersInfo/$1/$2';
 
 
 // $route['check'] = 'orders/check_new_orders';

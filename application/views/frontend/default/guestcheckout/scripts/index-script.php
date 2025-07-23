@@ -592,9 +592,9 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
         if (place.address_components && place.address_components.length > 0) {
             var addressComp = place.address_components[place.address_components.length - 1].short_name;
 
-            document.querySelector("input[name='zipcode']").value = addressComp;
-            document.querySelector("input[name='street']").value = place.address_components[0].short_name;
-            document.querySelector("input[name='zip_code']").value = place.address_components[1].short_name;
+            document.querySelector("input[name='random2']").value = addressComp;
+            document.querySelector("input[name='random3']").value = place.address_components[0].short_name;
+            document.querySelector("input[name='random4']").value = place.address_components[1].short_name;
 
             $("#lat_to").val(place.geometry.location.lat());
             $("#long_to").val(place.geometry.location.lng());
@@ -605,7 +605,7 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
     });
 
     // Address input validation to prevent alphabetic characters
-    var address = document.querySelector("input[name='additional_address']");
+    var address = document.querySelector("input[name='random1']");
     address.addEventListener('input', function () {
         const value = address.value.trim();
 
@@ -631,7 +631,7 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
     
     // Handle button clicks and interactions
     document.getElementById("checking").onclick = function(){
-        document.getElementById("show-address").innerHTML = document.querySelector("input[name='additional_address']").value + "<br> House/Street: " + document.querySelector("input[name='street']").value + "<br> Street/Name: " + document.querySelector("input[name='zip_code']").value;
+        document.getElementById("show-address").innerHTML = document.querySelector("input[name='random1']").value + "<br> House/Street: " + document.querySelector("input[name='random4']").value + "<br> Street/Name: " + document.querySelector("input[name='random2']").value;
     }
 
     const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
@@ -735,67 +735,71 @@ if (orderTypeValue) {
         // debugger;
         // Topbar styling
         const liOrder = document.querySelector('ul.billing-list-topbar li.order');
-        const liBilling = document.querySelector('ul.billing-list-topbar li.billing');
+        // const liBilling = document.querySelector('ul.billing-list-topbar li.billing');
         const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
+        // if (liPayment) liPayment.querySelector('.img-box').style.display = 'none';
+        if (liPayment) liPayment.style.display = 'none';
+        // const paymentGateway = document.getElementById('p-gateways');
+        // const paymentMethod = document.getElementById('p-method');
 
-        const paymentGateway = document.getElementById('p-gateways');
-        const paymentMethod = document.getElementById('p-method');
-
-        if (liOrder) liOrder.classList.add("acitve");
-        if (liOrder) liOrder.classList.add("col-md-2");
+        // if (liOrder) liOrder.classList.add("acitve");
+        if (liOrder) liOrder.classList.add("col-md-7");
+        // if (liOrder) liOrder.querySelector('.img-box').classList.add("red");
         if (liOrder) liOrder.classList.add("mx-auto");
 
-        if (paymentGateway) paymentGateway.classList.add("d-none");
-        if (paymentMethod) paymentMethod.classList.add("mx-auto");
+        // if (paymentGateway) paymentGateway.classList.add("d-none");
+        // if (paymentMethod) paymentMethod.classList.add("mx-auto");
         
-        if (liBilling) liBilling.classList.remove("acitve");
+        // if (liBilling) liBilling.classList.remove("acitve");
         if (liPayment) liPayment.classList.remove("acitve");
 
-        const orderImg = document.querySelector('ul.billing-list-topbar li.order .img-box');
-        const billingImg = document.querySelector('ul.billing-list-topbar li.billing .img-box');
-        const paymentImg = document.querySelector('ul.billing-list-topbar li.payment .img-box');
+        // const orderImg = document.querySelector('ul.billing-list-topbar li.order .img-box');
+        // const billingImg = document.querySelector('ul.billing-list-topbar li.billing .img-box');
+        // const paymentImg = document.querySelector('ul.billing-list-topbar li.payment .img-box');
         
-        if (orderImg) orderImg.classList.add("red");
-        if (billingImg) billingImg.classList.remove("red");
-        if (paymentImg) paymentImg.classList.remove("red");
+        // if (orderImg) orderImg.classList.add("red");
+        // if (billingImg) billingImg.classList.remove("red");
+        // if (paymentImg) paymentImg.classList.remove("red");
 
         // Show/Hide sections
-        const paymentOption = document.getElementById("payment-option");
-        const billingAddress = document.getElementById("billing-address");
-        const yourAddress = document.getElementById("your-address");
+        // const paymentOption = document.getElementById("payment-option");
+        // const billingAddress = document.getElementById("billing-address");
+        // const yourAddress = document.getElementById("your-address");
         
-        if (paymentOption) paymentOption.classList.add("d-none");
-        if (billingAddress) billingAddress.classList.add("d-none");
-        if (yourAddress) {
-         yourAddress.classList.remove("d-none");  
-         yourAddress.style.display = "block";    
-         document.querySelector('.delivery-text').classList.add('d-none');
+        // if (paymentOption) paymentOption.classList.add("d-none");
+        // if (billingAddress) billingAddress.classList.add("d-none");
+        // if (yourAddress) {
+        // //  yourAddress.classList.remove("d-none");  
+        // //  yourAddress.style.display = "block";    
+        // //  document.querySelector('.delivery-text').classList.add('d-none');
 
-            }
+        //     }
         // Set section display manually if needed
-        const paymentSection = document.querySelector(".payment");
-        if (paymentSection) paymentSection.style.display = "none";
+        // const paymentSection = document.querySelector(".payment");
+        // if (paymentSection) paymentSection.style.display = "none";
 
         // const billingSection = document.querySelector(".billing");
         // if (billingSection) billingSection.style.width = "90%";
 
-        const orderSection = document.querySelector(".billing");
-        if (orderSection) orderSection.style.display = "none";
+        // const orderSection = document.querySelector(".billing");
+        // if (orderSection) orderSection.style.display = "none";
 
         // Collection time visible, hide additional notes
-        const collectionTime = document.getElementById("collection-time");
-        const deliveryNotes = document.getElementById("additional-delivery-notes");
-        if (collectionTime) collectionTime.classList.remove("d-none");
-        if (deliveryNotes) deliveryNotes.classList.add("d-none");
+        // const collectionTime = document.getElementById("collection-time");
+        // const deliveryNotes = document.getElementById("additional-delivery-notes");
+        // if (collectionTime) collectionTime.classList.remove("d-none");
+        // if (deliveryNotes) deliveryNotes.classList.add("d-none");
         
+        const headingInPaymentMehod = document.getElementById('p-gateways')
+        if(headingInPaymentMehod) headingInPaymentMehod.style.display = 'none';
         // Update cash button text
         const cashButton = document.getElementById("cash_button");
         if (cashButton) cashButton.innerHTML = "Cash On Collection";
 
         // Change order type display label
-        document.querySelectorAll("span.order_type").forEach(span => {
-            span.innerHTML = "Your";
-        });
+        // document.querySelectorAll("span.order_type").forEach(span => {
+        //     span.innerHTML = "Your";
+        // });
     }
 }
 

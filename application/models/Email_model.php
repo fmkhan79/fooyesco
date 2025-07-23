@@ -21,7 +21,7 @@ class Email_model extends Base_model
 		return $this->send_mail_using_php_mailer($email_message, $email_sub, $email_to);
 	}
 
-	public function send_mail_using_php_mailer($message = NULL, $subject = NULL, $to = NULL, $is_password_restting_mail = false, $is_contact_submission_mail = false, $is_refund_request_mail = false)
+	public function send_mail_using_php_mailer($message = NULL, $subject = NULL, $to = NULL, $is_password_restting_mail = false, $is_contact_submission_mail = false, $is_refund_request_mail = false, $is_promotion_mail_to_customers = false)
 	{
 		// Load PHPMailer library
 		$this->load->library('phpmailer_lib');
@@ -85,6 +85,8 @@ $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes'); // Your email and name
 
 		}elseif ($is_refund_request_mail) {
 			$htmlContent = $this->load->view('email/refund_request_admin', array('subject' => $subject, 'message' => $message), TRUE);
+		} elseif ($is_promotion_mail_to_customers) {
+			$htmlContent = $this->load->view('email/promotion_mail_to_customers', array('subject' => $subject, 'message' => $message), TRUE);
 		} else {
 			$htmlContent = $this->load->view('email/order_placing', array('subject' => $subject, 'message' => $message), TRUE);
 		}

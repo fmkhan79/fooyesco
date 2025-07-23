@@ -1720,11 +1720,17 @@ class Order_model extends Base_model
         $this->db->update('orders', ['is_status' => 2]);
     }
 
-    public function get_all_orders_for_customer_details()
+    public function get_all_orders_for_customer_details($restaurant_id = 'all')
     {
-        $this->db->where('order_type', 'delivery');
+        // $this->db->where('order_type', 'delivery');
+
+        if ($restaurant_id !== 'all') {
+            $this->db->where('restaurant_id', $restaurant_id);
+        }
+
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('orders');
         return $query->result_array();
     }
+
 }

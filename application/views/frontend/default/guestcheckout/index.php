@@ -142,74 +142,36 @@ $stripe_settings = json_decode($stripe_settings);
 
         <div id="payment-option">
             <h4 class="mt-5 text-dark"><span class="order_type">Delivery</span> Address</h4>
-
-            <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="off">
-                <div class="form-row mt-4">
-                    <div class="form-group col-md-6">
-
-                        <label for="inputto">Enter Your Address*</label>
-                        <input type="text" name="additional_address" class="form-control remove-required-collection" id="to" required
-                            placeholder="Enter Your Address">
-
-                        <small class="text-danger d-none" id="not-deliever"> Address not in deliverable range </small>
-                        <input type="hidden" placeholder="Latitude" id="lat_to">
-                        <input type="hidden" placeholder="Longitude" id="long_to">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputcity">Postcode*</label>
-                        <input type="text" name="zipcode" class="form-control remove-required-collection" id="city" placeholder="Postcode" required>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <label for="inputflat">House/Flat Number*</label>
-                        <input type="text" id="flat" class="form-control remove-required-collection" name="street" placeholder="House/Flat Number" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputstreet-value">Street Name*</label>
-                        <input type="text" class="form-control remove-required-collection" id="street-value" name="zip_code" placeholder="Street Number" required>
-                    </div>
-                    <!-- <div class="form-group col-md-6">
-                        <label for="inputAddress">City</label>
-                        <input type="text" name="city" class="form-control" id="city" placeholder="City">
-                    </div> -->
-
-                    <!-- <div class="form-group col-md-6">
-                <label for="inputPassword4">Country</label>
-                <input type="text" name="country" class="form-control" placeholder="Country" value="London" disabled>
-            </div> -->
-
-                </div>
-
-                <div class="form-row">
-
-                    <div class="form-group col-md-12" id="additional-delivery-notes">
-                        <label for="inputPassword4">Any Additional Delivery Instructions</label>
-                        <textarea name="number" class="form-control" placeholder="No"></textarea>
-                    </div>
-                    <!-- <div class="form-group col-md-6">
-                    <label for="inputAddress">Post Code *</label>
-
-                    <input type="text" class="form-control" name="zip_code" id="post" required placeholder="Code"
-                        minlength="7" maxlength="8" pattern="[A-Za-z0-9]+"
-                        title="Only alphanumeric characters are allowed (no special characters)">
-
-                </div> -->
-
-                </div>
-
-
-                <!-- <div class="form-check mt-4 d-flex">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1"><strong>The shipping address does not
-                            match
-                            the
-                            billing address</strong></label>
-                </div> -->
-
-                <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Go to next step: Place Order</button>
-                <!-- <button id="calculate_distance">Calculate Distance</button> -->
-
-            </form>
+             <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="off">
+            <div class="form-row mt-4">
+            <div class="form-group col-md-6">
+              <label>Enter Your Address*</label>
+              <input type="text" class="form-control" id="to" name="random1" placeholder="Enter Your Address" autocomplete="new-password">
+              <small class="text-danger d-none" id="not-deliever"> Address not in deliverable range </small>
+              <input type="hidden" id="lat_to">
+              <input type="hidden" id="long_to">
+            </div>
+            <div class="form-group col-md-6">
+              <label>Postcode*</label>
+              <input type="text" class="form-control" id="city" name="random2" placeholder="Postcode" autocomplete="new-password">
+            </div>
+            <div class="form-group col-md-6">
+              <label>House/Flat Number*</label>
+              <input type="text" class="form-control" id="flat" name="random3" placeholder="House/Flat Number" autocomplete="new-password">
+            </div>
+            <div class="form-group col-md-6">
+              <label>Street Name*</label>
+              <input type="text" class="form-control" id="street-value" name="random4" placeholder="Street Name" autocomplete="new-password">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label>Additional Delivery Instructions</label>
+              <textarea class="form-control" id="instructions" name="random5" placeholder="No" autocomplete="off"></textarea>
+            </div>
+          </div>
+           <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Go to next step: Place Order</button>
+             </form>
         </div>
 
         <div id="your-address">
