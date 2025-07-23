@@ -99,8 +99,10 @@
               echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
               echo "<h3 style='margin:0px;'>". $billing["phone_mobile"] ."</h3>";
                 }
-            if ($order_details['order_type'] != "pickup") {
-          echo "<h3 style='margin:0px;'>" . $address["street"] . ", " . str_replace(", March, UK", "", $address["additional_address"]) . " - " . $address["zip_code"] . "</h3>";
+            if ($order_details['order_type'] == "pickup") {
+          echo "<h3>Collection</h3>";
+              echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
+              echo "<h3 style='margin:0px;'>". $billing["phone_mobile"] ."</h3>";
             }
                 ?>
 
