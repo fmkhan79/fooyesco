@@ -183,11 +183,13 @@ class GuestCheckout extends Base
     public function save_address_data() {
         // Retrieve form data
         try{
-            $street = $this->input->post('random3');
-            $number = $this->input->post('random5');
-            $additional_address = $this->input->post('random1');
-            $zip_code = $this->input->post('random2');
-            $city = $this->input->post('city');
+             $nameMap = json_decode($this->input->post('inputNameMap'), true);
+
+            $street = $this->input->post($nameMap['flat']);
+            $number = $this->input->post($nameMap['instructions']);
+            $additional_address = $this->input->post($nameMap['address']);
+            $zip_code = $this->input->post($nameMap['postcode']);
+            $city = ''; // Not provided, optional
             $country = 'UK';
             
             // Store data in session

@@ -143,7 +143,7 @@ function submitForm() {
             jQuery("ul.billing-list-topbar li.order").removeClass("acitve");
             // jQuery("#payment-option").show();
             const orderTypeValue = localStorage.getItem('order-type');
-            if(orderTypeValue == "collection"){
+            if(orderTypeValue == "collection" || orderTypeValue == "delivery"){
                 // debugger;
                 jQuery("ul.billing-list-topbar li.order").addClass("acitve");
 
@@ -170,32 +170,32 @@ function submitForm() {
 }
 
 
-function submitAddressForm() {
-    // Collect form data
-    var addressFormData = $('#address-form').serialize();
+// function submitAddressForm() {
+//     // Collect form data
+//     var addressFormData = $('#address-form').serialize();
 
-    // Send data via AJAX
-    $.ajax({                                                                    
-        type: 'POST',               
-        url: '<?= base_url('GuestCheckout/save_address_data') ?>', // Adjust the URL to your controller method
-        data: addressFormData,
-        success: function(response) {
-            // Handle the response (if needed)
-            console.log(response);
-            jQuery("ul.billing-list-topbar li.order").addClass("acitve");
+//     // Send data via AJAX
+//     $.ajax({                                                                    
+//         type: 'POST',               
+//         url: '<?= base_url('GuestCheckout/save_address_data') ?>', // Adjust the URL to your controller method
+//         data: addressFormData,
+//         success: function(response) {
+//             // Handle the response (if needed)
+//             console.log(response);
+//             jQuery("ul.billing-list-topbar li.order").addClass("acitve");
 
-            jQuery("ul.billing-list-topbar li.order .img-box").addClass("red");
-            jQuery("ul.billing-list-topbar li.billing .img-box").removeClass("red");
-            jQuery("ul.billing-list-topbar li.payment .img-box").removeClass("red");
+//             jQuery("ul.billing-list-topbar li.order .img-box").addClass("red");
+//             jQuery("ul.billing-list-topbar li.billing .img-box").removeClass("red");
+//             jQuery("ul.billing-list-topbar li.payment .img-box").removeClass("red");
 
-            jQuery("ul.billing-list-topbar li.billing").removeClass("acitve");
-            jQuery("ul.billing-list-topbar li.payment").removeClass("acitve");
-            jQuery("#your-address").show();
-            jQuery("#your-address").removeClass("d-none");
-            jQuery("#billing-address,#payment-option").hide();
-        }
-    });
-}
+//             jQuery("ul.billing-list-topbar li.billing").removeClass("acitve");
+//             jQuery("ul.billing-list-topbar li.payment").removeClass("acitve");
+//             jQuery("#your-address").show();
+//             jQuery("#your-address").removeClass("d-none");
+//             jQuery("#billing-address,#payment-option").hide();
+//         }
+//     });
+// }
 
 
 function calculatePrice() {
@@ -570,8 +570,10 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
 
 <script type="text/javascript">
    $(document).ready(function() {
+    assignRandomNamesToInputs();
     var autocomplete_to;
 
+    setTimeout(function(){
     const marchBounds = new google.maps.LatLngBounds(
         { lat: 52.5435, lng: 0.0720 }, // Southwest corner
         { lat: 52.5610, lng: 0.1120 }  // Northeast corner
@@ -592,9 +594,13 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
         if (place.address_components && place.address_components.length > 0) {
             var addressComp = place.address_components[place.address_components.length - 1].short_name;
 
-            document.querySelector("input[name='random2']").value = addressComp;
-            document.querySelector("input[name='random3']").value = place.address_components[0].short_name;
-            document.querySelector("input[name='random4']").value = place.address_components[1].short_name;
+            // document.querySelector("input[name='random2']").value = addressComp;
+            // document.querySelector("input[name='random3']").value = place.address_components[0].short_name;
+            // document.querySelector("input[name='random4']").value = place.address_components[1].short_name;
+
+            document.querySelector(`[name="${nameMap['postcode']}"]`).value = addressComp;
+            document.querySelector(`[name="${nameMap['flat']}"]`).value = place.address_components[0].short_name;
+            document.querySelector(`[name="${nameMap['street']}"]`).value = place.address_components[1].short_name;
 
             $("#lat_to").val(place.geometry.location.lat());
             $("#long_to").val(place.geometry.location.lng());
@@ -605,7 +611,7 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
     });
 
     // Address input validation to prevent alphabetic characters
-    var address = document.querySelector("input[name='random1']");
+    var address = document.querySelector("input[data-field='address']");
     address.addEventListener('input', function () {
         const value = address.value.trim();
 
@@ -631,8 +637,14 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
     
     // Handle button clicks and interactions
     document.getElementById("checking").onclick = function(){
-        document.getElementById("show-address").innerHTML = document.querySelector("input[name='random1']").value + "<br> House/Street: " + document.querySelector("input[name='random4']").value + "<br> Street/Name: " + document.querySelector("input[name='random2']").value;
+        // document.getElementById("show-address").innerHTML = document.querySelector("input[name='random1']").value + "<br> House/Street: " + document.querySelector("input[name='random4']").value + "<br> Street/Name: " + document.querySelector("input[name='random2']").value;
+        document.getElementById("show-address").innerHTML =
+        document.querySelector(`[name="${nameMap['address']}"]`).value + "<br> House/Street: " +
+        document.querySelector(`[name="${nameMap['street']}"]`).value + "<br> Street/Name: " +
+        document.querySelector(`[name="${nameMap['postcode']}"]`).value;
     }
+
+    },2000);
 
     const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
     const hiddenInputs = document.querySelectorAll('input[name="order_type"]');
@@ -731,6 +743,16 @@ if (orderTypeValue) {
         input.value = orderTypeValue;
     });
 
+    if (orderTypeValue === "delivery"){
+        const liOrder = document.querySelector('ul.billing-list-topbar li.order');
+        const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
+        // if (liPayment) liPayment.style.display = 'none';
+        if (liPayment) liPayment.querySelector('.img-box').style.display = 'none';
+        if (liPayment) liPayment.classList.remove("acitve");
+        const headingInPaymentMehod = document.getElementById('p-gateways')
+        if(headingInPaymentMehod) headingInPaymentMehod.style.display = 'none';
+    }
+    
     if (orderTypeValue === "collection") {
         // debugger;
         // Topbar styling
@@ -738,14 +760,14 @@ if (orderTypeValue) {
         // const liBilling = document.querySelector('ul.billing-list-topbar li.billing');
         const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
         // if (liPayment) liPayment.querySelector('.img-box').style.display = 'none';
-        if (liPayment) liPayment.style.display = 'none';
-        // const paymentGateway = document.getElementById('p-gateways');
-        // const paymentMethod = document.getElementById('p-method');
+        if (liPayment) liPayment.querySelector('.img-box').style.display = 'none';
 
-        // if (liOrder) liOrder.classList.add("acitve");
-        if (liOrder) liOrder.classList.add("col-md-7");
+        // const paymentGateway = document.getElementById('p-gateways');
+        // const paymentMethod = document.getElementById('p-method'
+
+        // if (liOrder) liOrder.classList.add("col-md-12");
         // if (liOrder) liOrder.querySelector('.img-box').classList.add("red");
-        if (liOrder) liOrder.classList.add("mx-auto");
+        // if (liOrder) liOrder.classList.add("mx-auto");
 
         // if (paymentGateway) paymentGateway.classList.add("d-none");
         // if (paymentMethod) paymentMethod.classList.add("mx-auto");

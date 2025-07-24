@@ -17,6 +17,12 @@ $stripe_settings = json_decode($stripe_settings);
 <!-- MAIN CONTENT -->
 
 <style>
+    ul.billing-list-topbar li:after{
+        background: #F54849;
+    }
+    .pac-container{
+        z-index: 99999999999;
+    }
    -list .d-flex.p-1,#item-list .product-price img{
         visibility: collapse;
     }
@@ -140,7 +146,7 @@ $stripe_settings = json_decode($stripe_settings);
         </div>
 
 
-        <div id="payment-option">
+        <!-- <div id="payment-option">
             <h4 class="mt-5 text-dark"><span class="order_type">Delivery</span> Address</h4>
              <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="off">
             <div class="form-row mt-4">
@@ -172,7 +178,7 @@ $stripe_settings = json_decode($stripe_settings);
           </div>
            <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Go to next step: Place Order</button>
              </form>
-        </div>
+        </div> -->
 
         <div id="your-address">
             <!-- <h4 class="mt-5 text-dark"><?php //echo site_phrase('choose_way_of_payment', true); 
@@ -482,30 +488,118 @@ $stripe_settings = json_decode($stripe_settings);
         </div>
     </div>
 </section>
-<!-- 
+
+<head>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<div class="modal fade" id="guestAddressModal" tabindex="-1" aria-labelledby="guestAddressModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="text-dark"><span class="order_type">Delivery</span> Address</h4>
+      </div>
+
+      <div class="modal-body">
+        <div id="address-option">
+          <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="off">
+            <div class="form-row mt-4">
+              <div class="form-group col-md-6">
+                <label>Enter Your Address*</label>
+                <input type="text" class="form-control" id="to" data-field="address" placeholder="Enter Your Address" autocomplete="new-password">
+                <small class="text-danger d-none" id="not-deliever"> Address not in deliverable range </small>
+                <input type="hidden" id="lat_to">
+                <input type="hidden" id="long_to">
+              </div>
+              <div class="form-group col-md-6">
+                <label>Postcode*</label>
+                <input type="text" class="form-control" id="city" data-field="postcode" placeholder="Postcode" autocomplete="new-password">
+              </div>
+              <div class="form-group col-md-6">
+                <label>House/Flat Number*</label>
+                <input type="text" class="form-control" id="flat" data-field="flat" placeholder="House/Flat Number" autocomplete="new-password">
+              </div>
+              <div class="form-group col-md-6">
+                <label>Street Name*</label>
+                <input type="text" class="form-control" id="street-value" data-field="street" placeholder="Street Name" autocomplete="new-password">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>Additional Delivery Instructions</label>
+                <textarea class="form-control" id="instructions" data-field="instructions" placeholder="No" autocomplete="off"></textarea>
+              </div>
+            </div>
+
+            <input type="hidden" id="inputNameMap" name="inputNameMap" value="">
+            <button id="checking" type="submit" class="rr-btn border-0 mt-4">Go to next step: Place Order</button>
+          </form>
+        </div>
+      </div>
+      
+    </div> <!-- .modal-content -->
+  </div>   <!-- .modal-dialog -->
+</div>     <!-- #guestAddressModal -->
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    
-        var orderType = sessionStorage.getItem("order-type");
 
-        if(orderType == "collection"){
-            const input = document.querySelector("input[value='collection']");
-            if(input)
-            {
-                input.click();   
-            }
-        }
-        else{
-            const input = document.querySelector("input[value='delivery']");
-            if(input)
-            {
-                input.click();   
-            }
-        }
+$(document).ready(function () {
+    const orderTypeV = localStorage.getItem('order-type');
+
+    if (orderTypeV === 'delivery') {
+        $('#guestAddressModal').modal({
+        backdrop: 'static',
+        keyboard: false
+        }).modal('show');
+    }
+});
+
+const nameMap = {};
+
+function generateRandomName(length = 8) {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
+
+function assignRandomNamesToInputs() {
+  document.querySelectorAll('[data-field]').forEach(input => {
+    const fieldKey = input.getAttribute('data-field');
+    const randomName = generateRandomName();
+    input.setAttribute('name', randomName);
+    nameMap[fieldKey] = randomName;
     });
-</script> -->
+    document.getElementById('inputNameMap').value = JSON.stringify(nameMap);
+}
+function submitAddressForm() {
+  var addressFormData = $('#address-form').serialize();
 
-<!-- END MAIN CONTENT -->
+  $.ajax({
+    type: 'POST',
+    url: '<?= base_url('GuestCheckout/save_address_data') ?>',
+    data: addressFormData,
+    success: function (response) {
+      console.log('Address Data Saved!');
+    //   window.location.href = "<?= site_url('GuestCheckout?guest=1'); ?>";
+    $('#guestAddressModal').modal('hide');
+    },
+    error: function (xhr, status, error) {
+      console.error('Error:', error);
+    }
+  });
+}
+
+
+// assignRandomNamesToInputs();
+
+</script>
+
 
 
 
