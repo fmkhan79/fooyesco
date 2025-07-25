@@ -143,7 +143,7 @@ function submitForm() {
             jQuery("ul.billing-list-topbar li.order").removeClass("acitve");
             // jQuery("#payment-option").show();
             const orderTypeValue = localStorage.getItem('order-type');
-            if(orderTypeValue == "collection" || orderTypeValue == "delivery"){
+            if(orderTypeValue == "collection"){
                 // debugger;
                 jQuery("ul.billing-list-topbar li.order").addClass("acitve");
 
@@ -268,7 +268,7 @@ function viewselected_cat_items_summary() {
     $.ajax({
         url: '<?php echo base_url(); ?>site/selected_cat_items_summary/',
         success: function(res) {
-            console.log(res, 'selected_cat_items_summary');
+            // console.log(res, 'selected_cat_items_summary');
             $("#item-list").empty(); // Empty the content of the div
             $("#item-list").html(res); // Replace with the 'res' response
         },
@@ -642,8 +642,19 @@ jQuery('label.c-basketSwitcher-switch').click(function() {
         document.querySelector(`[name="${nameMap['address']}"]`).value + "<br> House/Street: " +
         document.querySelector(`[name="${nameMap['street']}"]`).value + "<br> Street/Name: " +
         document.querySelector(`[name="${nameMap['postcode']}"]`).value;
-    }
 
+          const addressData = {
+            address: document.querySelector(`[name="${nameMap['address']}"]`).value,
+            street: document.querySelector(`[name="${nameMap['street']}"]`).value,
+            postcode: document.querySelector(`[name="${nameMap['postcode']}"]`).value,
+            flat: document.querySelector(`[name="${nameMap['flat']}"]`)?.value || '',
+            instructions: document.querySelector(`[name="${nameMap['instructions']}"]`)?.value || '',
+        };
+
+        // Store to localStorage
+        localStorage.setItem('address_data', JSON.stringify(addressData));
+    }
+    
     },2000);
 
     const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
@@ -744,11 +755,11 @@ if (orderTypeValue) {
     });
 
     if (orderTypeValue === "delivery"){
-        const liOrder = document.querySelector('ul.billing-list-topbar li.order');
-        const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
-        // if (liPayment) liPayment.style.display = 'none';
-        if (liPayment) liPayment.querySelector('.img-box').style.display = 'none';
-        if (liPayment) liPayment.classList.remove("acitve");
+        // const liOrder = document.querySelector('ul.billing-list-topbar li.order');
+        // const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
+        // // if (liPayment) liPayment.style.display = 'none';
+        // if (liPayment) liPayment.querySelector('.img-box').style.display = 'none';
+        // if (liPayment) liPayment.classList.remove("acitve");
         const headingInPaymentMehod = document.getElementById('p-gateways')
         if(headingInPaymentMehod) headingInPaymentMehod.style.display = 'none';
     }
@@ -757,10 +768,19 @@ if (orderTypeValue) {
         // debugger;
         // Topbar styling
         const liOrder = document.querySelector('ul.billing-list-topbar li.order');
-        // const liBilling = document.querySelector('ul.billing-list-topbar li.billing');
+        const liBilling = document.querySelector('ul.billing-list-topbar li.billing');
         const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
         // if (liPayment) liPayment.querySelector('.img-box').style.display = 'none';
         if (liPayment) liPayment.querySelector('.img-box').style.display = 'none';
+        
+        liPayment.classList.add('highlighted');
+        
+        
+        if(liOrder.classList.contains('acitve')){
+            console.log('Order Active');
+            liPayment.classList.remove('highlighted');
+        }
+
 
         // const paymentGateway = document.getElementById('p-gateways');
         // const paymentMethod = document.getElementById('p-method'
@@ -851,7 +871,7 @@ if (orderTypeValue) {
                 long_to: long_to,
             },
             success: function(response) {
-                 debugger;
+                //  debugger;
                 
                 if (response.message == 'Not delivery at this location') {
                     // Handle 'Not delivery' error
@@ -890,6 +910,14 @@ if (orderTypeValue) {
     }
 }
 
+
+    document.getElementById("mobile").addEventListener("keypress", function (e) {
+        const char = String.fromCharCode(e.which);
+        const allowed = /[0-9\+]/; // allow digits and + only
+        if (!allowed.test(char)) {
+            e.preventDefault(); // block character
+        }
+    }); 
     document.getElementById('mobile').addEventListener('input', function() {
         var input = this;
         var pattern = new RegExp(input.getAttribute('pattern'));
