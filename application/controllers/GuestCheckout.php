@@ -180,36 +180,73 @@ class GuestCheckout extends Base
   
 
 
-    public function save_address_data() {
-        // Retrieve form data
-        try{
-            $street = $this->input->post('random3');
-            $number = $this->input->post('random5');
-            $additional_address = $this->input->post('random1');
-            $zip_code = $this->input->post('random2');
-            $city = $this->input->post('city');
-            $country = 'UK';
+    // public function save_address_data() {
+    //     // Retrieve form data
+    //     try{
+    //         $nameMap = json_decode($this->input->post('inputNameMap'), true);
+
+    //         $street = $this->input->post($nameMap['flat']);
+    //         $number = $this->input->post($nameMap['instructions']);
+    //         $additional_address = $this->input->post($nameMap['address']);
+    //         $zip_code = $this->input->post($nameMap['postcode']);
+    //         $city = ''; // Not provided, optional
+    //         $country = 'UK';
             
-            // Store data in session
+    //         // Store data in session
+    //         $address_data = array(
+    //             'street' => $street,
+    //             'number' => $number,
+    //             'additional_address' => $additional_address,
+    //             'zip_code' => $zip_code,
+    //             'city' => $city,
+    //             'country' => $country
+    //         );
+    //         // print_r($address_data);
+
+    
+    //         $this->session->set_userdata('address', $address_data);
+    //         $this->db->where('session_id', session_id());
+    //         $this->db->update('cart_visits', ['user_address' => $additional_address]);
+    //         // Send a response (if needed)
+    //         echo json_encode(array('success' => true));
+    //     }catch(\Exception $e){
+    //         echo json_encode(array($e));
+            
+    //     }
+    // }
+
+    public function save_address_data() {
+        try {
+            $nameMap = json_decode($this->input->post('inputNameMap'), true);
+
+            $flat = $this->input->post($nameMap['flat']);
+            $instructions = $this->input->post($nameMap['instructions']);
+            $address = $this->input->post($nameMap['address']);
+            $postcode = $this->input->post($nameMap['postcode']);
+
+            $city = ''; // Optional
+            $country = 'UK';
+
             $address_data = array(
-                'street' => $street,
-                'number' => $number,
-                'additional_address' => $additional_address,
-                'zip_code' => $zip_code,
+                'flat' => $flat,
+                'instructions' => $instructions,
+                'address' => $address,
+                'postcode' => $postcode,
                 'city' => $city,
                 'country' => $country
             );
-            // print_r($address_data);
 
-    
+            // Store in session
             $this->session->set_userdata('address', $address_data);
+
+            // Update cart_visits
             $this->db->where('session_id', session_id());
-            $this->db->update('cart_visits', ['user_address' => $additional_address]);
-            // Send a response (if needed)
-            echo json_encode(array('success' => true));
-        }catch(\Exception $e){
-            echo json_encode(array($e));
-            
+            $this->db->update('cart_visits', ['user_address' => $address]);
+
+            echo json_encode(['success' => true]);
+
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
 

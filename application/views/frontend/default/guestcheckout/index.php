@@ -17,6 +17,15 @@ $stripe_settings = json_decode($stripe_settings);
 <!-- MAIN CONTENT -->
 
 <style>
+    /* ul.billing-list-topbar li:after{
+        background: #F54849;
+    } */
+     .highlighted::after {
+        background: #F54849 !important;
+    }
+    .pac-container{
+        z-index: 99999999999;
+    }
    -list .d-flex.p-1,#item-list .product-price img{
         visibility: collapse;
     }
@@ -29,7 +38,11 @@ $stripe_settings = json_decode($stripe_settings);
         /* Change cursor to indicate it's not clickable */
 
     }
-
+    input.invalid {
+        border-color: red !important;
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25) !important;
+    }
     @media (max-width: 768px) {
         .detail-wbox {
             /* margin-top: 20 !important; */
@@ -64,29 +77,61 @@ $stripe_settings = json_decode($stripe_settings);
 </style>
 <section class="detail-wbox mt-4 mb-2 p-5 d-flex justify-content-around">
     <div class="container bg-white text-dark border border-light p-3 w-75 p-md-5">
-        <ul class="d-flex justify-content-between align-item-center billing-list-topbar p-0">
-            <li class="billing acitve">
-                <div class="img-box text-center red">Customer <img class="billing-active"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
-                    <img class="billing-notactive"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
-                </div>
-            </li>
-            <li class="payment">
-                <div class="img-box text-center">Address Info <img class="billing-active"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
-                    <img class="billing-notactive"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
-                </div>
-            </li>
-            <li class="order last">
-                <div class="img-box text-center">Payment
-                    <img class="billing-active"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
-                    <img class="billing-notactive"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
-                </div>
-            </li>
+        <ul id="step-indicator" class="d-flex justify-content-between align-item-center billing-list-topbar p-0">
+            
+           <script>
+                const orderTypeV = localStorage.getItem('order-type');
+
+                // Create the HTML templates
+                const deliverySteps = `
+                    <li class="payment">
+                        <div class="img-box text-center red">Address Info 
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                    <li class="billing acitve">
+                        <div class="img-box text-center red">Customer 
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                    <li class="order last">
+                        <div class="img-box text-center">Payment
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                `;
+
+                const pickupSteps = `
+                    <li class="billing acitve">
+                        <div class="img-box text-center red">Customer 
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                    <li class="payment">
+                        <div class="img-box text-center">Address Info 
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                    <li class="order last">
+                        <div class="img-box text-center">Payment
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                `;
+
+                // Target the container where you want to insert the steps
+                const stepIndicator = document.getElementById('step-indicator');
+
+                if (stepIndicator) {
+                    stepIndicator.innerHTML = (orderTypeV === 'delivery') ? deliverySteps : pickupSteps;
+                }
+            </script>
         </ul>
         <div id="billing-address">
             <h4 class="mt-5 text-dark">Customer Details</h4>
@@ -141,38 +186,37 @@ $stripe_settings = json_decode($stripe_settings);
 
 
         <div id="payment-option">
-            <h4 class="mt-5 text-dark"><span class="order_type">Delivery</span> Address</h4>
-             <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="off">
-            <div class="form-row mt-4">
-            <div class="form-group col-md-6">
-              <label>Enter Your Address*</label>
-              <input type="text" class="form-control" id="to" name="random1" placeholder="Enter Your Address" autocomplete="new-password">
-              <small class="text-danger d-none" id="not-deliever"> Address not in deliverable range </small>
-              <input type="hidden" id="lat_to">
-              <input type="hidden" id="long_to">
+            <div class="row">
+                <div class="col-md-6">
+                <div class="d-flex">
+                    <h4 class="delivery-text mt-3"><span class="order_type">Delivery</span> Address</h4>
+                    <div class="mt-3 fw-bold mx-5 " style="color: #F54748; font-weight: bold; cursor: pointer;" onclick="openAddressEditModal()">Edit</div>
+                </div>
+                <span id="show-address"></span><br>
+                
+                <form id="hidden-address-form" onsubmit="return false;" autocomplete="off">
+                    <button onclick="goToPaymentTable()" class="rr-btn border-0 mt-4">Go to next step: Place Order</button>
+                </div>
+
+                <div class="col-md-6">
+                    <h4 class="mt-3">
+                    <label class="fw-bold">Additional Delivery Instructions</label>
+                    </h4>
+                    <textarea class="form-control " id="instructions_hidden" data-field="instructions" placeholder="No" autocomplete="off"></textarea>
+
+                    <!-- Hidden Fields -->
+                    <input type="hidden" id="address_hidden">
+                    <input type="hidden" id="postcode_hidden">
+                    <input type="hidden" id="flat_hidden">
+                    <input type="hidden" id="street_hidden">
+                    <input type="hidden" id="lat_hidden">
+                    <input type="hidden" id="long_hidden">
+                    <input type="hidden" id="inputNameMap_hidden" name="inputNameMap">
+                </form>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-              <label>Postcode*</label>
-              <input type="text" class="form-control" id="city" name="random2" placeholder="Postcode" autocomplete="new-password">
-            </div>
-            <div class="form-group col-md-6">
-              <label>House/Flat Number*</label>
-              <input type="text" class="form-control" id="flat" name="random3" placeholder="House/Flat Number" autocomplete="new-password">
-            </div>
-            <div class="form-group col-md-6">
-              <label>Street Name*</label>
-              <input type="text" class="form-control" id="street-value" name="random4" placeholder="Street Name" autocomplete="new-password">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label>Additional Delivery Instructions</label>
-              <textarea class="form-control" id="instructions" name="random5" placeholder="No" autocomplete="off"></textarea>
-            </div>
-          </div>
-           <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Go to next step: Place Order</button>
-             </form>
         </div>
+
 
         <div id="your-address">
             <!-- <h4 class="mt-5 text-dark"><?php //echo site_phrase('choose_way_of_payment', true); 
@@ -201,8 +245,8 @@ $stripe_settings = json_decode($stripe_settings);
                                 <div class="row">
 
                                     <div class="col-md-6 payment-gateways" id="p-gateways">
-                                        <h4 class="delivery-text"><span class="order_type">Delivery</span> Address</h4>
-                                        <span id="show-address"></span>
+                                        <!-- <h4 class="delivery-text"><span class="order_type">Delivery</span> Address</h4>
+                                        <span id="show-address"></span> -->
                                     </div>
                                     <div class="col-12 col-md-6" id="p-method">
                                         <h4 class="payment-text">Choose Payment Method To Proceed</h4>
@@ -482,30 +526,219 @@ $stripe_settings = json_decode($stripe_settings);
         </div>
     </div>
 </section>
-<!-- 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-    
-        var orderType = sessionStorage.getItem("order-type");
 
-        if(orderType == "collection"){
-            const input = document.querySelector("input[value='collection']");
-            if(input)
-            {
-                input.click();   
+<head>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<div class="modal fade" id="guestAddressModal" tabindex="-1" aria-labelledby="guestAddressModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="text-dark"><span class="order_type">Address</span> Finder</h4>
+      </div>
+
+      <div class="modal-body">
+        <div id="address-option">
+          <form id="address-form" onsubmit="submitAddressForm(); return false;" autocomplete="off">
+            <div class="form-row mt-4">
+              <div class="form-group col-md-6">
+                <label>Enter Your Address*</label>
+                <input type="text" class="form-control" id="to" data-field="address" placeholder="Enter Your Address" autocomplete="new-password">
+                <small class="text-danger d-none" id="not-deliever"> Address not in deliverable range </small>
+                <input type="hidden" id="lat_to">
+                <input type="hidden" id="long_to">
+              </div>
+              <div class="form-group col-md-6">
+                <label>Postcode*</label>
+                <input type="text" class="form-control" id="city" data-field="postcode" placeholder="Postcode" autocomplete="new-password">
+              </div>
+              <div class="form-group col-md-6">
+                <label>House/Flat Number*</label>
+                <input type="text" class="form-control" id="flat" data-field="flat" placeholder="House/Flat Number" autocomplete="new-password">
+              </div>
+              <div class="form-group col-md-6">
+                <label>Street Name*</label>
+                <input type="text" class="form-control" id="street-value" data-field="street" placeholder="Street Name" autocomplete="new-password">
+              </div>
+            </div>
+
+            <div class="form-row add-note d-none">
+              <div class="form-group col-md-12">
+                <label>Additional Delivery Instructions</label>
+                <textarea class="form-control" id="instructions" data-field="instructions" placeholder="No" autocomplete="off"></textarea>
+              </div>
+            </div>
+
+            <input type="hidden" id="inputNameMap" name="inputNameMap" value="">
+            <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Confirm Address</button>
+          </form>
+        </div>
+      </div>
+      
+    </div> <!-- .modal-content -->
+  </div>   <!-- .modal-dialog -->
+</div>     <!-- #guestAddressModal -->
+
+<script>
+
+$(document).ready(function () {
+
+    if (orderTypeV === 'delivery') {
+        $('#guestAddressModal').modal({
+        backdrop: 'static',
+        keyboard: false
+        }).modal('show');
+    }
+});
+
+const nameMap = {};
+
+function generateRandomName(length = 8) {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
+
+function assignRandomNamesToInputs() {
+  document.querySelectorAll('[data-field]').forEach(input => {
+    const fieldKey = input.getAttribute('data-field');
+    const randomName = generateRandomName();
+    input.setAttribute('name', randomName);
+    nameMap[fieldKey] = randomName;
+    });
+    document.getElementById('inputNameMap').value = JSON.stringify(nameMap);
+}
+
+function submitAddressForm() {
+  var addressFormData = $('#address-form').serialize();
+
+  $.ajax({
+    type: 'POST',
+    url: '<?= base_url('GuestCheckout/save_address_data') ?>',
+    data: addressFormData,
+    success: function (response) {
+      console.log('Address Data Saved!');
+    //   window.location.href = "<?= site_url('GuestCheckout?guest=1'); ?>";
+    $('#guestAddressModal').modal('hide');
+    },
+    error: function (xhr, status, error) {
+      console.error('Error:', error);
+    }
+  });
+}
+
+let sessionAddressData = JSON.parse(localStorage.getItem('address_data')) || {
+    address: '',
+    flat: '',
+    street: '',
+    postcode: '',
+    instructions: '',
+    lat: '',
+    lng: '',
+};
+
+function openAddressEditModal() {
+    document.getElementById('to').value = sessionAddressData.address || '';
+    document.getElementById('flat').value = sessionAddressData.flat || '';
+    document.getElementById('street-value').value = sessionAddressData.street || '';
+    document.getElementById('city').value = sessionAddressData.postcode || '';
+    document.getElementById('instructions').value = sessionAddressData.instructions || '';
+    document.getElementById('lat_to').value = sessionAddressData.lat || '';
+    document.getElementById('long_to').value = sessionAddressData.lng || '';
+
+    // document.querySelector('#address-form .add-note').classList.remove('d-none');
+
+    assignRandomNamesToInputs();
+    $('#guestAddressModal').modal('show');
+}
+
+function goToPaymentTable(){
+
+    const instructionField = document.getElementById("instructions_hidden");
+
+    sessionAddressData.instructions = instructionField.value;
+
+    document.getElementById("address_hidden").value = sessionAddressData.address;
+    document.getElementById("flat_hidden").value = sessionAddressData.flat;
+    document.getElementById("street_hidden").value = sessionAddressData.street;
+    document.getElementById("postcode_hidden").value = sessionAddressData.postcode;
+    document.getElementById("instructions_hidden").value = sessionAddressData.instructions;
+    document.getElementById("lat_hidden").value = sessionAddressData.lat;
+    document.getElementById("long_hidden").value = sessionAddressData.long;
+
+    // Step 2: Prepare nameMap for reference
+    let nameMap = {
+        address: 'address_hidden',
+        flat: 'flat_hidden',
+        street: 'street_hidden',
+        postcode: 'postcode_hidden',
+        instructions: 'instructions_hidden',
+        lat: 'lat_hidden',
+        long: 'long_hidden'
+    };
+
+    document.getElementById("inputNameMap_hidden").value = JSON.stringify(nameMap);
+
+    // Step 3: Collect data from hidden fields using nameMap
+    const addressFormData = {
+        [nameMap.address]: document.getElementById(nameMap.address).value,
+        [nameMap.flat]: document.getElementById(nameMap.flat).value,
+        [nameMap.street]: document.getElementById(nameMap.street).value,
+        [nameMap.postcode]: document.getElementById(nameMap.postcode).value,
+        [nameMap.instructions]: document.getElementById(nameMap.instructions).value,
+        [nameMap.lat]: document.getElementById(nameMap.lat).value,
+        [nameMap.long]: document.getElementById(nameMap.long).value,
+        inputNameMap: JSON.stringify(nameMap)
+    };
+
+    // Step 4: AJAX Call
+    $.ajax({
+        type: 'POST',
+        url: '<?= base_url('GuestCheckout/save_address_data') ?>',
+        data: addressFormData,
+        success: function(response) {
+            console.log(response);
+            try {
+                var res = JSON.parse(response);
+                if (res.success) {
+                    // Move to next step
+                    // jQuery("ul.billing-list-topbar li.order").addClass("acitve");
+                    jQuery('ul.billing-list-topbar li.billing').addClass('acitve')
+
+                    jQuery("ul.billing-list-topbar li.order .img-box").removeClass("red");
+                    jQuery("ul.billing-list-topbar li.billing .img-box").addClass("red");
+                    jQuery("ul.billing-list-topbar li.payment .img-box").removeClass("red");
+
+                    // jQuery("ul.billing-list-topbar li.billing").add("acitve");
+                    jQuery("ul.billing-list-topbar li.payment").removeClass("acitve");
+                    jQuery('#billing-address').removeClass('d-none');
+                    jQuery('#billing-address').addClass('d-block');
+                    jQuery('#payment-option').removeClass('d-block');
+                    jQuery('#payment-option').addClass('d-none');
+                    // jQuery("#billing-address,#payment-option").hide();
+                } else {
+                    alert('Failed to save instructions');
+                }
+            } catch (e) {
+                console.error("Invalid JSON response", e);
             }
-        }
-        else{
-            const input = document.querySelector("input[value='delivery']");
-            if(input)
-            {
-                input.click();   
-            }
+        },
+        error: function(err) {
+            console.error("AJAX error", err);
         }
     });
-</script> -->
+}
 
-<!-- END MAIN CONTENT -->
+// assignRandomNamesToInputs();
+
+</script>
+
 
 
 
