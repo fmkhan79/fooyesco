@@ -85,7 +85,7 @@ $stripe_settings = json_decode($stripe_settings);
                 // Create the HTML templates
                 const deliverySteps = `
                     <li class="payment">
-                        <div class="img-box text-center">Address Info 
+                        <div class="img-box text-center red">Address Info 
                             <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
                             <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
                         </div>
@@ -190,7 +190,7 @@ $stripe_settings = json_decode($stripe_settings);
                 <div class="col-md-6">
                 <div class="d-flex">
                     <h4 class="delivery-text mt-3"><span class="order_type">Delivery</span> Address</h4>
-                    <div class="mt-3 fw-bold mx-5" onclick="openAddressEditModal()">Edit</div>
+                    <div class="mt-3 fw-bold mx-5 " style="color: #F54748; font-weight: bold; cursor: pointer;" onclick="openAddressEditModal()">Edit</div>
                 </div>
                 <span id="show-address"></span><br>
                 
