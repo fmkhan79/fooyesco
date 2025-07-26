@@ -768,6 +768,7 @@ if (orderTypeValue) {
         const liBilling = document.querySelector('ul.billing-list-topbar li.billing');
         const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
         liBilling.classList.remove('acitve');
+        liBilling.querySelector('.img-box').classList.remove('red');
         liPayment.classList.add('acitve');
         jQuery('#billing-address').addClass('d-none');
         jQuery('#payment-option').addClass('d-block');
