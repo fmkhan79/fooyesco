@@ -320,7 +320,6 @@ function viewselected_cat_items_summary_total() {
         $(".grand-product-price").text(grandSubTotalValue);
         $(".total-service-price").text(totalServicePrice);
         $(".total-discount-applied").text("-" + discountP);
-           
 
         },
         error: function() {
@@ -402,31 +401,108 @@ $(document).ready(function() {
 });
 
 
+// function apply_promo_action() {
+//     console.log("working");
+//     var promoCode = $('#promo_code').val();
+//     var amount = $('#grand_total_code').val(); /* Get the order amount */ ;
+//     console.log(amount);
+//     $.ajax({
+//         url: '<?php echo site_url('cart/checkPromoCode'); ?>',
+//         type: 'POST',
+//         data: {
+//             promo_code: promoCode,
+//             amount: amount
+//         },
+//         success: function(response) {
+//             console.log(response);
+//             if (!isNaN(response)) { // Check if response is a number
+//                 $('#promo_code_message').text(response + '% discount applied.').addClass(
+//                     'text-success').removeClass('text-danger');
+//                 updateDiscountCodeToCart(promoCode, response); // Call the function with user_id
+//             } else {
+//                 $('#promo_code_message').text('Invalid promo code').addClass('text-danger')
+//                     .removeClass('text-success');
+//             }
+//         }
+//     });
+// }
+
 function apply_promo_action() {
-    console.log("working");
-    var promoCode = $('#promo_code').val();
-    var amount = $('#grand_total_code').val(); /* Get the order amount */ ;
-    console.log(amount);
+    const promoCode = document.getElementById("promo_code").value.trim();
+    const messageEl = document.getElementById("promo_code_message");
+
+    if (promoCode === "") {
+        messageEl.innerText = "Please enter a promo code.";
+        messageEl.className = "text-danger";
+        return;
+    }
+
     $.ajax({
-        url: '<?php echo site_url('cart/checkPromoCode'); ?>',
-        type: 'POST',
-        data: {
-            promo_code: promoCode,
-            amount: amount
-        },
-        success: function(response) {
-            console.log(response);
-            if (!isNaN(response)) { // Check if response is a number
-                $('#promo_code_message').text(response + '% discount applied.').addClass(
-                    'text-success').removeClass('text-danger');
-                updateDiscountCodeToCart(promoCode, response); // Call the function with user_id
+        url: "<?= site_url('PromoCode/check_promo') ?>",
+        type: "POST",
+        data: { promo_code: promoCode },
+        dataType: "json",
+        success: function (data) {
+            if (data.success) {
+                const discount = data.data.discount;
+                messageEl.innerText = `Promo applied successfully! ${discount}% off.`;
+                messageEl.className = "text-success";
+
+                document.getElementById("remove_promo").classList.remove("d-none");
+                document.getElementById("apply_promo").classList.add("d-none");
+                document.getElementById("promo_code").readOnly = true;
             } else {
-                $('#promo_code_message').text('Invalid promo code').addClass('text-danger')
-                    .removeClass('text-success');
+                messageEl.innerText = data.message || "Invalid promo code.";
+                messageEl.className = "text-danger";
             }
+        },
+        error: function (err) {
+            messageEl.innerText = "Something went wrong. Try again.";
+            messageEl.className = "text-danger";
         }
     });
 }
+
+function remove_promo() {
+    const messageEl = document.getElementById("promo_code_message");
+
+    $.ajax({
+        url: "<?= base_url('PromoCode/remove_promo') ?>",
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            if (data.success) {
+                // Reset promo input
+                document.getElementById("promo_code").value = "";
+                document.getElementById("promo_code").readOnly = false;
+
+                messageEl.innerText = data.message;
+                messageEl.className = "text-warning";
+
+                document.getElementById("remove_promo").classList.add("d-none");
+                document.getElementById("apply_promo").classList.remove("d-none");
+            } else {
+                messageEl.innerText = "Failed to remove promo.";
+                messageEl.className = "text-danger";
+            }
+        },
+        error: function () {
+            messageEl.innerText = "Something went wrong while removing promo.";
+            messageEl.className = "text-danger";
+        }
+    });
+}
+
+
+// function remove_promo() {
+//     const messageEl = document.getElementById("promo_code_message");
+//     document.getElementById("promo_code").value = "";
+//     document.getElementById("promo_code").readOnly = false;
+//     messageEl.innerText = "Promo code removed.";
+//     messageEl.className = "text-warning";
+//     document.getElementById("remove_promo").classList.add("d-none");
+//     document.getElementById("apply_promo").classList.remove("d-none");
+// }
 
 // isPromoApplied
 
@@ -461,23 +537,23 @@ $(document).ready(function() {
 
 
 
-function remove_promo() {
-    var userId = $('#user_id').val();
+// function remove_promo() {
+//     var userId = $('#user_id').val();
 
-    $.ajax({
-        url: '<?php echo site_url('cart/updateDiscountCodeCart'); ?>',
-        type: 'POST',
-        data: {
-            userId: userId,
-            promo_code: '',
-            discount: -1
-        },
-        success: function(response) {
-            console.log(response);
-            window.location.reload();
-        }
-    });
-}
+//     $.ajax({
+//         url: '<?php echo site_url('cart/updateDiscountCodeCart'); ?>',
+//         type: 'POST',
+//         data: {
+//             userId: userId,
+//             promo_code: '',
+//             discount: -1
+//         },
+//         success: function(response) {
+//             console.log(response);
+//             window.location.reload();
+//         }
+//     });
+// }
 
 function updateDiscountCodeToCart(promoCode, discount) {
     var userId = $('#user_id').val();
@@ -914,8 +990,8 @@ if (orderTypeValue) {
                     let totalDiscount = parseFloat($(".total-discount-applied").html().replace("£", ""));
                     let bagcharges = parseFloat($(".bag-charges").html().replace("£" , ""));
                     // NOTE: The adding of totalDiscount is correct, beacuse the discount is in negative. That's why it is added.
+                    
                     let total = subTotal  + totalServicePrice + parseFloat(response.message) + totalDiscount + bagcharges;
-                    $(".grand-product-price").text("£" + total.toFixed(2));
                 }
             },
             error: function(xhr, status, error) {

@@ -476,33 +476,22 @@ $stripe_settings = json_decode($stripe_settings);
             ?>
 
             <hr />
-            <?php if (sizeof($cart_items) > 0 && false) { ?>
+            <?php if (sizeof($cart_items) > 0) { ?>
                 <div class="row justify-content-md-end">
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label for="promo_code">Promo Code</label>
                             <div class="d-flex gap-2 justify-content-center">
-                                <input type="text" class="form-control" id="promo_code" name="promo_code"
-                                    value="<?php echo $cart_items[0]['offer_code'] ?>" required>
-                                <?php if (isset($cart_items[0]['offer_code'])) { ?>
-                                    <div class="btn btn-sm btn-danger m-2" onclick="remove_promo()">
-                                        <i class="fa fa-times"></i>
-                                    </div>
-                                <?php } ?>
-                                <div class="btn btn-sm btn-danger m-2" id="remove_promo" style="display:none"
-                                    onclick="remove_promo()">
+                                <div class="grand-product-price d-none"></div> <!-- Total Amount in this like £8.6 -->
+                                <input type="text" class="form-control" id="promo_code" name="promo_code" required>
+                                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo" onclick="remove_promo()">
                                     <i class="fa fa-times"></i>
                                 </div>
                             </div>
-                            <small id="promo_code_message"></small> <!-- Container for messages -->
-                            <?php if (isset($cart_items[0]['offer_code'])) { ?>
-                                <small class="text-success">Promo is already applied.</small>
-                                <!-- Container for messages -->
-                            <?php } else { ?>
-                                <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo"
-                                    onclick="apply_promo_action()">APPLY COUPON CODE
-                                </div>
-                            <?php } ?>
+                            <small id="promo_code_message" class="d-block mt-1"></small>
+                            <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo" onclick="apply_promo_action()">
+                                APPLY COUPON CODE
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -512,7 +501,6 @@ $stripe_settings = json_decode($stripe_settings);
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
                 <div class="">Total</div>
-
                 <div class="grand-product-price"></div>
             </div>
 
