@@ -77,29 +77,61 @@ $stripe_settings = json_decode($stripe_settings);
 </style>
 <section class="detail-wbox mt-4 mb-2 p-5 d-flex justify-content-around">
     <div class="container bg-white text-dark border border-light p-3 w-75 p-md-5">
-        <ul class="d-flex justify-content-between align-item-center billing-list-topbar p-0">
-            <li class="billing acitve">
-                <div class="img-box text-center red">Customer <img class="billing-active"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
-                    <img class="billing-notactive"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
-                </div>
-            </li>
-            <li class="payment">
-                <div class="img-box text-center">Address Info <img class="billing-active"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
-                    <img class="billing-notactive"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
-                </div>
-            </li>
-            <li class="order last">
-                <div class="img-box text-center">Payment
-                    <img class="billing-active"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
-                    <img class="billing-notactive"
-                        src="<?php echo base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
-                </div>
-            </li>
+        <ul id="step-indicator" class="d-flex justify-content-between align-item-center billing-list-topbar p-0">
+            
+           <script>
+                const orderTypeV = localStorage.getItem('order-type');
+
+                // Create the HTML templates
+                const deliverySteps = `
+                    <li class="payment">
+                        <div class="img-box text-center">Address Info 
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                    <li class="billing acitve">
+                        <div class="img-box text-center red">Customer 
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                    <li class="order last">
+                        <div class="img-box text-center">Payment
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                `;
+
+                const pickupSteps = `
+                    <li class="billing acitve">
+                        <div class="img-box text-center red">Customer 
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                    <li class="payment">
+                        <div class="img-box text-center">Address Info 
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                    <li class="order last">
+                        <div class="img-box text-center">Payment
+                            <img class="billing-active" src="<?= base_url('assets/frontend/default/images/billing-list-icon-acitve.png') ?>" />
+                            <img class="billing-notactive" src="<?= base_url('assets/frontend/default/images/billing-list-icon.png') ?>" />
+                        </div>
+                    </li>
+                `;
+
+                // Target the container where you want to insert the steps
+                const stepIndicator = document.getElementById('step-indicator');
+
+                if (stepIndicator) {
+                    stepIndicator.innerHTML = (orderTypeV === 'delivery') ? deliverySteps : pickupSteps;
+                }
+            </script>
         </ul>
         <div id="billing-address">
             <h4 class="mt-5 text-dark">Customer Details</h4>
@@ -553,7 +585,6 @@ $stripe_settings = json_decode($stripe_settings);
 <script>
 
 $(document).ready(function () {
-    const orderTypeV = localStorage.getItem('order-type');
 
     if (orderTypeV === 'delivery') {
         $('#guestAddressModal').modal({
@@ -677,17 +708,20 @@ function goToPaymentTable(){
                 var res = JSON.parse(response);
                 if (res.success) {
                     // Move to next step
-                    jQuery("ul.billing-list-topbar li.order").addClass("acitve");
+                    // jQuery("ul.billing-list-topbar li.order").addClass("acitve");
+                    jQuery('ul.billing-list-topbar li.billing').addClass('acitve')
 
-                    jQuery("ul.billing-list-topbar li.order .img-box").addClass("red");
-                    jQuery("ul.billing-list-topbar li.billing .img-box").removeClass("red");
+                    jQuery("ul.billing-list-topbar li.order .img-box").removeClass("red");
+                    jQuery("ul.billing-list-topbar li.billing .img-box").addClass("red");
                     jQuery("ul.billing-list-topbar li.payment .img-box").removeClass("red");
 
-                    jQuery("ul.billing-list-topbar li.billing").removeClass("acitve");
+                    // jQuery("ul.billing-list-topbar li.billing").add("acitve");
                     jQuery("ul.billing-list-topbar li.payment").removeClass("acitve");
-                    jQuery("#your-address").show();
-                    jQuery("#your-address").removeClass("d-none");
-                    jQuery("#billing-address,#payment-option").hide();
+                    jQuery('#billing-address').removeClass('d-none');
+                    jQuery('#billing-address').addClass('d-block');
+                    jQuery('#payment-option').removeClass('d-block');
+                    jQuery('#payment-option').addClass('d-none');
+                    // jQuery("#billing-address,#payment-option").hide();
                 } else {
                     alert('Failed to save instructions');
                 }

@@ -133,14 +133,23 @@ function submitForm() {
         success: function(response) {
             // Handle the response (if needed)
             console.log(response);
-            jQuery("ul.billing-list-topbar li.payment").addClass("acitve");
+            jQuery("ul.billing-list-topbar li.order").addClass("acitve");
+            // jQuery("ul.billing-list-topbar li.payment").addClass("acitve");
+            jQuery('ul.billing-list-topbar li.billing').removeClass('acitve')
 
-            jQuery("ul.billing-list-topbar li.payment .img-box").addClass("red");
+            jQuery("ul.billing-list-topbar li.payment .img-box").removeClass("red");
             jQuery("ul.billing-list-topbar li.billing .img-box").removeClass("red");
-            jQuery("ul.billing-list-topbar li.order .img-box").removeClass("red");
+            jQuery("ul.billing-list-topbar li.order .img-box").addClass("red");
 
             jQuery("ul.billing-list-topbar li.billing").removeClass("acitve");
-            jQuery("ul.billing-list-topbar li.order").removeClass("acitve");
+            jQuery("ul.billing-list-topbar li.order").addClass("acitve");
+
+            jQuery('#billing-address').removeClass('d-block');
+            jQuery('#billing-address').addClass('d-none');
+
+            jQuery('#your-address').removeClass('d-none');
+            jQuery('#your-address').addClass('d-block');
+
             // jQuery("#payment-option").show();
             const orderTypeValue = localStorage.getItem('order-type');
             if(orderTypeValue == "collection"){
@@ -756,8 +765,13 @@ if (orderTypeValue) {
 
     if (orderTypeValue === "delivery"){
         // const liOrder = document.querySelector('ul.billing-list-topbar li.order');
-        // const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
-        // // if (liPayment) liPayment.style.display = 'none';
+        const liBilling = document.querySelector('ul.billing-list-topbar li.billing');
+        const liPayment = document.querySelector('ul.billing-list-topbar li.payment');
+        liBilling.classList.remove('acitve');
+        liPayment.classList.add('acitve');
+        jQuery('#billing-address').addClass('d-none');
+        jQuery('#payment-option').addClass('d-block');
+        
         // if (liPayment) liPayment.querySelector('.img-box').style.display = 'none';
         // if (liPayment) liPayment.classList.remove("acitve");
         const headingInPaymentMehod = document.getElementById('p-gateways')
