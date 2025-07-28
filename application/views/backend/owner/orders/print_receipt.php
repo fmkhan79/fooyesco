@@ -360,7 +360,9 @@
 
                                     socket.send(base64Image);
                                     console.log("📤 Image of .receipt sent to server.");
-                                    window.close();
+                                    setTimeout(function() {
+                                        window.close();
+                                    }, 6000);
                                 });
                             };
 
