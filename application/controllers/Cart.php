@@ -14,7 +14,8 @@ class Cart extends Base
 
 
 
-    public function updateDiscountCodeCart(){
+    public function updateDiscountCodeCart()
+    {
         $promo_code = $this->input->post('promo_code');
         $discount = $this->input->post('discount');
         // var_dump(strlen($promo_code) === 0,  gettype($discount), $discount === '-1');
@@ -23,20 +24,20 @@ class Cart extends Base
         if ($promo_code && $discount && $user_id) {
             $this->cart_model->updateDiscountCodeToCart($promo_code, $discount, $user_id);
             echo "Discount code and discount updated successfully.";
-        } elseif(strlen($promo_code) === 0 &&  $discount === '-1') {
+        } elseif (strlen($promo_code) === 0 &&  $discount === '-1') {
             $this->cart_model->updateDiscountCodeToCart(null, null, $user_id);
             echo "Discount code and discount removed successfully.";
-        }
-         else {
+        } else {
             echo "Invalid data provided.";
         }
     }
 
-    public function isPromoApplied(){
+    public function isPromoApplied()
+    {
         // getDiscountCodeToCart
         // $promo_code = $this->input->post('promo_code');
         // $user_id = $this->input->post('userId'); // Assuming you are using session for user authentication
-    
+
         $response = $this->cart_model->getDiscountCodeToCart();
         if (!empty($response)) {
             echo json_encode($response);
@@ -44,8 +45,9 @@ class Cart extends Base
         }
         return false;
     }
-    
-    public function checkPromoCode() {
+
+    public function checkPromoCode()
+    {
         // Get promo code and amount from AJAX request
         $promoCode = $this->input->post('promo_code');
         $amount = $this->input->post('amount');
@@ -84,7 +86,7 @@ class Cart extends Base
     // SENDING ORDER PLACING MAILS FROM THIS FUNCTION
     public function order_placing_mail($order_code)
     {
-      
+
         $this->cart_model->order_placing_mail($order_code);
         // $this->session->sess_destroy();
     }
@@ -105,15 +107,15 @@ class Cart extends Base
     // index function responsible for showing the index page.
     function index()
     {
-        
+
         // redirect('/site/restaurant/chilli-hut-march/3');
         // $user_id = $this->session->userdata('user_id'); // or null for guest
-    //    die();
+        //    die();
 
         $user_id = $this->session->userdata('user_id');
-      
+
         // die();
-        
+
         // Load the user model
         $this->load->model('User_model');
         // $guest_check = $this->User_model->is_guest($user_id) == 1;
@@ -123,7 +125,7 @@ class Cart extends Base
             $page_data['page_name']  = 'cart/index';
             $page_data['page_title'] = get_phrase("your_cart", true);
             $this->load->view(frontend('index'), $page_data);
-            
+
             //  $this->session->sess_destroy();
 
         } else {
@@ -131,23 +133,16 @@ class Cart extends Base
             $page_data['page_title'] = get_phrase("your_cart", true);
             $this->load->view(frontend('index'), $page_data);
         }
-    
-        
-
-
-     
-
-
     }
 
     // public function session_destroy() {
     //     $user_id = $this->session->userdata('user_id');
 
     //     // die();
-        
+
     //     // Load the user model
     //     $this->load->model('User_model');
-        
+
     //     if ($this->User_model->is_guest($user_id) == 1){
     //     $this->session->sess_destroy();
     //     // Optionally return a response
@@ -159,10 +154,10 @@ class Cart extends Base
     function add_to_cart()
     {
 
-        
+
         $user_id = $this->session->userdata('user_id');
         $session_id = session_id();
-        
+
         // Set visited_at with Europe/London timezone
         $dt = new DateTime('now', new DateTimeZone('Europe/London'));
         $visited_at = $dt->format('Y-m-d H:i:s');
@@ -171,7 +166,7 @@ class Cart extends Base
 
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
-        
+
         $this->db->insert('cart_visits', [
             'user_id' => $user_id,
             'session_id' => $session_id,
@@ -181,9 +176,9 @@ class Cart extends Base
             'info_add' => 0,
             'order_placed' => 0,
             'name_add' => 0
-            
+
         ]);
-       
+
         if ($this->cart_model->add_to_cart()) {
             echo sanitize($this->cart_model->total_cart_items());
             return true;
@@ -195,7 +190,7 @@ class Cart extends Base
     private function get_user_ip()
     {
         $ip = '';
-    
+
         if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             // Could contain multiple IPs: client, proxy1, proxy2...
             $ip_list = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
@@ -205,15 +200,15 @@ class Cart extends Base
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-    
+
         // Handle localhost during testing
         if ($ip === '::1') {
             $ip = '127.0.0.1';
         }
-    
+
         return $ip;
     }
-    
+
 
     // Update method is responsible for Updating the restaurant types
     function update_cart()
@@ -230,11 +225,10 @@ class Cart extends Base
     // Delete method is responsible for storing data
     function delete($id)
     {
-        
+
         $response = $this->cart_model->delete($id);
         if ($response) {
             success(get_phrase('item_deleted_successfully'), site_url('cart'));
-
         } else {
             error(get_phrase('an_error_occurred'), site_url('cart'));
         }
@@ -247,26 +241,65 @@ class Cart extends Base
         echo $response;
     }
 
-    public function get_order_summary(){
-        
+    // public function get_order_summary()
+    // {
+
+    //     $order_type = isset($_POST['order_type']) ? sanitize($_POST['order_type']) : '';
+
+    //     $subtotal = sanitize($this->cart_model->get_total_menu_price());
+    //     $serviceCharge = sanitize($this->cart_model->get_service_amount());
+    //     $bagCharges = number_format((float) sanitize($this->cart_model->get_bag_charges($order_type)), 2, '.', '');
+    //     $discountedAmount = number_format((float) sanitize($this->cart_model->get_discounted_amount($order_type)), 2, '.', '');
+
+    //     $data['sub_total'] =  currency($subtotal);
+
+
+    //     $data['total_service_price'] = currency($serviceCharge);
+
+    //     $data['bag_price'] = currency($bagCharges);
+
+    //     $data['total_discount_applied'] = $this->cart_model->get_total_discount_applied_percentage($order_type) . "%";
+    //     $data['discounted_amount']  =  currency($discountedAmount);
+
+    //     $data['grand_total'] = currency($subtotal + $serviceCharge + $bagCharges - $discountedAmount);
+
+    //     echo json_encode($data);
+    // }
+
+    public function get_order_summary()
+    {
         $order_type = isset($_POST['order_type']) ? sanitize($_POST['order_type']) : '';
-        
+
         $subtotal = sanitize($this->cart_model->get_total_menu_price());
         $serviceCharge = sanitize($this->cart_model->get_service_amount());
         $bagCharges = number_format((float) sanitize($this->cart_model->get_bag_charges($order_type)), 2, '.', '');
-        $discountedAmount = number_format((float) sanitize($this->cart_model->get_discounted_amount($order_type)), 2, '.', '');
 
-        $data['sub_total'] =  currency($subtotal);
-        
+        // Promo session check
+        $promo = $this->session->userdata('applied_promo');
+        $promo_discount = 0;
+        $discountedAmount = 0;
+        $discountLabel = '0%';
 
-        $data['total_service_price'] = currency($serviceCharge);
+        if (!empty($promo) && isset($promo['discount'])) {
+            $discountLabel = $promo['discount'] . '%';
+            $promo_discount = (($subtotal + $serviceCharge + $bagCharges) * $promo['discount']) / 100;
+        } else {
+            // Only apply default discount if promo is NOT applied
+            $discountedAmount = number_format((float) sanitize($this->cart_model->get_discounted_amount($order_type)), 2, '.', '');
+            $discountLabel = $this->cart_model->get_total_discount_applied_percentage($order_type) . "%";
+        }
 
-        $data['bag_price'] = currency($bagCharges);
+        $totalDiscount = $discountedAmount + $promo_discount;
+        $grandTotal = $subtotal + $serviceCharge + $bagCharges - $totalDiscount;
 
-        $data['total_discount_applied'] = $this->cart_model->get_total_discount_applied_percentage($order_type) . "%";
-        $data['discounted_amount']  =  currency($discountedAmount);
-
-        $data['grand_total'] = currency($subtotal + $serviceCharge + $bagCharges - $discountedAmount);
+        $data = [
+            'sub_total' => currency($subtotal),
+            'total_service_price' => currency($serviceCharge),
+            'bag_price' => currency($bagCharges),
+            'total_discount_applied' => $discountLabel,
+            'discounted_amount' => currency($totalDiscount),
+            'grand_total' => currency($grandTotal, 2)
+        ];
 
         echo json_encode($data);
     }
