@@ -115,7 +115,7 @@
     $alternate_address = rtrim($alternate_address, ', ');
     
     // Prefer `additional_address` if available
-    $finalAddress = !empty($address['additional_address']) ? $address['additional_address'] : $alternate_address;
+    $finalAddress = !empty($address['address']) ? $address['address'] : $alternate_address;
     
     $billing = json_decode($order_details["billing"], associative: true);
     // print_r($billing);
