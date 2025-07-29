@@ -144,13 +144,14 @@
     function showNewOrderNotification(data) {
       // debugger;
     const obj = JSON.parse(data);
+    // console.log(obj);
     const name = JSON.parse(obj.billing).first_name;
       if(name == "test" && ShowTest == false){
         return;
       }
     let total = parseFloat(obj.grand_total) + parseFloat(obj.total_delivery_charge);
 
-    console.log(total); // Output: 6.35        
+    // console.log(total); // Output: 6.35        
     const add = JSON.parse(obj.address);
     console.log(obj.address);
 
@@ -163,7 +164,7 @@
     let text;
     if (obj.order_type == "delivery") {
         text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + total +
-            " | Addresss: " + add.additional_address;
+            " | Addresss: " + add.address;
     } else if (obj.order_type == "pickup") {
         text = "COLLECTION | Order ID: " + obj.id + " | Total Amount:  £" + obj.grand_total;
     }

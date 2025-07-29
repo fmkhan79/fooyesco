@@ -1,5 +1,11 @@
+<?php
+
+// print_r($order_details['address']);
+// die();
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,105 +16,142 @@
             font-family: "sans-serif", sans-serif;
             font-size: 18px;
         }
-        body{
+
+        body {
             overflow: hidden;
         }
+
         .receipt {
             width: 270px;
             margin: auto;
             /* padding: 20px; */
         }
+
         .receipt h6 {
             text-align: center;
         }
-        .receipt .line-item, .receipt .total, .did {
+
+        .receipt .line-item,
+        .receipt .total,
+        .did {
             display: flex;
             justify-content: space-between;
             list-style: none;
             padding: 0px;
-            margin: 10px 0px; 
+            margin: 10px 0px;
         }
+
         .receipt .total {
             font-weight: bold;
         }
+
         .mt-3 {
             margin-top: 10px;
         }
-        h1, h2, h3 {
-            font-size: 20px; /* Increase heading sizes */
+
+        h1,
+        h2,
+        h3 {
+            font-size: 20px;
+            /* Increase heading sizes */
         }
+
         h3 {
             font-size: 22px;
-            margin:0px;
+            margin: 0px;
         }
+
         h2 {
             font-size: 24px;
         }
-        h4{
-            margin:0px;
+
+        h4 {
+            margin: 0px;
         }
+
         .order-details-summary {
             margin-top: 0px;
             text-align: left;
         }
-        .font-weight-bold{
+
+        .font-weight-bold {
             font-weight: bold;
         }
-        .text-uppercase{
+
+        .text-uppercase {
             text-transform: uppercase;
         }
+
         hr {
-        border-top:2px dotted #000;
-            
-}
-.img-qr {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px; /* optional spacing */
-}
+            border-top: 2px dotted #000;
+
+        }
+
+        .img-qr {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+            /* optional spacing */
+        }
     </style>
 </head>
+
 <body>
     <?php
     // print_r($order_details); 
-    $address = json_decode($order_details["address"],true); 
+    $address = json_decode($order_details["address"], true);
 
-    // print_r($address);
-
-    $billing = json_decode($order_details["billing"],associative: true); 
+    // Format address properly
+    $alertnate_address = '';
+    if (!empty($address['street'])) $alertnate_address .= $address['street'] . ', ';
+    if (!empty($address['number'])) $alertnate_address .= $address['number'] . ', ';
+    if (!empty($address['zip_code'])) $alertnate_address .= $address['zip_code'] . ', ';
+    if (!empty($address['city'])) $alertnate_address .= $address['city'] . ', ';
+    if (!empty($address['country'])) $alertnate_address .= $address['country'];
+    // print_r($alternate_address);
+    // die();
+    
+    // Clean trailing comma
+    $alternate_address = rtrim($alternate_address, ', ');
+    
+    // Prefer `additional_address` if available
+    $finalAddress = !empty($address['additional_address']) ? $address['additional_address'] : $alternate_address;
+    
+    $billing = json_decode($order_details["billing"], associative: true);
     // print_r($billing);
     // print_r($ordered_items);
     ?>
 
     <div class="receipt">
-        
+
         <center>
-        <h2><?php echo "<h3 style='margin:0px;'>".$order_details["daily_order_number"]."</h3>"; ?></h2>
+            <h2><?php echo "<h3 style='margin:0px;'>" . $order_details["daily_order_number"] . "</h3>"; ?></h2>
         </center>
-        
+
         <img class="img-qr" width="100px" height="100px"
-     style="float: right;"
-     src="<?php echo base_url('assets/frontend/default/images/ilove.png') ?>" />
+            style="float: right;"
+            src="<?php echo base_url('assets/frontend/default/images/ilove.png') ?>" />
 
 
 
-     
-        <?php 
-            if ($order_details['order_type'] == "delivery") {
-              echo "<h3>DELIVERY</h3>";
-              echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
-              echo "<h3 style='margin:0px;'>". $billing["phone_mobile"] ."</h3>";
-                }
-            if ($order_details['order_type'] == "pickup") {
-          echo "<h3>Collection</h3>";
-              echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
-              echo "<h3 style='margin:0px;'>". $billing["phone_mobile"] ."</h3>";
-            }
-                ?>
+
+        <?php
+        if ($order_details['order_type'] == "delivery") {
+            echo "<h3>DELIVERY</h3>";
+            echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
+            echo "<h3 style='margin:0px;'>" . $billing["phone_mobile"] . "</h3>";
+            echo "<h4 style='margin:0px;'>" . $finalAddress . "</h4>";
+        }
+        if ($order_details['order_type'] == "pickup") {
+            echo "<h3>Collection</h3>";
+            echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
+            echo "<h3 style='margin:0px;'>" . $billing["phone_mobile"] . "</h3>";
+        }
+        ?>
 
 
-            
-       
+
+
 
         <!-- <p style="margin:0px;"><?php echo date("Y-m-d H:i:s", $order_details['order_placed_at']); ?></p> -->
         <!-- <div class="did">
@@ -117,28 +160,28 @@
         </div>
         <hr> -->
         <div id="ordered_items">
-            <?php 
+            <?php
             $total_items = 0; // Variable to count total ordered items
             $total_amount = 0; // Variable to sum total amount
-            foreach ($ordered_items as $ordered_item) : 
+            foreach ($ordered_items as $ordered_item) :
                 $restaurant_details = $this->restaurant_model->get_by_id($ordered_item['restaurant_id']);
                 // print_r($restaurant_details);
-                $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']); 
+                $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
                 $total_items += $ordered_item['quantity']; // Count ordered items
                 $total_amount += $ordered_item['total']; // Sum total amount
                 $addonHTML = "";
-                
-                if($ordered_item["addons"] != "[]"){
-                
+
+                if ($ordered_item["addons"] != "[]") {
+
                     $groupedAddons = [];
                     $addons = json_decode($ordered_item["addons"], true);
 
                     foreach ($addons as $addon) {
-    
+
                         $subVariantId = $addon['subVariantId'];
                         $itemId = $addon['itemId'];
 
-                    
+
                         if (!isset($groupedAddons[$subVariantId])) {
                             $groupedAddons[$subVariantId] = [];
                         }
@@ -147,28 +190,28 @@
                     $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
                 }
             ?>
-            <hr>
+                <hr>
                 <ul class="line-item font-weight-bold">
                     <li><?php echo $ordered_item['quantity'] . "x " . html_entity_decode(sanitize($menu_details['name'])); ?></li>
-                    <li><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></li>  
+                    <li><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></li>
                 </ul>
-                
-                    <?php 
-                    if($ordered_item["variant_id"] != null && $ordered_item["variant_id"] != 0){?>
+
+                <?php
+                if ($ordered_item["variant_id"] != null && $ordered_item["variant_id"] != 0) { ?>
                     <ul class="line-item">
                         <li>
                             <?php
-                                    echo "Selected: " . $this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"];   
+                            echo "Selected: " . $this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"];
                             ?>
                         </li>
                     </ul>
-                    <?php } 
-                    if($addonHTML != ""){
-                        echo $addonHTML;
-                    }
-                    ?>
+                <?php }
+                if ($addonHTML != "") {
+                    echo $addonHTML;
+                }
+                ?>
                 </li>
-                               
+
                 </ul>
             <?php endforeach; ?>
         </div>
@@ -177,160 +220,202 @@
             <span>Subtotal</span>
             <span><?php echo currency(number_format(sanitize($order_details['total_menu_price']), 2)); ?></span>
         </div>
-        <?php if($order_details["order_type"] == "pickup"){ ?>
- <div class="did mt-3">
- <span>25% ONLINE DISCOUNT</span>
- <span>
-    <?php } else { ?>
- <div class="did mt-3">
- <span>20% ONLINE DISCOUNT</span>
- <span>
-        
-     <?php } ?>
-    
-       
-     <?php 
-    $res_discount = $restaurant_details['res_discount'];
+        <?php if ($order_details["order_type"] == "pickup") { ?>
+            <div class="did mt-3">
+                <span>25% ONLINE DISCOUNT</span>
+                <span>
+                <?php } else { ?>
+                    <div class="did mt-3">
+                        <span>20% ONLINE DISCOUNT</span>
+                        <span>
 
-    // Check if the order type is 'pickup' and adjust the discount accordingly
-    if ($order_details["order_type"] == "pickup") {
-        $res_discount = 25;  // Set discount to 25% if order type is pickup
-    }
+                        <?php } ?>
 
-    // Calculate the discount amount to show
-    // print_r($order_details['total_menu_price']);
-    $discount_amount_show =  $order_details['total_menu_price'] * ($res_discount / 100);
-    // print_r($order_details['grand_total']);
-    // Sanitize the grand total and delivery charge
-    $grand_total = sanitize($order_details['grand_total']);
-    $total_delivery_charge = sanitize($order_details['total_delivery_charge']);
-    
-    // Calculate the discount amount
-    $discount_amount = ($grand_total * $res_discount) / 100;
-    
-    // Output the discount amount formatted with currency symbol
-    // print_r($res_discount);
-    echo currency(number_format("-".$discount_amount_show, 2));
 
-?>
-    
-</span>
-        </div>
+                        <?php
+                        $res_discount = $restaurant_details['res_discount'];
 
-   <div class="did mt-3">
-   <span>1X CARRY BAG</span>
-  <span>£0.10</span>
-</div>
+                        // Check if the order type is 'pickup' and adjust the discount accordingly
+                        if ($order_details["order_type"] == "pickup") {
+                            $res_discount = 25;  // Set discount to 25% if order type is pickup
+                        }
 
-        <!-- <?php if($order_details['total_vat_amount'] != "") { ?>
+                        // Calculate the discount amount to show
+                        // print_r($order_details['total_menu_price']);
+                        $discount_amount_show =  $order_details['total_menu_price'] * ($res_discount / 100);
+                        // print_r($order_details['grand_total']);
+                        // Sanitize the grand total and delivery charge
+                        $grand_total = sanitize($order_details['grand_total']);
+                        $total_delivery_charge = sanitize($order_details['total_delivery_charge']);
+
+                        // Calculate the discount amount
+                        $discount_amount = ($grand_total * $res_discount) / 100;
+
+                        // Output the discount amount formatted with currency symbol
+                        // print_r($res_discount);
+                        echo currency(number_format("-" . $discount_amount_show, 2));
+
+                        ?>
+
+                        </span>
+                    </div>
+
+                    <div class="did mt-3">
+                        <span>1X CARRY BAG</span>
+                        <span>£0.10</span>
+                    </div>
+
+                    <!-- <?php if ($order_details['total_vat_amount'] != "") { ?>
             <div class="did mt-3">
                 <span>VAT Charges</span> 
                 <span><?php echo currency(number_format(sanitize($order_details['total_vat_amount']), 2)); ?></span>
 
             </div>
         <?php } ?> -->
-        <div class="did mt-3 text-uppercase">
-            <span>Service Charge</span>
-            <span>                
-            <?php echo currency($this->cart_model->get_service_amount()); ?></span>
-        </div>
-        <?php if($order_details["order_type"] == "delivery") {?>
-        <?php if($order_details['total_delivery_charge'] != "") { ?>
-            <div class="did mt-3 text-uppercase">
-                <span>Delivery Charge</span>
-                <span><?php echo currency(sanitize($order_details['total_delivery_charge']), 2); ?></span>
+                    <div class="did mt-3 text-uppercase">
+                        <span>Service Charge</span>
+                        <span>
+                            <?php echo currency($this->cart_model->get_service_amount()); ?></span>
+                    </div>
+                    <?php if ($order_details["order_type"] == "delivery") { ?>
+                        <?php if ($order_details['total_delivery_charge'] != "") { ?>
+                            <div class="did mt-3 text-uppercase">
+                                <span>Delivery Charge</span>
+                                <span><?php echo currency(sanitize($order_details['total_delivery_charge']), 2); ?></span>
 
-            </div>
-        <?php } 
-        } else { ?>
-           <?php if($order_details["order_type"] == "delivery") {?>
-        <div class="did mt-3">
-                <span style="font-size:20px">Delivery Charges</span>
-                <span style="font-size:17px">Free Delivery</span>
+                            </div>
+                        <?php }
+                    } else { ?>
+                        <?php if ($order_details["order_type"] == "delivery") { ?>
+                            <div class="did mt-3">
+                                <span style="font-size:20px">Delivery Charges</span>
+                                <span style="font-size:17px">Free Delivery</span>
 
-            </div>
-            <?php } ?>
+                            </div>
+                        <?php } ?>
 
-   <?php } ?>
-        <div class="did mt-3 font-weight-bold">
-            <span>TOTAL (<?php echo $total_items; ?> Items)</span>
-            <span>
-    <?php  
-            echo currency(number_format($grand_total, 2));
-     ?> 
-</span>
-                 
-            </div>
-        <hr>
-        <div class="order-details-summary">
-            <!-- <h4>Total Items: <?php echo $total_items; ?> </h4> Display total items -->
-            <h4>Order Time: <?php echo date("H:i:s", $order_details['order_placed_at']); ?> </h4> <!-- Display order time -->
-        </div>
-        <hr>    
+                    <?php } ?>
+                    <div class="did mt-3 font-weight-bold">
+                        <span>TOTAL (<?php echo $total_items; ?> Items)</span>
+                        <span>
+                            <?php
+                            echo currency(number_format($grand_total, 2));
+                            ?>
+                        </span>
 
-      
+                    </div>
+                    <hr>
+                    <div class="order-details-summary">
+                        <!-- <h4>Total Items: <?php echo $total_items; ?> </h4> Display total items -->
+                        <h4>Order Time: <?php echo date("H:i:s", $order_details['order_placed_at']); ?> </h4> <!-- Display order time -->
+                    </div>
+                    <hr>
 
-        <div class="did mt-3">
-            <div class="order-detail-restaurant-name">
-                <?php echo get_phrase('restaurant') . ': ' . sanitize($restaurant_details['name']); ?>
-            </div>
-        </div>
-        
-       
-        <?php 
-        echo "<hr>";
-        echo "<left>";
-        if($order_details["order_type"] == "delivery") { 
-            if($payment["payment_method"] == "cash_on_delivery") {
-                echo "<h3><b>CASH ON DELIVERY</b></h3>";
-            }
-            if($payment["payment_method"] == "stripe") {
-                echo "<h3><b>PAID VIA CARD</b></h3>";
-            }
-        } else { 
-            if($payment["payment_method"] == "cash_on_delivery") {
-                echo "<h3><b>CASH ON COLLECTION</b></h3>";
-            } else if($payment["payment_method"] == "stripe") {
-                echo "<h3><b>PAID VIA CARD (COLLECTION)</b></h3>"; 
-            }
-        }
-        echo "</left>";
-        echo "<hr>";
-        ?>
-          <?php if (!empty($address['number'])) : ?>
-            <div class="row mt-2">
-                <div class="col note" style="font-size: 18px;">
-                    <h3><b><span class="text-danger">Note:</span> <?php echo sanitize($address['number']); ?>
-                </div></b></h3>
-            </div>
-        <?php endif; ?>
 
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script>
-          window.onload = function () {
-            const socket = new WebSocket("ws://localhost:8765");
 
-            socket.onopen = () => {
-                const receiptDiv = document.querySelector('.receipt');
+                    <div class="did mt-3">
+                        <div class="order-detail-restaurant-name">
+                            <?php echo get_phrase('restaurant') . ': ' . sanitize($restaurant_details['name']); ?>
+                        </div>
+                    </div>
 
-                html2canvas(receiptDiv, {
-                    scale: 4, // Higher scale = sharper image
-                    useCORS: true
-                }).then(canvas => {
-                    const imgData = canvas.toDataURL("image/png");
-                    const base64Image = imgData.split(',')[1]; // Remove prefix
 
-                    socket.send(base64Image);
-                    console.log("📤 Image of .receipt sent to server.");
-                    window.close();
-                });
-            };
+                    <?php
+                    echo "<hr>";
+                    echo "<left>";
+                    if ($order_details["order_type"] == "delivery") {
+                        if ($payment["payment_method"] == "cash_on_delivery") {
+                            echo "<h3><b>CASH ON DELIVERY</b></h3>";
+                        }
+                        if ($payment["payment_method"] == "stripe") {
+                            echo "<h3><b>PAID VIA CARD</b></h3>";
+                        }
+                    } else {
+                        if ($payment["payment_method"] == "cash_on_delivery") {
+                            echo "<h3><b>CASH ON COLLECTION</b></h3>";
+                        } else if ($payment["payment_method"] == "stripe") {
+                            echo "<h3><b>PAID VIA CARD (COLLECTION)</b></h3>";
+                        }
+                    }
+                    echo "</left>";
+                    echo "<hr>";
+                    ?>
+                    <?php if (!empty($address['number'])) : ?>
+                        <div class="row mt-2">
+                            <div class="col note" style="font-size: 18px;">
+                                <h3><b><span class="text-danger">Note:</span> <?php echo sanitize($address['number']); ?>
+                            </div></b></h3>
+                        </div>
+                    <?php endif; ?>
 
-            socket.onmessage = (event) => {
-                console.log("📥 Server:", event.data);
-            };
-        };
-    </script>
+                    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+                    <script>
+                        // window.onload = function() {
+                        //     const socket = new WebSocket("ws://localhost:8765");
+
+                        //     socket.onopen = () => {
+                        //         const receiptDiv = document.querySelector('.receipt');
+
+                        //         html2canvas(receiptDiv, {
+                        //             scale: 4, // Higher scale = sharper image
+                        //             useCORS: true
+                        //         }).then(canvas => {
+                        //             const imgData = canvas.toDataURL("image/png");
+                        //             const base64Image = imgData.split(',')[1]; // Remove prefix
+
+                        //             socket.send(base64Image);
+                        //             console.log("📤 Image of .receipt sent to server.");
+                        //             // window.close();
+                        //         });
+                        //     };
+
+                        //     socket.onmessage = (event) => {
+                        //         console.log("📥 Server:", event.data);
+                        //     };
+                        // };
+                        window.onload = function () {
+                        const socket = new WebSocket("ws://localhost:8765");
+
+                        socket.onopen = () => {
+                            const receiptDiv = document.querySelector('.receipt');
+
+                            html2canvas(receiptDiv, {
+                                scale: 4,
+                                useCORS: true
+                            }).then(canvas => {
+                                const imgData = canvas.toDataURL("image/png");
+                                const base64Image = imgData.split(',')[1];
+
+                                // Split into chunks
+                                const chunkSize = 4000;
+                                const totalChunks = Math.ceil(base64Image.length / chunkSize);
+
+                                for (let i = 0; i < totalChunks; i++) {
+                                    const chunk = base64Image.slice(i * chunkSize, (i + 1) * chunkSize);
+                                    socket.send(JSON.stringify({
+                                        type: "chunk",
+                                        index: i,
+                                        total: totalChunks,
+                                        data: chunk
+                                    }));
+                                }
+
+                                console.log(`📤 Sent ${totalChunks} chunks.`);
+
+                                setTimeout(() => {
+                                    window.close();
+                                }, 3000);
+                            });
+                        };
+
+                        socket.onmessage = (event) => {
+                            console.log("📥 Server:", event.data);
+                            window.close();
+                        };
+                    };
+
+                    </script>
 
 </body>
+
 </html>

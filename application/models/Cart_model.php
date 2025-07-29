@@ -19,16 +19,17 @@ class Cart_model extends Base_model
     /**
      * ADDING TO CART METHOD
      */
-    function add_menu_to_cart(){
+    function add_menu_to_cart()
+    {
 
-             // CHECK IF THE USER IS LOGGED IN, IF NOT THEN ASSIGN A RANDOM NUMBER AS USER ID
+        // CHECK IF THE USER IS LOGGED IN, IF NOT THEN ASSIGN A RANDOM NUMBER AS USER ID
         if (!$this->logged_in_user_id || empty($this->logged_in_user_id)) {
             // $this->session->set_userdata('user_id', rand(9999, 99999));
             //Session user id 
             $this->customer_model->insert_guest_user();
             //Get session user_id 
             $data['customer_id'] = $this->session->userdata('user_id');
-            
+
             $this->logged_in_user_id = $data['customer_id'];
         } else {
             $data['customer_id'] = $this->logged_in_user_id;
@@ -37,7 +38,7 @@ class Cart_model extends Base_model
 
         $data['servings'] = "menu"; // STATIC VALUE
         $data['note'] = sanitize($this->input->post('note'));
-        $data['menu_id'] = required(sanitize($this->input->post('menuId')));                                                                
+        $data['menu_id'] = required(sanitize($this->input->post('menuId')));
         $data['quantity'] = sanitize($this->input->post('quantity')) > 0 ? sanitize($this->input->post('quantity')) : 1;
 
 
@@ -83,16 +84,16 @@ class Cart_model extends Base_model
             $this->db->update($this->table, $data);
         }
         return true;
-
     }
-    
-    
-    
-    
+
+
+
+
     /**
      * ADDING TO CART METHOD
      */
-    function add_to_cart() {
+    function add_to_cart()
+    {
 
         // CHECK IF THE USER IS LOGGED IN, IF NOT THEN ASSIGN A RANDOM NUMBER AS USER ID
         if (!$this->logged_in_user_id || empty($this->logged_in_user_id)) {
@@ -102,20 +103,20 @@ class Cart_model extends Base_model
         } else {
             $data['customer_id'] = $this->logged_in_user_id;
         }
-    
+
         $data['servings'] = "menu"; // STATIC VALUE
         $data['note'] = sanitize($this->input->post('note'));
         $data['menu_id'] = required(sanitize($this->input->post('menuId')));
         $data['options_1'] = $this->input->post('options_1');
         $data['options_2'] = $this->input->post('options_2');
         $totalprice = required(sanitize($this->input->post('totalprice')));
-    
+
         $data['quantity'] = sanitize($this->input->post('quantity')) > 0 ? sanitize($this->input->post('quantity')) : 1;
-    
+
         $menu_details = $this->menu_model->get_menu_by_condition(['id' => $data['menu_id'], 'availability' => 1]);
         $menu_details = $menu_details[0];
         $data['restaurant_id'] = $menu_details['restaurant_id'];
-    
+
         // CHECK MULTI RESTAURANT ORDER PERMISSION
         if (!get_order_settings('multi_restaurant_order')) {
             $get_current_items = $this->db->get_where($this->table, ['customer_id' => $data['customer_id']]);
@@ -128,14 +129,14 @@ class Cart_model extends Base_model
             }
         }
 
-        
+
         // print_r($menu_details);
         // die();
         // Calculate price based on whether the menu item has variants
         if ($menu_details['has_variant'] == 1) {
 
             $data['variant_id'] = sanitize($this->input->post('variantId'));
-   
+
             $variant_details = $this->db->get_where('variant_options', ['id' => $data['variant_id']]);
             if ($variant_details->num_rows() > 0) {
                 $variant_details = $variant_details->row_array();
@@ -146,7 +147,7 @@ class Cart_model extends Base_model
             $price = $data['quantity'] * get_menu_price($data['menu_id']);
             $data['price'] = $price;
         }
-    
+
         // Add price for selected addons
         if (isset($_POST['addons']) && !empty($_POST['addons'])) {
             $total_addon_price = 0;
@@ -155,27 +156,27 @@ class Cart_model extends Base_model
                 $selected_addon_details = $this->db->get_where('addons', ['id' => $selected_addon])->row_array();
                 $total_addon_price += $selected_addon_details['price'];
             }
-    
+
             $data['addons'] = implode(",", $selected_addons);
             $data['price'] = $data['price'] + $total_addon_price;
         }
-    
+
         // Final price calculation
         $price = $data['quantity'] * $totalprice;
         $data['price'] = $price;
-    
+
         // CHECK IF ITEM EXISTS IN THE CART
         $previous_data = $this->db->get_where($this->table, ['customer_id' => $data['customer_id'], 'menu_id' => $data['menu_id'], 'variant_id' => $data['variant_id']]);
-    
+
         // IF ITEM EXISTS, UPDATE QUANTITY AND PRICE
         if ($previous_data->num_rows() > 0) {
             $existing_item = $previous_data->row_array();
             $new_quantity = $existing_item['quantity'] + $data['quantity']; // Update quantity by adding new one
             $data['quantity'] = $new_quantity;
-    
+
             // Recalculate the price based on new quantity
             $data['price'] = $new_quantity * $totalprice;
-    
+
             // Update the existing record
             $this->db->where('id', $existing_item['id']);
             $this->db->update($this->table, $data);
@@ -183,13 +184,13 @@ class Cart_model extends Base_model
             // If the item doesn't exist, insert a new record
             $this->db->insert($this->table, $data);
         }
-    
+
         return true;
     }
-    
+
     function get_variant_details($id)
     {
-        
+
         $this->db->select('name');
         $this->db->from('variant_options');
         $this->db->where('id', $id);
@@ -210,7 +211,7 @@ class Cart_model extends Base_model
     function update_cart()
     {
         $cart_id = required(sanitize($this->input->post('cartId')));
-        $data['quantity'] = sanitize($this->input->post('quantity')) > 0 ? sanitize($this->input->post('quantity')) : 1; 
+        $data['quantity'] = sanitize($this->input->post('quantity')) > 0 ? sanitize($this->input->post('quantity')) : 1;
         $cart_detail = $this->db->get_where('cart', ['id' => $cart_id])->row_array();
         if ($cart_detail['variant_id'] > 0) {
             $variant_details = $this->db->get_where('variant_options', ['id' => $cart_detail['variant_id']])->row_array();
@@ -253,7 +254,8 @@ class Cart_model extends Base_model
     /**
      * RETURN ALL THE CART ITEMS
      */
-    public function get_all() {
+    public function get_all()
+    {
         $data['customer_id'] = $this->logged_in_user_id; // Assuming this is set in the mode
         $obj = $this->db->get_where($this->table, $data);
         return $this->merger($obj); // Process the result through the merger method
@@ -297,7 +299,7 @@ class Cart_model extends Base_model
             foreach ($cart_items as $key => $cart_item) {
                 $menu_data = $this->menu_model->get_by_id($cart_item['menu_id']);
                 $restaurant_data = $this->restaurant_model->get_by_id($cart_item['restaurant_id']);
-                
+
                 $cart_items[$key]['menu_name']  = $menu_data['name'];
                 $cart_items[$key]['menu_thumbnail']  = $menu_data['thumbnail'];
                 $cart_items[$key]['restaurant_name']  = $restaurant_data['name'];
@@ -319,56 +321,58 @@ class Cart_model extends Base_model
             return $cart_item;
         }
     }
-    
+
     private function get_options_details($options)
-{
-    $details = [];
-    foreach ($options as $option) {
-        $subVariantId = $option['subVariantId'];
-        $itemId = $option['itemId'];
+    {
+        $details = [];
+        foreach ($options as $option) {
+            $subVariantId = $option['subVariantId'];
+            $itemId = $option['itemId'];
 
-        // Get variant sub-option name
-        $variantSubOption = $this->variation_model->get_variant_sub_options_name_by_id($subVariantId);
-    
-        // Get sub-option item name
-        $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId);
-    
-        $details[] = [
-            'subVariantId' => $subVariantId,
-            'itemId' => $itemId,
-            'variantName' => $variantSubOption,
-            'subOptionName' => $subOptionItem
-        ];
-    }
-    return $details;
-}
+            // Get variant sub-option name
+            $variantSubOption = $this->variation_model->get_variant_sub_options_name_by_id($subVariantId);
 
+            // Get sub-option item name
+            $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId);
 
-public function get_restaurants_by_ids($restaurant_ids) {
-    if (empty($restaurant_ids)) {
-        return []; // Return an empty array if no IDs are provided
+            $details[] = [
+                'subVariantId' => $subVariantId,
+                'itemId' => $itemId,
+                'variantName' => $variantSubOption,
+                'subOptionName' => $subOptionItem
+            ];
+        }
+        return $details;
     }
 
-    $this->db->where_in('id', $restaurant_ids);
-    $query = $this->db->get('restaurants'); // Assuming the table name is 'restaurants'
-    return $query->result(); // Return as an array of objects
-}
+
+    public function get_restaurants_by_ids($restaurant_ids)
+    {
+        if (empty($restaurant_ids)) {
+            return []; // Return an empty array if no IDs are provided
+        }
+
+        $this->db->where_in('id', $restaurant_ids);
+        $query = $this->db->get('restaurants'); // Assuming the table name is 'restaurants'
+        return $query->result(); // Return as an array of objects
+    }
 
 
 
-    
+
     /**
      * GET THE RESTAURANT IDS ONLY. THIS FUNCTION WILL RETURN ALL THE INDIVIDUAL RESTAURANT IDS OF THE CART ITEMS
      */
-    public function get_restaurant_ids() {
+    public function get_restaurant_ids()
+    {
         $restaurant_ids = array();
         $cart_items = $this->get_all(); // Get all cart items
         foreach ($cart_items as $cart_item) {
-                    if (!in_array($cart_item['restaurant_id'], $restaurant_ids)) {
+            if (!in_array($cart_item['restaurant_id'], $restaurant_ids)) {
                 array_push($restaurant_ids, $cart_item['restaurant_id']);
             }
         }
-      
+
         return $restaurant_ids;
     }
 
@@ -376,7 +380,7 @@ public function get_restaurants_by_ids($restaurant_ids) {
     {
         // SENDING MAIL TO CUSTOMER
         $customer_details = $this->user_model->get_user_by_id($this->logged_in_user_id);
-        
+
         $this->load->model('order_model');
 
         $order_data = $this->order_model->get_order_by_code($order_code);
@@ -405,9 +409,7 @@ public function get_restaurants_by_ids($restaurant_ids) {
             $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
             $message .= get_phrase('please_check_the_order_as_soon_as_possible') . '.';
             $this->email_model->order_pacing($restaurant_details['owner_email'], $message);
-            
         }
-
     }
 
     /**
@@ -443,7 +445,7 @@ public function get_restaurants_by_ids($restaurant_ids) {
      */
     public function get_total_delivery_charge()
     {
-      
+
         $total_delivery_charge = $this->session->userdata('delivery_fees');
 
         return $total_delivery_charge;
@@ -477,12 +479,9 @@ public function get_restaurants_by_ids($restaurant_ids) {
      * GET SMALLER DATA FOR CART PAGE : VAT
      */
 
-     public function acc_distance_charges()
-     {
+    public function acc_distance_charges() {}
 
-     }
 
-     
     public function get_service_amount()
     {
         // $total_service = 0.00;
@@ -499,16 +498,16 @@ public function get_restaurants_by_ids($restaurant_ids) {
 
     public function get_total_discount_applied_percentage($order_type)
     {
-        
+
         $total_discount = 0.00;
-        if($this->get_sub_total() > 0){
-            if($order_type == "collection" || $order_type == "pickup"){
+        if ($this->get_sub_total() > 0) {
+            if ($order_type == "collection" || $order_type == "pickup") {
                 $total_discount = 25;
-            }else{
+            } else {
                 $total_discount = 20;
             }
         }
-        
+
         return $total_discount;
     }
 
@@ -516,7 +515,8 @@ public function get_restaurants_by_ids($restaurant_ids) {
      * GET SMALLER DATA FOR CART PAGE : GRAND TOTAL
      */
 
-    public function get_discounted_amount($order_type) {
+    public function get_discounted_amount($order_type)
+    {
         return $this->get_sub_total($order_type) * ($this->get_total_discount_applied_percentage($order_type) / 100);
     }
 
@@ -613,7 +613,8 @@ public function get_restaurants_by_ids($restaurant_ids) {
     }
 
 
-    public function updateDiscountCodeToCart($promo_code, $discount, $user_id) {
+    public function updateDiscountCodeToCart($promo_code, $discount, $user_id)
+    {
         $data = array(
             'offer_code' => $promo_code,
             'discount' => (int) $discount
@@ -622,9 +623,10 @@ public function get_restaurants_by_ids($restaurant_ids) {
         $this->db->update('cart', $data);
     }
 
-    public function getDiscountCodeToCart() {
+    public function getDiscountCodeToCart()
+    {
         $user_role = $this->session->userdata('user_role');
-    
+
         $data = array();
         // $this->db->select('id, discount');
 
@@ -632,9 +634,9 @@ public function get_restaurants_by_ids($restaurant_ids) {
             $data['customer_id'] = $this->logged_in_user_id;
             // $data['offer_code'] = $promo_code;
         }
-    
+
         $this->db->where($data);
-        $this->db->order_by('id', 'desc'); 
+        $this->db->order_by('id', 'desc');
         $this->db->limit(1);
         $query = $this->db->get($this->table);
 
@@ -645,23 +647,51 @@ public function get_restaurants_by_ids($restaurant_ids) {
         }
     }
 
-    function get_grand_total($order_type){
+    // function get_grand_total($order_type){
 
+    //     $subtotal = sanitize($this->get_total_menu_price());
+    //     $serviceCharge = sanitize($this->get_service_amount());
+    //     $bagCharges = number_format((float) sanitize($this->get_bag_charges($order_type)), 2, '.', '');
+    //     $discountedAmount = number_format((float) sanitize($this->get_discounted_amount($order_type)), 2, '.', '');
+    //     $total_delivery_charges = number_format((float) sanitize($this->get_total_delivery_charge()),2, '.','');
+    //     // print_r($order_type);
+    //     // die();
+    //    if($order_type == 'delivery'){
+
+    //     return $subtotal + $total_delivery_charges + $serviceCharge + $bagCharges - $discountedAmount;
+    //    }else{
+
+    //             return $subtotal + $serviceCharge + $bagCharges - $discountedAmount;
+
+    //    }
+    // }
+
+    public function get_grand_total($order_type)
+    {
         $subtotal = sanitize($this->get_total_menu_price());
         $serviceCharge = sanitize($this->get_service_amount());
-        $bagCharges = number_format((float) sanitize($this->get_bag_charges($order_type)), 2, '.', '');
-        $discountedAmount = number_format((float) sanitize($this->get_discounted_amount($order_type)), 2, '.', '');
-        $total_delivery_charges = number_format((float) sanitize($this->get_total_delivery_charge()),2, '.','');
-        // print_r($order_type);
-        // die();
-       if($order_type == 'delivery'){
-    
-        return $subtotal + $total_delivery_charges + $serviceCharge + $bagCharges - $discountedAmount;
-       }else{
-                return $subtotal + $serviceCharge + $bagCharges - $discountedAmount;
+        $bagCharges = (float) sanitize($this->get_bag_charges($order_type));
+        $total_delivery_charges = (float) sanitize($this->get_total_delivery_charge());
 
-       }
+        $promo = $this->session->userdata('applied_promo');
+        $promo_discount = 0;
+        $discountedAmount = 0; // Default = 0
+
+        // ✅ If promo code applied, skip other discounts
+        if (!empty($promo) && isset($promo['discount'])) {
+            $promo_discount = (($subtotal + $serviceCharge + $bagCharges + $total_delivery_charges) * $promo['discount']) / 100;
+        } else {
+            // ✅ No promo code, so allow default discount
+            $discountedAmount = (float) sanitize($this->get_discounted_amount($order_type));
+        }
+
+        // 👇 Final total
+        if ($order_type == 'delivery') {
+            $grandTotal = $subtotal + $total_delivery_charges + $serviceCharge + $bagCharges - $discountedAmount - $promo_discount;
+        } else {
+            $grandTotal = $subtotal + $serviceCharge + $bagCharges - $discountedAmount - $promo_discount;
+        }
+
+        return $grandTotal;
     }
-    
-    
 }

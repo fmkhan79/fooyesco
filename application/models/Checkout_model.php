@@ -81,10 +81,6 @@ class Checkout_model extends Base_model
 
             $public_key = $values[0]->public_key;
             $secret_key = $values[0]->secret_key;
-
-
-
-
         } else {
             $public_key = $values[0]->public_live_key;
             $secret_key = $values[0]->secret_live_key;
@@ -180,7 +176,7 @@ class Checkout_model extends Base_model
     // INSERT TO PAYMENT TABLE
     public function cash_on_delivery()
     {
-        
+
         $data['amount_to_pay'] = $this->cart_model->get_grand_total($_POST['order_type']);
         $data['amount_paid'] = 0;
         $data['payment_method'] = "cash_on_delivery";
@@ -194,18 +190,18 @@ class Checkout_model extends Base_model
 
         // if($order_type == "collection")
         //     $order_type = "pickup";
-          
+
         $order_type = isset($_POST['order_type']) && $_POST['order_type'] == "collection" && get_order_settings('pickup_order') ? "pickup" : "delivery";
-    
-       
+
+
         if ($order_type == "pickup") {
             $order_data  = $this->order_model->get_by_code($order_code);
             $grand_total = $data['amount_to_pay'];
             $billing_data =  $this->session->userdata('billing');
             $json_billing_data = json_encode($billing_data);
-            $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null,'billing'=> $json_billing_data];
+            $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null, 'billing' => $json_billing_data];
         } else {
-            
+
             // $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null];
             $billing_data =  $this->session->userdata('billing');
             $json_billing_data = json_encode($billing_data);
@@ -213,9 +209,9 @@ class Checkout_model extends Base_model
 
             $address_data = $this->session->userdata('address');
             $json_address_data = json_encode($address_data);
-            
-            $updater = ['order_type' => $order_type,'billing'=> $json_billing_data,'address'=> $json_address_data];
-        } 
+
+            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data];
+        }
 
         $this->db->where('code', $order_code);
         //billing data is inserting here
@@ -228,7 +224,16 @@ class Checkout_model extends Base_model
             }
         }
         $this->db->where('session_id', session_id());
-$this->db->update('cart_visits', ['order_placed' => 1]);
+        $this->db->update('cart_visits', ['order_placed' => 1]);
+        // ✅ Handle applied promo
+        $appliedPromo = $this->session->userdata('applied_promo');
+
+        if (!empty($appliedPromo) && isset($appliedPromo['offer_code'])) {
+            $offerCode = $appliedPromo['offer_code'];
+
+            $this->load->model('Promo_model');
+            $this->Promo_model->update_promo_status($offerCode);
+        }
 
         return true;
     }
@@ -239,8 +244,8 @@ $this->db->update('cart_visits', ['order_placed' => 1]);
     //     $this->db->where('id', $user_id); 
     //     $query = $this->db->get();
     //     $result = $query->row_array();
-        
-        
+
+
     //     return isset($result['payment_method']) ? $result['payment_method'] : null;
     // }
 
@@ -274,7 +279,7 @@ $this->db->update('cart_visits', ['order_placed' => 1]);
         $this->db->where('code', $order_code);
         $this->db->update('orders', $updater);
         $this->db->where('session_id', session_id());
-$this->db->update('cart_visits', ['order_placed' => 1]);
+        $this->db->update('cart_visits', ['order_placed' => 1]);
 
         return true;
     }
@@ -306,16 +311,16 @@ $this->db->update('cart_visits', ['order_placed' => 1]);
         if ($order_type == "pickup") {
             $billing_data =  $this->session->userdata('billing');
             $json_billing_data = json_encode($billing_data);
-            $updater = ['order_type' => $order_type, 'driver_id' => null, 'billing'=> $json_billing_data, 'total_delivery_charge' => 0, ];
+            $updater = ['order_type' => $order_type, 'driver_id' => null, 'billing' => $json_billing_data, 'total_delivery_charge' => 0,];
         } else {
-                
+
             $billing_data =  $this->session->userdata('billing');
             $json_billing_data = json_encode($billing_data);
 
 
             $address_data = $this->session->userdata('address');
             $json_address_data = json_encode($address_data);
-            $updater = ['order_type' => $order_type,'billing'=> $json_billing_data,'address'=> $json_address_data];
+            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data];
 
             // $updater = ['order_type' => $order_type];
         }
