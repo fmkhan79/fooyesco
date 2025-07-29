@@ -467,7 +467,7 @@ $stripe_settings = json_decode($stripe_settings);
                     </div>
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
-                        <div class="" id="discount-label">Discount (20%)</div>
+                        <div class="discount-label">Discount (20%)</div>
                         <div class="total-discount-applied">-</div>
                     </div>
                     

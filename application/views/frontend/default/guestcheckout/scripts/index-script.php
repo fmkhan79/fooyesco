@@ -371,6 +371,7 @@
                 $(".total-vat-price").text(totalVatValue);
                 $(".grand-product-price").text(grandSubTotalValue);
                 $(".total-service-price").text(totalServicePrice);
+                $(".discount-label").text("Discount ("+ totalDiscountPrice +")");
                 $(".total-discount-applied").text("-" + discountP);
                 $('.grand-product-price').text('£' + (grandSubTotalValue).toFixed(2));
 
@@ -820,18 +821,70 @@
 
         }, 2000);
 
+
+        let orderTypeForActive = localStorage.getItem('order-type');
+        if (orderTypeForActive == "collection") {
+
+                document.querySelectorAll(".remove-required-collection").forEach(element => {
+                    element.removeAttribute("required");
+
+                    let id = `label[for="input${element.id}"]`;
+                    let label = document.querySelector(id);
+                    if (label) {
+                        label.textContent = label.textContent.replace("*", "") + " (Optional)";
+                    }
+                });
+
+                document.querySelector("#checking").classList.remove("disabled");
+
+
+                document.getElementById("delivery-charge").classList.add("d-none");
+                document.getElementById("delivery-charge").classList.remove("d-flex");
+                document.querySelector(".discount-label").innerText = "Discount (25%)";
+
+                document.getElementById("collection-time").classList.remove("d-none");
+                document.getElementById("additional-delivery-notes").classList.add("d-none");
+                document.getElementById("cash_button").innerHTML = "Cash On Collection";
+                document.querySelectorAll("span.order_type").forEach(otype => {
+                    otype.innerHTML = "Your";
+                });
+            } else {
+
+                document.querySelector("#checking").classList.add("disabled", "true");
+
+
+                document.querySelectorAll(".remove-required-collection").forEach(element => {
+
+                    element.setAttribute("required", "true");
+
+                    let id = `label[for="input${element.id}"]`;
+                    let label = document.querySelector(id);
+                    if (label) {
+                        label.textContent = label.textContent.replace("(Optional)", "") + "*";
+                    }
+                });
+
+                document.getElementById("delivery-charge").classList.remove("d-none");
+                document.getElementById("delivery-charge").classList.add("d-flex");
+                document.querySelector(".discount-label").innerText = "Discount (20%)";
+
+                document.getElementById("collection-time").classList.add("d-none");
+                document.getElementById("additional-delivery-notes").classList.remove("d-none");
+                document.getElementById("cash_button").innerHTML = "Cash On Delivery";
+                document.querySelectorAll("span.order_type").forEach(otype => {
+                    otype.innerHTML = "Delivery";
+                });
+            }
+
         const radioButtons = document.querySelectorAll('input[name="basket-switcher"]');
         const hiddenInputs = document.querySelectorAll('input[name="order_type"]');
 
         radioButtons.forEach(radio => {
             radio.addEventListener('change', () => {
-                if ($(".order.last.acitve").length == 1) {
-                    return;
-                }
-
                 if (radio.checked) {
                     let value = radio.value;
                     hiddenInputs.forEach(hiddenInput => {
+                        console.log(hiddenInput.value);
                         hiddenInput.value = value;
                         if (value == "collection") {
 
@@ -850,7 +903,7 @@
 
                             document.getElementById("delivery-charge").classList.add("d-none");
                             document.getElementById("delivery-charge").classList.remove("d-flex");
-                            document.getElementById("discount-label").innerHTML = "Discount (25%)";
+                            document.querySelector(".discount-label").innerText = "Discount (25%)";
 
                             document.getElementById("collection-time").classList.remove("d-none");
                             document.getElementById("additional-delivery-notes").classList.add("d-none");
@@ -876,7 +929,7 @@
 
                             document.getElementById("delivery-charge").classList.remove("d-none");
                             document.getElementById("delivery-charge").classList.add("d-flex");
-                            document.getElementById("discount-label").innerHTML = "Discount (20%)";
+                            document.querySelector(".discount-label").innerText = "Discount (20%)";
 
                             document.getElementById("collection-time").classList.add("d-none");
                             document.getElementById("additional-delivery-notes").classList.remove("d-none");

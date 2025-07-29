@@ -43,6 +43,9 @@ class Promo_model extends Base_model
                 'is_used' => 1,
                 'user_id' => $user_id
             ]);
+
+            $user_promo = $this->session->userdata('applied_promo');
+            $this->session->set_userdata('user_promo', $user_promo);
             $this->session->set_userdata('applied_promo', '');
 
 

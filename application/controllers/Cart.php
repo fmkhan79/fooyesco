@@ -282,7 +282,7 @@ class Cart extends Base
 
         if (!empty($promo) && isset($promo['discount'])) {
             $discountLabel = $promo['discount'] . '%';
-            $promo_discount = (($subtotal + $serviceCharge + $bagCharges) * $promo['discount']) / 100;
+            $promo_discount = ($subtotal * $promo['discount']) / 100;
         } else {
             // Only apply default discount if promo is NOT applied
             $discountedAmount = number_format((float) sanitize($this->cart_model->get_discounted_amount($order_type)), 2, '.', '');
