@@ -100,23 +100,29 @@
     <?php
     // print_r($order_details); 
     $address = json_decode($order_details["address"], true);
-
+    // print_r($address);
     // Format address properly
-    $alertnate_address = '';
-    if (!empty($address['street'])) $alertnate_address .= $address['street'] . ', ';
-    if (!empty($address['number'])) $alertnate_address .= $address['number'] . ', ';
-    if (!empty($address['zip_code'])) $alertnate_address .= $address['zip_code'] . ', ';
-    if (!empty($address['city'])) $alertnate_address .= $address['city'] . ', ';
-    if (!empty($address['country'])) $alertnate_address .= $address['country'];
-    // print_r($alternate_address);
-    // die();
-    
-    // Clean trailing comma
-    $alternate_address = rtrim($alternate_address, ', ');
-    
-    // Prefer `additional_address` if available
-    $finalAddress = !empty($address['address']) ? $address['address'] : $alternate_address;
-    
+    $formattedAddress = '';
+
+    // Add flat
+    if (!empty($address['flat'])) {
+        $formattedAddress .= $address['flat'] . ', ';
+    }
+
+    // Add address (after removing "UK" if present)
+    if (!empty($address['address'])) {
+        $cleanAddress = str_replace(', UK', '', $address['address']);
+        $formattedAddress .= $cleanAddress . ', ';
+    }
+
+    // Add postcode
+    if (!empty($address['postcode'])) {
+        $formattedAddress .= $address['postcode'];
+    }
+
+    // Final output with trimmed commas
+    $finalAddress = rtrim($formattedAddress, ', ');
+
     $billing = json_decode($order_details["billing"], associative: true);
     // print_r($billing);
     // print_r($ordered_items);
