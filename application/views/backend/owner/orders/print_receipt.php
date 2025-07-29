@@ -102,16 +102,21 @@
     $address = json_decode($order_details["address"], true);
 
     // Format address properly
-    $formatted_address = '';
-    if (!empty($address['street'])) $formatted_address .= $address['street'] . ', ';
-    if (!empty($address['number'])) $formatted_address .= $address['number'] . ', ';
-    if (!empty($address['additional_address'])) $formatted_address .= $address['additional_address'] . ', ';
-    if (!empty($address['zip_code'])) $formatted_address .= $address['zip_code'] . ', ';
-    if (!empty($address['city'])) $formatted_address .= $address['city'] . ', ';
-    if (!empty($address['country'])) $formatted_address .= $address['country'];
-
-    // print_r($formatted_address);
+    $alertnate_address = '';
+    if (!empty($address['street'])) $alertnate_address .= $address['street'] . ', ';
+    if (!empty($address['number'])) $alertnate_address .= $address['number'] . ', ';
+    if (!empty($address['zip_code'])) $alertnate_address .= $address['zip_code'] . ', ';
+    if (!empty($address['city'])) $alertnate_address .= $address['city'] . ', ';
+    if (!empty($address['country'])) $alertnate_address .= $address['country'];
+    // print_r($alternate_address);
     // die();
+    
+    // Clean trailing comma
+    $alternate_address = rtrim($alternate_address, ', ');
+    
+    // Prefer `additional_address` if available
+    $finalAddress = !empty($address['additional_address']) ? $address['additional_address'] : $alternate_address;
+    
     $billing = json_decode($order_details["billing"], associative: true);
     // print_r($billing);
     // print_r($ordered_items);
@@ -135,7 +140,7 @@
             echo "<h3>DELIVERY</h3>";
             echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
             echo "<h3 style='margin:0px;'>" . $billing["phone_mobile"] . "</h3>";
-            echo "<h4 style='margin:0px;'>" . $formatted_address . "</h4>";
+            echo "<h4 style='margin:0px;'>" . $finalAddress . "</h4>";
         }
         if ($order_details['order_type'] == "pickup") {
             echo "<h3>Collection</h3>";
@@ -345,29 +350,70 @@
 
                     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
                     <script>
-                        window.onload = function() {
-                            const socket = new WebSocket("ws://localhost:8765");
+                        // window.onload = function() {
+                        //     const socket = new WebSocket("ws://localhost:8765");
 
-                            socket.onopen = () => {
-                                const receiptDiv = document.querySelector('.receipt');
+                        //     socket.onopen = () => {
+                        //         const receiptDiv = document.querySelector('.receipt');
 
-                                html2canvas(receiptDiv, {
-                                    scale: 4, // Higher scale = sharper image
-                                    useCORS: true
-                                }).then(canvas => {
-                                    const imgData = canvas.toDataURL("image/png");
-                                    const base64Image = imgData.split(',')[1]; // Remove prefix
+                        //         html2canvas(receiptDiv, {
+                        //             scale: 4, // Higher scale = sharper image
+                        //             useCORS: true
+                        //         }).then(canvas => {
+                        //             const imgData = canvas.toDataURL("image/png");
+                        //             const base64Image = imgData.split(',')[1]; // Remove prefix
 
-                                    socket.send(base64Image);
-                                    console.log("📤 Image of .receipt sent to server.");
-                                    // window.close();
-                                });
-                            };
+                        //             socket.send(base64Image);
+                        //             console.log("📤 Image of .receipt sent to server.");
+                        //             // window.close();
+                        //         });
+                        //     };
 
-                            socket.onmessage = (event) => {
-                                console.log("📥 Server:", event.data);
-                            };
+                        //     socket.onmessage = (event) => {
+                        //         console.log("📥 Server:", event.data);
+                        //     };
+                        // };
+                        window.onload = function () {
+                        const socket = new WebSocket("ws://localhost:8765");
+
+                        socket.onopen = () => {
+                            const receiptDiv = document.querySelector('.receipt');
+
+                            html2canvas(receiptDiv, {
+                                scale: 4,
+                                useCORS: true
+                            }).then(canvas => {
+                                const imgData = canvas.toDataURL("image/png");
+                                const base64Image = imgData.split(',')[1];
+
+                                // Split into chunks
+                                const chunkSize = 4000;
+                                const totalChunks = Math.ceil(base64Image.length / chunkSize);
+
+                                for (let i = 0; i < totalChunks; i++) {
+                                    const chunk = base64Image.slice(i * chunkSize, (i + 1) * chunkSize);
+                                    socket.send(JSON.stringify({
+                                        type: "chunk",
+                                        index: i,
+                                        total: totalChunks,
+                                        data: chunk
+                                    }));
+                                }
+
+                                console.log(`📤 Sent ${totalChunks} chunks.`);
+
+                                setTimeout(() => {
+                                    window.close();
+                                }, 3000);
+                            });
                         };
+
+                        socket.onmessage = (event) => {
+                            console.log("📥 Server:", event.data);
+                            window.close();
+                        };
+                    };
+
                     </script>
 
 </body>
