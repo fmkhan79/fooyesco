@@ -193,8 +193,6 @@ $stripe_settings = json_decode($stripe_settings);
                     <div class="mt-3 fw-bold mx-5 " style="color: #F54748; font-weight: bold; cursor: pointer;" onclick="openAddressEditModal()">Edit</div>
                 </div>
                 <span id="show-address"></span><br>
-                
-                <form id="hidden-address-form" onsubmit="return false;" autocomplete="off">
                     <button onclick="goToPaymentTable()" class="rr-btn border-0 mt-4">Go to next step: Place Order</button>
                 </div>
 
@@ -202,17 +200,7 @@ $stripe_settings = json_decode($stripe_settings);
                     <h4 class="mt-3">
                     <label class="fw-bold">Additional Delivery Instructions</label>
                     </h4>
-                    <textarea class="form-control " id="instructions_hidden" data-field="instructions" placeholder="No" autocomplete="off"></textarea>
-
-                    <!-- Hidden Fields -->
-                    <input type="hidden" id="address_hidden">
-                    <input type="hidden" id="postcode_hidden">
-                    <input type="hidden" id="flat_hidden">
-                    <input type="hidden" id="street_hidden">
-                    <input type="hidden" id="lat_hidden">
-                    <input type="hidden" id="long_hidden">
-                    <input type="hidden" id="inputNameMap_hidden" name="inputNameMap">
-                </form>
+                    <span id="instructions_hidden"></span>
                 </div>
             </div>
         </div>
@@ -467,7 +455,7 @@ $stripe_settings = json_decode($stripe_settings);
                     </div>
 
                     <div class="total-price-box d-flex justify-content-between align-items-center">
-                        <div class="" id="discount-label">Discount (20%)</div>
+                        <div class="discount-label">Discount (20%)</div>
                         <div class="total-discount-applied">-</div>
                     </div>
                     
@@ -482,27 +470,16 @@ $stripe_settings = json_decode($stripe_settings);
                         <div class="form-group">
                             <label for="promo_code">Promo Code</label>
                             <div class="d-flex gap-2 justify-content-center">
-                                <input type="text" class="form-control" id="promo_code" name="promo_code"
-                                    value="<?php echo $cart_items[0]['offer_code'] ?>" required>
-                                <?php if (isset($cart_items[0]['offer_code'])) { ?>
-                                    <div class="btn btn-sm btn-danger m-2" onclick="remove_promo()">
-                                        <i class="fa fa-times"></i>
-                                    </div>
-                                <?php } ?>
-                                <div class="btn btn-sm btn-danger m-2" id="remove_promo" style="display:none"
-                                    onclick="remove_promo()">
+                                <div class="grand-product-price d-none"></div> <!-- Total Amount in this like £8.6 -->
+                                <input type="text" class="form-control" id="promo_code" name="promo_code" required>
+                                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo" onclick="remove_promo()">
                                     <i class="fa fa-times"></i>
                                 </div>
                             </div>
-                            <small id="promo_code_message"></small> <!-- Container for messages -->
-                            <?php if (isset($cart_items[0]['offer_code'])) { ?>
-                                <small class="text-success">Promo is already applied.</small>
-                                <!-- Container for messages -->
-                            <?php } else { ?>
-                                <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo"
-                                    onclick="apply_promo_action()">APPLY COUPON CODE
-                                </div>
-                            <?php } ?>
+                            <small id="promo_code_message" class="d-block mt-1"></small>
+                            <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo" onclick="apply_promo_action()">
+                                APPLY COUPON CODE
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -512,7 +489,6 @@ $stripe_settings = json_decode($stripe_settings);
 
             <div class="total-price-box d-flex justify-content-between align-items-center">
                 <div class="">Total</div>
-
                 <div class="grand-product-price"></div>
             </div>
 
@@ -565,7 +541,7 @@ $stripe_settings = json_decode($stripe_settings);
               </div>
             </div>
 
-            <div class="form-row add-note d-none">
+            <div class="form-row add-note">
               <div class="form-group col-md-12">
                 <label>Additional Delivery Instructions</label>
                 <textarea class="form-control" id="instructions" data-field="instructions" placeholder="No" autocomplete="off"></textarea>
@@ -626,6 +602,7 @@ function submitAddressForm() {
       console.log('Address Data Saved!');
     //   window.location.href = "<?= site_url('GuestCheckout?guest=1'); ?>";
     $('#guestAddressModal').modal('hide');
+
     },
     error: function (xhr, status, error) {
       console.error('Error:', error);
@@ -633,24 +610,10 @@ function submitAddressForm() {
   });
 }
 
-let sessionAddressData = JSON.parse(localStorage.getItem('address_data')) || {
-    address: '',
-    flat: '',
-    street: '',
-    postcode: '',
-    instructions: '',
-    lat: '',
-    lng: '',
-};
+
+console.log("From JS", sessionAddressData);
 
 function openAddressEditModal() {
-    document.getElementById('to').value = sessionAddressData.address || '';
-    document.getElementById('flat').value = sessionAddressData.flat || '';
-    document.getElementById('street-value').value = sessionAddressData.street || '';
-    document.getElementById('city').value = sessionAddressData.postcode || '';
-    document.getElementById('instructions').value = sessionAddressData.instructions || '';
-    document.getElementById('lat_to').value = sessionAddressData.lat || '';
-    document.getElementById('long_to').value = sessionAddressData.lng || '';
 
     // document.querySelector('#address-form .add-note').classList.remove('d-none');
 
@@ -660,79 +623,92 @@ function openAddressEditModal() {
 
 function goToPaymentTable(){
 
-    const instructionField = document.getElementById("instructions_hidden");
+    // const instructionField = document.getElementById("instructions_hidden");
 
-    sessionAddressData.instructions = instructionField.value;
+    // sessionAddressData.instructions = instructionField.value;
 
-    document.getElementById("address_hidden").value = sessionAddressData.address;
-    document.getElementById("flat_hidden").value = sessionAddressData.flat;
-    document.getElementById("street_hidden").value = sessionAddressData.street;
-    document.getElementById("postcode_hidden").value = sessionAddressData.postcode;
-    document.getElementById("instructions_hidden").value = sessionAddressData.instructions;
-    document.getElementById("lat_hidden").value = sessionAddressData.lat;
-    document.getElementById("long_hidden").value = sessionAddressData.long;
+    // document.getElementById("address_hidden").value = sessionAddressData.address;
+    // document.getElementById("flat_hidden").value = sessionAddressData.flat;
+    // document.getElementById("street_hidden").value = sessionAddressData.street;
+    // document.getElementById("postcode_hidden").value = sessionAddressData.postcode;
+    // document.getElementById("instructions_hidden").value = sessionAddressData.instructions;
+    // document.getElementById("lat_hidden").value = sessionAddressData.lat;
+    // document.getElementById("long_hidden").value = sessionAddressData.long;
 
     // Step 2: Prepare nameMap for reference
-    let nameMap = {
-        address: 'address_hidden',
-        flat: 'flat_hidden',
-        street: 'street_hidden',
-        postcode: 'postcode_hidden',
-        instructions: 'instructions_hidden',
-        lat: 'lat_hidden',
-        long: 'long_hidden'
-    };
+    // let nameMap = {
+    //     address: 'address_hidden',
+    //     flat: 'flat_hidden',
+    //     street: 'street_hidden',
+    //     postcode: 'postcode_hidden',
+    //     instructions: 'instructions_hidden',
+    //     lat: 'lat_hidden',
+    //     long: 'long_hidden'
+    // };
 
-    document.getElementById("inputNameMap_hidden").value = JSON.stringify(nameMap);
+    // document.getElementById("inputNameMap_hidden").value = JSON.stringify(nameMap);
 
-    // Step 3: Collect data from hidden fields using nameMap
-    const addressFormData = {
-        [nameMap.address]: document.getElementById(nameMap.address).value,
-        [nameMap.flat]: document.getElementById(nameMap.flat).value,
-        [nameMap.street]: document.getElementById(nameMap.street).value,
-        [nameMap.postcode]: document.getElementById(nameMap.postcode).value,
-        [nameMap.instructions]: document.getElementById(nameMap.instructions).value,
-        [nameMap.lat]: document.getElementById(nameMap.lat).value,
-        [nameMap.long]: document.getElementById(nameMap.long).value,
-        inputNameMap: JSON.stringify(nameMap)
-    };
+    // // Step 3: Collect data from hidden fields using nameMap
+    // const addressFormData = {
+    //     [nameMap.address]: document.getElementById(nameMap.address).value,
+    //     [nameMap.flat]: document.getElementById(nameMap.flat).value,
+    //     [nameMap.street]: document.getElementById(nameMap.street).value,
+    //     [nameMap.postcode]: document.getElementById(nameMap.postcode).value,
+    //     [nameMap.instructions]: document.getElementById(nameMap.instructions).value,
+    //     [nameMap.lat]: document.getElementById(nameMap.lat).value,
+    //     [nameMap.long]: document.getElementById(nameMap.long).value,
+    //     inputNameMap: JSON.stringify(nameMap)
+    // };
+
+    jQuery('ul.billing-list-topbar li.billing').addClass('acitve')
+
+    jQuery("ul.billing-list-topbar li.order .img-box").removeClass("red");
+    jQuery("ul.billing-list-topbar li.billing .img-box").addClass("red");
+    jQuery("ul.billing-list-topbar li.payment .img-box").removeClass("red");
+
+    // jQuery("ul.billing-list-topbar li.billing").add("acitve");
+    jQuery("ul.billing-list-topbar li.payment").removeClass("acitve");
+    jQuery('#billing-address').removeClass('d-none');
+    jQuery('#billing-address').addClass('d-block');
+    jQuery('#payment-option').removeClass('d-block');
+    jQuery('#payment-option').addClass('d-none');
 
     // Step 4: AJAX Call
-    $.ajax({
-        type: 'POST',
-        url: '<?= base_url('GuestCheckout/save_address_data') ?>',
-        data: addressFormData,
-        success: function(response) {
-            console.log(response);
-            try {
-                var res = JSON.parse(response);
-                if (res.success) {
-                    // Move to next step
-                    // jQuery("ul.billing-list-topbar li.order").addClass("acitve");
-                    jQuery('ul.billing-list-topbar li.billing').addClass('acitve')
+    // $.ajax({
+    //     type: 'POST',
+    //     url: '<?= base_url('GuestCheckout/save_address_data') ?>',
+    //     data: addressFormData,
+    //     success: function(response) {
+    //         console.log(response);
+    //         try {
+    //             var res = JSON.parse(response);
+    //             if (res.success) {
+    //                 // Move to next step
+    //                 // jQuery("ul.billing-list-topbar li.order").addClass("acitve");
+    //                 jQuery('ul.billing-list-topbar li.billing').addClass('acitve')
 
-                    jQuery("ul.billing-list-topbar li.order .img-box").removeClass("red");
-                    jQuery("ul.billing-list-topbar li.billing .img-box").addClass("red");
-                    jQuery("ul.billing-list-topbar li.payment .img-box").removeClass("red");
+    //                 jQuery("ul.billing-list-topbar li.order .img-box").removeClass("red");
+    //                 jQuery("ul.billing-list-topbar li.billing .img-box").addClass("red");
+    //                 jQuery("ul.billing-list-topbar li.payment .img-box").removeClass("red");
 
-                    // jQuery("ul.billing-list-topbar li.billing").add("acitve");
-                    jQuery("ul.billing-list-topbar li.payment").removeClass("acitve");
-                    jQuery('#billing-address').removeClass('d-none');
-                    jQuery('#billing-address').addClass('d-block');
-                    jQuery('#payment-option').removeClass('d-block');
-                    jQuery('#payment-option').addClass('d-none');
-                    // jQuery("#billing-address,#payment-option").hide();
-                } else {
-                    alert('Failed to save instructions');
-                }
-            } catch (e) {
-                console.error("Invalid JSON response", e);
-            }
-        },
-        error: function(err) {
-            console.error("AJAX error", err);
-        }
-    });
+    //                 // jQuery("ul.billing-list-topbar li.billing").add("acitve");
+    //                 jQuery("ul.billing-list-topbar li.payment").removeClass("acitve");
+    //                 jQuery('#billing-address').removeClass('d-none');
+    //                 jQuery('#billing-address').addClass('d-block');
+    //                 jQuery('#payment-option').removeClass('d-block');
+    //                 jQuery('#payment-option').addClass('d-none');
+    //                 // jQuery("#billing-address,#payment-option").hide();
+    //             } else {
+    //                 alert('Failed to save instructions');
+    //             }
+    //         } catch (e) {
+    //             console.error("Invalid JSON response", e);
+    //         }
+    //     },
+    //     error: function(err) {
+    //         console.error("AJAX error", err);
+    //     }
+    // });
 }
 
 // assignRandomNamesToInputs();

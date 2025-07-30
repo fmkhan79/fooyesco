@@ -40,6 +40,7 @@ class CustomersInfo extends Authorization
     {
         $send_email = $this->input->post('send_email') ? true : false;
         $send_sms = $this->input->post('send_sms') ? true : false;
+        $discount = $this->input->post('discount');
         $message = $this->input->post('message');
         $customerDataJson = $this->input->post('selected_customers_data');
 
@@ -50,14 +51,27 @@ class CustomersInfo extends Authorization
             redirect('customers-info/index');
         }
 
+        $this->load->model('Promo_model');
+
         foreach ($customers as $cust) {
             if ($send_email) {
+                $code = $this->Promo_model->generate_unique_promo_code();
+                $this->db->insert('promo_codes', [
+                    'offer_code' => $code,
+                    'discount' => $discount,
+                ]);
+                $personalMessage = str_replace(
+                    ['{promo_code}', '{discount}'],
+                    [$code, $discount],
+                    $message
+                );
+
                 // Send email logic
                 $mailData = [
-                    'message_body' => $message,
+                    'message_body' => $personalMessage,
                     'customer' => $cust
                 ];
-                $subject = 'New Promotion update at '. $cust['restaurant'] .' from Fooyes';
+                $subject = 'New Promotion update at ' . $cust['restaurant'] . ' from Fooyes';
                 $to = $cust['email'];
                 $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, false, true);
             }

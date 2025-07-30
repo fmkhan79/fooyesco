@@ -14,22 +14,35 @@ $ordered_items = $this->order_model->details($message['code']);
 // Get restaurant details (assume same for all items)
 $restaurant_details = $this->restaurant_model->get_by_id($ordered_items[0]['restaurant_id']);
 
+$appliedPromo = $this->session->userdata('user_promo');
+
 // Determine discount percentage
-if ($message["order_type"] == "pickup") {
-    $res_discount = 25;
+if (!empty($appliedPromo['discount']) && is_numeric($appliedPromo['discount'])) {
+    $res_discount = $appliedPromo['discount'];
 } else {
-    $res_discount = 20;
+    if ($message["order_type"] == "pickup") {
+        $res_discount = 25;
+    } else {
+        $res_discount = 20;
+    }
 }
 
 // Prepare calculations
-$subtotal = $message['total_menu_price'];
-$service_charge = $this->cart_model->get_service_amount();
-$delivery_charge = sanitize($message['total_delivery_charge']);
-$bag_charge = 0.10;
-$discount_amount_show = $subtotal * ($res_discount / 100); 
-$grand_total = ($subtotal + $service_charge + $delivery_charge + $bag_charge) - $discount_amount_show;
+$subtotal = $message['total_menu_price']; // menu items total
+$service_charge = $this->cart_model->get_service_amount(); // static or percentage-based service charge
+$delivery_charge = ($message['order_type'] == 'pickup') ? 0 : sanitize($message['total_delivery_charge']);
+$bag_charge = 0.10; // fixed charge
+
+$discount_amount = ($subtotal * $res_discount) / 100;
+
+// print_r($subtotal + $service_charge + $delivery_charge + $bag_charge - $discount_amount);
+// Step 2: Calculate grand total
+$grand_total = ($subtotal + $service_charge + $delivery_charge + $bag_charge) - $discount_amount;
+// print_r(currency($grand_total));
 
 $decoded_address = json_decode($message['address'], true);
+
+
 ?>
 
 
@@ -219,7 +232,7 @@ $decoded_address = json_decode($message['address'], true);
                 <p><strong>Delivered to:</strong><br>
                     <?= sanitize($decoded_address['number'] ?? '') ?>
                     <?= sanitize($decoded_address['street'] ?? '') ?><br>
-                    <?= sanitize($decoded_address['additional_address'] ?? '') ?><br>
+                    <?= sanitize($decoded_address['address'] ?? '') ?><br>
                     <?= sanitize($decoded_address['zip_code'] ?? '') ?>
                     <?= sanitize($decoded_address['city'] ?? '') ?><br>
                     <?= sanitize($decoded_address['country'] ?? '') ?>
@@ -278,13 +291,13 @@ $decoded_address = json_decode($message['address'], true);
                 <?php } ?>
                 <tr>
                     <td>
-                        <?= $res_discount ?>% ONLINE DISCOUNT
+                        <?= $res_discount ?>% DISCOUNT
                     </td>
-                    <td><?= currency("-" . number_format($discount_amount_show, 2)) ?></td>
+                    <td><?= currency("-" . number_format($discount_amount, 2)) ?></td>
                 </tr>
                 <tr>
                     <td><strong>Total</strong> (<?php echo $total_items; ?> Items)</td>
-                    <td><strong><?= currency(number_format($message['grand_total'], 2)) ?></strong></td>
+                    <td><strong><?= currency($grand_total) ?></strong></td>
                 </tr>
             </table>
         </div>

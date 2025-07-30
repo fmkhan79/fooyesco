@@ -3,6 +3,7 @@
     <div class="container-fluid">
 
         <div class="row justify-content-center">
+            <!-- Filter Orders -->
             <div class="col-lg-6">
                 <div class="card h-100">
                     <div class="card-header"><?php echo get_phrase('filter_orders'); ?></div>
@@ -14,8 +15,10 @@
                                         <label><?php echo get_phrase('restaurant'); ?></label>
                                         <select class="form-control select2 w-100" name="restaurant_id" id="restaurant_id">
                                             <option value="all" <?php if ($restaurant_id == "all") echo "selected"; ?>><?php echo get_phrase('all'); ?></option>
-                                            <?php foreach ($restaurants as $key => $restaurant) : ?>
-                                                <option value="<?php echo sanitize($restaurant['id']); ?>" <?php if ($restaurant_id == $restaurant['id']) echo "selected"; ?>><?php echo sanitize($restaurant['name']); ?></option>
+                                            <?php foreach ($restaurants as $restaurant) : ?>
+                                                <option value="<?php echo sanitize($restaurant['id']); ?>" <?php if ($restaurant_id == $restaurant['id']) echo "selected"; ?>>
+                                                    <?php echo sanitize($restaurant['name']); ?>
+                                                </option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -30,6 +33,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Send Message Section -->
             <div class="col-lg-6">
                 <div class="card h-100">
                     <div class="card-header">
@@ -38,23 +43,31 @@
                     <div class="card-body">
                         <form id="promotionForm" action="<?= site_url('customers-info/send_message') ?>" method="POST">
                             <input type="hidden" name="selected_customers_data" id="selected_customers_data">
+
+                            <div class="form-row">
+                                <!-- Discount Field -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="discount_value"><?php echo get_phrase('discount_percentage'); ?> (%)</label>
+                                    <input type="number" class="form-control" name="discount" id="discount_value" min="1" max="100" required placeholder="Enter discount (e.g., 10)">
+                                </div>
+                            </div>
+
                             <div class="form-row">
                                 <div class="col-md-12 mb-3">
                                     <div class="form-send-via d-flex mb-3">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="send_email" id="send_email">
-                                            <label class="form-check-label" for="send_email">
-                                                <?php echo get_phrase('email'); ?>
-                                            </label>
+                                            <label class="form-check-label" for="send_email"><?php echo get_phrase('email'); ?></label>
                                         </div>
                                         <div class="form-check mx-3">
                                             <input class="form-check-input" type="checkbox" name="send_sms" id="send_sms">
-                                            <label class="form-check-label" for="send_sms">
-                                                <?php echo get_phrase('sms'); ?>
-                                            </label>
+                                            <label class="form-check-label" for="send_sms"><?php echo get_phrase('sms'); ?></label>
                                         </div>
                                     </div>
-                                    <textarea class="form-control" name="message" rows="3" placeholder="<?php echo get_phrase('type_your_message'); ?>"></textarea>
+                                    <textarea class="form-control" name="message" id="message_input" rows="3" placeholder="<?php echo get_phrase('type_your_message'); ?>"></textarea>
+                                    <small class="text-muted">
+                                        Note: Message must include both <code>{promo_code}</code> and <code>{discount}</code> placeholders for a valid promotion.
+                                    </small>
                                 </div>
                             </div>
 
@@ -71,20 +84,19 @@
             </div>
         </div>
 
+        <!-- Customer List Table -->
         <div class="row mt-2">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">
-                            <?php echo get_phrase("Promotions", true); ?>
-                        </h3>
+                        <h3 class="card-title"><?php echo get_phrase("Promotions", true); ?></h3>
                     </div>
                     <div class="card-body">
                         <table id="customers_info" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" id="select_all"></th>
-                                    <th><?php echo get_phrase("#"); ?></th>
+                                    <th>#</th>
                                     <th><?php echo get_phrase("name"); ?></th>
                                     <th><?php echo get_phrase("email"); ?></th>
                                     <th><?php echo get_phrase("phone"); ?></th>
@@ -95,8 +107,6 @@
                                 <?php
                                 $index = 1;
                                 $printed = [];
-
-                                // Map restaurant IDs to names
                                 $restaurant_map = [];
                                 foreach ($restaurants as $r) {
                                     $restaurant_map[$r['id']] = $r['name'];
@@ -104,28 +114,24 @@
 
                                 foreach ($customers as $customer) {
                                     $billing = json_decode($customer['billing'], true);
-                                    if($billing['email'] == null && $billing['phone'] == null) continue;
-                                    $uniqueKey = $billing['email'] . '|' . $billing['phone'];
+                                    if ($billing['email'] == null && $billing['phone'] == null) continue;
 
+                                    $uniqueKey = $billing['email'] . '|' . $billing['phone'];
                                     if (in_array($uniqueKey, $printed)) continue;
                                     $printed[] = $uniqueKey;
 
                                     $restaurantName = isset($restaurant_map[$customer['restaurant_id']]) ? $restaurant_map[$customer['restaurant_id']] : 'Unknown';
                                 ?>
                                     <tr>
-                                        <td>
-                                            <input type="checkbox" class="customer_checkbox" name="selected_customers[]" value="<?= $customer['id'] ?>">
-                                        </td>
+                                        <td><input type="checkbox" class="customer_checkbox" name="selected_customers[]" value="<?= $customer['id'] ?>"></td>
                                         <td><?= $index++ ?></td>
                                         <td><?= $billing['first_name'] . ' ' . $billing['last_name'] ?></td>
                                         <td><?= $billing['email'] ?></td>
                                         <td><?= $billing['phone_mobile'] ?? 'No Phone Number' ?></td>
-                                        <td><?= $restaurantName ?></td> <!-- NEW -->
+                                        <td><?= $restaurantName ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
-
-
                         </table>
                     </div>
                 </div>
@@ -134,8 +140,8 @@
     </div>
 </section>
 
+<!-- JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 <script>
     $(document).ready(function() {
         $('#promotionForm').on('submit', function(e) {
@@ -162,7 +168,20 @@
                 return;
             }
 
-            // Put data in hidden input
+            const message = $('#message_input').val().trim();
+
+            if (!message.includes('{promo_code}')) {
+                alert("Your message must include the {promo_code} placeholder.");
+                e.preventDefault();
+                return;
+            }
+
+            if (!message.includes('{discount}')) {
+                alert("Your message must include the {discount} placeholder.");
+                e.preventDefault();
+                return;
+            }
+
             $('#selected_customers_data').val(JSON.stringify(selectedData));
         });
 
