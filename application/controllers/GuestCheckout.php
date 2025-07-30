@@ -219,7 +219,8 @@ class GuestCheckout extends Base
         try {
             $nameMap = json_decode($this->input->post('inputNameMap'), true);
 
-            $flat = $this->input->post($nameMap['flat']);
+            $street = $this->input->post($nameMap['street']); 
+            $flat = $this->input->post($nameMap['flat']); 
             $instructions = $this->input->post($nameMap['instructions']);
             $address = $this->input->post($nameMap['address']);
             $postcode = $this->input->post($nameMap['postcode']);
@@ -229,6 +230,7 @@ class GuestCheckout extends Base
 
             $address_data = array(
                 'flat' => $flat,
+                'street' => $street,
                 'instructions' => $instructions,
                 'address' => $address,
                 'postcode' => $postcode,
@@ -238,7 +240,7 @@ class GuestCheckout extends Base
 
             // Store in session
             $this->session->set_userdata('address', $address_data);
-
+            
             // Update cart_visits
             $this->db->where('session_id', session_id());
             $this->db->update('cart_visits', ['user_address' => $address]);
@@ -254,7 +256,6 @@ class GuestCheckout extends Base
     // index function responsible for showing the CHECKOUT PAGE
     function index()
     {
-
         // var_dump( $this->session->userdata());
         // die();
   $click = $this->input->get('guest') == '1' ? 1 : 0;

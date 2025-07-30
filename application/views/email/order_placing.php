@@ -42,6 +42,7 @@ $grand_total = ($subtotal + $service_charge + $delivery_charge + $bag_charge) - 
 
 $decoded_address = json_decode($message['address'], true);
 
+
 ?>
 
 
@@ -231,7 +232,7 @@ $decoded_address = json_decode($message['address'], true);
                 <p><strong>Delivered to:</strong><br>
                     <?= sanitize($decoded_address['number'] ?? '') ?>
                     <?= sanitize($decoded_address['street'] ?? '') ?><br>
-                    <?= sanitize($decoded_address['additional_address'] ?? '') ?><br>
+                    <?= sanitize($decoded_address['address'] ?? '') ?><br>
                     <?= sanitize($decoded_address['zip_code'] ?? '') ?>
                     <?= sanitize($decoded_address['city'] ?? '') ?><br>
                     <?= sanitize($decoded_address['country'] ?? '') ?>
