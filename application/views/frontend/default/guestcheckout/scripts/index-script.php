@@ -801,6 +801,7 @@
 
             // Handle button clicks and interactions
             document.getElementById("checking").onclick = function() {
+                document.getElementById('instructions_hidden').innerHTML = document.querySelector(`[name="${nameMap['instructions']}"]`).value || "No instructions provided";
                 // document.getElementById("show-address").innerHTML = document.querySelector("input[name='random1']").value + "<br> House/Street: " + document.querySelector("input[name='random4']").value + "<br> Street/Name: " + document.querySelector("input[name='random2']").value;
                 document.getElementById("show-address").innerHTML =
                     document.querySelector(`[name="${nameMap['address']}"]`).value + "<br> House/Street: " +
@@ -949,11 +950,11 @@
 
 
     document.getElementById("checking").onclick = function() {
-        if (document.querySelector("input[name='additional_address']").value == "" && document.querySelector("input[name='street']").value == "" && document.querySelector("input[name='zip_code']").value == "") {
+        if (document.querySelector("input[name='address']").value == "" && document.querySelector("input[name='street']").value == "" && document.querySelector("input[name='zip_code']").value == "") {
             document.getElementById("show-address").innerHTML = "Not Given";
         }
         document.getElementById("show-address").innerHTML =
-            (document.querySelector("input[name='additional_address']").value || "Not given") +
+            (document.querySelector("input[name='address']").value || "Not given") +
             "<br> House/Street: " + (document.querySelector("input[name='street']").value || "Not given") +
             "<br> Street/Name: " + (document.querySelector("input[name='zip_code']").value || "Not given");
 
