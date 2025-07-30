@@ -241,6 +241,12 @@ class Cart extends Base
         echo $response;
     }
 
+    public function set_delivery_charges()
+    {   
+        $charges = $this->input->post('delivery_charges');
+        $this->session->set_userdata('delivery_charges', $charges);
+    }
+
     // public function get_order_summary()
     // {
 
@@ -270,6 +276,7 @@ class Cart extends Base
     {
         $order_type = isset($_POST['order_type']) ? sanitize($_POST['order_type']) : '';
 
+        $deliveryCharge = $this->session->userdata('delivery_charges');
         $subtotal = sanitize($this->cart_model->get_total_menu_price());
         $serviceCharge = sanitize($this->cart_model->get_service_amount());
         $bagCharges = number_format((float) sanitize($this->cart_model->get_bag_charges($order_type)), 2, '.', '');
@@ -290,7 +297,7 @@ class Cart extends Base
         }
 
         $totalDiscount = $discountedAmount + $promo_discount;
-        $grandTotal = $subtotal + $serviceCharge + $bagCharges - $totalDiscount;
+        $grandTotal = $subtotal + $serviceCharge + $bagCharges + $deliveryCharge - $totalDiscount;
 
         $data = [
             'sub_total' => currency($subtotal),

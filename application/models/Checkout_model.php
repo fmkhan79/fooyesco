@@ -234,7 +234,7 @@ class Checkout_model extends Base_model
             $this->load->model('Promo_model');
             $this->Promo_model->update_promo_status($offerCode);
         }
-
+        $this->session->set_userdata('delivery_charges', 0);
         return true;
     }
 
