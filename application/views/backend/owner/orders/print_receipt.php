@@ -100,7 +100,7 @@
     <?php
     // print_r($order_details); 
     $address = json_decode($order_details["address"], true);
-    // print_r($address);
+    // print_r($address['instructions']);
     // Format address properly
     $formattedAddress = '';
 
@@ -346,11 +346,11 @@
                     echo "</left>";
                     echo "<hr>";
                     ?>
-                    <?php if (!empty($address['number'])) : ?>
+                    <?php if (!empty($address['instructions'])) : ?>
                         <div class="row mt-2">
                             <div class="col note" style="font-size: 18px;">
-                                <h3><b><span class="text-danger">Note:</span> <?php echo sanitize($address['number']); ?>
-                            </div></b></h3>
+                                <h3>Note: <?php echo sanitize($address['instructions']); ?>
+                            </div></h3>
                         </div>
                     <?php endif; ?>
 

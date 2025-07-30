@@ -256,6 +256,8 @@ class GuestCheckout extends Base
     // index function responsible for showing the CHECKOUT PAGE
     function index()
     {
+        
+        $this->session->set_userdata('delivery_charges', 0);
         // var_dump( $this->session->userdata());
         // die();
   $click = $this->input->get('guest') == '1' ? 1 : 0;
