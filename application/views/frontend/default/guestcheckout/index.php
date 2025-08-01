@@ -465,7 +465,7 @@ $stripe_settings = json_decode($stripe_settings);
             ?>
 
             <hr />
-            <?php if (sizeof($cart_items) > 0 && false) { ?>
+            <?php if (sizeof($cart_items) > 0) { ?>
                 <div class="row justify-content-md-end">
                     <div class="col-sm-12">
                         <div class="form-group">
