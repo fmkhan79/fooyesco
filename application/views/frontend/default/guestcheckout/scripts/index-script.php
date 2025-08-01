@@ -1251,6 +1251,7 @@
                 const value = selected.value;
                 localStorage.setItem("order-type", value);
                 orderTypeMessage.textContent = `Selected Order Type = "${value}"`;
+                window.location.reload();
             }
         }
 
