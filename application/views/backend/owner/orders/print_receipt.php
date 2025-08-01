@@ -226,7 +226,10 @@
             <span>Subtotal</span>
             <span><?php echo currency(number_format(sanitize($order_details['total_menu_price']), 2)); ?></span>
         </div>
-        <?php if ($order_details["order_type"] == "pickup") { ?>
+         <?php if ($order_details['promo_code'] != null) { ?>
+        <div class="did mt-3">
+            <span><?= $order_details['promo_discount'] ?>% PROMO DISCOUNT</span>
+        <?php } elseif ($order_details["order_type"] == "pickup") { ?>
             <div class="did mt-3">
                 <span>25% ONLINE DISCOUNT</span>
                 <span>
@@ -246,6 +249,10 @@
                             $res_discount = 25;  // Set discount to 25% if order type is pickup
                         }
 
+                        
+                        if($order_details['promo_code'] != null) {
+                            $res_discount = $order_details['promo_discount'];
+                        }
                         // Calculate the discount amount to show
                         // print_r($order_details['total_menu_price']);
                         $discount_amount_show =  $order_details['total_menu_price'] * ($res_discount / 100);

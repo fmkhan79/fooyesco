@@ -679,7 +679,7 @@ class Cart_model extends Base_model
 
         // ✅ If promo code applied, skip other discounts
         if (!empty($promo) && isset($promo['discount'])) {
-            $promo_discount = (($subtotal + $serviceCharge + $bagCharges + $total_delivery_charges) * $promo['discount']) / 100;
+            $promo_discount = ($subtotal * $promo['discount']) / 100;
         } else {
             // ✅ No promo code, so allow default discount
             $discountedAmount = (float) sanitize($this->get_discounted_amount($order_type));
