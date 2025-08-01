@@ -379,46 +379,46 @@
                         //         console.log("📥 Server:", event.data);
                         //     };
                         // };
-                        window.onload = function () {
-                        const socket = new WebSocket("ws://localhost:8765");
+                    //     window.onload = function () {
+                    //     const socket = new WebSocket("ws://localhost:8765");
 
-                        socket.onopen = () => {
-                            const receiptDiv = document.querySelector('.receipt');
+                    //     socket.onopen = () => {
+                    //         const receiptDiv = document.querySelector('.receipt');
 
-                            html2canvas(receiptDiv, {
-                                scale: 4,
-                                useCORS: true
-                            }).then(canvas => {
-                                const imgData = canvas.toDataURL("image/png");
-                                const base64Image = imgData.split(',')[1];
+                    //         html2canvas(receiptDiv, {
+                    //             scale: 4,
+                    //             useCORS: true
+                    //         }).then(canvas => {
+                    //             const imgData = canvas.toDataURL("image/png");
+                    //             const base64Image = imgData.split(',')[1];
 
-                                // Split into chunks
-                                const chunkSize = 4000;
-                                const totalChunks = Math.ceil(base64Image.length / chunkSize);
+                    //             // Split into chunks
+                    //             const chunkSize = 4000;
+                    //             const totalChunks = Math.ceil(base64Image.length / chunkSize);
 
-                                for (let i = 0; i < totalChunks; i++) {
-                                    const chunk = base64Image.slice(i * chunkSize, (i + 1) * chunkSize);
-                                    socket.send(JSON.stringify({
-                                        type: "chunk",
-                                        index: i,
-                                        total: totalChunks,
-                                        data: chunk
-                                    }));
-                                }
+                    //             for (let i = 0; i < totalChunks; i++) {
+                    //                 const chunk = base64Image.slice(i * chunkSize, (i + 1) * chunkSize);
+                    //                 socket.send(JSON.stringify({
+                    //                     type: "chunk",
+                    //                     index: i,
+                    //                     total: totalChunks,
+                    //                     data: chunk
+                    //                 }));
+                    //             }
 
-                                console.log(`📤 Sent ${totalChunks} chunks.`);
+                    //             console.log(`📤 Sent ${totalChunks} chunks.`);
 
-                                setTimeout(() => {
-                                    window.close();
-                                }, 3000);
-                            });
-                        };
+                    //             setTimeout(() => {
+                    //                 window.close();
+                    //             }, 3000);
+                    //         });
+                    //     };
 
-                        socket.onmessage = (event) => {
-                            console.log("📥 Server:", event.data);
-                            window.close();
-                        };
-                    };
+                    //     socket.onmessage = (event) => {
+                    //         console.log("📥 Server:", event.data);
+                    //         window.close();
+                    //     };
+                    // };
 
                     </script>
 
