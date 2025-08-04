@@ -193,13 +193,16 @@ class Checkout_model extends Base_model
 
         $order_type = isset($_POST['order_type']) && $_POST['order_type'] == "collection" && get_order_settings('pickup_order') ? "pickup" : "delivery";
 
+        $appliedPromo = $this->session->userdata('applied_promo');
+        $promo_code = !empty($appliedPromo['offer_code']) ? $appliedPromo['offer_code'] : null;
+        $promo_discount = !empty($appliedPromo['discount']) ? $appliedPromo['discount'] : null;
 
         if ($order_type == "pickup") {
             $order_data  = $this->order_model->get_by_code($order_code);
             $grand_total = $data['amount_to_pay'];
             $billing_data =  $this->session->userdata('billing');
             $json_billing_data = json_encode($billing_data);
-            $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null, 'billing' => $json_billing_data];
+            $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null, 'billing' => $json_billing_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount,];
         } else {
 
             // $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null];
@@ -210,7 +213,7 @@ class Checkout_model extends Base_model
             $address_data = $this->session->userdata('address');
             $json_address_data = json_encode($address_data);
 
-            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data];
+            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount,];
         }
 
         $this->db->where('code', $order_code);
@@ -225,8 +228,6 @@ class Checkout_model extends Base_model
         }
         $this->db->where('session_id', session_id());
         $this->db->update('cart_visits', ['order_placed' => 1]);
-        // ✅ Handle applied promo
-        $appliedPromo = $this->session->userdata('applied_promo');
 
         if (!empty($appliedPromo) && isset($appliedPromo['offer_code'])) {
             $offerCode = $appliedPromo['offer_code'];

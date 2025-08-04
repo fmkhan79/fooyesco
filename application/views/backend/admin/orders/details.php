@@ -39,6 +39,11 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                             <li class="list-group-item">
                                 <b><?php echo get_phrase('sub_total'); ?>: </b> <a class="float-right"><?php echo currency(sanitize($order_data['total_menu_price']) + sanitize($order_data['total_vat_amount'])); ?></a>
                             </li>
+                            <?php if($order_data['promo_code'] != null) {?>
+                            <li class="list-group-item">
+                                <b><?php echo get_phrase('promo_code_discount'); ?>: </b> <a class="float-right"><?php echo sanitize($order_data['promo_code']).' ('. $order_data['promo_discount'] . '%)'; ?></a>
+                            </li>
+                            <?php } ?>
                             <li class="list-group-item">
                                 <b><?php echo get_phrase('total_delivery_charge'); ?>: </b> <a class="float-right"><?php echo currency(sanitize($order_data['total_delivery_charge'])); ?></a>
                             </li>
