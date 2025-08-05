@@ -11,6 +11,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 include 'Base.php';
 class PromoCode extends Base
 {
+    public function index()
+    {
+
+        $page_data['page_title'] = site_phrase("promo_code", true);
+        $page_data['page_name'] = 'promo_code/index';
+        $this->load->model('Promo_model');
+        $page_data['promo_codes'] = $this->Promo_model->get_promo_data();
+        // print_r($page_data['promo_codes']);
+        // die();
+        $this->load->view('backend/index', $page_data);
+    }
+
     public function check_promo() {
         $promo_code = $this->input->post('promo_code');
 

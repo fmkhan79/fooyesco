@@ -235,7 +235,6 @@ $decoded_address = json_decode($message['address'], true);
                     <?= sanitize($decoded_address['address'] ?? '') ?><br>
                     <?= sanitize($decoded_address['zip_code'] ?? '') ?>
                     <?= sanitize($decoded_address['city'] ?? '') ?><br>
-                    <?= sanitize($decoded_address['country'] ?? '') ?>
                 </p>
             <?php } ?>
             <table class="order-items">
@@ -293,7 +292,7 @@ $decoded_address = json_decode($message['address'], true);
                     <td>
                         <?= $res_discount ?>% DISCOUNT
                     </td>
-                    <td><?= currency("-" . number_format($discount_amount, 2)) ?></td>
+                    <td>- <?= currency(number_format($discount_amount, 2)) ?></td>
                 </tr>
                 <tr>
                     <td><strong>Total</strong> (<?php echo $total_items; ?> Items)</td>

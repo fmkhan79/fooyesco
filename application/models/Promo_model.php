@@ -10,6 +10,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Promo_model extends Base_model
 {
+    public function get_promo_data(){
+        return $this->db
+            ->order_by('id', 'desc')
+            ->get('promo_codes')->result();
+    }
+
     public function get_valid_promo($code)
     {
 
