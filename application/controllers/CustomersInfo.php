@@ -61,8 +61,8 @@ class CustomersInfo extends Authorization
                     'discount' => $discount,
                 ]);
                 $personalMessage = str_replace(
-                    ['{promo_code}', '{discount}'],
-                    [$code, $discount],
+                    ['{customer_name}', '{promo_code}', '{discount}'],
+                    [$cust['name'],$code, $discount],
                     $message
                 );
 
