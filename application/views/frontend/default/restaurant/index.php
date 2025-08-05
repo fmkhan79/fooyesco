@@ -709,9 +709,106 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 </section>
 
+<style>
+
+#cookieModal .btn-cb{
+    background-color: #fdc55e;
+    /* border: 5px solid rgb(255, 187, 61); */
+    color: #191919 !important;
+    padding: 8px 28px;
+    font-weight: 500;
+    border-radius: 2rem;
+    font-size: 18px;
+}
+
+#cookieModal{
+    align-content: center;
+}
+
+#cookieModal h5{
+    font-weight: 700;
+}
+
+#cookieModal p{
+    font-weight: 400;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    #cookieModal .btn-cb{
+          background-color: #fdc55e;
+    /* border: 5px solid rgb(255, 187, 61); */
+    color: #191919 !important;
+    padding: 8px 28px;
+    font-weight: 500;
+    border-radius: 2rem;
+        font-size: 12px;
+    }
+
+}
+
+</style>
+
+<!-- Cookie Consent Modal -->
+<div class="modal fade" id="cookieModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <h5 class="mt-3">Accept the Cookies</h5>
+        <p class="my-3 px-lg-5">
+          We use cookies to personalize your experience,<br>
+          analyze site traffic, and serve relevant content.<br>
+          By clicking Accept, you consent to our cookie policy.
+        </p>
+        <a href="" class="btn btn-cb mb-3" onclick="acceptCookies()">Accept</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
+
+  // Accept cookies function
+        function acceptCookies() {
+            setCookie("cookieConsent", "accepted", 30);
+            console.log("Cookie accepted and set.");
+            cookieModal.hide();
+        }
+
+        // Set cookie function
+            function setCookie(name, value, days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                const expires = "expires=" + date.toUTCString();
+                document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+            }
+
+
     document.addEventListener('DOMContentLoaded', function() {
+
+       let cookieModal;
+
+    // On load, check cookie and show modal if not accepted
+        console.log("Cookie on load:", getCookie("cookieConsent"));
+        if (getCookie("cookieConsent") !== "accepted") {
+            const modalElement = document.getElementById('cookieModal');
+            cookieModal = new bootstrap.Modal(modalElement, {
+                backdrop: 'static',
+                keyboard: false
+            });
+            cookieModal.show();
+        }
+        // Get cookie function
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i].trim();
+                if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
+            }
+            return null;
+        }
 
         document.querySelectorAll(".owl-item.cloned").forEach(function(element) {
 
