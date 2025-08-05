@@ -23,7 +23,6 @@
               <i class="fas fa-user-tie"></i> <?php echo get_phrase('switch_to_restaurant_owner', true); ?>
             </a>
           <?php elseif ($this->session->userdata('user_role') == "owner") : ?>
-            <button onclick="open_printer()" id="btnPrinter" class="btn btn-sm btn-primary">Open Printer</button>
             <a href="<?php echo site_url('auth/switch_role'); ?>" class="btn btn-sm btn-success bg-gradient-olive role-switcher" role="button" data-toggle="tooltip" data-placement="Bottom" title="<?php echo get_phrase('a_restaurant_owner_can_also_have_all_the_facilities_of_a_customer'); ?>">
               <i class="fas fa-user-alt"></i> <?php echo get_phrase('switch_to_customer', true); ?>
             </a>
@@ -96,25 +95,6 @@
 
 
 <script>
-
-  console.log(sessionStorage.getItem('printer_status'));
-
-    function open_printer() {
-         let isPrinterOn = sessionStorage.getItem('printer_status');
-        
-        if(!isPrinterOn){
-        $.ajax({
-            url: '<?= site_url("printer/run_exe") ?>',
-            method: 'GET',
-            success: function(response) {
-                const res = JSON.parse(response);
-               sessionStorage.setItem('printer_status', 'true');
-                document.getElementById('btnPrinter').classList.add('d-none');
-                // alert(res.message);
-            }
-        });}
-    };
-
   let ShowTest = false;
     
 

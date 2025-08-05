@@ -277,14 +277,33 @@
                         </p>
                     </a>
                 </li>
-                
-                <li class="nav-item">
-                    <a href="<?php echo site_url('customers-info'); ?>" class="nav-link <?php if ($page_name == "customers_info/index") echo 'active'; ?>">
-                        <i class="nav-icon fas fa-users"></i>
+
+                <li class="nav-item has-treeview <?php if ($page_name == "customers_info/index" || $page_name == "promo_code/index") echo 'menu-open'; ?>">
+                    <a href="#" class="nav-link <?php if ($page_name == "customers_info/index" || $page_name == "promo_code/index") echo 'active'; ?>">
+                        <i class="nav-icon fas fa-list"></i>
                         <p>
-                            <?php echo get_phrase("Promotions"); ?>
+                            <?php echo get_phrase('Promotions'); ?>
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('customers-info'); ?>" class="nav-link <?php if ($page_name == "customers_info/index") echo 'active'; ?>">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    <?php echo get_phrase("Customers"); ?>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('promo-code'); ?>" class="nav-link <?php if ($page_name == "promo_code/index") echo 'active'; ?>">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>
+                                    <?php echo get_phrase("promo_codes"); ?>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <!-- <li class="nav-item">
