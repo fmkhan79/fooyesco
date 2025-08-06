@@ -432,8 +432,11 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
                             <p><?php echo sanitize($restaurant['restaurant_about']) ?></p>
                         </div>
-                        <a class="btn btn-danger"
+                        <!-- <a class="btn btn-danger"
                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
+                            Now</a> -->
+                        <a class="btn btn-danger"
+                            href="http://<?= $restaurant['slug']; ?>.fooyes.local">Order
                             Now</a>
 
                     </div>

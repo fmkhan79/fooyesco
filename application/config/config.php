@@ -32,6 +32,21 @@ $config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ?
 $config['base_url'] .= "://" . $_SERVER['HTTP_HOST'];
 $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
 
+$host = $_SERVER['HTTP_HOST'];
+
+if($host != 'fooyes.local'){
+    $config['base_url'] = 'http://fooyes.local/';
+}
+
+// if ($host !== 'fooyes.local' && preg_match('/\.fooyes\.local$/', $host)) {
+//     $config['base_url'] = "http://$host/";
+// } 
+// if (strpos($host, 'local') !== false) {
+//     $config['base_url'] = 'http://fooyes.local/';
+// } else {
+//     $config['base_url'] = 'https://fooyes.co.uk/';
+// }
+
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -230,7 +245,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 4;
+$config['log_threshold'] = 2;
 
 /*
 |--------------------------------------------------------------------------

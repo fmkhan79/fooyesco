@@ -1,7 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+$host = $_SERVER['HTTP_HOST'];
+
+// Set default controller based on domain
 $route['default_controller'] = 'site';
+if ($host !== 'fooyes.local' && preg_match('/\.fooyes\.local$/', $host)) {
+    $route['default_controller'] = 'site/restaurant';
+} 
+
+
 $route['404_override'] = '';
 $route['login'] = 'auth/index';
 $route['logout'] = 'auth/logout';
@@ -13,7 +21,6 @@ $route['terms-and-conditions'] = 'site/terms_and_conditions';
 $route['become-a-partner'] = 'site/become_a_partner';
 $route['terms-of-use'] = 'site/terms_of_use';
 $route['restaurants/recent'] = 'site/restaurants/recent';
-
 
 $route['chilli-hut-march'] = 'site/restaurant/chilli-hut-march/3';
 $route['commision'] = 'report/sales_summary';
