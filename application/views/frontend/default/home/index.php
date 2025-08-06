@@ -526,7 +526,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                     </div>
                 </div>
 
-                <a class="rr-btn mt-4" href="<?php echo site_url('about_us'); ?>">About Us</a>
+                <a class="rr-btn mt-4" href="<?php echo site_url('about-us'); ?>">About Us</a>
 
             </div>
         </div>

@@ -266,7 +266,7 @@
 
                         // Output the discount amount formatted with currency symbol
                         // print_r($res_discount);
-                        echo currency(number_format("-" . $discount_amount_show, 2));
+                        echo "-" . currency(number_format($discount_amount_show, 2));
 
                         ?>
 
@@ -275,7 +275,7 @@
 
                     <div class="did mt-3">
                         <span>1X CARRY BAG</span>
-                        <span>£0.10</span>
+                        <span><?= currency(number_format(0.10,2))?></span>
                     </div>
 
                     <!-- <?php if ($order_details['total_vat_amount'] != "") { ?>
