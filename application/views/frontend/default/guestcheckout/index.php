@@ -197,9 +197,10 @@ $stripe_settings = json_decode($stripe_settings);
                 </div>
 
                 <div class="col-md-6">
-                    <h4 class="mt-3">
-                    <label class="fw-bold">Additional Delivery Instructions</label>
-                    </h4>
+                    <div class="d-flex">
+                        <h4 class="mt-3">Additional Delivery Instructions</h4>
+                        <div class="mt-3 fw-bold mx-5 " style="color: #F54748; font-weight: bold; cursor: pointer;" onclick="openAddressEditModal()">Edit</div>
+                    </div>
                     <span id="instructions_hidden"></span>
                 </div>
             </div>
@@ -464,7 +465,7 @@ $stripe_settings = json_decode($stripe_settings);
             ?>
 
             <hr />
-            <?php if (sizeof($cart_items) > 0 && false) { ?>
+            <?php if (sizeof($cart_items) > 0) { ?>
                 <div class="row justify-content-md-end">
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -602,7 +603,7 @@ function submitAddressForm() {
       console.log('Address Data Saved!');
     //   window.location.href = "<?= site_url('GuestCheckout?guest=1'); ?>";
     $('#guestAddressModal').modal('hide');
-
+        viewselected_cat_items_summary_total();
     },
     error: function (xhr, status, error) {
       console.error('Error:', error);

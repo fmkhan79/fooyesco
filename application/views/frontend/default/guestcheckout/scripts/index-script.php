@@ -1077,7 +1077,7 @@
         var long_to = $("#long_to").val();
 
         $("#not-deliever").addClass("d-none");
-        $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15)");
+        $("input[name='address']").css("border", "1px solid rgba(0, 0, 0, .15)");
         $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled");
         var button = document.getElementById("checking");
         button.classList.remove("disabled");
@@ -1099,23 +1099,32 @@
                     if (response.message == 'Not delivery at this location') {
                         // Handle 'Not delivery' error
                         $($(".rr-btn.border-0.mt-4")[1]).prop("disabled", "true"); // Disable button
-                        $("input[name='additional_address']").css("border", "1px solid red"); // Highlight input
+                        $("input[name='address']").css("border", "1px solid red"); // Highlight input
                         $("#not-deliever").toggleClass("d-none"); // Show error message
                     } else if (response.message == 'Free delivery applied') {
                         // Handle Free delivery
                         $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled"); // Enable button
-                        $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
+                        $("input[name='address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
                         $("#not-deliever").addClass("d-none"); // Hide error message
                         $(".total-delivery-price").text("£0 (Free Delivery)"); // Display free delivery price
                     } else {
                         // Handle regular delivery price
                         $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled"); // Enable button
-                        $("input[name='additional_address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
+                        $("input[name='address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
                         $("#not-deliever").addClass("d-none"); // Show error message
                         $(".total-delivery-price").text("£" + response.message); // Show delivery price
                         // console.log(response.message);
                         // Update the grand total price
                         console.log(response.message);
+
+                        $.ajax({
+                            url: 'Cart/set_delivery_charges',
+                            type: 'POST',
+                            data: { delivery_charges: response.message },
+                            success: function(res) {
+                                console.log('Delivery charges saved in session');
+                            }
+                        });
                         let subTotal = parseFloat($(".subtotal-price").html().replace("£", ""));
                         // let totalVatPrice = parseFloat($(".total-vat-price").html().replace("£", ""));
                         let totalServicePrice = parseFloat($(".total-service-price").html().replace("£", ""));
@@ -1242,6 +1251,7 @@
                 const value = selected.value;
                 localStorage.setItem("order-type", value);
                 orderTypeMessage.textContent = `Selected Order Type = "${value}"`;
+                window.location.reload();
             }
         }
 

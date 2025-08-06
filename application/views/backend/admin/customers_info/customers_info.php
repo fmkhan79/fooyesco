@@ -66,7 +66,7 @@
                                     </div>
                                     <textarea class="form-control" name="message" id="message_input" rows="3" placeholder="<?php echo get_phrase('type_your_message'); ?>"></textarea>
                                     <small class="text-muted">
-                                        Note: Message must include both <code>{promo_code}</code> and <code>{discount}</code> placeholders for a valid promotion.
+                                        Note: Message must include <code>{customer_name}</code>, <code>{promo_code}</code>, and <code>{discount}</code> placeholders for a valid promotion.
                                     </small>
                                 </div>
                             </div>
@@ -143,11 +143,11 @@
 <!-- JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#promotionForm').on('submit', function(e) {
+     $(document).ready(function () {
+        $('#promotionForm').on('submit', function (e) {
             let selectedData = [];
 
-            $('.customer_checkbox:checked').each(function() {
+            $('.customer_checkbox:checked').each(function () {
                 const row = $(this).closest('tr');
                 const name = row.find('td:eq(2)').text().trim();
                 const email = row.find('td:eq(3)').text().trim();
@@ -182,10 +182,16 @@
                 return;
             }
 
+            if (!message.includes('{customer_name}')) {
+                alert("Your message must include the {customer_name} placeholder.");
+                e.preventDefault();
+                return;
+            }
+
             $('#selected_customers_data').val(JSON.stringify(selectedData));
         });
 
-        $('#select_all').on('change', function() {
+        $('#select_all').on('change', function () {
             $('.customer_checkbox').prop('checked', $(this).prop('checked'));
         });
     });
