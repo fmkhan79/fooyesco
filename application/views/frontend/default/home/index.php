@@ -165,6 +165,54 @@
     color: #fff;
     line-height: 1.5;
 }
+
+.cookie-banner{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: auto;
+    background-color: #fff9ef;
+    z-index: 99999;
+    color: #222;
+    display: none;
+    text-align: center;
+}
+
+.cookie-banner .btn-cb{
+    background-color: #fdc55e;
+    /* border: 5px solid rgb(255, 187, 61); */
+    color: #191919 !important;
+    padding: 8px 28px;
+    font-weight: 500;
+    border-radius: 2rem;
+    font-size: 18px;
+}
+
+.cookie-banner h3{
+    font-size: 18px;
+    font-weight: 400 !important;
+}
+
+@media (max-width: 768px) {
+    .cookie-banner{
+        width: 100%;
+        left: 0;
+    }
+    .cookie-banner p{
+        font-size: 11px;
+    }
+    .cookie-banner .btn-cb{
+          background-color: #fdc55e;
+    /* border: 5px solid rgb(255, 187, 61); */
+    color: #191919 !important;
+    padding: 8px 28px;
+    font-weight: 500;
+    border-radius: 2rem;
+        font-size: 12px;
+    }
+
+}
+
 /* @media (min-width: 480px) {
 .welcome-foo {
     padding-left: 7rem !important
@@ -387,6 +435,9 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                         <a class="btn btn-danger"
                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
                             Now</a>
+                        <!-- <a class="btn btn-danger"
+                            href="http://<?= $restaurant['slug']; ?>.fooyes.local">Order
+                            Now</a> -->
 
                     </div>
                 <?php endforeach; ?>
@@ -602,3 +653,114 @@ favorites or globally inspired delights, we've got something to satisfy every pa
     </div>
 </section>
 
+
+<div class="cookie-banner"  id="cookie-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto mt-3">
+                <h3>We use cookies to personalize your experience,  
+                    analyze site traffic, and serve relevant content.  
+                    By clicking Accept, you consent to our cookie policy.</h3>
+                                    <div class="actions mt-1 mb-3">
+                                        <a href="" onclick="acceptCookies()" class="mx-2 btn btn-cb">Accept</a>
+                <a href="" onclick="ignoreCookies()" class="mx-2 btn btn-cb">Ignore</a>
+                                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Backdrop */
+#termBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9998;
+    display: none;
+}
+
+/* Popup */
+#termPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    z-index: 9999;
+    display: none;
+    text-align: center;
+}
+
+#termPopup h5 {
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+#termPopup p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+#termPopup a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+#termPopup .btn-cb {
+    background-color: #fdc55e;
+    color: #191919;
+    padding: 8px 24px;
+    font-weight: 500;
+    border-radius: 2rem;
+    font-size: 14px;
+    border: none;
+}
+</style>
+
+<!-- Black backdrop -->
+<div id="termBackdrop"></div>
+
+<!-- Terms & Conditions Popup -->
+<div id="termPopup">
+  <h5>Terms & Conditions</h5>
+  <p>
+    Please review and accept our 
+    <a href="<?php echo site_url('privacy-policy'); ?>" target="_blank">Privacy Policy</a> and 
+    <a href="<?php echo site_url('terms-and-conditions'); ?>" target="_blank">Terms & Conditions</a> 
+    before continuing.
+  </p>
+  <button class="btn btn-cb" onclick="acceptTerms()">Continue</button>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (localStorage.getItem("terms_accepted") !== "true") {
+        // Show popup & backdrop
+        document.getElementById("termPopup").style.display = "block";
+        document.getElementById("termBackdrop").style.display = "block";
+
+        // Disable page scroll
+        document.body.style.overflow = "hidden";
+    }
+});
+
+function acceptTerms() {
+    localStorage.setItem("terms_accepted", "true");
+
+    // Hide popup & backdrop
+    document.getElementById("termPopup").style.display = "none";
+    document.getElementById("termBackdrop").style.display = "none";
+
+    // Enable scroll again
+    document.body.style.overflow = "auto";
+}
+</script>

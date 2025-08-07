@@ -177,7 +177,42 @@
 
     window.initMap = initMap;
 
+    window.onload = function () {
+        if (!getCookie("cookieConsent")) {
+            document.getElementById("cookie-banner").style.display = "block";
+        }
+    };
 
+    // Accept handler
+    function acceptCookies() {
+        setCookie("cookieConsent", "accepted", 30);
+        document.getElementById("cookie-banner").style.display = "none";
+    }
+
+    // Ignore handler
+    function ignoreCookies() {
+        setCookie("cookieConsent", "ignored", 30);
+        document.getElementById("cookie-banner").style.display = "none";
+    }
+
+    // Set cookie
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+    }
+
+    // Get cookie
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i].trim();
+            if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
+        }
+        return null;
+    }
 
 
 </script>
