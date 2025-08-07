@@ -25,7 +25,9 @@ class Site extends Base
             $page_data['page_name']          = 'restaurant/index';
             $page_data['page_title']         = site_phrase("restaurant", true);
 
-            // print_r($page_data);
+            
+            $restaurant_id = $page_data['restaurant_details']['id'];
+            
             if (isset($restaurant_id) && trim($restaurant_id) !== '') {
                 // print_r($restaurant_id)
                 $page_data['reviews_count'] = count($this->review_model->get_by_restaurantr_id($restaurant_id));

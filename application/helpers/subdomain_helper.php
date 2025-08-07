@@ -4,8 +4,8 @@ function get_subdomain() {
     $parts = explode('.', $host);
 
     // For domains like chilihut.fooyes.co.uk
-    if (count($parts) >= 3) {
-        return $parts[0]; // 'chilihut'
+    if (count($parts) >= 4) {
+        return $parts[1]; // 'chilihut'
     }
 
     return null; 
