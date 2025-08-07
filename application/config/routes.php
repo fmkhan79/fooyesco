@@ -1,14 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-$host = $_SERVER['HTTP_HOST'];
-
-// Set default controller based on domain
 $route['default_controller'] = 'site';
-if ($host !== 'fooyes.local' && preg_match('/\.fooyes\.local$/', $host)) {
-    $route['default_controller'] = 'site/restaurant';
-} 
-
 
 $route['404_override'] = '';
 $route['login'] = 'auth/index';

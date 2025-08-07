@@ -8,5 +8,5 @@ function get_subdomain() {
         return $parts[0]; // 'chilihut'
     }
 
-    return null; // No subdomain
+    return null; 
 }
