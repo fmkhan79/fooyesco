@@ -15,6 +15,29 @@ class Site extends Base
     // INDEX FUNCTION IS RESPONSIBLE FOR SHOWING INDEX PAGE
     function index()
     {
+        $host = get_subdomain();
+        $checkSlugInDb = $this->restaurant_model->find_slug($host);
+
+        if($checkSlugInDb){    
+            $page_data['reviews_count'] = 0;
+
+            $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($host);
+            $page_data['page_name']          = 'restaurant/index';
+            $page_data['page_title']         = site_phrase("restaurant", true);
+
+            
+            $restaurant_id = $page_data['restaurant_details']['id'];
+            
+            if (isset($restaurant_id) && trim($restaurant_id) !== '') {
+                // print_r($restaurant_id)
+                $page_data['reviews_count'] = count($this->review_model->get_by_restaurantr_id($restaurant_id));
+            }
+
+            $this->load->view(frontend('index'), $page_data);
+            return;
+        }
+        
+
         $page_data['page_name']        = 'home/index';
         $page_data['page_title']       = site_phrase("home", true);
         $page_data['featured_cuisines'] = $this->cuisine_model->get_featured_cuisine();
@@ -28,12 +51,12 @@ class Site extends Base
     }
 
     // RESTAURANT FUNCTION IS RESPONSIBLE FOR SHOWING THE RESTAURANT DETAILS PAGE
-    function restaurant($slug = "", $restaurant_id = "")
+    function restaurant($slug = '', $id = '')
     {
-        
+
         $page_data['reviews_count'] = 0;
 
-        $page_data['restaurant_details'] = $this->restaurant_model->get_by_id($restaurant_id);
+        $page_data['restaurant_details'] = $this->restaurant_model->get_by_id($id);
         $page_data['page_name']          = 'restaurant/index';
         $page_data['page_title']         = site_phrase("restaurant", true);
 

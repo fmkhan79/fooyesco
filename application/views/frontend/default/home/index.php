@@ -435,6 +435,9 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                         <a class="btn btn-danger"
                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
                             Now</a>
+                        <!-- <a class="btn btn-danger"
+                            href="http://<?= $restaurant['slug']; ?>.fooyes.local">Order
+                            Now</a> -->
 
                     </div>
                 <?php endforeach; ?>

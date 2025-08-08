@@ -377,13 +377,13 @@
                         //             const base64Image = imgData.split(',')[1]; // Remove prefix
 
                         //             socket.send(base64Image);
-                        //             console.log("📤 Image of .receipt sent to server.");
+                        //             console.log("ðŸ“¤ Image of .receipt sent to server.");
                         //             // window.close();
                         //         });
                         //     };
 
                         //     socket.onmessage = (event) => {
-                        //         console.log("📥 Server:", event.data);
+                        //         console.log("ðŸ“¥ Server:", event.data);
                         //     };
                         // };
                         window.onload = function () {
@@ -413,7 +413,7 @@
                                     }));
                                 }
 
-                                console.log(`📤 Sent ${totalChunks} chunks.`);
+                                console.log(`ðŸ“¤ Sent ${totalChunks} chunks.`);
 
                                 setTimeout(() => {
                                     window.close();
@@ -422,7 +422,7 @@
                         };
 
                         socket.onmessage = (event) => {
-                            console.log("📥 Server:", event.data);
+                            console.log("ðŸ“¥ Server:", event.data);
                             window.close();
                         };
                     };
