@@ -36,7 +36,10 @@ if (count($restaurant_ids) > 0) {
                                           <a class="dropdown-item" href="https://stagging.chilli-hut-march.co.uk/site/restaurants/recent">Recently added</a>
                                       </div>
                                   </li>-->
-
+                            <?php
+                                $host = get_subdomain();
+                                if($host == 'fooyes'){
+                            ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
@@ -52,6 +55,8 @@ if (count($restaurant_ids) > 0) {
                                     </a>
                                 </div>
                             </li>
+                                <?php }?>
+
                             <li class="cart-menu">
                                 <?php if ($restaurant_details): ?>
                                 <a href="<?php echo site_url('chilli-hut-march'); ?>"

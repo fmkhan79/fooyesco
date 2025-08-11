@@ -2,6 +2,19 @@
 <?php include APPPATH . 'views/frontend/default/navigation/dark.php'; ?>
 <!--============================= RESERVE A SEAT =============================-->
 
+<?php 
+$host = get_subdomain();
+if($host != 'fooyes'):
+?>
+<section class="detail-wbox mt-4 mb-2">
+    <div class="container bg-white text-dark border border-light">
+        <h1 style="font-size:40px; font-weight:600;" class="text-dark mb-5"><span class="text-privacy">Terms &</span>  <span class="text-policy">Conditions</span></h1>
+
+        <?= $restaurant_details['terms_conditions'] ?>
+    </div>
+</section>
+<?php else: ?>
+
 <section class="detail-wbox mt-4 mb-2 " >
     <div class="container bg-white text-dark border border-light">
 
@@ -99,6 +112,8 @@
         </div>
     </div>
 </section>
+<?php endif; ?>
+
 
 <section class="footer-top mt-4">
     <div class="container-fluid">
