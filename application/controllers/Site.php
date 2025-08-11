@@ -138,6 +138,17 @@ class Site extends Base
      * @return void
      */
     public function terms_of_use() {
+         $host = get_subdomain();
+        $checkSlugInDb = $this->restaurant_model->find_slug($host);
+
+        if($checkSlugInDb){
+
+            $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($host);
+            $page_data['page_name'] = 'terms_of_use/index';
+            $page_data['page_title'] = site_phrase("terms_of_use", true);
+            $this->load->view(frontend('index'), $page_data);
+            return;
+        }
         $page_data['page_name'] = 'terms_of_use/index';
         $page_data['page_title'] = site_phrase("terms_of_use", true);
         $this->load->view(frontend('index'), $page_data);
@@ -158,6 +169,18 @@ class Site extends Base
      * @return void
      */
     public function contact_us() {
+
+        $host = get_subdomain();
+        $checkSlugInDb = $this->restaurant_model->find_slug($host);
+
+        if($checkSlugInDb){
+            $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($host);
+            $page_data['page_name'] = 'contact_us/index';
+            $page_data['page_title'] = site_phrase("contact _us", true);
+            $this->load->view(frontend('index'), $page_data);  
+            return;  
+        }
+
         $page_data['page_name'] = 'contact_us/index';
         $page_data['page_title'] = site_phrase("contact _us", true);
         $this->load->view(frontend('index'), $page_data);
@@ -192,6 +215,18 @@ class Site extends Base
      */
     public function privacy_policy()
     {
+        $host = get_subdomain();
+        $checkSlugInDb = $this->restaurant_model->find_slug($host);
+
+        if($checkSlugInDb){
+
+            $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($host);
+            $page_data['page_name']        = 'privacy_policy/index';
+            $page_data['page_title']       = site_phrase("privacy_policy", true);
+            $this->load->view(frontend('index'), $page_data);
+            return;
+        }
+
         $page_data['page_name']        = 'privacy_policy/index';
         $page_data['page_title']       = site_phrase("privacy_policy", true);
         $this->load->view(frontend('index'), $page_data);
@@ -204,6 +239,18 @@ class Site extends Base
      */
     public function terms_and_conditions()
     {
+        $host = get_subdomain();
+        $checkSlugInDb = $this->restaurant_model->find_slug($host);
+
+        if($checkSlugInDb){
+
+            $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($host);
+            $page_data['page_name']        = 'terms_and_conditions/index';
+            $page_data['page_title']       = site_phrase("terms_and_conditions", true);
+            $this->load->view(frontend('index'), $page_data);
+            return;
+        }
+
         $page_data['page_name']        = 'terms_and_conditions/index';
         $page_data['page_title']       = site_phrase("terms_and_conditions", true);
         $this->load->view(frontend('index'), $page_data);
