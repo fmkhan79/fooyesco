@@ -673,6 +673,7 @@ class Cart_model extends Base_model
         $bagCharges = (float) sanitize($this->get_bag_charges($order_type));
         $total_delivery_charges = (float) sanitize($this->get_total_delivery_charge());
 
+        $onlineDiscount = $this->session->userdata('is_online_discount_checked');
         $promo = $this->session->userdata('applied_promo');
         $promo_discount = 0;
         $discountedAmount = 0; // Default = 0
@@ -680,6 +681,10 @@ class Cart_model extends Base_model
         // ✅ If promo code applied, skip other discounts
         if (!empty($promo) && isset($promo['discount'])) {
             $promo_discount = ($subtotal * $promo['discount']) / 100;
+
+            if($onlineDiscount == '1'){
+                $discountedAmount = (float) sanitize($this->get_discounted_amount($order_type));
+            }
         } else {
             // ✅ No promo code, so allow default discount
             $discountedAmount = (float) sanitize($this->get_discounted_amount($order_type));

@@ -53,6 +53,7 @@ class Promo_model extends Base_model
             $user_promo = $this->session->userdata('applied_promo');
             $this->session->set_userdata('user_promo', $user_promo);
             $this->session->set_userdata('applied_promo', '');
+            $this->session->unset_userdata('is_online_discount_checked');
 
 
             log_message('debug', 'Promo updated successfully');

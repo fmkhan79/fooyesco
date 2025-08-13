@@ -459,6 +459,13 @@ $stripe_settings = json_decode($stripe_settings);
                         <div class="discount-label">Discount (20%)</div>
                         <div class="total-discount-applied">-</div>
                     </div>
+
+                    <div class="row mt-2 d-none online-disc">
+                        <div class="col-md-12 d-flex total-price-box">
+                        <input type="checkbox" name="online_discount" id="online_discount">
+                        <span class="mx-2"> Online Discount</span>
+                    </div>
+                </div>
                     
             <?php
             $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);

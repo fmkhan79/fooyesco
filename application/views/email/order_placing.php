@@ -17,8 +17,8 @@ $restaurant_details = $this->restaurant_model->get_by_id($ordered_items[0]['rest
 $appliedPromo = $this->session->userdata('user_promo');
 
 // Determine discount percentage
-if (!empty($appliedPromo['discount']) && is_numeric($appliedPromo['discount'])) {
-    $res_discount = $appliedPromo['discount'];
+if (!empty($message['promo_discount']) && is_numeric($message['promo_discount'])) {
+    $res_discount = $message['promo_discount'];
 } else {
     if ($message["order_type"] == "pickup") {
         $res_discount = 25;
@@ -290,13 +290,31 @@ $decoded_address = json_decode($message['address'], true);
                 <?php } ?>
                 <tr>
                     <td>
-                        <?= $res_discount ?>% DISCOUNT
+                        <?php if($message['promo_discount'] != null): ?>
+                        <?= $message['promo_discount'] ?>% PROMO DISCOUNT
+                        <?php elseif($message["order_type"] == "pickup"): ?>
+                          25% ONLINE DISCOUNT                          
+                        <?php else: ?>
+                          20% ONLINE DISCOUNT                          
+                        <?php endif; ?>
                     </td>
                     <td>- <?= currency(number_format($discount_amount, 2)) ?></td>
                 </tr>
+                <?php if($message['is_online_discount'] != null): ?>
+                <tr>
+                    <td>
+                        <?= $message['is_online_discount'] ?>% ONLINE DISCOUNT
+                    </td>
+                    <td>- <?php
+                        $getOnlineDisc = $message['is_online_discount'];
+                        $is_online_discount = ($subtotal * $getOnlineDisc) / 100;
+                        echo currency(number_format($is_online_discount, 2)) ?>
+                        </td>
+                </tr>
+                <?php endif; ?>
                 <tr>
                     <td><strong>Total</strong> (<?php echo $total_items; ?> Items)</td>
-                    <td><strong><?= currency($grand_total) ?></strong></td>
+                    <td><strong><?= currency($message['grand_total']) ?></strong></td>
                 </tr>
             </table>
         </div>
