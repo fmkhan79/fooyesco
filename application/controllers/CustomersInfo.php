@@ -36,13 +36,59 @@ class CustomersInfo extends Authorization
         $this->load->view('backend/index', $page_data); // This loads views/backend/customers_info/index.php
     }
 
-    public function send_message()
+    // public function send_message()
+    // {
+    //     $send_email = $this->input->post('send_email') ? true : false;
+    //     $send_sms = $this->input->post('send_sms') ? true : false;
+    //     $discount = $this->input->post('discount');
+    //     $message = $this->input->post('message');
+    //     $customerDataJson = $this->input->post('selected_customers_data');
+
+    //     $customers = json_decode($customerDataJson, true);
+
+    //     if (!$customers || empty($message)) {
+    //         $this->session->set_flashdata('error', 'No customer selected or message is empty.');
+    //         redirect('customers-info/index');
+    //     }
+
+    //     $this->load->model('Promo_model');
+
+    //     foreach ($customers as $cust) {
+    //         if ($send_email) {
+    //             $code = $this->Promo_model->generate_unique_promo_code();
+    //             $this->db->insert('promo_codes', [
+    //                 'offer_code' => $code,
+    //                 'discount' => $discount,
+    //             ]);
+    //             $personalMessage = str_replace(
+    //                 ['{customer_name}', '{promo_code}', '{discount}'],
+    //                 [$cust['name'],$code, $discount],
+    //                 $message
+    //             );
+
+    //             // Send email logic
+    //             $mailData = [
+    //                 'message_body' => $personalMessage,
+    //                 'customer' => $cust
+    //             ];
+    //             $subject = 'New Promotion update at ' . $cust['restaurant'] . ' from Fooyes';
+    //             $to = $cust['email'];
+    //             $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, false, true);
+    //         }
+    //     }
+
+    //     redirect(site_url('customers-info/index'));
+    // }
+
+     public function send_message()
     {
         $send_email = $this->input->post('send_email') ? true : false;
         $send_sms = $this->input->post('send_sms') ? true : false;
         $discount = $this->input->post('discount');
         $message = $this->input->post('message');
         $customerDataJson = $this->input->post('selected_customers_data');
+        $selectedDaysJson = $this->input->post('selected_days');
+        $selectedDays     = json_decode($selectedDaysJson, true);
 
         $customers = json_decode($customerDataJson, true);
 
@@ -53,20 +99,38 @@ class CustomersInfo extends Authorization
 
         $this->load->model('Promo_model');
 
+        // Our Twilio credentials
+   
         foreach ($customers as $cust) {
-            if ($send_email) {
-                $code = $this->Promo_model->generate_unique_promo_code();
-                $this->db->insert('promo_codes', [
-                    'offer_code' => $code,
-                    'discount' => $discount,
-                ]);
-                $personalMessage = str_replace(
-                    ['{customer_name}', '{promo_code}', '{discount}'],
-                    [$cust['name'],$code, $discount],
-                    $message
-                );
+            // Generate promo code
+            $code = $this->Promo_model->generate_unique_promo_code();
 
-                // Send email logic
+            $promoData = [
+                'offer_code' => $code,
+                'discount'   => $discount,
+                'monday'     => in_array('monday', $selectedDays) ? 1 : 0,
+                'tuesday'    => in_array('tuesday', $selectedDays) ? 1 : 0,
+                'wednesday'  => in_array('wednesday', $selectedDays) ? 1 : 0,
+                'thursday'   => in_array('thursday', $selectedDays) ? 1 : 0,
+                'friday'     => in_array('friday', $selectedDays) ? 1 : 0,
+                'saturday'   => in_array('saturday', $selectedDays) ? 1 : 0,
+                'sunday'     => in_array('sunday', $selectedDays) ? 1 : 0
+            ];
+
+            $this->db->insert('promo_codes', $promoData);
+
+            $daysText = implode(', ', array_map('ucfirst', $selectedDays));
+
+            // Replace placeholders
+            $personalMessage = str_replace(
+                ['{customer_name}', '{promo_code}', '{discount}', '{valid_days}'],
+                [$cust['name'],$code, $discount, $daysText],
+                $message
+            );
+            $formattedPhone = preg_replace('/^0/', '+44', $cust['phone']);
+
+            // Send Email
+            if ($send_email) {
                 $mailData = [
                     'message_body' => $personalMessage,
                     'customer' => $cust
@@ -74,6 +138,38 @@ class CustomersInfo extends Authorization
                 $subject = 'New Promotion update at ' . $cust['restaurant'] . ' from Fooyes';
                 $to = $cust['email'];
                 $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, false, true);
+            }
+
+            // Send SMS using Twilio via cURL
+            if ($send_sms && !empty($cust['phone'])) {
+                $url = 'https://api.twilio.com/2010-04-01/Accounts/' . $sid . '/Messages.json';
+
+                $data = http_build_query([
+                    'From' => $twilio_number,
+                    'To' => '+923168232627', // should be in +92xxxxxxxxxx format $cust['phone'], $formattedPhone
+                    'Body' => $personalMessage
+                ]);
+
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_USERPWD, $sid . ':' . $token);
+
+                $response = curl_exec($ch);
+
+                if (curl_errno($ch)) {
+                    log_message('error', 'Twilio SMS CURL Error: ' . curl_error($ch));
+                } else {
+                    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                    if ($httpCode >= 400) {
+                        log_message('error', 'Twilio SMS failed. Response: ' . $response);
+                    }
+                }
+
+                curl_close($ch);
             }
         }
 

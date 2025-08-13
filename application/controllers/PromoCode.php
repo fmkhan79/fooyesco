@@ -23,13 +23,32 @@ class PromoCode extends Base
         $this->load->view('backend/index', $page_data);
     }
 
+    // public function check_promo() {
+    //     $promo_code = $this->input->post('promo_code');
+
+    //         $this->load->model('Promo_model');
+
+    //         $promo = $this->Promo_model->get_valid_promo($promo_code);
+            
+    //     if ($promo) {
+    //         $this->session->set_userdata('applied_promo', $promo);
+    //         echo json_encode([
+    //             'success' => true,
+    //             'data' => $promo
+    //         ]);
+    //     } else {
+    //         echo json_encode([
+    //             'success' => false,
+    //             'message' => 'Invalid or already used promo code.'
+    //         ]);
+    //     }
+    // }
     public function check_promo() {
         $promo_code = $this->input->post('promo_code');
+        $this->load->model('Promo_model');
 
-            $this->load->model('Promo_model');
+        $promo = $this->Promo_model->get_valid_promo($promo_code);
 
-            $promo = $this->Promo_model->get_valid_promo($promo_code);
-            
         if ($promo) {
             $this->session->set_userdata('applied_promo', $promo);
             echo json_encode([
@@ -37,12 +56,14 @@ class PromoCode extends Base
                 'data' => $promo
             ]);
         } else {
+            $todayName = date('l'); // For message: 'Wednesday', etc.
             echo json_encode([
                 'success' => false,
-                'message' => 'Invalid or already used promo code.'
+                'message' => "Invalid, already used, or not valid on {$todayName}."
             ]);
         }
     }
+
 
     public function remove_promo()
     {

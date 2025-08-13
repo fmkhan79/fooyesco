@@ -43,12 +43,33 @@
                     <div class="card-body">
                         <form id="promotionForm" action="<?= site_url('customers-info/send_message') ?>" method="POST">
                             <input type="hidden" name="selected_customers_data" id="selected_customers_data">
+                            <input type="hidden" name="selected_days" id="selected_days"> <!-- NEW hidden field -->
 
                             <div class="form-row">
                                 <!-- Discount Field -->
                                 <div class="col-md-6 mb-3">
                                     <label for="discount_value"><?php echo get_phrase('discount_percentage'); ?> (%)</label>
                                     <input type="number" class="form-control" name="discount" id="discount_value" min="1" max="100" required placeholder="Enter discount (e.g., 10)">
+                                </div>
+                            </div>
+
+                            <!-- Days Selection -->
+                            <div class="form-row mb-3">
+                                <div class="col-md-12">
+                                    <label><strong><?php echo get_phrase('valid_days'); ?></strong></label>
+                                    <div class="d-flex flex-wrap">
+                                        <?php 
+                                        $days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+                                        foreach ($days as $day): ?>
+                                            <div class="form-check mr-3">
+                                                <input class="form-check-input promo_day_checkbox" type="checkbox" value="<?= $day ?>" id="day_<?= $day ?>">
+                                                <label class="form-check-label" for="day_<?= $day ?>">
+                                                    <?= ucfirst($day) ?>
+                                                </label>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <small class="text-muted">Only checked days will be valid for this promo.</small>
                                 </div>
                             </div>
 
@@ -66,7 +87,7 @@
                                     </div>
                                     <textarea class="form-control" name="message" id="message_input" rows="3" placeholder="<?php echo get_phrase('type_your_message'); ?>"></textarea>
                                     <small class="text-muted">
-                                        Note: Message must include <code>{customer_name}</code>, <code>{promo_code}</code>, and <code>{discount}</code> placeholders for a valid promotion.
+                                        Note: Message must include <code>{customer_name}</code>, <code>{promo_code}</code>, <code>{valid_days}</code>, and <code>{discount}</code> placeholders for a valid promotion.
                                     </small>
                                 </div>
                             </div>
@@ -82,6 +103,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
         <!-- Customer List Table -->
@@ -167,11 +189,28 @@
                 e.preventDefault();
                 return;
             }
+            
+            let selectedDays = [];
+            $('.promo_day_checkbox:checked').each(function () {
+                selectedDays.push($(this).val());
+            });
+            
+            if (selectedDays.length === 0) {
+                alert("Please select at least one valid day for the promo.");
+                e.preventDefault();
+                return;
+            }
 
             const message = $('#message_input').val().trim();
 
             if (!message.includes('{promo_code}')) {
                 alert("Your message must include the {promo_code} placeholder.");
+                e.preventDefault();
+                return;
+            }
+            
+            if (!message.includes('{valid_days}')) {
+                alert("Your message must include the {valid_days} placeholder.");
                 e.preventDefault();
                 return;
             }
@@ -188,7 +227,9 @@
                 return;
             }
 
+            
             $('#selected_customers_data').val(JSON.stringify(selectedData));
+            $('#selected_days').val(JSON.stringify(selectedDays));
         });
 
         $('#select_all').on('change', function () {
