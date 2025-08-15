@@ -438,6 +438,7 @@ class Orders extends Authorization
     {
         $this->session->set_userdata('show_test_orders', $this->input->post('show_test_orders'));
     }
+
 }
 
 /* End of file Orders.php */

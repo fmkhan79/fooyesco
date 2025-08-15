@@ -25,18 +25,18 @@
     // initialize tooltips
     initToolTip();
 
-    $('#testToggle').on('change', function() {
-        let showTest = $(this).is(':checked') ? 1 : 0;
-
+    function showTestOrders(value) {
         $.ajax({
             url: "<?php echo site_url('orders/set_test_toggle'); ?>",
             type: "POST",
-            data: { show_test_orders: showTest },
+            data: { show_test_orders: value ? 1 : 0 },
             success: function(response) {
-                location.reload(); 
+                console.log("Session updated: show_test_orders =", value);
+                location.reload();
             }
         });
-    });
+    }
+
 </script>
 
 <!-- live order script -->

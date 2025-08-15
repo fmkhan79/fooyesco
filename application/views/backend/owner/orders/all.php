@@ -113,6 +113,7 @@
                             </tr>
                         </thead>
                         <tbody>
+
                            <?php
                             $show_test_orders = $this->session->userdata('show_test_orders');
                             foreach ($orders as $order) :
