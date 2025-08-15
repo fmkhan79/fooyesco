@@ -74,6 +74,17 @@
                         </div>
                     </div>
                 </form>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="d-flex">
+                            <p>Show Test Orders</p>
+                            <label class="toggle-switch mx-3">
+                                <input type="checkbox" id="testToggle" name="show_test_orders" <?php if ($this->session->userdata('show_test_orders')) echo 'checked'; ?>>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -102,7 +113,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
+
+                           <?php
                             $show_test_orders = $this->session->userdata('show_test_orders');
                             foreach ($orders as $order) :
                                 if($show_test_orders != 1){
