@@ -433,6 +433,11 @@ class Orders extends Authorization
 
         redirect(site_url('report/index'));
     }
+
+    public function set_test_toggle()
+    {
+        $this->session->set_userdata('show_test_orders', $this->input->post('show_test_orders'));
+    }
 }
 
 /* End of file Orders.php */
