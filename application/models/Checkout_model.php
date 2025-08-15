@@ -322,70 +322,70 @@ class Checkout_model extends Base_model
         return true;
     }
     
-    public function cash_on_collection()
-    {
+    // public function cash_on_collection()
+    // {
 
-        $data['amount_to_pay'] = $this->cart_model->get_grand_total($_POST['order_type']);
-        $data['amount_paid'] = 0;
-        $data['payment_method'] = "cash_on_collection";
-        $data['data'] = json_encode([]);
-        $data['created_at'] = strtotime(date('D, d-M-Y'));
+    //     $data['amount_to_pay'] = $this->cart_model->get_grand_total($_POST['order_type']);
+    //     $data['amount_paid'] = 0;
+    //     $data['payment_method'] = "cash_on_collection";
+    //     $data['data'] = json_encode([]);
+    //     $data['created_at'] = strtotime(date('D, d-M-Y'));
 
-        $order_code = $this->order_model->confirm(null, $_POST['order_type']);
-        $data['order_code'] = $order_code;
+    //     $order_code = $this->order_model->confirm(null, $_POST['order_type']);
+    //     $data['order_code'] = $order_code;
 
-        $this->db->insert('payment', $data);
+    //     $this->db->insert('payment', $data);
 
-        // if($order_type == "collection")
-        //     $order_type = "pickup";
+    //     // if($order_type == "collection")
+    //     //     $order_type = "pickup";
 
-        $order_type = isset($_POST['order_type']) && $_POST['order_type'] == "collection" && get_order_settings('pickup_order') ? "pickup" : "delivery";
+    //     $order_type = isset($_POST['order_type']) && $_POST['order_type'] == "collection" && get_order_settings('pickup_order') ? "pickup" : "delivery";
 
-        $appliedPromo = $this->session->userdata('applied_promo');
-        $promo_code = !empty($appliedPromo['offer_code']) ? $appliedPromo['offer_code'] : null;
-        $promo_discount = !empty($appliedPromo['discount']) ? $appliedPromo['discount'] : null;
+    //     $appliedPromo = $this->session->userdata('applied_promo');
+    //     $promo_code = !empty($appliedPromo['offer_code']) ? $appliedPromo['offer_code'] : null;
+    //     $promo_discount = !empty($appliedPromo['discount']) ? $appliedPromo['discount'] : null;
 
-        if ($order_type == "pickup") {
-            $order_data  = $this->order_model->get_by_code($order_code);
-            $grand_total = $data['amount_to_pay'];
-            $billing_data =  $this->session->userdata('billing');
-            $json_billing_data = json_encode($billing_data);
-            $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null, 'billing' => $json_billing_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount,];
-        } else {
+    //     if ($order_type == "pickup") {
+    //         $order_data  = $this->order_model->get_by_code($order_code);
+    //         $grand_total = $data['amount_to_pay'];
+    //         $billing_data =  $this->session->userdata('billing');
+    //         $json_billing_data = json_encode($billing_data);
+    //         $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null, 'billing' => $json_billing_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount,];
+    //     } else {
 
-            // $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null];
-            $billing_data =  $this->session->userdata('billing');
-            $json_billing_data = json_encode($billing_data);
+    //         // $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null];
+    //         $billing_data =  $this->session->userdata('billing');
+    //         $json_billing_data = json_encode($billing_data);
 
 
-            $address_data = $this->session->userdata('address');
-            $json_address_data = json_encode($address_data);
+    //         $address_data = $this->session->userdata('address');
+    //         $json_address_data = json_encode($address_data);
 
-            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount,];
-        }
+    //         $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount,];
+    //     }
 
-        $this->db->where('code', $order_code);
-        //billing data is inserting here
-        $this->db->update('orders', $updater);
+    //     $this->db->where('code', $order_code);
+    //     //billing data is inserting here
+    //     $this->db->update('orders', $updater);
 
-        if (!$this->session->userdata('is_logged_in')) {  // Only update if the user is NOT logged in
-            $user_id = $this->session->userdata('user_id');
-            if ($user_id) {
-                $this->customer_model->update_is_complete($user_id, 1);
-            }
-        }
-        $this->db->where('session_id', session_id());
-        $this->db->update('cart_visits', ['order_placed' => 1]);
+    //     if (!$this->session->userdata('is_logged_in')) {  // Only update if the user is NOT logged in
+    //         $user_id = $this->session->userdata('user_id');
+    //         if ($user_id) {
+    //             $this->customer_model->update_is_complete($user_id, 1);
+    //         }
+    //     }
+    //     $this->db->where('session_id', session_id());
+    //     $this->db->update('cart_visits', ['order_placed' => 1]);
 
-        if (!empty($appliedPromo) && isset($appliedPromo['offer_code'])) {
-            $offerCode = $appliedPromo['offer_code'];
+    //     if (!empty($appliedPromo) && isset($appliedPromo['offer_code'])) {
+    //         $offerCode = $appliedPromo['offer_code'];
 
-            $this->load->model('Promo_model');
-            $this->Promo_model->update_promo_status($offerCode);
-        }
-        $this->session->set_userdata('delivery_charges', 0);
-        return true;
-    }
+    //         $this->load->model('Promo_model');
+    //         $this->Promo_model->update_promo_status($offerCode);
+    //     }
+    //     $this->session->set_userdata('delivery_charges', 0);
+    //     return true;
+    // }
 
     // public function get_payment_method_by_user_id($user_id) {
     //     $this->db->select('payment_method');
