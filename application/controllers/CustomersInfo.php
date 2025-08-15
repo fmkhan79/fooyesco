@@ -100,6 +100,12 @@ class CustomersInfo extends Authorization
         $this->load->model('Promo_model');
 
         // Our Twilio credentials
+        $this->load->model('admin_setting');
+        $twilio = $this->admin_setting->get_twilio_credentials();
+
+        $sid = $twilio->twilio_sid;
+        $token  = $twilio->twilio_token;
+        $twilio_number = $twilio->twilio_phone;
    
         foreach ($customers as $cust) {
             // Generate promo code
