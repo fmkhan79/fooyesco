@@ -411,6 +411,15 @@ class GuestCheckout extends Base
         }
     }
 
+    // Save If User Use Promo and Checked Online Discount
+    public function update_online_discount_status(){
+         $isChecked = $this->input->post('online_discount'); // 1 or 0 from AJAX
+        // Store in session
+        $this->session->set_userdata('is_online_discount_checked', $isChecked);
+
+        echo json_encode(['status' => 'success', 'checked' => $isChecked]);
+    }
+
     // CHECK THE ADDRESS ID
     public function check_address_validity($address_id = "")
     {

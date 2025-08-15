@@ -459,6 +459,13 @@ $stripe_settings = json_decode($stripe_settings);
                         <div class="discount-label">Discount (20%)</div>
                         <div class="total-discount-applied">-</div>
                     </div>
+
+                    <div class="row mt-2 d-none online-disc">
+                        <div class="col-md-12 d-flex total-price-box">
+                        <input type="checkbox" name="online_discount" id="online_discount">
+                        <span class="mx-2"> Online Discount</span>
+                    </div>
+                </div>
                     
             <?php
             $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
@@ -559,11 +566,111 @@ $stripe_settings = json_decode($stripe_settings);
   </div>   <!-- .modal-dialog -->
 </div>     <!-- #guestAddressModal -->
 
+
+
+<style>
+
+#cookieModal .btn-cb{
+    background-color: #fdc55e;
+    /* border: 5px solid rgb(255, 187, 61); */
+    color: #191919 !important;
+    padding: 8px 28px;
+    font-weight: 500;
+    border-radius: 2rem;
+    font-size: 18px;
+}
+
+#cookieModal{
+    align-content: center;
+}
+
+#cookieModal h5{
+    font-weight: 700;
+}
+
+#cookieModal p{
+    font-weight: 400;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    #cookieModal .btn-cb{
+          background-color: #fdc55e;
+    /* border: 5px solid rgb(255, 187, 61); */
+    color: #191919 !important;
+    padding: 8px 28px;
+    font-weight: 500;
+    border-radius: 2rem;
+        font-size: 12px;
+    }
+
+}
+
+</style>
+
+<!-- Cookie Consent Modal -->
+<div class="modal fade" id="cookieModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <h5 class="mt-3">Accept the Cookies</h5>
+        <p class="my-3 px-lg-5">
+          We use cookies and similar technologies to improve your browsing experience, analyze site traffic, and personalize content. By clicking “Accept”, you agree to our use of cookies.
+<br><br>
+    By creating an account, making a purchase, or subscribing to our newsletter, you agree to our <a href="<?php echo site_url('terms-and-conditions'); ?>" target="_blank" style="color: #F54748;">Terms & Conditions</a> and <a target="_blank" href="<?php echo site_url('privacy-policy'); ?>" style="color: #F54748;">Privacy Policy</a>, and you consent to receive promotional emails from us about products, offers, and updates. You can unsubscribe at any time via the link in our emails or by contacting us directly.
+            </p>
+        <a href="" class="btn btn-cb mb-3" onclick="acceptCookies()">Accept & Continue</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <script>
+
+ // Accept cookies function
+        function acceptCookies() {
+            setCookie("cookieConsent", "accepted", 30);
+            console.log("Cookie accepted and set.");
+            cookieModal.hide();
+        }
+
+        // Set cookie function
+            function setCookie(name, value, days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                const expires = "expires=" + date.toUTCString();
+                document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+            }
 
 $(document).ready(function () {
 
-    if (orderTypeV === 'delivery') {
+        let cookieModal;
+
+    // On load, check cookie and show modal if not accepted
+        console.log("Cookie on load:", getCookie("cookieConsent"));
+        if (getCookie("cookieConsent") !== "accepted") {
+            const modalElement = document.getElementById('cookieModal');
+            cookieModal = new bootstrap.Modal(modalElement, {
+                backdrop: 'static',
+                keyboard: false
+            });
+            cookieModal.show();
+        }
+        // Get cookie function
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i].trim();
+                if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
+            }
+            return null;
+        }
+
+
+    if (orderTypeV === 'delivery' && getCookie("cookieConsent") === "accepted") {
         $('#guestAddressModal').modal({
         backdrop: 'static',
         keyboard: false

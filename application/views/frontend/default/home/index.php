@@ -738,7 +738,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
     <a href="<?php echo site_url('terms-and-conditions'); ?>" target="_blank">Terms & Conditions</a> 
     before continuing.
   </p>
-  <button class="btn btn-cb" onclick="acceptTerms()">Continue</button>
+  <button class="btn btn-cb" onclick="continueTerms()">Continue</button>
 </div>
 
 <script>
@@ -753,7 +753,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-function acceptTerms() {
+function continueTerms() {
     localStorage.setItem("terms_accepted", "true");
 
     // Hide popup & backdrop

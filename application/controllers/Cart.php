@@ -281,6 +281,8 @@ class Cart extends Base
         $serviceCharge = sanitize($this->cart_model->get_service_amount());
         $bagCharges = number_format((float) sanitize($this->cart_model->get_bag_charges($order_type)), 2, '.', '');
 
+        $online_discount_checked = $this->session->userdata('is_online_discount_checked');
+        
         // Promo session check
         $promo = $this->session->userdata('applied_promo');
         $promo_discount = 0;
@@ -290,6 +292,12 @@ class Cart extends Base
         if (!empty($promo) && isset($promo['discount'])) {
             $discountLabel = $promo['discount'] . '%';
             $promo_discount = ($subtotal * $promo['discount']) / 100;
+
+            if ($online_discount_checked) {
+                $discountedAmount = (float) sanitize($this->cart_model->get_discounted_amount($order_type));
+                $discountLabel .= ' + ' . $this->cart_model->get_total_discount_applied_percentage($order_type) . '%';
+            }
+
         } else {
             // Only apply default discount if promo is NOT applied
             $discountedAmount = number_format((float) sanitize($this->cart_model->get_discounted_amount($order_type)), 2, '.', '');

@@ -273,6 +273,19 @@
                         </span>
                     </div>
 
+                    <?php if ($order_details['is_online_discount'] != null) { ?>
+                        <div class="did mt-3">
+                            <span><?= $order_details['is_online_discount'] ?>% ONLINE DISCOUNT</span>
+                            <span>
+                                <?php
+                                    $is_online_discount = $order_details['is_online_discount'];
+                                    $online_discount_amount_show =  $order_details['total_menu_price'] * ($is_online_discount / 100);
+                                    echo "-" . currency(number_format($online_discount_amount_show, 2));
+                                ?>
+                            </span>
+                        </div>
+                    <?php }?>
+
                     <div class="did mt-3">
                         <span>1X CARRY BAG</span>
                         <span><?= currency(number_format(0.10,2))?></span>
@@ -344,7 +357,7 @@
                             echo "<h3><b>PAID VIA CARD</b></h3>";
                         }
                     } else {
-                        if ($payment["payment_method"] == "cash_on_delivery") {
+                        if ($payment["payment_method"] == "cash_on_collection") {
                             echo "<h3><b>CASH ON COLLECTION</b></h3>";
                         } else if ($payment["payment_method"] == "stripe") {
                             echo "<h3><b>PAID VIA CARD (COLLECTION)</b></h3>";

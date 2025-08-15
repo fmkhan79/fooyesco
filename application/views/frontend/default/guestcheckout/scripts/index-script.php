@@ -25,7 +25,32 @@
     //   $(this).val(foo);
     // });
 
+    $('#online_discount').on('change', function() {
+        let isChecked = $(this).is(':checked') ? 1 : 0;
+
+         $.ajax({
+            url: '<?php echo site_url("GuestCheckout/update_online_discount_status"); ?>',
+            type: 'POST',
+            data: { online_discount: isChecked },
+            success: function(response) {
+                console.log('Updated successfully:', response);
+                            viewselected_cat_items_summary_total();
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating:', error);
+            }
+        });
+    });
+
     $(document).ready(function() {
+
+        let savedValue = "<?= $this->session->userdata('is_online_discount_checked') ?>";
+        if (savedValue == '1') {
+            $('#online_discount').prop('checked', true);
+        } else {
+            $('#online_discount').prop('checked', false);
+        }
 
         var appliedPromo = <?php echo json_encode($this->session->userdata('applied_promo')); ?>;
         console.log("Applied Promo Session:", appliedPromo);
@@ -53,7 +78,7 @@
 
                             $("#apply_promo").addClass("d-none");
                             $("#remove_promo").removeClass("d-none");
-
+                            $('.online-disc').removeClass('d-none');
                             messageEl.innerText = `Promo applied successfully! ${discount}% off.`;
                             messageEl.className = "text-success";
 
@@ -508,7 +533,7 @@
                     // ✅ Update UI
                     messageEl.innerText = `Promo applied successfully! ${discount}% off.`;
                     messageEl.className = "text-success";
-
+                            $('.online-disc').removeClass('d-none');
                     document.getElementById("promo_code").readOnly = true;
                     document.getElementById("apply_promo").classList.add("d-none");
                     document.getElementById("remove_promo").classList.remove("d-none");
@@ -543,7 +568,7 @@
 
                     messageEl.innerText = data.message;
                     messageEl.className = "text-warning";
-
+                    $('.online-disc').addClass('d-none');
                     document.getElementById("remove_promo").classList.add("d-none");
                     document.getElementById("apply_promo").classList.remove("d-none");
 
