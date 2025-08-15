@@ -3,7 +3,7 @@
 
 <?php 
 $host = get_subdomain();
-if($host != 'fooyes'):
+if($host != 'fooyes' || $host != 'staging'):
 ?>
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
