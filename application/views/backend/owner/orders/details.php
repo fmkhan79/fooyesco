@@ -44,7 +44,15 @@ if ($order_data["order_type"] == "pickup") {
                             <li class="list-group-item">
                                 <b><?php echo get_phrase('sub_total'); ?>: </b> <a class="float-right"><?php echo currency(sanitize($order_data['total_menu_price']) + sanitize($order_data['total_vat_amount'])); ?></a>
                             </li>
-                             <?php if ($order_data['promo_code'] != null) {
+                            <?php 
+                                if($order_data['is_online_discount'] != null):
+                            ?>
+                            <li class="list-group-item">
+                                <b><?php echo get_phrase('online_discount'); ?>: </b> <a class="float-right"><?php echo sanitize($order_data['is_online_discount']); ?>%</a>
+                            </li>
+                             <?php 
+                                endif;
+                             if ($order_data['promo_code'] != null) {
                                     $res_discount = $order_data['promo_discount'];
                                 ?>
                                     <li class="list-group-item">
