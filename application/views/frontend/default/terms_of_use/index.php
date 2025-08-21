@@ -3,7 +3,7 @@
 
 <?php 
 $host = get_subdomain();
-if($host == 'fooyes' || $host == 'staging'):
+if($host == 'fooyes' || $host == 'staging'){
 ?>
 
 <section class="detail-wbox mt-4 mb-2">
@@ -128,7 +128,7 @@ Scotland, or Northern Ireland, as determined by your residency.
 </div>
 </div>
 </section>
-<?php else: ?>
+<?php }else{ ?>
 
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
@@ -137,7 +137,7 @@ Scotland, or Northern Ireland, as determined by your residency.
         <?= $restaurant_details['terms_of_use'] ?>
     </div>
 </section>
-<?php endif; ?>
+<?php } ?>
 
 <section class="dt-hide">
     <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>"/>

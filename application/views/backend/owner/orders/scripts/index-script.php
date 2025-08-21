@@ -17,7 +17,7 @@
     initDateRangePicker(['daterange-btn']);
 
     // initialize datatable
-    initDataTables(['orders'], 25);
+    // initDataTables(['orders'], 25);
 
     // initialize select2
     initSelect2();
