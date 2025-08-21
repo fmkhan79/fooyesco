@@ -210,3 +210,24 @@
 <?php if (!count($orders)) : ?>
     <?php isEmpty(); ?>
 <?php endif; ?>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+        $('#orders').DataTable({
+            pageLength: 5,
+            columnDefs: [
+                {
+                    targets: 0,
+                    visible: true, 
+                    orderData: [0, 1], 
+                }
+            ],
+            order: [[0, 'desc']]
+        });
+    });
+
+</script>
