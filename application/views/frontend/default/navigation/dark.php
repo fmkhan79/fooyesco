@@ -56,7 +56,7 @@ if (count($restaurant_ids) > 0) {
                                 </div>
                             </li>
                             <?php }?>
-
+<!-- 
                             <li class="cart-menu">
                                 <?php if ($restaurant_details): ?>
                                 <a href="<?php echo site_url('chilli-hut-march'); ?>"
@@ -77,7 +77,7 @@ if (count($restaurant_ids) > 0) {
                                 </a>
                                 <?php endif; ?>
 
-                            </li>
+                            </li> -->
                             <li class="nav-item reg-btn">
 
                             </li>
