@@ -1,6 +1,11 @@
 <!-- NAVIGATION BAR -->
 <?php include APPPATH . 'views/frontend/default/navigation/dark.php'; ?>
 
+<?php 
+$host = get_subdomain();
+if($host == 'fooyes' || $host == 'staging'):
+?>
+
 <section class="detail-wbox mt-4 mb-2">
 <div class="container bg-white text-dark border border-light">
 
@@ -123,6 +128,16 @@ Scotland, or Northern Ireland, as determined by your residency.
 </div>
 </div>
 </section>
+<?php else: ?>
+
+<section class="detail-wbox mt-4 mb-2">
+    <div class="container bg-white text-dark border border-light">
+       <h1 style="font-size:40px; font-weight:600;" class=" text-dark"><span class="text-privacy">Terms</span>  <span class="text-policy">Of Use</span></h1>
+
+        <?= $restaurant_details['terms_of_use'] ?>
+    </div>
+</section>
+<?php endif; ?>
 
 <section class="dt-hide">
     <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>"/>

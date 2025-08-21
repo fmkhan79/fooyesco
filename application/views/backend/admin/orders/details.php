@@ -4,6 +4,11 @@
 <?php
 $customer_details = $this->customer_model->get_by_id($order_data['customer_id']);
 $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code);
+$restaurant_details = $this->restaurant_model->get_by_id($order_data['restaurant_id']);
+$res_discount = $restaurant_details['res_discount'];
+if ($order_data["order_type"] == "pickup") {
+    $res_discount = 25;
+}
 ?>
 <section class="content">
     <div class="container-fluid">
@@ -39,14 +44,40 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
                             <li class="list-group-item">
                                 <b><?php echo get_phrase('sub_total'); ?>: </b> <a class="float-right"><?php echo currency(sanitize($order_data['total_menu_price']) + sanitize($order_data['total_vat_amount'])); ?></a>
                             </li>
-                            <?php if($order_data['promo_code'] != null) {?>
-                            <li class="list-group-item">
-                                <b><?php echo get_phrase('promo_code_discount'); ?>: </b> <a class="float-right"><?php echo sanitize($order_data['promo_code']).' ('. $order_data['promo_discount'] . '%)'; ?></a>
-                            </li>
-                            <?php } ?>
+                            <?php if ($order_data['promo_code'] != null) {
+                                    $res_discount = $order_data['promo_discount'];
+                                ?>
+                                    <li class="list-group-item">
+                                        <b><?php echo get_phrase('promo_code_discount'); ?>: </b>
+                                        <a class="float-right">
+                                            <?php echo sanitize($order_data['promo_code']) . ' (' . $order_data['promo_discount'] . '%)'; ?>
+                                        </a>
+                                    </li>
+                                <?php
+                                } else {
+                                    // Promo code nahi hai to pickup ya online discount show karo
+                                    if ($order_data["order_type"] == "pickup") {
+                                ?>
+                                        <li class="list-group-item">
+                                            <b><?php echo get_phrase('online_discount'); ?>: </b>
+                                            <a class="float-right">25%</a>
+                                        </li>
+                                <?php
+                                    } else {
+                                ?>
+                                        <li class="list-group-item">
+                                            <b><?php echo get_phrase('online_discount'); ?>: </b>
+                                            <a class="float-right">20%</a>
+                                        </li>
+                                <?php
+                                    }
+                                }
+                                if ($order_data['order_type'] != "pickup") :
+                            ?>
                             <li class="list-group-item">
                                 <b><?php echo get_phrase('total_delivery_charge'); ?>: </b> <a class="float-right"><?php echo currency(sanitize($order_data['total_delivery_charge'])); ?></a>
                             </li>
+                            <?php endif; ?>
                             <li class="list-group-item">
                                 <b><?php echo get_phrase('Commission'); ?>: </b>
                                 <a class="float-right">

@@ -303,6 +303,21 @@ class GuestCheckout extends Base
             error(site_phrase('an_error_occurred'), site_url('cart'));
         }
     }
+   
+    public function cash_on_collection()
+    {
+        // CHECK IF THE DELIVERY ADDRESS IS EMPTY OR NOT
+        $address_id = sanitize($this->input->post('address_number'));
+        // $this->check_address_validity($address_id);
+
+        $response = $this->checkout_model->cash_on_collection();
+        if ($response) {
+            $this->session->set_flashdata('confirm_order', true);
+            success(site_phrase('order_submitted_successfully'), site_url('cart'));
+        } else {
+            error(site_phrase('an_error_occurred'), site_url('cart'));
+        }
+    }
 
     // PAY WITH PAYPAL FUNCTION
     public function pay_with_paypal()
@@ -394,6 +409,15 @@ class GuestCheckout extends Base
         } else {
             error($response['status_msg'], site_url('cart'));
         }
+    }
+
+    // Save If User Use Promo and Checked Online Discount
+    public function update_online_discount_status(){
+         $isChecked = $this->input->post('online_discount'); // 1 or 0 from AJAX
+        // Store in session
+        $this->session->set_userdata('is_online_discount_checked', $isChecked);
+
+        echo json_encode(['status' => 'success', 'checked' => $isChecked]);
     }
 
     // CHECK THE ADDRESS ID

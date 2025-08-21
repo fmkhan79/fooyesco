@@ -1,5 +1,11 @@
 <!-- NAVIGATION BAR -->
-<?php include APPPATH . 'views/frontend/default/navigation/dark.php'; ?>
+<?php include APPPATH . 'views/frontend/default/navigation/dark.php'; 
+
+// echo '<pre>';
+// print_r($restaurant_details);
+// echo '</pre>';
+// die();
+?>
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -129,25 +135,58 @@
     <div class="row contact-info-section">
         <div class="col-md-6 contact-info-left">
             <h4 class="contact-heading">Contact Us</h4>
-            <p class="contact-timing">
-                Monday to Friday: 9AM to 5PM<br>
-                Saturday: 11AM to 5PM<br>
-                Sunday: 12AM to 5PM
-            </p>
+            <?php if (!empty($restaurant_details)) { ?>
+                <p class="contact-timing">
+                    <?= $restaurant_details['restaurant_about'] ?>
+                </p>
+            <?php } else{ ?>            
+                <p class="contact-timing">
+                    Monday to Friday: 9AM to 5PM<br>
+                    Saturday: 11AM to 5PM<br>
+                    Sunday: 12AM to 5PM
+                </p>
+            <?php } ?>
         </div>
         <div class="col-md-6 contact-info-right">
             <ul class="contact-details-list list-unstyled">
 
+                <?php if (!empty($restaurant_details)) { ?>
+                    <li><i class="fab fa-whatsapp contact-icon"></i> <a href="https://wa.me/+44<?= $restaurant_details['phone'] ?>" target="_blank" class="contact-detail-text text-dark"> <?= $restaurant_details['phone'] ?></a></li>
+                    <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:<?= $restaurant_details['owner_email'] ?>" class="contact-detail-text text-dark"><?= $restaurant_details['owner_email'] ?></a></li>
+                    <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant_details['address'] ?></span></li>    
+                <?php } else{ ?>
                 <li><i class="fab fa-whatsapp contact-icon"></i> <a href="https://wa.me/+447438797814" target="_blank" class="contact-detail-text text-dark"> 07438797814</a></li>
                 <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">support@fooyes.co.uk</a></li>
                 <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text">110 Eastern Ave, Peterborough PE1 4PW, UK</span></li>
                 <!-- <li><i class="fas fa-shipping-fast contact-icon"></i> <span class="contact-detail-text">Free standard shipping on all orders.</span></li> -->
+                <?php } ?>
 
             </ul>
         </div>
     </div>
 
     <!-- Map -->
+    <?php if (!empty($restaurant_details)) {
+    $lat = $restaurant_details['latitude'];
+    $lng = $restaurant_details['longitude'];
+    
+
+    // Google Maps Embed API URL
+    $map_url = "https://www.google.com/maps/place?q={$lat},{$lng}&hl=es;z=14&output=embed";
+?>
+    <div class="map-section">
+        <h5 class="map-heading">Get In Touch</h5>
+        <iframe 
+            src="<?php echo $map_url; ?>"
+            width="100%" 
+            height="450" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+    <?php } else{ ?>
     <div class="map-section">
         <h5 class="map-heading">Get In Touch</h5>
         <iframe 
@@ -160,8 +199,41 @@
             referrerpolicy="no-referrer-when-downgrade">
         </iframe>
     </div>
+    <?php } ?>
 
+
+    <?php if (!empty($restaurant_details)) { ?>
+                        <h5 class="map-heading">Opening Hours</h5>
+                <table cellpadding="5" border="1">
+                    <thead>
+                        <tr style="background-color: #444; color: #fff;">
+                            <th>Day</th>
+                            <th>Pickup</th>
+                            <th>Delivery</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // JSON ko array me convert karna
+                        $opening_hours = json_decode($restaurant_details['schedule'], true);
+
+                        if (json_last_error() === JSON_ERROR_NONE) {
+                            foreach ($opening_hours as $day => $times) {
+                                echo "<tr>";
+                                echo "<td>" . htmlspecialchars($day) . "</td>";
+                                echo "<td>" . htmlspecialchars($times['pickup']) . "</td>";
+                                echo "<td>" . htmlspecialchars($times['delivery']) . "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='3'>Invalid opening hours data</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            <?php } ?>
     <!-- General Information and Contact Form -->
+     <?php if (empty($restaurant_details) || !is_array($restaurant_details)) { ?>
     <div class="row general-info-section">
         <div class="col-md-6 general-info-left">
             <h5 class="general-info-heading">General Information</h5>
@@ -193,6 +265,8 @@
             </form>
         </div>
     </div>
+     <?php } ?>
+
         <!-- <h4 class="mt-5 mb-5 text-dark"><?php echo site_phrase('contact_us', true) ?></h4>
         <div class="about-txt my-4 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right">
             <div class="row">

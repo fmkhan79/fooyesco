@@ -35,6 +35,10 @@
                                         <?php echo site_phrase('home'); ?>
                                     </a>
                                 </li>
+                                <?php
+                                    $host = get_subdomain();
+                                    if($host == 'fooyes'){
+                                ?>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
@@ -52,6 +56,7 @@
                                         </a>
                                     </div>
                                 </li>
+                                <?php }?>
                                 <li class="nav-item">
                                     <a class="nav-link" href="<?php echo site_url('login'); ?>">
                                         <?php echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('sign_in', true); ?>

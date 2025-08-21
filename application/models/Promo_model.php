@@ -16,20 +16,33 @@ class Promo_model extends Base_model
             ->get('promo_codes')->result();
     }
 
+    // public function get_valid_promo($code)
+    // {
+
+    //     return $this->db
+    //         ->where('offer_code', $code)
+    //         ->where('is_used', 0)
+    //         ->get('promo_codes')
+    //         ->row_array(); // returns full row or null
+    // }
     public function get_valid_promo($code)
     {
+        // Get current day in lowercase, e.g. 'monday', 'tuesday', etc.
+        $today = strtolower(date('l'));
 
         return $this->db
             ->where('offer_code', $code)
             ->where('is_used', 0)
+            ->where($today, 1) // column for today's day must be 1 (true)
             ->get('promo_codes')
-            ->row_array(); // returns full row or null
+            ->row_array();
     }
 
-    public function generate_unique_promo_code($length = 8)
+    public function generate_unique_promo_code($length = 4)
     {
+        $prefix = "FY";
         do {
-            $code = strtoupper(bin2hex(random_bytes($length / 2))); // e.g. FG52Y96X
+            $code = $prefix . strtoupper(bin2hex(random_bytes($length / 2)));
             $exists = $this->db->where('offer_code', $code)->get('promo_codes')->num_rows() > 0;
         } while ($exists);
 
@@ -53,6 +66,7 @@ class Promo_model extends Base_model
             $user_promo = $this->session->userdata('applied_promo');
             $this->session->set_userdata('user_promo', $user_promo);
             $this->session->set_userdata('applied_promo', '');
+            $this->session->unset_userdata('is_online_discount_checked');
 
 
             log_message('debug', 'Promo updated successfully');

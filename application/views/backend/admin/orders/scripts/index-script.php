@@ -24,6 +24,19 @@
 
     // initialize tooltips
     initToolTip();
+
+    function showTestOrders(value) {
+        $.ajax({
+            url: "<?php echo site_url('orders/set_test_toggle'); ?>",
+            type: "POST",
+            data: { show_test_orders: value ? 1 : 0 },
+            success: function(response) {
+                console.log("Session updated: show_test_orders =", value);
+                location.reload();
+            }
+        });
+    }
+
 </script>
 
 <!-- live order script -->

@@ -104,7 +104,12 @@
                         </thead>
                         <tbody>
                             <?php
-                            foreach ($orders as $order) : ?>
+                            $show_test_orders = $this->session->userdata('show_test_orders');
+                            foreach ($orders as $order) :
+                                if($show_test_orders != 1){
+                                    if (stripos($order['customer_name'], 'test') !== false) continue;
+                                }
+                            ?>
                                 <tr>
                                     <td>
                                         <a href="<?php echo site_url('orders/details/' . sanitize($order['code'])); ?>"><?php echo sanitize($order['code']); ?></a>

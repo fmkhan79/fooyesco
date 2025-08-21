@@ -5,6 +5,12 @@
     <div class="container"style="max-width: 1045px!important">
         <div class="d-md-flex">
             <div class="col-md-4">
+                <?php
+                    $host = get_subdomain();
+                    if($host != 'fooyes'){
+                ?>
+                <h3 style="font-weight: 800; color: #343a40;;">Powered By</h3>
+                <?php }?>
                 <h3>FooYes</h3>
                 <p>Bringing you the best flavors with fresh ingredients and passion. </p>
                 <ul class="footer-social-links">
@@ -12,8 +18,7 @@
                                 class="ti-facebook"></span></a></li>
                     <li><a href="<?php echo sanitize($social_links['twitter']); ?>"><span
                                 class="ti-twitter-alt"></span></a></li>
-                    <li><a href="<?php echo sanitize($social_links['instagram']); ?>><span class="
-                            ti-instagram"></span></a></li>
+                    <li><a href="<?php echo sanitize($social_links['instagram']); ?>"><span class="ti-instagram"></span></a></li>
                 </ul>
             </div>
             <div class="col-md-2 about-box">
@@ -36,9 +41,14 @@
             <div class="col-md-2 company-box">
                 <h4>Company</h4>
                 <ul class="footer-links">
+                 <?php
+                    $host = get_subdomain();
+                    if($host == 'fooyes'){
+                ?>
                 <li><a href="<?php echo site_url('become-a-partner'); ?>">
                             <?php echo site_phrase('become_a_partner'); ?>
                         </a></li>
+                <?php }?>
                 <li><a href="<?php echo site_url('terms-of-use'); ?>">
                             <?php echo site_phrase('terms_of_use'); ?>
                         </a></li>

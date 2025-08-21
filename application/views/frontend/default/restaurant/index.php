@@ -710,8 +710,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 </section>
 
 
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
 
         document.querySelectorAll(".owl-item.cloned").forEach(function(element) {
 

@@ -40,6 +40,24 @@ class Restaurant_model extends Base_model
         $restaurants = $this->db->get($this->table);
         return $this->merger($restaurants, true);
     }
+    public function get_by_slug($slug) {
+        $this->db->where('slug', $slug);
+        $restaurants = $this->db->get($this->table);
+        // print_r($restaurants);
+        // die();
+        return $this->merger($restaurants, true);
+    }
+
+    public function find_slug($slug) {
+        $query = $this->db->where('slug', $slug)->get('domains');
+        // print_r($query);
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * GET RESTAURANT USING CONDTIONS
