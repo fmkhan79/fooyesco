@@ -38,7 +38,7 @@ if (count($restaurant_ids) > 0) {
                                   </li>-->
                             <?php
                                 $host = get_subdomain();
-                                if($host == 'fooyes'){
+                                if($host == 'fooyes' || $host == 'staging'){
                             ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -55,7 +55,7 @@ if (count($restaurant_ids) > 0) {
                                     </a>
                                 </div>
                             </li>
-                                <?php }?>
+                            <?php }?>
 
                             <li class="cart-menu">
                                 <?php if ($restaurant_details): ?>
