@@ -37,7 +37,7 @@
                                 </li>
                                 <?php
                                     $host = get_subdomain();
-                                    if($host == 'fooyes'){
+                                    if($host == 'fooyes' || $host == 'staging'){
                                 ?>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
