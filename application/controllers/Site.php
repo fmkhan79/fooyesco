@@ -216,23 +216,23 @@ class Site extends Base
     public function privacy_policy()
     {
         $host = get_subdomain();
-        
-        if($host != 'fooyes' || $host != 'staging'){
+
+        // default null rakhen
+        $page_data['restaurant_details'] = null;
+
+        if ($host != 'fooyes' && $host != 'staging') {
             $checkSlugInDb = $this->restaurant_model->find_slug($host);
 
-            if($checkSlugInDb){
+            if ($checkSlugInDb) {
                 $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($host);
-                $page_data['page_name']        = 'privacy_policy/index';
-                $page_data['page_title']       = site_phrase("privacy_policy", true);
-                $this->load->view(frontend('index'), $page_data);
-                return;
             }
         }
 
-        $page_data['page_name']        = 'privacy_policy/index';
-        $page_data['page_title']       = site_phrase("privacy_policy", true);
+        $page_data['page_name']  = 'privacy_policy/index';
+        $page_data['page_title'] = site_phrase("privacy_policy", true);
         $this->load->view(frontend('index'), $page_data);
     }
+
 
     /**
      * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE TERMS AND CONDITIONS PAGE
