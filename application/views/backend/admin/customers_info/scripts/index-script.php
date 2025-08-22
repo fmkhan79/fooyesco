@@ -24,7 +24,6 @@
 
         $('#customers_info').DataTable({
             pageLength: 25,
-            responsive: true,
             // order: [[0, 'desc']]
             ordering: false
         });
