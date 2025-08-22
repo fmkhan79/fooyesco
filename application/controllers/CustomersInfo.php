@@ -119,7 +119,14 @@ class CustomersInfo extends Authorization
 
             $this->db->insert('promo_codes', $promoData);
 
-            $daysText = implode(', ', array_map('ucfirst', $selectedDays));
+            // $daysText = implode(', ', array_map('ucfirst', $selectedDays));
+
+            $daysText = '';
+            if (count($selectedDays) === 7) {
+                $daysText = "Any day";
+            } else {
+                $daysText = implode(', ', array_map('ucfirst', $selectedDays));
+            }
 
             // Replace placeholders
             $personalMessage = str_replace(
