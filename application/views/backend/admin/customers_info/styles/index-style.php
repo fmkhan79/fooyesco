@@ -29,4 +29,7 @@
         border: none !important;
         color: #fff !important;
     }
+    input[type="checkbox"] {
+        accent-color: #f54748;
+    }
 </style>

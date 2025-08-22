@@ -49,7 +49,20 @@
                                 <!-- Discount Field -->
                                 <div class="col-md-6 mb-3">
                                     <label for="discount_value"><?php echo get_phrase('discount_percentage'); ?> (%)</label>
-                                    <input type="number" class="form-control" name="discount" id="discount_value" min="1" max="100" required placeholder="Enter discount (e.g., 10)">
+                                    <input type="number" min="1" max="100" class="form-control" name="discount" id="discount_value" min="1" max="100" required placeholder="Enter discount (e.g., 10)">
+                                </div>
+                                <div class="col-md-4 mx-auto">
+                                        <label for="discount_value"><?php echo get_phrase('Send Via'); ?></label>                                    
+                                        <div class="d-flex">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="send_email" id="send_email">
+                                                <label class="form-check-label" for="send_email"><?php echo get_phrase('email'); ?></label>
+                                            </div>
+                                            <div class="form-check mx-3">
+                                                <input class="form-check-input" type="checkbox" name="send_sms" id="send_sms">
+                                                <label class="form-check-label" for="send_sms"><?php echo get_phrase('sms'); ?></label>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
 
@@ -73,7 +86,7 @@
                                             <div class="form-check mr-3">
                                                 <input class="form-check-input promo_day_checkbox" type="checkbox" value="<?= $day ?>" id="day_<?= $day ?>">
                                                 <label class="form-check-label" for="day_<?= $day ?>">
-                                                    <?= ucfirst($day) ?>
+                                                    <?= ucfirst(substr($day, 0, 3)) ?>
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
@@ -84,16 +97,6 @@
 
                             <div class="form-row">
                                 <div class="col-md-12 mb-3">
-                                    <div class="form-send-via d-flex mb-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="send_email" id="send_email">
-                                            <label class="form-check-label" for="send_email"><?php echo get_phrase('email'); ?></label>
-                                        </div>
-                                        <div class="form-check mx-3">
-                                            <input class="form-check-input" type="checkbox" name="send_sms" id="send_sms">
-                                            <label class="form-check-label" for="send_sms"><?php echo get_phrase('sms'); ?></label>
-                                        </div>
-                                    </div>
                                     <textarea class="form-control" name="message" id="message_input" rows="3" placeholder="<?php echo get_phrase('type_your_message'); ?>"></textarea>
                                     <small class="text-muted">
                                         Note: Message must include <code>{customer_name}</code>, <code>{promo_code}</code>, <code>{valid_days}</code>, and <code>{discount}</code> placeholders for a valid promotion.
