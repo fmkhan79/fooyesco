@@ -384,14 +384,14 @@
                             </div></h3>
                         </div>
                     <?php endif; ?>
-                    <?php if ($order_details['order_url'] != null) : ?>
+                    <!-- <?php if ($order_details['order_url'] != null) : ?>
                         <hr>
                         <div class="row mt-2">
                             <div class="col order-url">
                                 <p><strong>Order Placed from:</strong> <br> <small><?php echo sanitize($order_details['order_url']); ?></small> </p> 
                             </div>
                         </div>
-                    <?php endif; ?>
+                    <?php endif; ?> -->
 
                     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
                     <script>
