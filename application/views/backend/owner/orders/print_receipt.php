@@ -93,6 +93,16 @@
             margin-bottom: 10px;
             /* optional spacing */
         }
+        .order-url{
+            text-align: center;
+        }
+        .order-url strong{
+            font-size: 14px !important;
+            font-weight: 800;
+        }
+        .order-url small{
+            font-size: 16px !important;
+        }
     </style>
 </head>
 
@@ -196,7 +206,7 @@
                     $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
                 }
             ?>
-                <hr>
+                <hr style="margin-top: 20px;">
                 <ul class="line-item font-weight-bold">
                     <li><?php echo $ordered_item['quantity'] . "x " . html_entity_decode(sanitize($menu_details['name'])); ?></li>
                     <li><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></li>
@@ -364,13 +374,22 @@
                         }
                     }
                     echo "</left>";
-                    echo "<hr>";
+                    // echo "<hr>";
                     ?>
                     <?php if (!empty($address['instructions'])) : ?>
+                        <hr>
                         <div class="row mt-2">
                             <div class="col note" style="font-size: 18px;">
                                 <h3>Note: <?php echo sanitize($address['instructions']); ?>
                             </div></h3>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($order_details['order_url'] != null) : ?>
+                        <hr>
+                        <div class="row mt-2">
+                            <div class="col order-url">
+                                <p><strong>Order Placed from:</strong> <br> <small><?php echo sanitize($order_details['order_url']); ?></small> </p> 
+                            </div>
                         </div>
                     <?php endif; ?>
 

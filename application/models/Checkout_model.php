@@ -193,6 +193,8 @@ class Checkout_model extends Base_model
 
         $order_type = isset($_POST['order_type']) && $_POST['order_type'] == "collection" && get_order_settings('pickup_order') ? "pickup" : "delivery";
 
+        $get_url = $_SERVER['HTTP_HOST'];
+
         $appliedPromo = $this->session->userdata('applied_promo');
         $promo_code = !empty($appliedPromo['offer_code']) ? $appliedPromo['offer_code'] : null;
         $promo_discount = !empty($appliedPromo['discount']) ? $appliedPromo['discount'] : null;
@@ -211,7 +213,7 @@ class Checkout_model extends Base_model
             $grand_total = $data['amount_to_pay'];
             $billing_data =  $this->session->userdata('billing');
             $json_billing_data = json_encode($billing_data);
-            $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null, 'billing' => $json_billing_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount, 'is_online_discount' => $onlineDiscount];
+            $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null, 'billing' => $json_billing_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount, 'is_online_discount' => $onlineDiscount, 'order_url' => $get_url];
         } else {
 
             // $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null];
@@ -222,7 +224,7 @@ class Checkout_model extends Base_model
             $address_data = $this->session->userdata('address');
             $json_address_data = json_encode($address_data);
 
-            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount, 'is_online_discount' => $onlineDiscount];
+            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount, 'is_online_discount' => $onlineDiscount, 'order_url' => $get_url];
         }
 
         $this->db->where('code', $order_code);
@@ -267,6 +269,8 @@ class Checkout_model extends Base_model
 
         $order_type = isset($_POST['order_type']) && $_POST['order_type'] == "collection" && get_order_settings('pickup_order') ? "pickup" : "delivery";
 
+        $get_url = $_SERVER['HTTP_HOST'];
+
         $appliedPromo = $this->session->userdata('applied_promo');
         $promo_code = !empty($appliedPromo['offer_code']) ? $appliedPromo['offer_code'] : null;
         $promo_discount = !empty($appliedPromo['discount']) ? $appliedPromo['discount'] : null;
@@ -285,7 +289,7 @@ class Checkout_model extends Base_model
             $grand_total = $data['amount_to_pay'];
             $billing_data =  $this->session->userdata('billing');
             $json_billing_data = json_encode($billing_data);
-            $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null, 'billing' => $json_billing_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount, 'is_online_discount' => $onlineDiscount];
+            $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null, 'billing' => $json_billing_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount, 'is_online_discount' => $onlineDiscount, 'order_url' => $get_url];
         } else {
 
             // $updater = ['order_type' => $order_type, 'total_delivery_charge' => 0, 'grand_total' => $grand_total, 'driver_id' => null];
@@ -296,7 +300,7 @@ class Checkout_model extends Base_model
             $address_data = $this->session->userdata('address');
             $json_address_data = json_encode($address_data);
 
-            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount, 'is_online_discount' => $onlineDiscount];
+            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data, 'promo_code' => $promo_code, 'promo_discount' => $promo_discount, 'is_online_discount' => $onlineDiscount, 'order_url' => $get_url];
         }
 
         $this->db->where('code', $order_code);
@@ -457,10 +461,27 @@ class Checkout_model extends Base_model
         $this->db->insert('payment', $data);
 
         $order_type = isset($order_type) && $order_type == "pickup" && get_order_settings('pickup_order') ? "pickup" : "delivery";
+        
+         $get_url = $_SERVER['HTTP_HOST'];
+
+        $appliedPromo = $this->session->userdata('applied_promo');
+        $promo_code = !empty($appliedPromo['offer_code']) ? $appliedPromo['offer_code'] : null;
+        $promo_discount = !empty($appliedPromo['discount']) ? $appliedPromo['discount'] : null;
+
+        $onlineDiscount = null;
+        $onlineDiscountChecked = $this->session->userdata('is_online_discount_checked');
+        if ($onlineDiscountChecked == '1') {
+            if ($order_type == "pickup") {
+                $onlineDiscount = 25;
+            } else {
+                $onlineDiscount = 20;
+            }
+        }
+
         if ($order_type == "pickup") {
             $billing_data =  $this->session->userdata('billing');
             $json_billing_data = json_encode($billing_data);
-            $updater = ['order_type' => $order_type, 'driver_id' => null, 'billing' => $json_billing_data, 'total_delivery_charge' => 0,];
+            $updater = ['order_type' => $order_type, 'driver_id' => null, 'billing' => $json_billing_data, 'total_delivery_charge' => 0, 'promo_code' => $promo_code,'promo_discount' => $promo_discount, 'is_online_discount' => $onlineDiscount, 'order_url' => $get_url];
         } else {
 
             $billing_data =  $this->session->userdata('billing');
@@ -469,7 +490,7 @@ class Checkout_model extends Base_model
 
             $address_data = $this->session->userdata('address');
             $json_address_data = json_encode($address_data);
-            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data];
+            $updater = ['order_type' => $order_type, 'billing' => $json_billing_data, 'address' => $json_address_data, 'promo_code' => $promo_code,'promo_discount' => $promo_discount, 'is_online_discount' => $onlineDiscount, 'order_url' => $get_url];
 
             // $updater = ['order_type' => $order_type];
         }
@@ -478,6 +499,22 @@ class Checkout_model extends Base_model
 
         $this->db->where('code', $order_code);
         $this->db->update('orders', $updater);
+
+        if (!$this->session->userdata('is_logged_in')) {  
+            $user_id = $this->session->userdata('user_id');
+            if ($user_id) {
+                $this->customer_model->update_is_complete($user_id, 1);
+            }
+        }
+
+        if (!empty($appliedPromo) && isset($appliedPromo['offer_code'])) {
+            $offerCode = $appliedPromo['offer_code'];
+
+            $this->load->model('Promo_model');
+            $this->Promo_model->update_promo_status($offerCode);
+        }
+
+        $this->session->set_userdata('delivery_charges', 0);
 
         return true;
     }
