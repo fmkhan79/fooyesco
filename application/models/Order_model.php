@@ -782,6 +782,9 @@ class Order_model extends Base_model
         // CHECK STATUS SELECTION
         $conditions['order_status']     = nuller(sanitize($this->input->get('status')));
 
+         // CHECK ORDER PLACED FROM SELECTION
+        $conditions['order_url'] = nuller(sanitize($this->input->get('order_url')));
+
         return $this->get_by_condition($conditions);
     }
 
@@ -831,6 +834,9 @@ class Order_model extends Base_model
 
         // CHECK STATUS SELECTION
         $conditions['order_status'] = nuller(sanitize($this->input->get('status')));
+        
+        // CHECK ORDER PLACED FROM SELECTION
+        $conditions['order_url'] = nuller(sanitize($this->input->get('order_url')));
 
         return $this->get_by_condition($conditions);
     }
@@ -1728,6 +1734,13 @@ class Order_model extends Base_model
             $this->db->where('restaurant_id', $restaurant_id);
         }
 
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('orders');
+        return $query->result_array();
+    }
+    
+    public function get_all_orders_for_placed_from()
+    {
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('orders');
         return $query->result_array();
