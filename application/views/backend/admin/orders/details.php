@@ -9,6 +9,8 @@ $res_discount = $restaurant_details['res_discount'];
 if ($order_data["order_type"] == "pickup") {
     $res_discount = 25;
 }
+$host = $_SERVER['HTTP_HOST'];
+    
 ?>
 <section class="content">
     <div class="container-fluid">
@@ -111,6 +113,22 @@ if ($order_data["order_type"] == "pickup") {
                                     </strong>
                                 </a>
                             </li>
+                            <?php if ($order_data['order_url'] != null) { ?>
+                            <li class="list-group-item border-bottom-0">
+                                <b><?php echo get_phrase('order_place_from'); ?>: </b>
+                                <a class="float-right" target="_blank"
+                                <?php 
+                                    if ($host == 'www.fooyes.local' || $host == 'www.chillihutmarch.fooyes.local') {
+                                        echo 'href="http://' . $order_data['order_url'] . '"';
+                                    }else{
+                                        echo 'href="https://' . $order_data['order_url'] . '"';
+                                    }
+                                ?>
+                                >
+                                    <?php echo $order_data['order_url']; ?>
+                                </a>
+                            </li>
+                            <?php } ?>
                             <?php if ($order_data['order_status'] == "pending" || $order_data['order_status'] == "approved") : ?>
                                 <li class="list-group-item border-bottom-0">
                                     <a href="javascript:void(0)" class="btn btn-danger btn-block" onclick="confirm_modal('<?php echo site_url('orders/cancel/' . sanitize($order_data['code'])); ?>')"><b> <i class="fas fa-times-rectangle"></i> <?php echo get_phrase('cancel_this_order'); ?></b></a>
