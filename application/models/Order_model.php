@@ -1165,6 +1165,9 @@ class Order_model extends Base_model
         if (!is_null($is_paid_status)) {
             $this->db->where('is_status', $is_paid_status);
         }
+        
+        $this->db->not_like('billing', '"first_name":"test"');
+        $this->db->not_like('billing', '"last_name":"test"');
 
         // Execute the query and return the number of rows
         return $this->db->get($this->table)->num_rows();
@@ -1435,6 +1438,9 @@ class Order_model extends Base_model
             }
         }
 
+        $this->db->not_like('billing', '"first_name":"test"');
+        $this->db->not_like('billing', '"last_name":"test"');
+
         $query = $this->db->get();
         $result = $query->row_array();
 
@@ -1509,6 +1515,9 @@ class Order_model extends Base_model
             $this->db->where('is_status', $is_paid_status);
         }
 
+        $this->db->not_like('billing', '"first_name":"test"');
+        $this->db->not_like('billing', '"last_name":"test"');
+
         $query = $this->db->get();
         $result = $query->row_array();
 
@@ -1579,6 +1588,9 @@ class Order_model extends Base_model
                 $this->db->where('is_status', $is_paid_status);
             }
         }
+
+        $this->db->not_like('billing', '"first_name":"test"');
+        $this->db->not_like('billing', '"last_name":"test"');
 
         $query = $this->db->get();
         $result = $query->row_array();
@@ -1659,6 +1671,8 @@ class Order_model extends Base_model
             $this->db->where('payment.created_at >=', $starting_timestamp);
             $this->db->where('payment.created_at <=', $ending_timestamp);
         }
+        $this->db->not_like('billing', '"first_name":"test"');
+        $this->db->not_like('billing', '"last_name":"test"');
 
         $query_total = $this->db->get();
         $total = $query_total->row_array();
@@ -1677,6 +1691,7 @@ class Order_model extends Base_model
             $this->db->where('payment.created_at >=', $starting_timestamp);
             $this->db->where('payment.created_at <=', $ending_timestamp);
         }
+        
 
         $query_paid = $this->db->get();
         $paid = $query_paid->row_array();
