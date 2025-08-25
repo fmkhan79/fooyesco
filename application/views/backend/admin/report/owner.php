@@ -119,6 +119,16 @@
                                     <tbody>
                                         <?php
                                         foreach ($orders as $order) :
+                                                $billing = json_decode($order['billing'], true); // JSON ko PHP array banado
+    if (!empty($billing)) {
+        if (
+            isset($billing['first_name'], $billing['last_name']) &&
+            strtolower($billing['first_name']) === 'test' &&
+            strtolower($billing['last_name']) === 'test'
+        ) {
+            continue; // skip this order
+        }
+    }
                                         ?>
 
                                             <tr>
