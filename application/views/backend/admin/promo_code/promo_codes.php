@@ -1,5 +1,12 @@
 <!-- Filter Customers Data behalf on order_type is delivery -->
+<style>
 
+code{
+    color: #f54748 !important;
+}
+
+
+</style>
 
 <section class="content">
     <div class="container-fluid">
@@ -12,13 +19,14 @@
                         <h3 class="card-title"><?php echo get_phrase("promo_codes", true); ?></h3>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-striped" id="customers_info">
+                        <table class="table table-bordered" id="customers_info">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Promo Code</th>
                                     <th>Discount (%)</th>
                                     <th>Is Valid</th>
+                                    <th>Valid Days</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -27,7 +35,7 @@
                                     foreach ($promo_codes as $promo): ?>
                                         <tr>
                                             <td><?= $i++ ?></td>
-                                            <td><?= $promo->offer_code ?></td>
+                                            <td><code><?= $promo->offer_code ?></code></td>
                                             <td><?= $promo->discount ?>%</td>
                                             <td>
                                                 <?php
@@ -39,6 +47,25 @@
                                                 }
 
                                                 ?>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                
+                                                $this->load->model('Promo_model');
+                                                $validDays = $this->Promo_model->get_valid_days($promo->id);
+                                                // print_r($validDays);
+                                                if (count($validDays) == 7) {
+                                                    if($promo->is_used){
+                                                        echo'<span>-</span>';
+                                                    }else{
+                                                        echo'<span>All Days</span>';
+                                                    }
+                                                }else{
+                                                foreach ($validDays as $key => $day): ?>
+                                                    <span><?= $day ?></span>
+                                                <?php endforeach;
+                                                } ?>
+
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

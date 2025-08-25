@@ -74,4 +74,25 @@ class Promo_model extends Base_model
             log_message('error', 'Promo not found for offer_code: ' . $offer_code);
         }
     }
+
+    public function get_valid_days($id)
+    {
+        $row = $this->db->where('id', $id)->get('promo_codes')->row();
+
+        if (!$row) {
+            return []; 
+        }
+
+        $days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+
+        $valid_days = [];
+
+        foreach ($days as $day) {
+            if (!empty($row->$day) && $row->$day == 1) {
+                $valid_days[] = ucfirst($day);
+            }
+        }
+        return $valid_days;
+    }
+
 }
