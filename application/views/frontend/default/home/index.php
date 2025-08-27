@@ -175,13 +175,19 @@
     z-index: 99999;
     color: #222;
     display: none;
-    text-align: center;
+    padding: 10px 60px;
+}
+
+.cookie-banner .actions{
+    padding-top: 25px;
+    display: flex;
+    justify-content: end;
 }
 
 .cookie-banner .btn-cb{
-    background-color: #fdc55e;
+    background-color: #f44647;
     /* border: 5px solid rgb(255, 187, 61); */
-    color: #191919 !important;
+    color: #fff !important;
     padding: 8px 28px;
     font-weight: 500;
     border-radius: 2rem;
@@ -192,19 +198,39 @@
     font-size: 18px;
     font-weight: 400 !important;
 }
+.cookie-banner h2{
+    font-size: 24px;
+    font-weight: 600 !important;
+}
 
 @media (max-width: 768px) {
     .cookie-banner{
         width: 100%;
         left: 0;
+        text-align: center;
+        padding: 10px 10px;
     }
+    .cookie-banner .actions{
+        padding-top: 15px;
+        display: flex;
+        justify-content: center;
+    }
+    .cookie-banner h3{
+        font-size: 18px;
+        font-weight: 400 !important;
+    }
+    .cookie-banner h2{
+        font-size: 18px;
+        font-weight: 600 !important;
+    }
+
     .cookie-banner p{
         font-size: 11px;
     }
     .cookie-banner .btn-cb{
-          background-color: #fdc55e;
+          background-color: #f44647;
     /* border: 5px solid rgb(255, 187, 61); */
-    color: #191919 !important;
+    color: #fff !important;
     padding: 8px 28px;
     font-weight: 500;
     border-radius: 2rem;
@@ -655,16 +681,17 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 
 
 <div class="cookie-banner"  id="cookie-banner">
-    <div class="container">
+    <div class="container-fluid my-2">
         <div class="row">
-            <div class="col-md-8 mx-auto mt-3">
-                <h3>We use cookies to personalize your experience,  
-                    analyze site traffic, and serve relevant content.  
-                    By clicking Accept, you consent to our cookie policy.</h3>
-                                    <div class="actions mt-1 mb-3">
-                                        <a href="" onclick="acceptCookies()" class="mx-2 btn btn-cb">Accept</a>
-                <a href="" onclick="ignoreCookies()" class="mx-2 btn btn-cb">Ignore</a>
-                                    </div>
+            <div class="col-md-8">
+                          <h2>We value your privacy</h2>    
+                <h3>To give you the best experience, we use cookies to understand how our site is used, improve functionality, and provide personalized content and offers. By selecting “Accept”, you consent to our use of cookies as described in our Cookie Policy.</h3>
+            </div>
+            <div class="col-md-4">
+                <div class="actions">
+                    <a href="" onclick="ignoreCookies()" class="mx-2 btn btn-cb">Ignore</a>
+                    <a href="" onclick="acceptCookies()" class="mx-2 btn btn-cb">Accept</a>
+                </div>
             </div>
         </div>
     </div>
@@ -689,7 +716,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: #fff9ef;
     padding: 30px;
     width: 90%;
     max-width: 500px;
@@ -711,13 +738,17 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 }
 
 #termPopup a {
-    color: #007bff;
+    color: #f44647;
+    text-decoration: underline;
+}
+#termPopup a:hover {
+    color: #f44647 !important;
     text-decoration: underline;
 }
 
 #termPopup .btn-cb {
-    background-color: #fdc55e;
-    color: #191919;
+    background-color: #f44647;
+    color: #fff;
     padding: 8px 24px;
     font-weight: 500;
     border-radius: 2rem;
