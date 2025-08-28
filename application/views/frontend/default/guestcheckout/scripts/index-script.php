@@ -25,23 +25,23 @@
     //   $(this).val(foo);
     // });
 
-    $('#online_discount').on('change', function() {
-        let isChecked = $(this).is(':checked') ? 1 : 0;
+    // $('#online_discount').on('change', function() {
+    //     let isChecked = $(this).is(':checked') ? 1 : 0;
 
-         $.ajax({
-            url: '<?php echo site_url("GuestCheckout/update_online_discount_status"); ?>',
-            type: 'POST',
-            data: { online_discount: isChecked },
-            success: function(response) {
-                console.log('Updated successfully:', response);
-                            viewselected_cat_items_summary_total();
+    //      $.ajax({
+    //         url: '<?php echo site_url("GuestCheckout/update_online_discount_status"); ?>',
+    //         type: 'POST',
+    //         data: { online_discount: isChecked },
+    //         success: function(response) {
+    //             console.log('Updated successfully:', response);
+    //                         viewselected_cat_items_summary_total();
 
-            },
-            error: function(xhr, status, error) {
-                console.error('Error updating:', error);
-            }
-        });
-    });
+    //         },
+    //         error: function(xhr, status, error) {
+    //             console.error('Error updating:', error);
+    //         }
+    //     });
+    // });
 
     $(document).ready(function() {
 
@@ -53,7 +53,6 @@
         }
 
         var appliedPromo = <?php echo json_encode($this->session->userdata('applied_promo')); ?>;
-        console.log("Applied Promo Session:", appliedPromo);
 
         if (appliedPromo && appliedPromo.offer_code) {
             const promoCodeInput = document.getElementById("promo_code");
@@ -78,7 +77,7 @@
 
                             $("#apply_promo").addClass("d-none");
                             $("#remove_promo").removeClass("d-none");
-                            $('.online-disc').removeClass('d-none');
+                            // $('.online-disc').removeClass('d-none');
                             messageEl.innerText = `Promo applied successfully! ${discount}% off.`;
                             messageEl.className = "text-success";
 
@@ -350,6 +349,12 @@
         $.ajax({
             url: '<?php echo base_url(); ?>site/selected_cat_items_summary/',
             success: function(res) {
+
+                if (!res || res.trim() === "") {
+                    window.location.href = '<?php echo base_url(); ?>';
+                    return;
+                }
+
                 // console.log(res, 'selected_cat_items_summary');
                 $("#item-list").empty(); // Empty the content of the div
                 $("#item-list").html(res); // Replace with the 'res' response
@@ -527,19 +532,17 @@
             },
             dataType: "json",
             success: function(data) {
-                if (data.success && data.data && data.data.discount) {
+                if (data.success && data.data) {
                     const discount = data.data.discount;
 
-                    // ✅ Update UI
                     messageEl.innerText = `Promo applied successfully! ${discount}% off.`;
                     messageEl.className = "text-success";
-                            $('.online-disc').removeClass('d-none');
+                            // $('.online-disc').removeClass('d-none');
                     document.getElementById("promo_code").readOnly = true;
                     document.getElementById("apply_promo").classList.add("d-none");
                     document.getElementById("remove_promo").classList.remove("d-none");
 
-                    // ✅ Optionally update totals
-                    viewselected_cat_items_summary_total(); // to re-fetch with new promo applied
+                    viewselected_cat_items_summary_total();
                 } else {
                     messageEl.innerText = data.message || "Invalid promo code.";
                     messageEl.className = "text-danger";
@@ -568,10 +571,9 @@
 
                     messageEl.innerText = data.message;
                     messageEl.className = "text-warning";
-                    $('.online-disc').addClass('d-none');
+                    // $('.online-disc').addClass('d-none');
                     document.getElementById("remove_promo").classList.add("d-none");
                     document.getElementById("apply_promo").classList.remove("d-none");
-
                     viewselected_cat_items_summary_total();
                 } else {
                     messageEl.innerText = "Failed to remove promo.";

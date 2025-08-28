@@ -6,7 +6,7 @@
             <!-- Filter Orders -->
             <div class="col-lg-6">
                 <div class="card h-100">
-                    <div class="card-header"><?php echo get_phrase('filter_orders'); ?></div>
+                    <div class="card-header"><?php echo get_phrase('filter_restaurants'); ?></div>
                     <div class="card-body">
                         <form action="<?php echo site_url('customers-info/index'); ?>" method="get">
                             <div class="row justify-content-center">
@@ -92,6 +92,23 @@
                                         <?php endforeach; ?>
                                     </div>
                                     <small class="text-muted">Only checked days will be valid for this promo.</small>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <label for="discount_value"><?php echo get_phrase('online_discount_validation'); ?></label>                                    
+                                    <div class="d-flex">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="discount_option" id="add_on_by_default" value="default">
+                                            <label class="form-check-label" for="add_on_by_default">
+                                                <?php echo get_phrase('add_on_by_default'); ?>
+                                            </label>
+                                        </div>
+                                        <div class="form-check mx-3">
+                                            <input class="form-check-input" type="radio" name="discount_option" id="only_promo" value="promo">
+                                            <label class="form-check-label" for="only_promo">
+                                                <?php echo get_phrase('only_promo'); ?>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -321,6 +338,22 @@ $(document).ready(function () {
             return;
         }
 
+        // ✅ Discount option validation
+        const selectedDiscountOption = $('input[name="discount_option"]:checked').val();
+        const selectAllDays = localStorage.getItem('selectAllDays') === "true";
+
+        if (selectAllDays && selectedDiscountOption === "default") {
+            alert("If all days are selected, you cannot select 'Add on by Default'. Please select 'Only Promo'.");
+            e.preventDefault();
+            return;
+        }
+        
+        if (!selectAllDays && selectedDiscountOption === "promo") {
+            alert("If you choose selective days, you cannot choose 'Only Promo'. Please select 'Add on by Default'.");
+            e.preventDefault();
+            return;
+        }
+
         const message = $('#message_input').val().trim();
 
         if (!message.includes('{promo_code}')) {
@@ -328,8 +361,7 @@ $(document).ready(function () {
             e.preventDefault();
             return;
         }
-
-        const selectAllDays = localStorage.getItem('selectAllDays') === "true"; 
+ 
         if (!selectAllDays) {
             if (!message.includes('{valid_days}')) {
                 alert("Your message must include the {valid_days} placeholder.");
@@ -350,7 +382,6 @@ $(document).ready(function () {
             return;
         }
 
-        // ✅ Ab hidden fields me sahi data set hoga
         $('#selected_customers_data').val(JSON.stringify(selectedData));
         $('#selected_days').val(JSON.stringify(selectedDays));
     });

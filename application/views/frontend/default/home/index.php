@@ -761,7 +761,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 <div id="termBackdrop"></div>
 
 <!-- Terms & Conditions Popup -->
-<div id="termPopup">
+<!-- <div id="termPopup">
   <h5>Terms & Conditions</h5>
   <p>
     Please review and accept our 
@@ -770,7 +770,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
     before continuing.
   </p>
   <button class="btn btn-cb" onclick="continueTerms()">Continue</button>
-</div>
+</div> -->
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
