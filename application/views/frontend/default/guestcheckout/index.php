@@ -76,15 +76,18 @@ $stripe_settings = json_decode($stripe_settings);
 } */
 
  .cookie-banner{
-    width: 100%;
+    width: 500px;
     position: fixed;
-    bottom: 0;
+    bottom: 18px;
+    right: 10px;
     height: auto;
     background-color: #fff9ef;
     z-index: 99999;
+    border-radius: 1rem;
     color: #222;
     display: none;
-    padding: 10px 60px;
+    padding: 10px 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .cookie-banner .actions{
@@ -105,17 +108,18 @@ $stripe_settings = json_decode($stripe_settings);
 
 .cookie-banner h3{
     font-size: 18px;
-    font-weight: 400 !important;
+    font-weight: 300 !important;
+    margin-top: 16px;
 }
 .cookie-banner h2{
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 600 !important;
 }
 
 @media (max-width: 768px) {
     .cookie-banner{
-        width: 100%;
-        left: 0;
+        width: 70%;
+        right: 15%;
         text-align: center;
         padding: 10px 10px;
     }
@@ -126,7 +130,6 @@ $stripe_settings = json_decode($stripe_settings);
     }
     .cookie-banner h3{
         font-size: 14px;
-        font-weight: 400 !important;
     }
     .cookie-banner h2{
         font-size: 18px;
@@ -147,6 +150,7 @@ $stripe_settings = json_decode($stripe_settings);
     }
 
 }
+
 #termBackdrop {
     position: fixed;
     top: 0;
@@ -711,18 +715,16 @@ $stripe_settings = json_decode($stripe_settings);
 </div> -->
 
 <!-- Black backdrop -->
-<div id="termBackdrop"></div>
+<!-- <div id="termBackdrop"></div> -->
 
 <div class="cookie-banner"  id="cookie-banner">
     <div class="container-fluid my-2">
         <div class="row">
-            <div class="col-md-8">
-                <h2>We value your privacy</h2>
+            <div class="col-md-12">
+                          <h2>We value your privacy</h2>    
                 <h3>To give you the best experience, we use cookies to understand how our site is used, improve functionality, and provide personalized content and offers. By selecting “Accept”, you consent to our use of cookies as described in our Cookie Policy.</h3>
-            </div>
-            <div class="col-md-4">
-                <div class="actions">
-                    <!-- <a href="" onclick="ignoreCookies()" class="mx-2 btn btn-cb">Ignore</a> -->
+                                    <div class="actions">
+                    <a href="" onclick="acceptCookies()" class="mx-2 btn btn-cb">Ignore</a>
                     <a href="" onclick="acceptCookies()" class="mx-2 btn btn-cb">Accept</a>
                 </div>
             </div>
@@ -738,6 +740,12 @@ function acceptCookies() {
     document.getElementById("cookie-banner").style.display = "none";
     document.getElementById("termBackdrop").style.display = "none";
 }
+// Ignore handler
+function ignoreCookies() {
+    setCookie("cookieConsent", "ignored", 30);
+    document.getElementById("cookie-banner").style.display = "none";
+}
+
 // Set cookie
 function setCookie(name, value, days) {
     const date = new Date();
