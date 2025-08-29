@@ -84,6 +84,7 @@ class CustomersInfo extends Authorization
     {
         $send_email = $this->input->post('send_email') ? true : false;
         $send_sms = $this->input->post('send_sms') ? true : false;
+        $selected_discount = $this->input->post('discount_option');
         $discount = $this->input->post('discount');
         $message = $this->input->post('message');
         $customerDataJson = $this->input->post('selected_customers_data');
@@ -114,7 +115,9 @@ class CustomersInfo extends Authorization
                 'thursday'   => in_array('thursday', $selectedDays) ? 1 : 0,
                 'friday'     => in_array('friday', $selectedDays) ? 1 : 0,
                 'saturday'   => in_array('saturday', $selectedDays) ? 1 : 0,
-                'sunday'     => in_array('sunday', $selectedDays) ? 1 : 0
+                'sunday'     => in_array('sunday', $selectedDays) ? 1 : 0,
+                'add_on_by_default' => $selected_discount == 'default' ? 1 : 0,
+                'only_promo' => $selected_discount == 'promo' ? 1 : 0
             ];
 
             $this->db->insert('promo_codes', $promoData);

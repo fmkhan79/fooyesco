@@ -68,6 +68,7 @@ class PromoCode extends Base
     public function remove_promo()
     {
         $this->session->unset_userdata('applied_promo');
+        $this->session->set_userdata('is_online_discount_checked', false);
 
         echo json_encode([
             'success' => true,

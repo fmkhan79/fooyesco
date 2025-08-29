@@ -291,7 +291,7 @@
                             <a href="<?php echo site_url('customers-info'); ?>" class="nav-link <?php if ($page_name == "customers_info/index") echo 'active'; ?>">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
-                                    <?php echo get_phrase("Customers"); ?>
+                                    <?php echo get_phrase("create_promo_code"); ?>
                                 </p>
                             </a>
                         </li>
@@ -299,7 +299,7 @@
                             <a href="<?php echo site_url('promo-code'); ?>" class="nav-link <?php if ($page_name == "promo_code/index") echo 'active'; ?>">
                                 <i class="nav-icon fas fa-list"></i>
                                 <p>
-                                    <?php echo get_phrase("promo_codes"); ?>
+                                    <?php echo get_phrase("view_promo_codes"); ?>
                                 </p>
                             </a>
                         </li>
