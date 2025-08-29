@@ -99,8 +99,15 @@ class CustomersInfo extends Authorization
         }
 
         $this->load->model('Promo_model');
+        $this->load->model('Adminsetting_model');
+
+        $twilio = $this->Adminsetting_model->get_twilio_credentials();
 
         // Our Twilio credentials
+        $sid = $twilio->twilio_sid; // $twilio->twilio_sid twilio_token twilio_phone
+        $token = $twilio->twilio_token;
+        $twilio_number = $twilio->twilio_phone;
+
    
         foreach ($customers as $cust) {
             // Generate promo code
@@ -156,7 +163,7 @@ class CustomersInfo extends Authorization
 
                 $data = http_build_query([
                     'From' => $twilio_number,
-                    'To' => '+923168232627', // should be in +92xxxxxxxxxx format $cust['phone'], $formattedPhone
+                    'To' => '+18777804236', // should be in +92xxxxxxxxxx format $cust['phone'], $formattedPhone
                     'Body' => $personalMessage
                 ]);
 
