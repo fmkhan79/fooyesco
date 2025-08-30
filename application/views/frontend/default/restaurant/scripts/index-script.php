@@ -855,8 +855,9 @@ $.ajax({
 
     // // Hide error if switcher is active
     // $(".basket-switcher-error").hide();
+    let terms_status = localStorage.getItem('terms_accepted') == "1" ? 1 : 0;
 
-    if (subTotalValue !== "£0") {
+    if (subTotalValue !== "£0" && terms_status != 0) {
         enableCheckoutButtons();
     } else {
         disableCheckoutButtons();
@@ -896,6 +897,17 @@ $.ajax({
         checkoutBtnMobile.style.pointerEvents = "none";
     }
 }
+
+    $(document).ready(function () {
+        const isTermsAccepted = localStorage.getItem('terms_accepted') == "1" ? 1 : 0;
+        $('.alt-terms').prop('checked', isTermsAccepted === 1);
+        viewselected_cat_items_summary_total();
+        $(".alt-terms").on("change", function () {
+            let isChecked = $(this).is(":checked") ? 1 : 0;
+            localStorage.setItem('terms_accepted', isChecked);
+            viewselected_cat_items_summary_total();
+        });
+    });
 
 function enableCheckoutButtons() {
     document.querySelectorAll(".guestCheckoutBtn, .CheckoutBtn").forEach(function(button) {
