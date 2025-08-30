@@ -1,3 +1,7 @@
+<?php
+$host = $_SERVER['HTTP_HOST'];
+?>
+
 <!doctype html>
 <html>
 <head>
@@ -53,6 +57,12 @@
                   <td style="width:140px; font-family:Arial,Helvetica,sans-serif; font-size:13px; color:#64748b;">Time</td>
                   <td style="font-family:Arial,Helvetica,sans-serif; font-size:14px; color:#0f172a; background:#f8fafc; padding:12px 14px; border-radius:10px;">
                     <?= htmlspecialchars($message['Time'] ?? '') ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:140px; font-family:Arial,Helvetica,sans-serif; font-size:13px; color:#64748b;">From</td>
+                  <td style="font-family:Arial,Helvetica,sans-serif; font-size:14px; color:#0f172a; background:#f8fafc; padding:12px 14px; border-radius:10px;">
+                    <?= $host ?? '' ?>
                   </td>
                 </tr>
               </table>

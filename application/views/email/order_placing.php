@@ -1,7 +1,8 @@
 <?php
 $host = $_SERVER['HTTP_HOST'];
 // Get customer details
-$customer_details = $this->customer_model->get_by_id($message['customer_id']);
+$extCust = (int) $message['customer_id'];
+$customer_details = $this->customer_model->get_by_id($extCust);
 
 // Load required models
 $this->load->model('order_model');

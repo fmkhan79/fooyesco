@@ -42,6 +42,7 @@ class Customer_model extends Base_model
      */
     public function get_by_id($id)
     {
+         $id = (int) $id; 
         $this->db->where('id', $id);
         $this->db->where_in('role_id', [2, 3]);
         $customer = $this->db->get('users');
