@@ -187,6 +187,26 @@
                         <div class="grand-product-price"></div>
                     </div>
 
+                    <style>
+                        #terms{
+                            accent-color: #f54748;
+                        }
+                        .terms-link{
+                            color: #f54748;
+                            
+                        }
+                        .terms-link:hover{
+                            color: #f54748 !important;
+                        }
+                        </style>
+
+                    <div class="row mt-3">
+                            <div class="col-md-12 text-center">
+                                <input type="checkbox" class="alt-terms" id="terms">
+                                <label for="terms">I accept the <a href="<?php echo site_url('terms-and-conditions'); ?>" class="terms-link">Terms & Conditions</a></label>
+                            </div>
+                        </div>
+
                     <?php $restaurant_ids = $this->cart_model->get_restaurant_ids();
 
                     ?>
