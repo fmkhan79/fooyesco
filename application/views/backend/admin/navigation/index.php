@@ -303,6 +303,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('twilio-setting'); ?>" class="nav-link <?php if ($page_name == "twilio_settings/index") echo 'active'; ?>">
+                                <i class="nav-icon fas fa-cog"></i>
+                                <p>
+                                    <?php echo get_phrase("twilio_settings"); ?>
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

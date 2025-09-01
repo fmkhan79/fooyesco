@@ -28,6 +28,10 @@ $route['customers-info'] = 'CustomersInfo';
 $route['customers-info/(:any)'] = 'CustomersInfo/$1';
 $route['customers-info/(:any)/(:any)'] = 'CustomersInfo/$1/$2';
 
+$route['twilio-setting'] = 'TwilioSetting';
+$route['twilio-setting/(:any)'] = 'TwilioSetting/$1';
+$route['twilio-setting/(:any)/(:any)'] = 'TwilioSetting/$1/$2';
+
 $route['promo-code'] = 'PromoCode';
 
 // $route['check'] = 'orders/check_new_orders';
