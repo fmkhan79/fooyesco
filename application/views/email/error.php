@@ -66,32 +66,7 @@ $host = $_SERVER['HTTP_HOST'];
                   </td>
                 </tr>
               </table>
-
-              <div style="height:1px; background:#e5e7eb; margin:20px 0;"></div>
-
-              <div style="font-family:Arial,Helvetica,sans-serif; font-size:13px; color:#475569; line-height:1.6;">
-                <strong>Next steps:</strong>
-                <ol style="margin:8px 0 0 18px; padding:0;">
-                  <li>Check server logs for stack traces.</li>
-                  <li>Reproduce locally if possible.</li>
-                  <li>Patch and deploy a fix.</li>
-                </ol>
-              </div>
-            </td>
-          </tr>
-
-          <tr>
-            <td style="background:#f8fafc; padding:16px 24px;">
-              <table role="presentation" width="100%">
-                <tr>
-                  <td style="font-family:Arial,Helvetica,sans-serif; font-size:12px; color:#94a3b8;">
-                    You’re receiving this because error notifications are enabled for <strong>Fooyes</strong>.
-                  </td>
-                  <td align="right">
-                    <a href="mailto:no-reply@fooyes.co.uk" style="font-family:Arial,Helvetica,sans-serif; font-size:12px; color:#3b82f6; text-decoration:none;">Contact DevOps</a>
-                  </td>
-                </tr>
-              </table>
+              
             </td>
           </tr>
 
