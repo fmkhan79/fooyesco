@@ -16,6 +16,8 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-lg-4">
+
                             <div class="form-group">
                                 <label><?php echo get_phrase('date_range'); ?></label>
                                 <input type="hidden" name="date_range" id="selected-date-range-value" value="<?php echo date('F d, Y', sanitize($starting_timestamp)) . ' - ' . date('F d, Y', sanitize($ending_timestamp)); ?>">
@@ -26,6 +28,33 @@
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label><?php echo get_phrase('order_placed_from'); ?></label>
+                                <select class="form-control select2 w-100" name="order_url" id="order_url">
+                                    <option value="" <?php if ($order_url == "all") echo "selected"; ?>>
+                                        <?php echo get_phrase('all'); ?>
+                                    </option>
+                                    <?php 
+                                    $unique_ord = [];
+                                    foreach ($placed_from as $key => $ord) : 
+                                        if ($ord['order_url'] == null) continue;
+
+                                        if (in_array($ord['order_url'], $unique_ord)) {
+                                            continue; 
+                                        }
+
+                                        $unique_ord[] = $ord['order_url'];
+                                    ?>
+                                        <option value="<?php echo sanitize($ord['order_url']); ?>" 
+                                            <?php if ($order_url == $ord['order_url']) echo "selected"; ?>>
+                                            <?php echo sanitize($ord['order_url']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                         <!-- <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Status</label>

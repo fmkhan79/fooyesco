@@ -64,6 +64,15 @@ class Report extends Authorization
       }
 
      $page_data['status'] = isset($_GET['status']) ? sanitize($_GET['status']) : "all";
+    $page_data['placed_from'] = $this->order_model->get_all_orders_for_placed_from();
+
+    $page_data['order_url'] = isset($_GET['order_url']) ? sanitize($_GET['order_url']) : "all";
+    
+    if ($page_data['order_url'] == "all" && $this->session->userdata('admin_login') != 1) {
+        $host = $_SERVER['HTTP_HOST']; 
+        $page_data['order_url'] = $host;
+    }
+    
 
       $page_data['page_name'] = 'report/index';
     $page_data['page_title'] = get_phrase("owner_commission_report");

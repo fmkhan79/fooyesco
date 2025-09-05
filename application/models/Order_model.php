@@ -836,7 +836,8 @@ class Order_model extends Base_model
         $conditions['order_status'] = nuller(sanitize($this->input->get('status')));
         
         // CHECK ORDER PLACED FROM SELECTION
-        $conditions['order_url'] = nuller(sanitize($this->input->get('order_url')));
+        $host = $_SERVER['HTTP_HOST'];
+        $conditions['order_url'] = nuller(sanitize($this->input->get('order_url'))) ?? $host;
 
         return $this->get_by_condition($conditions);
     }
@@ -1092,7 +1093,7 @@ class Order_model extends Base_model
 
 
     // DASHBOARD TILE DATA USER AND STATUS WISE
-    public function get_number_of_orders($order_status = "", $restaurant_id = "all", $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
+    public function get_number_of_orders($order_url = null, $order_status = "", $restaurant_id = "all", $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
     {
 
         $user_role = $this->session->userdata('user_role');
@@ -1164,6 +1165,10 @@ class Order_model extends Base_model
 
         if (!is_null($is_paid_status)) {
             $this->db->where('is_status', $is_paid_status);
+        }
+        
+        if (!is_null($order_url)) {
+            $this->db->where('order_url', $order_url);
         }
         
         $this->db->not_like('billing', '"first_name":"test"');
@@ -1376,7 +1381,7 @@ class Order_model extends Base_model
     }
 
 
-    public function get_stripe_payment_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
+    public function get_stripe_payment_sum($order_url = null, $restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
     {
         // Agar restaurant_id GET se aaye aur 'all' na ho to sanitize karo
         if (is_null($restaurant_id)) {
@@ -1437,6 +1442,9 @@ class Order_model extends Base_model
                 $this->db->where('is_status', $is_paid_status);
             }
         }
+        if (!is_null($order_url)) {
+            $this->db->where('order_url', $order_url);
+        }
 
         $this->db->not_like('billing', '"first_name":"test"');
         $this->db->not_like('billing', '"last_name":"test"');
@@ -1448,7 +1456,7 @@ class Order_model extends Base_model
     }
 
 
-    public function get_cash_on_delivery_payment_sum($restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
+    public function get_cash_on_delivery_payment_sum($order_url =null, $restaurant_id = null, $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
     {
         // Use restaurant_id from GET if not provided as argument
         if (is_null($restaurant_id)) {
@@ -1514,6 +1522,9 @@ class Order_model extends Base_model
         if (!is_null($is_paid_status)) {
             $this->db->where('is_status', $is_paid_status);
         }
+        if (!is_null($order_url)) {
+            $this->db->where('order_url', $order_url);
+        }
 
         $this->db->not_like('billing', '"first_name":"test"');
         $this->db->not_like('billing', '"last_name":"test"');
@@ -1527,7 +1538,7 @@ class Order_model extends Base_model
 
 
 
-    public function get_total_revenue($restaurant_id = "all", $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
+    public function get_total_revenue($order_url = null, $restaurant_id = "all", $starting_timestamp = null, $ending_timestamp = null, $is_paid_status = null)
     {
         if (is_null($restaurant_id)) {
             if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'all') {
@@ -1587,6 +1598,10 @@ class Order_model extends Base_model
             } else {
                 $this->db->where('is_status', $is_paid_status);
             }
+        }
+        
+        if (!is_null($order_url)) {
+            $this->db->where('order_url', $order_url);
         }
 
         $this->db->not_like('billing', '"first_name":"test"');
