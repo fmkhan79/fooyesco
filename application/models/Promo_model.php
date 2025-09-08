@@ -52,6 +52,16 @@ class Promo_model extends Base_model
     public function update_promo_status($offer_code)
     {
         $promo = $this->db->get_where('promo_codes', ['offer_code' => $offer_code])->row();
+        
+        if((int)$promo->is_special === 1){
+            $user_promo = $this->session->userdata('applied_promo');
+            $this->session->set_userdata('user_promo', $user_promo);
+            $this->session->set_userdata('applied_promo', '');
+            $this->session->unset_userdata('is_online_discount_checked');
+            $this->session->set_userdata('is_online_discount_checked', false);
+            return;
+        }
+
         $user_id = $this->session->userdata('user_id');
 
         log_message('debug', 'Updating promo: ' . $offer_code . ' for user: ' . $user_id);

@@ -303,6 +303,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('customers-info/special_promo'); ?>" class="nav-link <?php if ($page_name == "special_promo/index") echo 'active'; ?>">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>
+                                    <?php echo get_phrase("create_special_promo"); ?>
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
