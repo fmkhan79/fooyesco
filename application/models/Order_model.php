@@ -1167,8 +1167,8 @@ class Order_model extends Base_model
             $this->db->where('is_status', $is_paid_status);
         }
         
-        if (!is_null($order_url)) {
-            $this->db->where('order_url', $order_url);
+        if ($order_url != null) {
+            $this->db->where('orders.order_url', $order_url);
         }
         
         $this->db->not_like('billing', '"first_name":"test"');
@@ -1413,6 +1413,9 @@ class Order_model extends Base_model
         if (($restaurant_id) !== "all") {
             $this->db->where('orders.restaurant_id', $restaurant_id);
         }
+        if ($order_url != null) {
+            $this->db->where('orders.order_url', $order_url);
+        }
 
         if (!empty($starting_timestamp) && !empty($ending_timestamp)) {
             $this->db->where('payment.created_at >=', $starting_timestamp);
@@ -1441,9 +1444,6 @@ class Order_model extends Base_model
             } else {
                 $this->db->where('is_status', $is_paid_status);
             }
-        }
-        if (!is_null($order_url)) {
-            $this->db->where('order_url', $order_url);
         }
 
         $this->db->not_like('billing', '"first_name":"test"');
@@ -1522,8 +1522,8 @@ class Order_model extends Base_model
         if (!is_null($is_paid_status)) {
             $this->db->where('is_status', $is_paid_status);
         }
-        if (!is_null($order_url)) {
-            $this->db->where('order_url', $order_url);
+        if ($order_url != null) {
+            $this->db->where('orders.order_url', $order_url);
         }
 
         $this->db->not_like('billing', '"first_name":"test"');
@@ -1600,8 +1600,8 @@ class Order_model extends Base_model
             }
         }
         
-        if (!is_null($order_url)) {
-            $this->db->where('order_url', $order_url);
+        if ($order_url != null) {
+            $this->db->where('orders.order_url', $order_url);
         }
 
         $this->db->not_like('billing', '"first_name":"test"');
