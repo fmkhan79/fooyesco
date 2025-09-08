@@ -1769,8 +1769,11 @@ class Order_model extends Base_model
         return $query->result_array();
     }
     
-    public function get_all_orders_for_placed_from()
+    public function get_all_orders_for_placed_from($restaurant_ids = null)
     {
+        if ($restaurant_ids != null) {
+            $this->db->where_in('restaurant_id', $restaurant_ids['id']);
+        }
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('orders');
         return $query->result_array();
