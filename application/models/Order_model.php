@@ -837,7 +837,7 @@ class Order_model extends Base_model
         
         // CHECK ORDER PLACED FROM SELECTION
         $host = $_SERVER['HTTP_HOST'];
-        $conditions['order_url'] = nuller(sanitize($this->input->get('order_url'))) ?? $host;
+        $conditions['order_url'] = nuller(sanitize($this->input->get('order_url')));
 
         return $this->get_by_condition($conditions);
     }
@@ -1129,11 +1129,13 @@ class Order_model extends Base_model
                 return 0;  // No approved restaurants for this owner
             }
         }
-
+        
         /* THEN CHECK ORDER STATUS */
         if (!empty($order_status)) {
             if ($order_status == "processed") {
                 $this->db->where_in('order_status', ['preparing', 'prepared', 'delivered']);
+            } elseif ($order_status == "delivered") {
+                $this->db->where_in('order_status', 'delivered');
             } else {
                 $this->db->where('order_status', $order_status);
             }
@@ -1166,9 +1168,9 @@ class Order_model extends Base_model
         if (!is_null($is_paid_status)) {
             $this->db->where('is_status', $is_paid_status);
         }
-        
-        if ($order_url != null) {
-            $this->db->where('orders.order_url', $order_url);
+
+        if ($order_url != '') {
+            $this->db->where('order_url', $order_url);
         }
         
         $this->db->not_like('billing', '"first_name":"test"');
@@ -1495,7 +1497,7 @@ class Order_model extends Base_model
         $this->db->select_sum('payment.amount_to_pay', 'total_sum');
         $this->db->from('payment');
         $this->db->join('orders', 'payment.order_code = orders.code');
-        $this->db->where('payment.payment_method', 'cash_on_delivery');
+        $this->db->where('payment.payment_method', 'cash_on_collection');
 
         if (($restaurant_id) !== "all") {
             $this->db->where('orders.restaurant_id', $restaurant_id);

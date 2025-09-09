@@ -142,10 +142,23 @@
                                         foreach ($restaurant_ids as $restaurant_id) :
                                             $restaurant_detail = $this->restaurant_model->get_by_id($restaurant_id); ?>
                                             <?php if (isset($restaurant_detail['id'])) : ?>
-                                                <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant_detail['slug'])) . '/' . sanitize($restaurant_detail['id'])); ?>" class="text-dark" target="_blank"><small class="d-block"> ∙ <?php echo sanitize($restaurant_detail['name']); ?></small></a>
+                                                <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant_detail['slug'])) . '/' . sanitize($restaurant_detail['id'])); ?>" class="text-dark" target="_blank"><small class="d-block"><strong>Restaurant: </strong> <?php echo sanitize($restaurant_detail['name']); ?></small></a>
                                             <?php else : ?>
                                                 <a href="javascript:void(0)" class="text-red"><small class="d-block"> ∙ <?php echo get_phrase("not_found");; ?></small></a>
                                             <?php endif; ?>
+                                             <?php if($order['order_url'] != null){?>
+                                                <small><strong>Placed from: </strong> <a target="_blank"
+                                                    <?php 
+                                                        if ($host == 'www.fooyes.local' || $host == 'www.chillihutmarch.fooyes.local') {
+                                                            echo 'href="http://' . $order['order_url'] . '"';
+                                                        }else{
+                                                            echo 'href="https://' . $order['order_url'] . '"';
+                                                        }
+                                                    ?>
+                                                    >
+                                                        <?php echo $order['order_url']; ?>
+                                                    </a></small>
+                                            <?php } ?>
 
                                         <?php endforeach; ?>
                                     </td>

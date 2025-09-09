@@ -64,7 +64,7 @@
                     <?php echo get_phrase('order_delivered', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize($this->order_model->get_number_of_orders('delivered')); ?>
+                    <?php echo sanitize($this->order_model->get_number_of_orders($order_url, 'delivered')); ?>
                     
                 </span>
             </div>
