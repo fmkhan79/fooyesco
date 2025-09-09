@@ -174,7 +174,7 @@
                                     $restaurantName = isset($restaurant_map[$customer['restaurant_id']]) ? $restaurant_map[$customer['restaurant_id']] : 'Unknown';
                                 ?>
                                     <tr>
-                                        <td><input type="checkbox" class="customer_checkbox" name="selected_customers[]" value="<?= $customer['id'] ?>"></td>
+                                        <td><input type="checkbox" class="customer_checkbox" name="selected_customers[]" value="<?= $customer['id'] ?>" data-restaurant-id="<?= $customer['restaurant_id'] ?>"></td>
                                         <td><?= $index++ ?></td>
                                         <td><?= $billing['first_name'] . ' ' . $billing['last_name'] ?></td>
                                         <td><?= $billing['email'] ?></td>
@@ -193,87 +193,6 @@
 
 <!-- JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<!-- <script>
-     $(document).ready(function () {
-        $('#promotionForm').on('submit', function (e) {
-            let selectedData = [];
-
-            $('.customer_checkbox:checked').each(function () {
-                const row = $(this).closest('tr');
-                const name = row.find('td:eq(2)').text().trim();
-                const email = row.find('td:eq(3)').text().trim();
-                const phone = row.find('td:eq(4)').text().trim();
-                const restaurant = row.find('td:eq(5)').text().trim();
-
-                selectedData.push({
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    restaurant: restaurant
-                });
-            });
-
-            if (selectedData.length === 0) {
-                alert("Please select at least one customer.");
-                e.preventDefault();
-                return;
-            }
-            
-            // Select All Days functionality
-            $('#select_all_days').on('change', function () {
-                $('.promo_day_checkbox').prop('checked', $(this).prop('checked'));
-            });
-
-            $('.promo_day_checkbox').on('change', function () {
-                if ($('.promo_day_checkbox:checked').length === $('.promo_day_checkbox').length) {
-                    $('#select_all_days').prop('checked', true);
-                } else {
-                    $('#select_all_days').prop('checked', false);
-                }
-            });
-            
-            if (selectedDays.length === 0) {
-                alert("Please select at least one valid day for the promo.");
-                e.preventDefault();
-                return;
-            }
-
-            const message = $('#message_input').val().trim();
-
-            if (!message.includes('{promo_code}')) {
-                alert("Your message must include the {promo_code} placeholder.");
-                e.preventDefault();
-                return;
-            }
-            
-            if (!message.includes('{valid_days}')) {
-                alert("Your message must include the {valid_days} placeholder.");
-                e.preventDefault();
-                return;
-            }
-
-            if (!message.includes('{discount}')) {
-                alert("Your message must include the {discount} placeholder.");
-                e.preventDefault();
-                return;
-            }
-
-            if (!message.includes('{customer_name}')) {
-                alert("Your message must include the {customer_name} placeholder.");
-                e.preventDefault();
-                return;
-            }
-
-            
-            $('#selected_customers_data').val(JSON.stringify(selectedData));
-            $('#selected_days').val(JSON.stringify(selectedDays));
-        });
-
-        $('#select_all').on('change', function () {
-            $('.customer_checkbox').prop('checked', $(this).prop('checked'));
-        });
-    });
-</script> -->
 
 <script>
 
@@ -311,12 +230,14 @@ $(document).ready(function () {
             const email = row.find('td:eq(3)').text().trim();
             const phone = row.find('td:eq(4)').text().trim();
             const restaurant = row.find('td:eq(5)').text().trim();
+            const restaurantId = $(this).data('restaurant-id');
 
             selectedData.push({
                 name: name,
                 email: email,
                 phone: phone,
-                restaurant: restaurant
+                restaurant: restaurant,
+                restaurant_id: restaurantId
             });
         });
 

@@ -25,13 +25,14 @@ class Promo_model extends Base_model
     //         ->get('promo_codes')
     //         ->row_array(); // returns full row or null
     // }
-    public function get_valid_promo($code)
+    public function get_valid_promo($code, $restaurant_id)
     {
         // Get current day in lowercase, e.g. 'monday', 'tuesday', etc.
         $today = strtolower(date('l'));
 
         return $this->db
             ->where('offer_code', $code)
+            ->where('restaurant_id', $restaurant_id)
             ->where('is_used', 0)
             ->where($today, 1) // column for today's day must be 1 (true)
             ->get('promo_codes')

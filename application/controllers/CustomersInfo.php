@@ -115,6 +115,7 @@ class CustomersInfo extends Authorization
             $promoData = [
                 'offer_code' => $code,
                 'discount'   => $discount,
+                'restaurant_id'   => $cust['restaurant_id'],
                 'monday'     => in_array('monday', $selectedDays) ? 1 : 0,
                 'tuesday'    => in_array('tuesday', $selectedDays) ? 1 : 0,
                 'wednesday'  => in_array('wednesday', $selectedDays) ? 1 : 0,

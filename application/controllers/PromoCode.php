@@ -45,9 +45,10 @@ class PromoCode extends Base
     // }
     public function check_promo() {
         $promo_code = $this->input->post('promo_code');
+        $restaurant_id = $this->input->post('restaurant_id');
         $this->load->model('Promo_model');
 
-        $promo = $this->Promo_model->get_valid_promo($promo_code);
+        $promo = $this->Promo_model->get_valid_promo($promo_code, $restaurant_id);
 
         if ($promo) {
             $this->session->set_userdata('applied_promo', $promo);

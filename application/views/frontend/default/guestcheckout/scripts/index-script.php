@@ -517,7 +517,8 @@
     function apply_promo_action() {
         const promoCode = document.getElementById("promo_code").value.trim();
         const messageEl = document.getElementById("promo_code_message");
-
+        const restaurantId = "<?php echo $this->session->userdata('restaurant_id'); ?>";
+        
         if (promoCode === "") {
             messageEl.innerText = "Please enter a promo code.";
             messageEl.className = "text-danger";
@@ -528,7 +529,8 @@
             url: "<?= site_url('PromoCode/check_promo') ?>", // must set session if promo is valid
             type: "POST",
             data: {
-                promo_code: promoCode
+                promo_code: promoCode,
+                restaurant_id: restaurantId
             },
             dataType: "json",
             success: function(data) {

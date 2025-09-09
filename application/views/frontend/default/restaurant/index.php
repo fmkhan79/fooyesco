@@ -134,6 +134,11 @@
 </style>
 <!-- RESTAURANT GALLERY -->
 
+<?php 
+$this->session->unset_userdata('restaurant_id');
+$this->session->set_userdata('restaurant_id', $restaurant_details['id']);
+
+?>
 
 <section class="detail-wbox mt-4 d-none d-md-block">
 
