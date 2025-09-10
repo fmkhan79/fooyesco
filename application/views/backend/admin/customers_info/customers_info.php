@@ -342,17 +342,6 @@ $(document).ready(function () {
         const selectedDiscountOption = $('input[name="discount_option"]:checked').val();
         const selectAllDays = localStorage.getItem('selectAllDays') === "true";
 
-        if (selectAllDays && selectedDiscountOption === "default") {
-            alert("If all days are selected, you cannot select 'Add on by Default'. Please select 'Only Promo'.");
-            e.preventDefault();
-            return;
-        }
-        
-        if (!selectAllDays && selectedDiscountOption === "promo") {
-            alert("If you choose selective days, you cannot choose 'Only Promo'. Please select 'Add on by Default'.");
-            e.preventDefault();
-            return;
-        }
 
         const message = $('#message_input').val().trim();
 

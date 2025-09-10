@@ -190,6 +190,8 @@
                     <style>
                         #terms{
                             accent-color: #f54748;
+                            transform: scale(1.5);
+                            margin-right: 5px;
                         }
                         .terms-link{
                             color: #f54748;
@@ -198,12 +200,15 @@
                         .terms-link:hover{
                             color: #f54748 !important;
                         }
+                        #tctext{
+                            font-size: 17px;
+                        }
                         </style>
 
                     <div class="row mt-3">
-                            <div class="col-md-12 text-center">
-                                <input type="checkbox" class="alt-terms" id="terms">
-                                <label for="terms">I accept the <a href="<?php echo site_url('terms-and-conditions'); ?>" class="terms-link">Terms & Conditions</a></label>
+                            <div class="col-md-12 mx-2">
+                                <p id="tctext">
+                                <input type="checkbox" class="alt-terms" id="terms"> By checking this box, I confirm my <span class="mx-4">acceptance of the <a href="<?php echo site_url('terms-and-conditions'); ?>" class="terms-link">Terms & <span class="mx-4">Conditions</span></a></span></p>
                             </div>
                         </div>
 
