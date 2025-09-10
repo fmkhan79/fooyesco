@@ -11,7 +11,7 @@ code{
 <section class="content">
     <div class="container-fluid">
 
-            <div class="row justify-content-center">
+        <div class="row justify-content-center">
             <!-- Filter Orders -->
             <div class="col-lg-6">
                 <div class="card h-100">

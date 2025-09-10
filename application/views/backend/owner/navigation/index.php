@@ -198,6 +198,42 @@
                     </a>
                 </li>
 
+                <li class="nav-item has-treeview <?php if ($page_name == "customers_info/index" || $page_name == "promo_code/index") echo 'menu-open'; ?>">
+                    <a href="#" class="nav-link <?php if ($page_name == "customers_info/index" || $page_name == "promo_code/index") echo 'active'; ?>">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            <?php echo get_phrase('Promotions'); ?>
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('customers-info'); ?>" class="nav-link <?php if ($page_name == "customers_info/index") echo 'active'; ?>">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    <?php echo get_phrase("create_promo_code"); ?>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('promo-code'); ?>" class="nav-link <?php if ($page_name == "promo_code/index") echo 'active'; ?>">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>
+                                    <?php echo get_phrase("view_promo_codes"); ?>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('customers-info/special_promo'); ?>" class="nav-link <?php if ($page_name == "special_promo/index") echo 'active'; ?>">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>
+                                    <?php echo get_phrase("create_special_promo"); ?>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <!-- <li class="nav-item">
                     <a href="</?php echo site_url('driver'); ?>" class="nav-link </?php if ($page_name == "driver/index" || $page_name == "driver/create" || $page_name == "driver/edit" || $page_name == "driver/profile") echo 'active'; ?>">
                         <i class="nav-icon fas fa-biking"></i>

@@ -8,11 +8,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Cart Controller controlls the task for a Cart
  */
 
-include 'Base.php';
-class PromoCode extends Base
+include 'Authorization.php';
+class PromoCode extends Authorization
 {
+    public function __construct()
+    {
+        parent::__construct();
+        authorization(['admin', 'owner'], true);
+    }
+
     public function index()
     {
+
+          $restaurant_id = $this->input->get('restaurant_id');
+        $restaurant_id = sanitize($restaurant_id ?? 'all');
+
+        $page_data['restaurant_id'] = $restaurant_id;
+        $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
 
         $page_data['page_title'] = site_phrase("promo_code", true);
         $page_data['page_name'] = 'promo_code/index';
