@@ -18,7 +18,7 @@
             <span class="info-box-number">
                 <?php 
                     // Get the number of orders based on the selected restaurant
-                    $order_count = $this->order_model->get_number_of_orders($order_status, $restaurant_id);
+                    $order_count = $this->order_model->get_number_of_orders(null, $order_status, $restaurant_id);
                     echo sanitize($order_count);
                 ?>
             </span>
@@ -40,7 +40,7 @@
                 <span class="info-box-number">
                   <span class="info-box-number">
                 <?php 
-                 $order_count = $this->order_model->get_number_of_orders('processed', $restaurant_id); 
+                 $order_count = $this->order_model->get_number_of_orders(null, 'processed', $restaurant_id); 
                  echo sanitize($order_count); 
                     ?>
                 </span>
@@ -64,7 +64,7 @@
                     <?php echo get_phrase('order_delivered', true); ?>
                 </span>
                 <span class="info-box-number">
-                    <?php echo sanitize($this->order_model->get_number_of_orders('delivered', $restaurant_id)); ?>
+                    <?php echo sanitize($this->order_model->get_number_of_orders(null, 'delivered', $restaurant_id)); ?>
                     
                 </span>
             </div>
@@ -84,7 +84,7 @@
                 <span class="info-box-number">
                 <?php 
                     // Fetch and display the canceled orders count based on selected restaurant
-                    echo sanitize($this->order_model->get_number_of_orders('canceled', $restaurant_id)); 
+                    echo sanitize($this->order_model->get_number_of_orders(null, 'canceled', $restaurant_id)); 
                 ?>
                 </span>
             </div>
@@ -106,7 +106,7 @@
                 <span class="info-box-number">
                     <?php
                     // Fetch and display the total revenue based on selected restaurant
-                    echo  "£" . number_format((float) $this->order_model->get_total_revenue($restaurant_id), 2, '.', '');
+                    echo  "£" . number_format((float) $this->order_model->get_total_revenue(null, $restaurant_id), 2, '.', '');
                     ?>
                                   </span>
             </div>
@@ -126,7 +126,7 @@
                 <span class="info-box-number">
                      <?php 
                     // Fetch and display the canceled orders count based on selected restaurant
-                    echo "£" . number_format((float) $this->order_model->get_stripe_payment_sum($restaurant_id), 2, '.', ''); 
+                    echo "£" . number_format((float) $this->order_model->get_stripe_payment_sum(null, $restaurant_id), 2, '.', ''); 
                 ?>
 
                 </span>
@@ -148,7 +148,7 @@
 
                 <?php 
                     // Fetch and display the canceled orders count based on selected restaurant
-                    echo "£" . number_format((float) $this->order_model->get_cash_on_delivery_payment_sum($restaurant_id), 2, '.', ''); 
+                    echo "£" . number_format((float) $this->order_model->get_cash_on_delivery_payment_sum(null, $restaurant_id), 2, '.', ''); 
                 ?>
                
 

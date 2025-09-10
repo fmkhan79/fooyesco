@@ -837,7 +837,7 @@ class Order_model extends Base_model
         
         // CHECK ORDER PLACED FROM SELECTION
         $host = $_SERVER['HTTP_HOST'];
-        $conditions['order_url'] = nuller(sanitize($this->input->get('order_url')));
+        $conditions['order_url'] = nuller(sanitize($this->input->get('order_url'))) ?? $host;
 
         return $this->get_by_condition($conditions);
     }
