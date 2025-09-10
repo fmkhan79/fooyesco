@@ -33,7 +33,12 @@ class Orders extends Authorization
         $page_data['driver_id'] = isset($_GET['driver_id']) ? sanitize($_GET['driver_id']) : "all";
         $page_data['status'] = isset($_GET['status']) ? sanitize($_GET['status']) : "all";
         $page_data['order_url'] = isset($_GET['order_url']) ? sanitize($_GET['order_url']) : "all";
-
+        
+        if ($page_data['order_url'] == "all" && $this->session->userdata('admin_login') != 1) {
+            $host = $_SERVER['HTTP_HOST']; 
+            $page_data['order_url'] = $host;
+        }
+        
         if (isset($_GET['date_range']) && !empty($_GET['date_range'])) {
             $date_range                   = sanitize($this->input->get('date_range'));
             $date_range                   = explode(" - ", $date_range);
