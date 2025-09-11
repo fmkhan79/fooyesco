@@ -6,12 +6,19 @@ if (count($restaurant_ids) > 0) {
 }
 ?>
 
+<style>
+    .nav-item{
+        margin: 0px !important;
+    }
+</style>
+
 <div class="bg transition">
     <div class="container-fluid fixed" style="background-color: white; z-index:99;">
         <div class="row">
             <div class="col-md-12">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="navbar-brand" href="<?php echo site_url(); ?>">
+                   <div class="container">
+                     <a class="navbar-brand" href="<?php echo site_url(); ?>">
                         <img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>"
                             class="system-icon">
                         <!-- </?php echo get_system_settings('system_name'); ?> -->
@@ -22,75 +29,57 @@ if (count($restaurant_ids) > 0) {
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                         <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?php echo site_url(); ?>">
-                                    <?php echo site_phrase('home'); ?>
-                                </a>
-                            </li>
-                            <!--<li class="nav-item dropdown">
-                                      <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          Restaurants                                        <span class="icon-arrow-down"></span>
-                                      </a>
-                                      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                          <a class="dropdown-item" href="https://stagging.chilli-hut-march.co.uk/site/restaurants/popular">Popular</a>
-                                          <a class="dropdown-item" href="https://stagging.chilli-hut-march.co.uk/site/restaurants/recent">Recently added</a>
-                                      </div>
-                                  </li>-->
-                            <?php
-                                $host = get_subdomain();
-                                if($host == 'fooyes' || $host == 'staging'){
-                            ?>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <?php echo site_phrase('restaurants'); ?>
-                                    <span class="icon-arrow-down"></span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="<?php echo site_url('restaurants/popular'); ?>">
-                                        <?php echo site_phrase('popular'); ?>
+                                
+                                <li class="cart-menu ml-3">
+                                    <a href="<?php echo site_url('chilli-hut-march'); ?>" class="cart-btn"><span
+                                            class="cart-items" id="#cart-items">
+                                            <?php echo sanitize($this->cart_model->total_cart_items()); ?>
+                                        </span><img
+                                            src="<?php echo base_url('assets/frontend/default/images/cart-icon.png') ?>" /></a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="btn btn-outline-light top-btn" href="<?php echo site_url('auth/registration/driver'); ?>"><?php echo site_phrase('become_a_delivery_man', true); ?></a>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?php echo site_url(); ?>">
+                                        <?php echo site_phrase('home'); ?>
                                     </a>
-                                    <a class="dropdown-item" href="<?php echo site_url('site/restaurants/recent'); ?>">
-                                        <?php echo site_phrase('recently_added'); ?>
+                                </li>
+                                <?php
+                                    $host = get_subdomain();
+                                    if($host == 'fooyes' || $host == 'staging'){
+                                ?>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <?php echo site_phrase('restaurants'); ?>
+                                        <span class="icon-arrow-down"></span>
                                     </a>
-                                </div>
-                            </li>
-                            <?php }?>
-
-                            <li class="cart-menu">
-                                <?php if ($restaurant_details): ?>
-                                <a href="<?php echo site_url('chilli-hut-march'); ?>"
-                                    class="cart-btn">
-                                    <span class="cart-items" id="#cart-items">
-                                        <?php echo sanitize($this->cart_model->total_cart_items()); ?>
-                                    </span>
-                                    <img
-                                        src="<?php echo base_url('assets/frontend/default/images/cart-icon.png'); ?>" />
-                                </a>
-                                <?php else: ?>
-                                <a href="<?php echo site_url('restaurants/popular'); ?>" class="cart-btn">
-                                    <span class="cart-items" id="#cart-items">
-                                        <?php echo sanitize($this->cart_model->total_cart_items()); ?>
-                                    </span>
-                                    <img
-                                        src="<?php echo base_url('assets/frontend/default/images/cart-icon.png'); ?>" />
-                                </a>
-                                <?php endif; ?>
-
-                            </li>
-                            <li class="nav-item reg-btn">
-
-                            </li>
-                            <li class="nav-item login-btn">
-
-                                <a class="nav-link"
-                                    href="<?php if($this->session->userdata('is_guest')){ echo "#"; }else{ echo site_url('login'); } ?>">
-
-                                    <?php if($this->session->userdata('is_guest')){ echo site_phrase('login'); }else{ echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('login'); } ?>
-                                </a>
-                            </li>
-                        </ul>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="dropdown-item"
+                                            href="<?php echo site_url('restaurants/popular'); ?>">
+                                            <?php echo site_phrase('popular'); ?>
+                                        </a>
+                                        <a class="dropdown-item"
+                                            href="<?php echo site_url('restaurants/recent'); ?>">
+                                            <?php echo site_phrase('recently_added'); ?>
+                                        </a>
+                                    </div>
+                                </li>
+                                <?php } ?>
+                                <li class="nav-item reg-btn">
+                                    <a class="nav-link" href="<?php echo site_url('register'); ?>">
+                                        <?php echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('register', true); ?>
+                                    </a>
+                                </li>
+                                <li class="nav-item login-btn">
+                                    <a class="nav-link" href="<?php echo site_url('login'); ?>">
+                                        <?php echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('login', true); ?>
+                                    </a>
+                                </li>
+                            </ul>
                     </div>
+                   </div>
                 </nav>
             </div>
         </div>
