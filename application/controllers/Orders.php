@@ -134,9 +134,12 @@ class Orders extends Authorization
             $restaurant_id = $row['id'];
         }
 
+        $host = $_SERVER['HTTP_HOST'];
+
         $this->db->from('orders');
         // print_r($restaurant_id);
         $this->db->where('restaurant_id', $restaurant_id);
+        $this->db->where('order_url', $host);
         $this->db->where('read_status', 0);
         $this->db->order_by('id', 'DESC');
         $this->db->limit(1);

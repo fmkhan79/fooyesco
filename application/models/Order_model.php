@@ -381,6 +381,10 @@ class Order_model extends Base_model
 
         // CHECK STATUS SELECTION
         $conditions['order_status']     = nuller(sanitize($this->input->get('status')));
+                
+        $host = $_SERVER['HTTP_HOST'];
+        
+        $conditions['order_url']     = nuller(sanitize($this->input->get('status'))) ?? $host;
 
         return $this->get_by_condition($conditions);
     }
@@ -1204,11 +1208,15 @@ class Order_model extends Base_model
                 return 0;
             }
         }
+
+        $host = $_SERVER['HTTP_HOST'];
+
         $todays_starting_time = strtotime(date('D, d-M-Y') . ' 00:00:01');
         $todays_ending_time = strtotime(date('D, d-M-Y') . ' 23:59:59');
         $this->db->where('order_placed_at >=', $todays_starting_time);
         $this->db->where('order_placed_at <=', $todays_ending_time);
         $this->db->where('order_status', 'pending');
+        $this->db->where('order_url', $host);
         return $this->db->get($this->table)->num_rows();
     }
 
