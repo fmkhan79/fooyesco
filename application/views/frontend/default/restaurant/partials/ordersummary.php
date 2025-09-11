@@ -201,7 +201,7 @@
                             color: #f54748 !important;
                         }
                         #tctext{
-                            font-size: 1px;
+                            font-size: 16px;
                         }
                         </style>
 

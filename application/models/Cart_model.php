@@ -297,6 +297,23 @@ class Cart_model extends Base_model
         if (!$is_single_row) {
             $cart_items = $query_obj->result_array();
             foreach ($cart_items as $key => $cart_item) {
+                
+                date_default_timezone_set("Asia/Karachi");
+                $created_time = strtotime($cart_item['created_at']);
+                $now_time = time();
+                $now_time_24hr = date("H:i:s", $now_time);
+                $diff_seconds = $now_time - $created_time;
+                $minutes = floor($diff_seconds / 60);
+                // echo "Current time: " . $now_time_24hr . "<br>";
+                // echo "Time difference: " . $minutes . " minutes";
+                // die();
+
+                if ($minutes >= 3) {
+                    $this->db->where('id', $cart_item['id']);
+                    $this->db->delete('cart');
+                    continue;
+                }
+
                 $menu_data = $this->menu_model->get_by_id($cart_item['menu_id']);
                 $restaurant_data = $this->restaurant_model->get_by_id($cart_item['restaurant_id']);
 
@@ -309,7 +326,6 @@ class Cart_model extends Base_model
             }
             return $cart_items;
         } else {
-            $cart_item = $query_obj->row_array();
             $menu_data = $this->menu_model->get_by_id($cart_item['menu_id']);
             $restaurant_data = $this->restaurant_model->get_by_id($cart_item['restaurant_id']);
             $cart_item['menu_name']  = $menu_data['name'];
