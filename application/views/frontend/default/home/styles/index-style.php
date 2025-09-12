@@ -242,7 +242,7 @@
     font-style: normal;
     font-weight: 400;color: #191919; padding: 6px 5px; margin-bottom: 30px; width: fit-content;}
 .people-trust svg{ vertical-align: middle;}
-.main-banner{ margin: 100px 0;}
+.main-banner{ margin: 150px 0;}
     .main-banner h5{color: #191919;
         font-size: 24px;
         font-style: normal;

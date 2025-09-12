@@ -553,7 +553,7 @@ a {
   border: 2px solid #f54748;
   border-radius: 50px;
   display: block;
-  margin: 0 30px !important;
+  margin: 0px 20px 0px 0px !important;
 }
 
 .navbar-light .nav-item.reg-btn .nav-link:hover {

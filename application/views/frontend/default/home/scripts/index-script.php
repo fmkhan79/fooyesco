@@ -137,6 +137,100 @@
         }
     }
 
+     // CART OPERATIONS
+    function addToCart(menu_id, price, isButton) {
+        if(
+            menu_id != undefined && //If click on when have no variant
+            isButton == false && // clicked on div
+            window.innerWidth > 450
+        ){
+            return;
+        }
+
+        if(
+            window.innerWidth < 450 && 
+            menu_id != undefined && //If click on when have no variant
+            isButton == true // clicked on div
+            
+        ){
+            return;
+        }
+
+        var menuId = menu_id || $('#menu-id').val();
+
+        var quantity = menu_id == undefined || null ? $('#quantity_for_menu').val() : 1;
+
+        var totalprice = price || $('#totalprice').val();
+
+        var variantId = $("input[name=variant]:checked").val() || 0;
+        var addons = $('#addons').val() || "";
+        var note = $('#note').val() || "";
+
+        // Initialize arrays to store selected items
+        var selectedItemsArray1 = [];
+        var selectedItemsArray2 = [];
+        var selectedItemsArrayOptional = [];
+
+        // Function to collect selected items
+        function collectSelectedItems(selector, array) {
+            var selectedItems = $(selector);
+            selectedItems.each(function() {
+                var subVariantId = $(this).data('sub-variant-id');
+                var itemId = $(this).data('item-id');
+                array.push({
+                    subVariantId: subVariantId,
+                    itemId: itemId
+                });
+                console.log('Data Sub Variant ID:', subVariantId);
+                console.log('Data Item ID:', itemId);
+            });
+        }
+
+        // collect items
+        collectSelectedItems('.menu-option-1 .required-item:checked', selectedItemsArray1);
+        collectSelectedItems('.menu-option-2 .required-item:checked', selectedItemsArray2);
+        collectSelectedItems('.menu-option-1 .optional-item:checked', selectedItemsArrayOptional);
+
+        // Merge selectedItemsArray1 and selectedItemsArrayOptional
+        var mergedSelectedItemsArray1 = selectedItemsArray1.concat(selectedItemsArrayOptional);
+
+        // Convert the arrays to JSON strings
+        var jsonStringSelectedItems1 = JSON.stringify(mergedSelectedItemsArray1);
+        var jsonStringSelectedItems2 = JSON.stringify(selectedItemsArray2);
+
+        console.log('jsonStringSelectedItems1:', jsonStringSelectedItems1);
+        console.log('jsonStringSelectedItems2:', jsonStringSelectedItems2);
+
+        // AJAX request to add items to the cart
+        $.ajax({
+            url: '<?php echo site_url('cart/add_to_cart'); ?>',
+            type: 'POST',
+            data: {
+                menuId: menuId,
+                quantity: quantity,
+                variantId: variantId,
+                addons: addons,
+                note: note,
+                totalprice: totalprice,
+                options_1: jsonStringSelectedItems1,
+                options_2: jsonStringSelectedItems2
+            },
+            success: function(response) {
+                if (response === "multi_restaurant") {
+                    toastr.warning(
+                        '<?php echo site_phrase('sorry_you_can_not_order_from_multiple_restaurant'); ?>');
+                } else {
+                    if (Math.floor(response) == response && $.isNumeric(response)) {
+                        $('.cart-items').text(response);
+                        toastr.success('<?php echo site_phrase('added_to_the_cart'); ?>');
+                        $(".modal").modal('hide');
+                    }
+                }
+            }
+        });
+    }
+
+
     // Update button state for mobile map
     function updateButtonState(input, latId, longId, buttonId) {
         const address = input.value.trim();
