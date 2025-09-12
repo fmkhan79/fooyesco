@@ -58,6 +58,11 @@
                                         <input class="custom-control-input" name="byoneoffer" type="checkbox" id="byoneoffer" <?php if ($menu_data['byoneoffer']) echo "checked"; ?>>
                                         <label for="byoneoffer" class="custom-control-label">BUY 1 GET 1 FREE<small>( <?php echo get_phrase('check') . ', ' . get_phrase('if_it_is_available_for_offer'); ?> )</small></label>
                                     </div>
+                                    
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" name="todayspecial" type="checkbox" id="todayspecial" <?php if ($menu_data['today_special']) echo "checked"; ?>>
+                                        <label for="todayspecial" class="custom-control-label">Today Special Offer<small>( <?php echo get_phrase('check') . ', ' . get_phrase('if_it_is_available_for_offer'); ?> )</small></label>
+                                    </div>
                                     <button type="submit" class="btn btn-primary mt-4"><?php echo get_phrase('update_basic'); ?></button>
                                 </form>
                             </div>

@@ -7,7 +7,7 @@
             <div class="col-md-4">
                 <?php
                     $host = get_subdomain();
-                    if($host != 'fooyes'){
+                    if($host != 'fooyes' && $host != 'staging'){
                 ?>
                 <h3 style="font-weight: 800; color: #343a40;;">Powered By</h3>
                 <?php }?>

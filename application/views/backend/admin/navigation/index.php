@@ -6,7 +6,7 @@
 <aside class="main-sidebar sidebar-dark-danger elevation-4 hold-transition layout-fixed">
     <!-- Brand Logo -->
     <a href="<?php echo site_url('dashboard'); ?>" class="brand-link">
-        <img src="<?php echo base_url('uploads/system/' . get_website_settings('backend_logo')); ?>" alt="" class="brand-image img-circle opacity-80">
+        <img src="<?php echo base_url('uploads/system/' . get_website_settings('backend_logo')); ?>" alt="" class="brand-image">
         <span class="brand-text font-weight-light"><?php echo get_system_settings('system_name'); ?></span>
     </a>
 
