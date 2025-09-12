@@ -4,6 +4,7 @@
     .nav-item{
         margin: 0px !important;
     }
+
 </style>
 <div class="nav-menu">
     <div class="bg transition">
@@ -20,7 +21,7 @@
                 <div class="col-md-12">
 
                     <nav class="navbar navbar-expand-lg navbar-light">
-                        <div class="container px-5">
+                        <div class="container px-lg-5">
                             <a class="navbar-brand" href="<?php echo site_url(); ?>">
                             <img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>"
                                 class="system-icon">

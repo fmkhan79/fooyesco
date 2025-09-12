@@ -508,6 +508,21 @@ a {
   clear: both;
 }
 
+    @media (max-width: 430px) {
+        .navbar{
+            display: block;
+        }
+        .navbar .reg-btn{
+            margin-left: 8px !important;
+        }
+        .navbar .login-btn{
+            margin-top: 5px !important;
+        }
+        .main-banner{
+            margin-top: 190px !important;
+        }
+    }
+
 .navbar-light .nav-item .nav-link {
   font-size: 18px !important;
   color: #191919 !important;
@@ -547,9 +562,9 @@ a {
 }
 
 .navbar-light .nav-item.reg-btn .nav-link {
-  font-size: 16px;
+  font-size: 14px;
   color: #f54748 !important;
-  padding: 9px 23px !important;
+  padding: 5px 17px !important;
   border: 2px solid #f54748;
   border-radius: 50px;
   display: block;
@@ -565,7 +580,7 @@ a {
   font-size: 16px;
   color: #fff !important;
   background: #f54748;
-  padding: 9px 39px !important;
+  padding: 5px 32px !important;
   border: 2px solid #f54748;
   border-radius: 50px;
   display: block;
