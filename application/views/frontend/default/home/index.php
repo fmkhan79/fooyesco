@@ -609,7 +609,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
     <div class="container" style="max-width: 1000px!important pl-0!important">
         <div class="d-md-flex align-items-center">
             <div class="col-md-5"><img class="img-fluid"
-                    src="<?php echo base_url('assets/frontend/default/images/multi-services-img.png') ?>"></div>
+                    src="<?php echo base_url('assets/frontend/default/images/mult-service.png') ?>"></div>
             <div class="col-md-7">
                 <h3>We are <span class="red">more</span> than<br /> <span class="yellow">multiple</span> service</h3>
                 <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments
@@ -763,7 +763,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
     <p style="font-size:18px"> <b>Delicious moments start here. Welcome to Fooyes UK!</b></p>
             </div>
             <div class="col-md-6 mob-hide"><img class="img-fluid"
-                    src="<?php echo base_url('assets/frontend/default/images/footer-top-img.png') ?>" /></div>
+                    src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" /></div>
         </div>
     </div>
 </section>
