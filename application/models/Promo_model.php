@@ -10,11 +10,34 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Promo_model extends Base_model
 {
-    public function get_promo_data(){
-        return $this->db
-            ->order_by('id', 'desc')
-            ->get('promo_codes')->result();
+    // public function get_promo_data($restaurant_id = 'all'){
+    //     if ($restaurant_id !== 'all') {
+    //         $this->db->where('restaurant_id', $restaurant_id);
+    //     }
+
+    //     $this->db->order_by('id', 'desc');
+    //     $query = $this->db->get('promo_codes');
+    //     return $query->result();
+    // }
+
+    public function get_promo_data($restaurant_id = 'all'){
+        if ($restaurant_id !== 'all') {
+            $this->db->where('restaurant_id', $restaurant_id);
+        }
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('promo_codes');
+        return $query->result();
     }
+
+    public function get_promo_data_for_multiple($restaurant_ids = []){
+        if (!empty($restaurant_ids)) {
+            $this->db->where_in('restaurant_id', $restaurant_ids);
+        }
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('promo_codes');
+        return $query->result();
+    }
+
 
     // public function get_valid_promo($code)
     // {

@@ -17,7 +17,7 @@ code{
                 <div class="card h-100">
                     <div class="card-header"><?php echo get_phrase('filter_restaurants'); ?></div>
                     <div class="card-body">
-                        <form action="<?php echo site_url('customers-info/index'); ?>" method="get">
+                        <form action="<?php echo site_url('promo-code'); ?>" method="get">
                             <div class="row justify-content-center">
                                 <div class="col-lg-8">
                                     <div class="form-group">
