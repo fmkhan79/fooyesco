@@ -10,11 +10,34 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Promo_model extends Base_model
 {
-    public function get_promo_data(){
-        return $this->db
-            ->order_by('id', 'desc')
-            ->get('promo_codes')->result();
+    // public function get_promo_data($restaurant_id = 'all'){
+    //     if ($restaurant_id !== 'all') {
+    //         $this->db->where('restaurant_id', $restaurant_id);
+    //     }
+
+    //     $this->db->order_by('id', 'desc');
+    //     $query = $this->db->get('promo_codes');
+    //     return $query->result();
+    // }
+
+    public function get_promo_data($restaurant_id = 'all'){
+        if ($restaurant_id !== 'all') {
+            $this->db->where('restaurant_id', $restaurant_id);
+        }
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('promo_codes');
+        return $query->result();
     }
+
+    public function get_promo_data_for_multiple($restaurant_ids = []){
+        if (!empty($restaurant_ids)) {
+            $this->db->where_in('restaurant_id', $restaurant_ids);
+        }
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('promo_codes');
+        return $query->result();
+    }
+
 
     // public function get_valid_promo($code)
     // {
@@ -25,13 +48,14 @@ class Promo_model extends Base_model
     //         ->get('promo_codes')
     //         ->row_array(); // returns full row or null
     // }
-    public function get_valid_promo($code)
+    public function get_valid_promo($code, $restaurant_id)
     {
         // Get current day in lowercase, e.g. 'monday', 'tuesday', etc.
         $today = strtolower(date('l'));
 
         return $this->db
             ->where('offer_code', $code)
+            ->where('restaurant_id', $restaurant_id)
             ->where('is_used', 0)
             ->where($today, 1) // column for today's day must be 1 (true)
             ->get('promo_codes')
