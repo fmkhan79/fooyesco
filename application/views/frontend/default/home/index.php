@@ -417,8 +417,8 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                     <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
                         <div class="order-img-box main-img">
                             <a
-                                href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($menu['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
-                                <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($menu['thumbnail'])); ?>"
+                                href="javascript:void(0)">
+                                <img src="<?php echo base_url('uploads/menu/' . sanitize($menu['thumbnail'])); ?>"
                                     alt="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250"
                                     fill="none">
