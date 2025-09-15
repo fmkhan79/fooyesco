@@ -21,7 +21,7 @@ if ($values[0]->testmode == 'on') {
 }
 
 define('STRIPE_SUCCESS_URL', site_url('GuestCheckout/stripe_payment/' . $address_id . '/' . $order_type));
-define('STRIPE_CANCEL_URL', site_url('cart'));
+define('STRIPE_CANCEL_URL', site_url('GuestCheckout?guest=1'));
 
 // Include Stripe PHP library
 require_once APPPATH . 'libraries/Stripe/init.php';

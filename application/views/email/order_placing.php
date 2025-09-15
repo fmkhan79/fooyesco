@@ -1,6 +1,8 @@
 <?php
+$host = $_SERVER['HTTP_HOST'];
 // Get customer details
-$customer_details = $this->customer_model->get_by_id($message['customer_id']);
+$extCust = (int) $message['customer_id'];
+$customer_details = $this->customer_model->get_by_id($extCust);
 
 // Load required models
 $this->load->model('order_model');
@@ -320,7 +322,18 @@ $decoded_address = json_decode($message['address'], true);
         </div>
 
         <div class="footer">
-            &copy; 2025 <a href="https://fooyes.co.uk/">Fooyes</a>. All rights reserved.
+            &copy; 2025 
+            <a class="float-right" target="_blank"
+              <?php 
+                  if ($host == 'www.fooyes.local' || $host == 'www.chillihutmarch.fooyes.local') {
+                      echo 'href="http://' . $message['order_url'] . '"';
+                  }else{
+                      echo 'href="https://' . $message['order_url'] . '"';
+                  }
+              ?>
+              >
+                <?php echo $message['order_url']; ?>
+            </a>.
         </div>
     </div>
 </body>

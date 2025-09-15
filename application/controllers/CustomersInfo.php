@@ -84,6 +84,7 @@ class CustomersInfo extends Authorization
     {
         $send_email = $this->input->post('send_email') ? true : false;
         $send_sms = $this->input->post('send_sms') ? true : false;
+        $selected_discount = $this->input->post('discount_option');
         $discount = $this->input->post('discount');
         $message = $this->input->post('message');
         $customerDataJson = $this->input->post('selected_customers_data');
@@ -100,6 +101,12 @@ class CustomersInfo extends Authorization
         $this->load->model('Promo_model');
 
         // Our Twilio credentials
+        $this->load->model('admin_setting');
+        $twilio = $this->admin_setting->get_twilio_credentials();
+
+        $sid = $twilio->twilio_sid;
+        $token  = $twilio->twilio_token;
+        $twilio_number = $twilio->twilio_phone;
    
         foreach ($customers as $cust) {
             // Generate promo code
@@ -108,13 +115,16 @@ class CustomersInfo extends Authorization
             $promoData = [
                 'offer_code' => $code,
                 'discount'   => $discount,
+                'restaurant_id'   => $cust['restaurant_id'],
                 'monday'     => in_array('monday', $selectedDays) ? 1 : 0,
                 'tuesday'    => in_array('tuesday', $selectedDays) ? 1 : 0,
                 'wednesday'  => in_array('wednesday', $selectedDays) ? 1 : 0,
                 'thursday'   => in_array('thursday', $selectedDays) ? 1 : 0,
                 'friday'     => in_array('friday', $selectedDays) ? 1 : 0,
                 'saturday'   => in_array('saturday', $selectedDays) ? 1 : 0,
-                'sunday'     => in_array('sunday', $selectedDays) ? 1 : 0
+                'sunday'     => in_array('sunday', $selectedDays) ? 1 : 0,
+                'add_on_by_default' => $selected_discount == 'default' ? 1 : 0,
+                'only_promo' => $selected_discount == 'promo' ? 1 : 0
             ];
 
             $this->db->insert('promo_codes', $promoData);
@@ -182,4 +192,51 @@ class CustomersInfo extends Authorization
 
         redirect(site_url('customers-info/index'));
     }
+
+
+    public function special_promo()
+    {
+        $page_data['page_title'] = site_phrase("special_promo", true);
+        $page_data['page_name'] = 'special_promo/index';
+
+        $this->load->view('backend/index', $page_data);
+    }
+
+    public function special_promo_create() {
+        // Get form inputs
+        $code              = $this->input->post('offer_code', TRUE);
+        $discount          = $this->input->post('discount', TRUE);
+        $selectedDaysJson = $this->input->post('selected_days');
+        $selectedDays     = json_decode($selectedDaysJson, true); // yeh array aana chahiye
+        $selected_discount = $this->input->post('discount_option', TRUE);
+
+        // Proper promoData (table me agar days aur flags chahiye ho to)
+        $promoData = [
+            'offer_code' => $code,
+            'discount'   => $discount,
+            'monday'     => in_array('monday', $selectedDays) ? 1 : 0,
+            'tuesday'    => in_array('tuesday', $selectedDays) ? 1 : 0,
+            'wednesday'  => in_array('wednesday', $selectedDays) ? 1 : 0,
+            'thursday'   => in_array('thursday', $selectedDays) ? 1 : 0,
+            'friday'     => in_array('friday', $selectedDays) ? 1 : 0,
+            'saturday'   => in_array('saturday', $selectedDays) ? 1 : 0,
+            'sunday'     => in_array('sunday', $selectedDays) ? 1 : 0,
+            'add_on_by_default' => ($selected_discount == 'default') ? 1 : 0,
+            'only_promo'        => ($selected_discount == 'promo') ? 1 : 0,
+            'is_special' => true
+        ];
+
+            
+        // Insert data into the database
+        $result = $this->db->insert('promo_codes', $promoData);
+
+        if ($result) {
+            $this->session->set_flashdata('success', 'Special promo code created successfully.');
+        } else {
+            $this->session->set_flashdata('error', 'Failed to create special promo code.');
+        }
+
+        redirect('customers-info/special_promo');
+    }
+
 }

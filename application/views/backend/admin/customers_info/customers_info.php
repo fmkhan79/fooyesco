@@ -6,7 +6,7 @@
             <!-- Filter Orders -->
             <div class="col-lg-6">
                 <div class="card h-100">
-                    <div class="card-header"><?php echo get_phrase('filter_orders'); ?></div>
+                    <div class="card-header"><?php echo get_phrase('filter_restaurants'); ?></div>
                     <div class="card-body">
                         <form action="<?php echo site_url('customers-info/index'); ?>" method="get">
                             <div class="row justify-content-center">
@@ -93,6 +93,23 @@
                                     </div>
                                     <small class="text-muted">Only checked days will be valid for this promo.</small>
                                 </div>
+                                <div class="col-md-12 mt-2">
+                                    <label for="discount_value"><?php echo get_phrase('online_discount_validation'); ?></label>                                    
+                                    <div class="d-flex">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="discount_option" id="add_on_by_default" value="default">
+                                            <label class="form-check-label" for="add_on_by_default">
+                                                <?php echo get_phrase('add_on_by_default'); ?>
+                                            </label>
+                                        </div>
+                                        <div class="form-check mx-3">
+                                            <input class="form-check-input" type="radio" name="discount_option" id="only_promo" value="promo">
+                                            <label class="form-check-label" for="only_promo">
+                                                <?php echo get_phrase('only_promo'); ?>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-row">
@@ -157,7 +174,7 @@
                                     $restaurantName = isset($restaurant_map[$customer['restaurant_id']]) ? $restaurant_map[$customer['restaurant_id']] : 'Unknown';
                                 ?>
                                     <tr>
-                                        <td><input type="checkbox" class="customer_checkbox" name="selected_customers[]" value="<?= $customer['id'] ?>"></td>
+                                        <td><input type="checkbox" class="customer_checkbox" name="selected_customers[]" value="<?= $customer['id'] ?>" data-restaurant-id="<?= $customer['restaurant_id'] ?>"></td>
                                         <td><?= $index++ ?></td>
                                         <td><?= $billing['first_name'] . ' ' . $billing['last_name'] ?></td>
                                         <td><?= $billing['email'] ?></td>
@@ -176,87 +193,6 @@
 
 <!-- JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<!-- <script>
-     $(document).ready(function () {
-        $('#promotionForm').on('submit', function (e) {
-            let selectedData = [];
-
-            $('.customer_checkbox:checked').each(function () {
-                const row = $(this).closest('tr');
-                const name = row.find('td:eq(2)').text().trim();
-                const email = row.find('td:eq(3)').text().trim();
-                const phone = row.find('td:eq(4)').text().trim();
-                const restaurant = row.find('td:eq(5)').text().trim();
-
-                selectedData.push({
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    restaurant: restaurant
-                });
-            });
-
-            if (selectedData.length === 0) {
-                alert("Please select at least one customer.");
-                e.preventDefault();
-                return;
-            }
-            
-            // Select All Days functionality
-            $('#select_all_days').on('change', function () {
-                $('.promo_day_checkbox').prop('checked', $(this).prop('checked'));
-            });
-
-            $('.promo_day_checkbox').on('change', function () {
-                if ($('.promo_day_checkbox:checked').length === $('.promo_day_checkbox').length) {
-                    $('#select_all_days').prop('checked', true);
-                } else {
-                    $('#select_all_days').prop('checked', false);
-                }
-            });
-            
-            if (selectedDays.length === 0) {
-                alert("Please select at least one valid day for the promo.");
-                e.preventDefault();
-                return;
-            }
-
-            const message = $('#message_input').val().trim();
-
-            if (!message.includes('{promo_code}')) {
-                alert("Your message must include the {promo_code} placeholder.");
-                e.preventDefault();
-                return;
-            }
-            
-            if (!message.includes('{valid_days}')) {
-                alert("Your message must include the {valid_days} placeholder.");
-                e.preventDefault();
-                return;
-            }
-
-            if (!message.includes('{discount}')) {
-                alert("Your message must include the {discount} placeholder.");
-                e.preventDefault();
-                return;
-            }
-
-            if (!message.includes('{customer_name}')) {
-                alert("Your message must include the {customer_name} placeholder.");
-                e.preventDefault();
-                return;
-            }
-
-            
-            $('#selected_customers_data').val(JSON.stringify(selectedData));
-            $('#selected_days').val(JSON.stringify(selectedDays));
-        });
-
-        $('#select_all').on('change', function () {
-            $('.customer_checkbox').prop('checked', $(this).prop('checked'));
-        });
-    });
-</script> -->
 
 <script>
 
@@ -294,12 +230,14 @@ $(document).ready(function () {
             const email = row.find('td:eq(3)').text().trim();
             const phone = row.find('td:eq(4)').text().trim();
             const restaurant = row.find('td:eq(5)').text().trim();
+            const restaurantId = $(this).data('restaurant-id');
 
             selectedData.push({
                 name: name,
                 email: email,
                 phone: phone,
-                restaurant: restaurant
+                restaurant: restaurant,
+                restaurant_id: restaurantId
             });
         });
 
@@ -321,6 +259,11 @@ $(document).ready(function () {
             return;
         }
 
+        // ✅ Discount option validation
+        const selectedDiscountOption = $('input[name="discount_option"]:checked').val();
+        const selectAllDays = localStorage.getItem('selectAllDays') === "true";
+
+
         const message = $('#message_input').val().trim();
 
         if (!message.includes('{promo_code}')) {
@@ -328,8 +271,7 @@ $(document).ready(function () {
             e.preventDefault();
             return;
         }
-
-        const selectAllDays = localStorage.getItem('selectAllDays') === "true"; 
+ 
         if (!selectAllDays) {
             if (!message.includes('{valid_days}')) {
                 alert("Your message must include the {valid_days} placeholder.");
@@ -350,7 +292,6 @@ $(document).ready(function () {
             return;
         }
 
-        // ✅ Ab hidden fields me sahi data set hoga
         $('#selected_customers_data').val(JSON.stringify(selectedData));
         $('#selected_days').val(JSON.stringify(selectedDays));
     });

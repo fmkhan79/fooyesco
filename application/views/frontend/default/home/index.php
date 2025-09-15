@@ -167,21 +167,30 @@
 }
 
 .cookie-banner{
-    width: 100%;
+    width: 500px;
     position: fixed;
-    bottom: 0;
+    bottom: 18px;
+    right: 10px;
     height: auto;
     background-color: #fff9ef;
     z-index: 99999;
+    border-radius: 1rem;
     color: #222;
     display: none;
-    text-align: center;
+    padding: 10px 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.cookie-banner .actions{
+    padding-top: 25px;
+    display: flex;
+    justify-content: end;
 }
 
 .cookie-banner .btn-cb{
-    background-color: #fdc55e;
+    background-color: #f44647;
     /* border: 5px solid rgb(255, 187, 61); */
-    color: #191919 !important;
+    color: #fff !important;
     padding: 8px 28px;
     font-weight: 500;
     border-radius: 2rem;
@@ -190,21 +199,41 @@
 
 .cookie-banner h3{
     font-size: 18px;
-    font-weight: 400 !important;
+    font-weight: 300 !important;
+    margin-top: 16px;
+}
+.cookie-banner h2{
+    font-size: 28px;
+    font-weight: 600 !important;
 }
 
 @media (max-width: 768px) {
     .cookie-banner{
-        width: 100%;
-        left: 0;
+        width: 70%;
+        right: 15%;
+        text-align: center;
+        padding: 10px 10px;
     }
+    .cookie-banner .actions{
+        padding-top: 15px;
+        display: flex;
+        justify-content: center;
+    }
+    .cookie-banner h3{
+        font-size: 14px;
+    }
+    .cookie-banner h2{
+        font-size: 18px;
+        font-weight: 600 !important;
+    }
+
     .cookie-banner p{
         font-size: 11px;
     }
     .cookie-banner .btn-cb{
-          background-color: #fdc55e;
+          background-color: #f44647;
     /* border: 5px solid rgb(255, 187, 61); */
-    color: #191919 !important;
+    color: #fff !important;
     padding: 8px 28px;
     font-weight: 500;
     border-radius: 2rem;
@@ -337,7 +366,7 @@
                 <div class="col-md-7 text-md-right">
                     <!-- add ? <.?.php -->
                     <img class="img-fluid"
-                        src="<?php echo base_url('assets/frontend/default/images/main-banner-img.png') ?>" />
+                        src="<?php echo base_url('assets/frontend/default/images/hero-img.png') ?>" />
                 </div>
                 
             </div>
@@ -351,10 +380,11 @@
 <!--// SLIDER -->
 <!--//END HEADER -->
 <!--============================= FEATURED CUISINES =============================-->
-<div class="about-txt my-5 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right; height: 60vh;
+<div class="container">
+    <div class="about-txt my-5 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right; height: 60vh;
     display: flex;
     align-items: center;">
-<div class="container px-0 pt-md-5 px-md-5 " style="padding-bottom: 20px  max-width: 1000px!important">
+<div class="container px-0 pt-md-5 px-md-4 " style="padding-bottom: 20px  max-width: 1000px!important">
 
             <div class="p-0 m-0 " style="margin-left: 0px;">
                 <div class="welcome-foo col-md-6 ">
@@ -368,18 +398,103 @@ favorites or globally inspired delights, we've got something to satisfy every pa
         </div>
         </div>
 </div>
+</div>
 
 
-
+<!-- Special offer -->
 <section class="order-listing featured-responsive-card-section">
     <div class="container p-0" style="max-width: 1045px!important">
         <div class="special-offer-titlebox ">
-            <h2>Limited<span style="color:#fdc55e;">-</span>Time<span class="red">Special</span> Offers</h2>
+            <h2>Today<span class="red">Special</span> Offers</h2>
+            <p>7 DAYS ONLY! Enjoy 25% OFF on all collection orders and 20% OFF on delivery orders. Don't miss out—order now and indulge in your favorite flavors at a discounted price!</p>
+        </div>
+
+            <div class="row gallery featured-responsive-card justify-content-between">
+                <?php 
+                $menus = $this->menu_model->get_menu_by_condition(['today_special' => true]);
+                if(!empty($menus)):
+                foreach ($menus as $key => $menu): ?>
+                    <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
+                        <div class="order-img-box main-img">
+                            <a
+                                href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($menu['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
+                                <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($menu['thumbnail'])); ?>"
+                                    alt="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250"
+                                    fill="none">
+                                    <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)"
+                                        stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
+                                    <defs>
+                                        <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
+                                            y2="280.046" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#F57484" stop-opacity="0"></stop>
+                                            <stop offset="1" stop-color="#FDC55E"></stop>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <div class="percent-box"><?php 
+                                    $jsonDecodePrice = json_decode($menu['price']);
+                                    echo currency(number_format($jsonDecodePrice->menu, 0));  
+                                ?></div>
+                            </a>
+                        </div>
+                        <div class="restaurant-body text-center">
+                            <div class="review-grid d-flex justify-content-around align-items-center m-auto">
+                                <?php if ($restaurant['rating']) { ?>
+                                    <ul class="inline-grid m-0 p-0">
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
+                                                height="38">
+                                        </li>
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
+                                                height="38">
+                                        </li>
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
+                                                height="38">
+                                        </li>
+                                    </ul>
+                                    <div class="star">
+                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M11.0489 0.926805C11.3483 0.00549436 12.6517 0.00549579 12.9511 0.926806L14.9187 6.98253C15.0526 7.39456 15.4365 7.67352 15.8697 7.67352H22.2371C23.2058 7.67352 23.6086 8.91313 22.8249 9.48253L17.6736 13.2252C17.3231 13.4798 17.1764 13.9312 17.3103 14.3432L19.2779 20.3989C19.5773 21.3203 18.5228 22.0864 17.7391 21.517L12.5878 17.7743C12.2373 17.5197 11.7627 17.5197 11.4122 17.7743L6.2609 21.517C5.47719 22.0864 4.42271 21.3203 4.72206 20.3989L6.68969 14.3432C6.82356 13.9312 6.6769 13.4798 6.32642 13.2252L1.17511 9.48253C0.391392 8.91313 0.794168 7.67352 1.76289 7.67352H8.13026C8.56349 7.67352 8.94744 7.39456 9.08132 6.98253L11.0489 0.926805Z"
+                                                fill="#FFB800"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="p-0 m-0">(
+                                        <?php echo sanitize($restaurant['rating']); ?>)
+                                    </p>
+                                <?php } ?>
+                            </div>
+                            <h3><?php echo sanitize($menu['name']); ?></h3>
+                            <p><?php echo sanitize($menu['details']) ?></p>
+                        </div>
+                        <a class="btn btn-danger"
+                             href="javascript:void(0);"
+                            onclick="addToCart('<?php echo $menu['id']; ?>', '<?php $jsonDecodePrice = json_decode($menu['price']); echo $jsonDecodePrice->menu; ?>', true)">Order
+                            Now</a>
+                        <!-- <a class="btn btn-danger"
+                            href="http://<?= $restaurant['slug']; ?>.fooyes.local">Order
+                            Now</a> -->
+
+                    </div>
+                <?php endforeach;
+                    endif;
+                ?>
+            </div>
+
+    </div>
+</section>
+
+<!-- Restaurants -->
+<section class="order-listing featured-responsive-card-section">
+    <div class="container p-0" style="max-width: 1045px !important">
+        <div class="special-offer-titlebox">
+            <h2>Explore <span style="color:#fdc55e;">-</span> <span class="red">Restaurants</span></h2>
             <p>7 DAYS ONLY! Enjoy 25% OFF on all collection orders and 20% OFF on delivery orders. Don't miss out—order now and indulge in your favorite flavors at a discounted price!</p>
         </div>
 
         <?php if (!empty($featured_restaurants)): ?>
-            <div class=" gallery featured-responsive-card">
+            <div class="row gallery featured-responsive-card justify-content-between">
                 <?php foreach ($featured_restaurants as $key => $restaurant): ?>
                     <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
                         <div class="order-img-box main-img">
@@ -494,7 +609,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
     <div class="container" style="max-width: 1000px!important pl-0!important">
         <div class="d-md-flex align-items-center">
             <div class="col-md-5"><img class="img-fluid"
-                    src="<?php echo base_url('assets/frontend/default/images/multi-services-img.png') ?>"></div>
+                    src="<?php echo base_url('assets/frontend/default/images/mult-service.png') ?>"></div>
             <div class="col-md-7">
                 <h3>We are <span class="red">more</span> than<br /> <span class="yellow">multiple</span> service</h3>
                 <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments
@@ -648,23 +763,22 @@ favorites or globally inspired delights, we've got something to satisfy every pa
     <p style="font-size:18px"> <b>Delicious moments start here. Welcome to Fooyes UK!</b></p>
             </div>
             <div class="col-md-6 mob-hide"><img class="img-fluid"
-                    src="<?php echo base_url('assets/frontend/default/images/footer-top-img.png') ?>" /></div>
+                    src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" /></div>
         </div>
     </div>
 </section>
 
 
 <div class="cookie-banner"  id="cookie-banner">
-    <div class="container">
+    <div class="container-fluid my-2">
         <div class="row">
-            <div class="col-md-8 mx-auto mt-3">
-                <h3>We use cookies to personalize your experience,  
-                    analyze site traffic, and serve relevant content.  
-                    By clicking Accept, you consent to our cookie policy.</h3>
-                                    <div class="actions mt-1 mb-3">
-                                        <a href="" onclick="acceptCookies()" class="mx-2 btn btn-cb">Accept</a>
-                <a href="" onclick="ignoreCookies()" class="mx-2 btn btn-cb">Ignore</a>
-                                    </div>
+            <div class="col-md-12">
+                          <h2>We value your privacy</h2>    
+                <h3>To give you the best experience, we use cookies to understand how our site is used, improve functionality, and provide personalized content and offers. By selecting “Accept”, you consent to our use of cookies as described in our Cookie Policy.</h3>
+                                    <div class="actions">
+                    <a href="" onclick="ignoreCookies()" class="mx-2 btn btn-cb">Ignore</a>
+                    <a href="" onclick="acceptCookies()" class="mx-2 btn btn-cb">Accept</a>
+                </div>
             </div>
         </div>
     </div>
@@ -689,7 +803,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: #fff9ef;
     padding: 30px;
     width: 90%;
     max-width: 500px;
@@ -711,13 +825,17 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 }
 
 #termPopup a {
-    color: #007bff;
+    color: #f44647;
+    text-decoration: underline;
+}
+#termPopup a:hover {
+    color: #f44647 !important;
     text-decoration: underline;
 }
 
 #termPopup .btn-cb {
-    background-color: #fdc55e;
-    color: #191919;
+    background-color: #f44647;
+    color: #fff;
     padding: 8px 24px;
     font-weight: 500;
     border-radius: 2rem;
@@ -730,7 +848,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 <div id="termBackdrop"></div>
 
 <!-- Terms & Conditions Popup -->
-<div id="termPopup">
+<!-- <div id="termPopup">
   <h5>Terms & Conditions</h5>
   <p>
     Please review and accept our 
@@ -739,7 +857,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
     before continuing.
   </p>
   <button class="btn btn-cb" onclick="continueTerms()">Continue</button>
-</div>
+</div> -->
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {

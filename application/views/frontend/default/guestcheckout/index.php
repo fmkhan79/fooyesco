@@ -74,6 +74,95 @@ $stripe_settings = json_decode($stripe_settings);
     /* .order-delivery-types{
     display:none;
 } */
+
+ .cookie-banner{
+    width: 500px;
+    position: fixed;
+    bottom: 18px;
+    right: 10px;
+    height: auto;
+    background-color: #fff9ef;
+    z-index: 99999;
+    border-radius: 1rem;
+    color: #222;
+    display: none;
+    padding: 10px 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.cookie-banner .actions{
+    padding-top: 25px;
+    display: flex;
+    justify-content: end;
+}
+
+.cookie-banner .btn-cb{
+    background-color: #f44647;
+    /* border: 5px solid rgb(255, 187, 61); */
+    color: #fff !important;
+    padding: 8px 28px;
+    font-weight: 500;
+    border-radius: 2rem;
+    font-size: 18px;
+}
+
+.cookie-banner h3{
+    font-size: 18px;
+    font-weight: 300 !important;
+    margin-top: 16px;
+}
+.cookie-banner h2{
+    font-size: 28px;
+    font-weight: 600 !important;
+}
+
+@media (max-width: 768px) {
+    .cookie-banner{
+        width: 70%;
+        right: 15%;
+        text-align: center;
+        padding: 10px 10px;
+    }
+    .cookie-banner .actions{
+        padding-top: 15px;
+        display: flex;
+        justify-content: center;
+    }
+    .cookie-banner h3{
+        font-size: 14px;
+    }
+    .cookie-banner h2{
+        font-size: 18px;
+        font-weight: 600 !important;
+    }
+
+    .cookie-banner p{
+        font-size: 11px;
+    }
+    .cookie-banner .btn-cb{
+          background-color: #f44647;
+    /* border: 5px solid rgb(255, 187, 61); */
+    color: #fff !important;
+    padding: 8px 28px;
+    font-weight: 500;
+    border-radius: 2rem;
+        font-size: 12px;
+    }
+
+}
+
+#termBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9998;
+    display: none;
+}
+
+
 </style>
 <section class="detail-wbox mt-4 mb-2 p-5 d-flex justify-content-around">
     <div class="container bg-white text-dark border border-light p-3 w-75 p-md-5">
@@ -609,7 +698,7 @@ $stripe_settings = json_decode($stripe_settings);
 </style>
 
 <!-- Cookie Consent Modal -->
-<div class="modal fade" id="cookieModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+<!-- <div class="modal fade" id="cookieModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body text-center">
@@ -623,57 +712,73 @@ $stripe_settings = json_decode($stripe_settings);
       </div>
     </div>
   </div>
+</div> -->
+
+<!-- Black backdrop -->
+<!-- <div id="termBackdrop"></div> -->
+
+<div class="cookie-banner"  id="cookie-banner">
+    <div class="container-fluid my-2">
+        <div class="row">
+            <div class="col-md-12">
+                          <h2>We value your privacy</h2>    
+                <h3>To give you the best experience, we use cookies to understand how our site is used, improve functionality, and provide personalized content and offers. By selecting “Accept”, you consent to our use of cookies as described in our Cookie Policy.</h3>
+                                    <div class="actions">
+                    <a href="" onclick="acceptCookies()" class="mx-2 btn btn-cb">Ignore</a>
+                    <a href="" onclick="acceptCookies()" class="mx-2 btn btn-cb">Accept</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
 
 <script>
 
- // Accept cookies function
-        function acceptCookies() {
-            setCookie("cookieConsent", "accepted", 30);
-            console.log("Cookie accepted and set.");
-            cookieModal.hide();
-        }
+ // Accept handler
+function acceptCookies() {
+    setCookie("cookieConsent", "accepted", 30);
+    document.getElementById("cookie-banner").style.display = "none";
+    document.getElementById("termBackdrop").style.display = "none";
+}
+// Ignore handler
+function ignoreCookies() {
+    setCookie("cookieConsent", "ignored", 30);
+    document.getElementById("cookie-banner").style.display = "none";
+}
 
-        // Set cookie function
-            function setCookie(name, value, days) {
-                const date = new Date();
-                date.setTime(date.getTime() + (days*24*60*60*1000));
-                const expires = "expires=" + date.toUTCString();
-                document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
-            }
+// Set cookie
+function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days*24*60*60*1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+}
+// Get cookie
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
+    }
+    return null;
+}
 
+// On load
 $(document).ready(function () {
+    console.log("Cookie on load:", getCookie("cookieConsent"));
 
-        let cookieModal;
+    // Agar cookie accept nahi hui to banner show karo
+    if (getCookie("cookieConsent") !== "accepted") {
+        document.getElementById("cookie-banner").style.display = "block";
+        document.getElementById("termBackdrop").style.display = "block";
+    }
 
-    // On load, check cookie and show modal if not accepted
-        console.log("Cookie on load:", getCookie("cookieConsent"));
-        if (getCookie("cookieConsent") !== "accepted") {
-            const modalElement = document.getElementById('cookieModal');
-            cookieModal = new bootstrap.Modal(modalElement, {
-                backdrop: 'static',
-                keyboard: false
-            });
-            cookieModal.show();
-        }
-        // Get cookie function
-        function getCookie(name) {
-            const nameEQ = name + "=";
-            const ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i].trim();
-                if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
-            }
-            return null;
-        }
-
-
-    if (orderTypeV === 'delivery' && getCookie("cookieConsent") === "accepted") {
+    // Example: Agar orderType delivery hai aur cookie accept ho chuki hai
+    if (typeof orderTypeV !== 'undefined' && orderTypeV === 'delivery' && getCookie("cookieConsent") === "accepted") {
         $('#guestAddressModal').modal({
-        backdrop: 'static',
-        keyboard: false
+            backdrop: 'static',
+            keyboard: false
         }).modal('show');
     }
 });

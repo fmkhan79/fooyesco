@@ -176,6 +176,7 @@ class Menu_model extends Base_model
         $data['category_id'] = required(sanitize($this->input->post('category_id')));
         $data['availability'] = isset($_POST['availability']) ? 1 : 0;
         $data['byoneoffer'] = isset($_POST['byoneoffer']) ? 1 : 0;
+        $data['today_special'] = isset($_POST['todayspecial']) ? 1 : 0;
         $data['slug'] = slugify(sanitize($this->input->post('name')));
         $data['restaurant_id'] = required(sanitize($this->input->post('restaurant_id')));
         return $data;

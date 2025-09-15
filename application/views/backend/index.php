@@ -13,6 +13,28 @@ $file_name  = $exploded[1];
     <?php include 'partials/metas.php'; ?>
     <!-- LOAD STYLES -->
     <?php include 'partials/styles.php'; ?>
+
+    <style>
+
+.page-item.active .page-link{
+    background-color: #f54748;
+    color: #fff !important;
+    border-color: #f54748;
+}
+
+.page-link{
+    color: #000;
+}
+.main-footer a{
+    color: #000;
+}
+a{
+    color: #f54748 ;
+}
+a:hover{
+    color: #f54748 ;
+}
+    </style>
 </head>
 
 <body class="sidebar-collapse sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">

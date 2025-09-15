@@ -7,7 +7,7 @@
             <div class="col-md-4">
                 <?php
                     $host = get_subdomain();
-                    if($host != 'fooyes'){
+                    if($host != 'fooyes' && $host != 'staging'){
                 ?>
                 <h3 style="font-weight: 800; color: #343a40;;">Powered By</h3>
                 <?php }?>
@@ -27,9 +27,14 @@
                     <li><a href="<?php echo site_url('contact-us'); ?>">
                             <?php echo site_phrase('contact_us'); ?>
                         </a></li>
+                    <?php
+                        $host = get_subdomain();
+                        if($host == 'fooyes' || $host == 'staging'){
+                    ?>
                     <li><a href="<?php echo site_url('about-us'); ?>">
                             <?php echo site_phrase('about_us'); ?>
                         </a></li>
+                    <?php }?>
                     <li><a href="<?php echo site_url('privacy-policy'); ?>">
                             <?php echo site_phrase('privacy_policy'); ?>
                         </a></li>
@@ -43,7 +48,7 @@
                 <ul class="footer-links">
                  <?php
                     $host = get_subdomain();
-                    if($host == 'fooyes'){
+                    if($host == 'fooyes' || $host == 'staging'){
                 ?>
                 <li><a href="<?php echo site_url('become-a-partner'); ?>">
                             <?php echo site_phrase('become_a_partner'); ?>

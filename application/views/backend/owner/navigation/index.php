@@ -1,8 +1,7 @@
 <aside class="main-sidebar sidebar-dark-danger elevation-4 hold-transition layout-fixed">
     <!-- Brand Logo -->
     <a href="<?php echo site_url('dashboard'); ?>" class="brand-link">
-        <img src="<?php echo base_url('uploads/system/' . get_website_settings('backend_logo')); ?>" alt="" class="brand-image img-circle opacity-80">
-        <span class="brand-text font-weight-light"><?php echo get_system_settings('system_name'); ?></span>
+        <img src="<?php echo base_url('uploads/system/' . get_website_settings('backend_logo')); ?>" alt="" class="brand-image">
     </a>
 
     <!-- Sidebar -->
@@ -196,6 +195,42 @@
                             <?php echo get_phrase("customers"); ?>
                         </p>
                     </a>
+                </li>
+
+                <li class="nav-item has-treeview <?php if ($page_name == "customers_info/index" || $page_name == "promo_code/index") echo 'menu-open'; ?>">
+                    <a href="#" class="nav-link <?php if ($page_name == "customers_info/index" || $page_name == "promo_code/index") echo 'active'; ?>">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            <?php echo get_phrase('Promotions'); ?>
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('customers-info'); ?>" class="nav-link <?php if ($page_name == "customers_info/index") echo 'active'; ?>">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    <?php echo get_phrase("create_promo_code"); ?>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('promo-code'); ?>" class="nav-link <?php if ($page_name == "promo_code/index") echo 'active'; ?>">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>
+                                    <?php echo get_phrase("view_promo_codes"); ?>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('customers-info/special_promo'); ?>" class="nav-link <?php if ($page_name == "special_promo/index") echo 'active'; ?>">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>
+                                    <?php echo get_phrase("create_special_promo"); ?>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <!-- <li class="nav-item">

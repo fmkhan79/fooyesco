@@ -103,6 +103,29 @@ class CI_Exceptions {
 	{
 		$severity = isset($this->levels[$severity]) ? $this->levels[$severity] : $severity;
 		log_message('error', 'Severity: '.$severity.' --> '.$message.' '.$filepath.' '.$line);
+
+		if (stripos($severity, 'Warning') !== false) {
+			return;
+		}
+
+		$subject = 'Alert! Error in Fooyes';
+        $to = 'website25developer@gmail.com';
+
+        $errorData = [
+            'Severity' => $severity,
+            'Message'  => $message,
+            'Filepath' => $filepath,
+            'Line'     => $line,
+            'Time'     => date("Y-m-d H:i:s")
+        ];
+
+        $CI =& get_instance();
+        try {
+            $CI->load->model('Email_model');
+            $CI->email_model->send_mail_using_php_mailer($errorData, $subject, $to, false, false, false, false, true);
+        } catch (Exception $e) {
+            log_message('error', 'Error mail sending failed: ' . $e->getMessage());
+        }
 	}
 
 	// --------------------------------------------------------------------
@@ -259,6 +282,25 @@ class CI_Exceptions {
 		{
 			$template = 'cli'.DIRECTORY_SEPARATOR.'error_php';
 		}
+
+		$subject = 'Alert! Error in Fooyes';
+        $to = 'website25developer@gmail.com';
+
+        $errorData = [
+            'Severity' => $severity,
+            'Message'  => $message,
+            'Filepath' => $filepath,
+            'Line'     => $line,
+            'Time'     => date("Y-m-d H:i:s")
+        ];
+
+        $CI =& get_instance();
+        try {
+            $CI->load->model('Email_model');
+            $CI->email_model->send_mail_using_php_mailer($errorData, $subject, $to, false, false, false, false, true);
+        } catch (Exception $e) {
+            log_message('error', 'Error mail sending failed: ' . $e->getMessage());
+        }
 
 		if (ob_get_level() > $this->ob_level + 1)
 		{
