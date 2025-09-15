@@ -1,6 +1,9 @@
 <!-- NAVIGATION BAR -->
 
-<?php include APPPATH . 'views/frontend/default/navigation/dark.php';
+<?php 
+$cartView = true;
+
+include APPPATH . 'views/frontend/default/navigation/dark.php';
 
 
 $cash_on_delivery_settings = get_payment_settings("cash_on_delivery");

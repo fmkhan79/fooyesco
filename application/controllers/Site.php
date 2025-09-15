@@ -269,6 +269,16 @@ class Site extends Base
         $this->session->set_userdata('language', $selected_language);
         echo true;
     }
+
+    public function get_menu_info($menu_id) {
+    $menu = $this->menu_model->get_by_id($menu_id);
+    $response = [
+        'price' => json_decode($menu['price'])->menu,
+        'has_variant' => $menu['has_variant']
+    ];
+    echo json_encode($response);
+}
+
 }
 
 /* End of file Site.php */

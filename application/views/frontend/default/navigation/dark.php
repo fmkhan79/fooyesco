@@ -30,13 +30,17 @@ if (count($restaurant_ids) > 0) {
                     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                         <ul class="navbar-nav">
                                 
-                                <li class="cart-menu ml-3">
-                                    <a href="<?php echo site_url('chilli-hut-march'); ?>" class="cart-btn"><span
-                                            class="cart-items" id="#cart-items">
-                                            <?php echo sanitize($this->cart_model->total_cart_items()); ?>
-                                        </span><img
-                                            src="<?php echo base_url('assets/frontend/default/images/cart-icon.png') ?>" /></a>
-                                </li>
+                            <?php if(isset($cartView) && $cartView == true): ?>
+<li class="cart-menu ml-3">
+    <a href="<?php echo site_url('chilli-hut-march'); ?>" class="cart-btn">
+        <span class="cart-items" id="cart-items">
+            <?php echo sanitize($this->cart_model->total_cart_items()); ?>
+        </span>
+        <img src="<?php echo base_url('assets/frontend/default/images/cart-icon.png') ?>" />
+    </a>
+</li>
+<?php endif; ?>
+
                                 <!-- <li class="nav-item">
                                     <a class="btn btn-outline-light top-btn" href="<?php echo site_url('auth/registration/driver'); ?>"><?php echo site_phrase('become_a_delivery_man', true); ?></a>
                                 </li> -->
