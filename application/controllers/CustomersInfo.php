@@ -161,11 +161,12 @@ class CustomersInfo extends Authorization
             if ($send_sms && !empty($cust['phone'])) {
                 $url = 'https://api.twilio.com/2010-04-01/Accounts/' . $sid . '/Messages.json';
 
-                $data = http_build_query([
-                    'From' => $twilio_number,
-                    'To' => '+923168232627', // should be in +92xxxxxxxxxx format $cust['phone'], $formattedPhone
-                    'Body' => $personalMessage
-                ]);
+                                $data = http_build_query([
+                        'From' => $twilio_number,
+                        'To'   => '+447872323500',
+                        'Body' => $personalMessage
+                    ]);
+
 
                 $ch = curl_init();
 
