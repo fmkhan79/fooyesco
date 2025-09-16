@@ -413,65 +413,70 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                 <?php 
                 $menus = $this->menu_model->get_menu_by_condition(['today_special' => true]);
                 if(!empty($menus)):
-                foreach ($menus as $key => $menu): ?>
+                foreach ($menus as $key => $menu): 
+                //  print_r($menu);
+                //  die();
+                 $restaurant = $this->restaurant_model->get_by_id($menu['restaurant_id']);
+                ?>
                     <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
-                        <div class="order-img-box main-img">
-                            <a
-                                href="javascript:void(0)">
-                                <img src="<?php echo base_url('uploads/menu/' . sanitize($menu['thumbnail'])); ?>"
-                                    alt="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250"
-                                    fill="none">
-                                    <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)"
-                                        stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
-                                    <defs>
-                                        <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
-                                            y2="280.046" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#F57484" stop-opacity="0"></stop>
-                                            <stop offset="1" stop-color="#FDC55E"></stop>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                                <div class="percent-box"><?php 
-                                    $jsonDecodePrice = json_decode($menu['price']);
-                                    echo currency(number_format($jsonDecodePrice->menu, 0));  
-                                ?></div>
-                            </a>
-                        </div>
+                       <div class="order-img-box main-img">
+    <a href="javascript:void(0)">
+        <img src="<?php echo base_url('uploads/menu/' . sanitize($menu['thumbnail'])); ?>" alt="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250" fill="none">
+            <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)"
+                stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
+            <defs>
+                <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
+                    y2="280.046" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#F57484" stop-opacity="0"></stop>
+                    <stop offset="1" stop-color="#FDC55E"></stop>
+                </linearGradient>
+            </defs>
+        </svg>
+        <div class="percent-box">
+            <?php 
+                $jsonDecodePrice = json_decode($menu['price']);
+                $jsonDecodeDiscounted = json_decode($menu['discounted_price']);
+                $jsonDecodeHasDiscount = json_decode($menu['has_discount']);
+
+                $originalPrice = (float) $jsonDecodePrice->menu;
+                $discountedPrice = (float) $jsonDecodeDiscounted->menu;
+
+                if (!empty($jsonDecodeHasDiscount->menu) && $jsonDecodeHasDiscount->menu == 1 && $discountedPrice > 0) {
+                    $discountPercent = round((($originalPrice - $discountedPrice) / $originalPrice) * 100);
+                    echo $discountPercent . '% OFF';
+                }
+            ?>
+        </div>
+    </a>
+</div>
                         <div class="restaurant-body text-center">
-                            <div class="review-grid d-flex justify-content-around align-items-center m-auto">
-                                <?php if ($restaurant['rating']) { ?>
-                                    <ul class="inline-grid m-0 p-0">
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
-                                    </ul>
-                                    <div class="star">
-                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M11.0489 0.926805C11.3483 0.00549436 12.6517 0.00549579 12.9511 0.926806L14.9187 6.98253C15.0526 7.39456 15.4365 7.67352 15.8697 7.67352H22.2371C23.2058 7.67352 23.6086 8.91313 22.8249 9.48253L17.6736 13.2252C17.3231 13.4798 17.1764 13.9312 17.3103 14.3432L19.2779 20.3989C19.5773 21.3203 18.5228 22.0864 17.7391 21.517L12.5878 17.7743C12.2373 17.5197 11.7627 17.5197 11.4122 17.7743L6.2609 21.517C5.47719 22.0864 4.42271 21.3203 4.72206 20.3989L6.68969 14.3432C6.82356 13.9312 6.6769 13.4798 6.32642 13.2252L1.17511 9.48253C0.391392 8.91313 0.794168 7.67352 1.76289 7.67352H8.13026C8.56349 7.67352 8.94744 7.39456 9.08132 6.98253L11.0489 0.926805Z"
-                                                fill="#FFB800"></path>
-                                        </svg>
-                                    </div>
-                                    <p class="p-0 m-0">(
-                                        <?php echo sanitize($restaurant['rating']); ?>)
-                                    </p>
-                                <?php } ?>
-                            </div>
-                            <h3><?php echo sanitize($menu['name']); ?></h3>
-                            <p><?php echo sanitize($menu['details']) ?></p>
-                        </div>
+    <h3><?php echo sanitize($menu['name']); ?></h3>
+    <p><?php echo sanitize($menu['details']) ?></p>
+
+    <!-- Restaurant Name -->
+    <p class="restaurant-name" style="font-weight: 600; color:#d9534f;">
+        <?php echo sanitize($menu['restaurant_name']); ?>
+    </p>
+
+    <!-- Price Section -->
+    <div class="price-box">
+        <?php if (!empty($jsonDecodeHasDiscount->menu) && $jsonDecodeHasDiscount->menu == 1 && $discountedPrice > 0): ?>
+            <span class="discounted"><?php echo currency($discountedPrice); ?></span>
+            <span class="original" style="text-decoration: line-through; color:#888;">
+                <?php echo currency($originalPrice); ?>
+            </span>
+        <?php else: ?>
+            <span class="discounted"><?php echo currency($originalPrice); ?></span>
+        <?php endif; ?>
+    </div>
+</div>
                         <a class="btn btn-danger"
-                             href="javascript:void(0);"
-                            onclick="addToCart('<?php echo $menu['id']; ?>', '<?php $jsonDecodePrice = json_decode($menu['price']); echo $jsonDecodePrice->menu; ?>', true)">Order
-                            Now</a>
+   href="javascript:void(0);"
+   onclick="handleOrderNow('<?php echo $menu['id']; ?>', '<?php $jsonDecodePrice = json_decode($menu['price']); echo $jsonDecodePrice->menu; ?>', '<?php echo $menu['has_variant']; ?>', '<?php echo $restaurant['slug']; ?>', '<?php echo $restaurant['id']; ?>')">
+   Order Now
+</a>
+
                         <!-- <a class="btn btn-danger"
                             href="http://<?= $restaurant['slug']; ?>.fooyes.local">Order
                             Now</a> -->

@@ -138,7 +138,7 @@
     }
 
      // CART OPERATIONS
-    function addToCart(menu_id, price, isButton) {
+    function addToCart(menu_id, price, isButton, restaurantSlug, restId) {
         if(
             menu_id != undefined && //If click on when have no variant
             isButton == false && // clicked on div
@@ -224,11 +224,48 @@
                         $('.cart-items').text(response);
                         toastr.success('<?php echo site_phrase('added_to_the_cart'); ?>');
                         $(".modal").modal('hide');
+                        window.location.href = "<?= base_url() ?>site/restaurant/" + restaurantSlug + "/" + restId;
                     }
                 }
             }
         });
     }
+
+     function viewselected_menu(menuid, menuprice, hasvariant, isButton) {
+        if(hasvariant == 0){
+
+            addToCart(menuid, menuprice,isButton);
+            return;
+        }
+
+        let url = '<?php echo base_url(); ?>site/selected_menu/' + menuid;
+
+        $.ajax({
+            url: url,
+            success: function(res) {
+                $("#getdetails_selected_menu").html(res);
+                // console.log(res); 
+                $('#popup').modal('show');
+                calculatePrice();
+            },
+            error: function() {
+                // alert("<?php echo $this->lang->line('fail'); ?>")
+            }
+        });
+
+        // holdModal('popup');
+    }
+
+    function handleOrderNow(menuId, menuPrice, hasVariant, restaurantSlug, restId) {
+    if (hasVariant == 0) {
+        // Agar variant nahi hai → direct add to cart
+        addToCart(menuId, menuPrice, true, restaurantSlug, restId);
+    } else {
+        // Agar variant hai → pehle restaurant page open karo aur uske baad popup dikhana
+        let restaurantUrl = "<?= base_url() ?>site/restaurant/" + restaurantSlug + "/" + restId + "#menu-" + menuId;
+        window.location.href = restaurantUrl;
+    }
+}
 
 
     // Update button state for mobile map

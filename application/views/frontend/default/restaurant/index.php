@@ -2,7 +2,10 @@
 
 
 
-<?php include APPPATH . 'views/frontend/default/navigation/dark.php';
+<?php
+$cartView = true;
+
+include APPPATH . 'views/frontend/default/navigation/dark.php';
 ?>
 <style>
     .disabled {
