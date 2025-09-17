@@ -174,6 +174,7 @@ class Site extends Base
         $checkSlugInDb = $this->restaurant_model->find_slug($host);
 
         if($checkSlugInDb){
+            $page_data['reCaptcha'] = $this->settings_model->get_system_recaptcha();
             $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($host);
             $page_data['page_name'] = 'contact_us/index';
             $page_data['page_title'] = site_phrase("contact _us", true);
@@ -181,6 +182,7 @@ class Site extends Base
             return;  
         }
 
+        $page_data['reCaptcha'] = $this->settings_model->get_system_recaptcha();
         $page_data['page_name'] = 'contact_us/index';
         $page_data['page_title'] = site_phrase("contact _us", true);
         $this->load->view(frontend('index'), $page_data);
