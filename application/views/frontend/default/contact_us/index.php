@@ -191,9 +191,29 @@ foreach ($reCaptcha as $row) {
             <ul class="contact-details-list list-unstyled">
 
                 <?php if (!empty($restaurant_details)) { ?>
-                    <li><i class="fab fa-phone contact-icon"></i> <a href="https://wa.me/+44<?= $restaurant_details['phone'] ?>" target="_blank" class="contact-detail-text text-dark"> <?= $restaurant_details['phone'] ?></a></li>
+                    <div class="row">
+                        <div class="col-md-6 my-2">
+                            <li>
+                                <i class="fas fa-phone contact-icon"></i> 
+                                <div class="">
+                                    <a href="https://wa.me/+44<?= $restaurant_details['phone'] ?>" target="_blank" class="contact-detail-text text-dark">Tel: <?= $restaurant_details['phone'] ?></a><br>
+                                    <a href="mailto:<?= $restaurant_details['owner_email'] ?>" class="contact-detail-text text-dark">Email: <?= $restaurant_details['owner_email'] ?></a>
+                                </div>
+                            </li>
+                        </div>
+                        <div class="col-md-6 my-2">
+                            <li><i class="fas fa-file-alt contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Support Forum <br> For 24hr</a></li>
+                        </div>
+                        <div class="col-md-6 my-2">
+                            <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant_details['address'] ?></span></li>
+                        </div>
+                        <div class="col-md-6 my-2">
+                            <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li>
+                        </div>
+                    </div>
+                    <!-- <li><i class="fab fa-phone contact-icon"></i> <a href="https://wa.me/+44<?= $restaurant_details['phone'] ?>" target="_blank" class="contact-detail-text text-dark"> <?= $restaurant_details['phone'] ?></a></li>
                     <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:<?= $restaurant_details['owner_email'] ?>" class="contact-detail-text text-dark"><?= $restaurant_details['owner_email'] ?></a></li>
-                    <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant_details['address'] ?></span></li>    
+                    <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant_details['address'] ?></span></li>     -->
                 <?php } else{ ?>
                     <div class="row">
                         <div class="col-md-6 my-2">
