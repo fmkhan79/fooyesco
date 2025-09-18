@@ -75,7 +75,7 @@
                                 if(!$this->session->userdata('is_logged_in')):
                                 ?>
                                 <li class="nav-item reg-btn">
-                                    <a class="nav-link" href="<?php echo site_url('register'); ?>">
+                                    <a class="nav-link" href="<?php echo site_url('auth/roles'); ?>">
                                         <?php echo  site_phrase('register', true); ?>
                                     </a>
                                 </li>
