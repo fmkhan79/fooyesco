@@ -251,6 +251,11 @@
 
 } */
 
+@media(max-width: 768px){
+     .order-listing .gallery{
+        justify-content: center !important;
+    }
+}
 
 </style>
 <!-- SLIDER -->
