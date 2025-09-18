@@ -172,6 +172,22 @@ foreach ($reCaptcha as $row) {
 
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
+        
+            <?php if ($this->session->flashdata('success')): ?>
+                <div class="alert alert-success alert-dismissible">
+                    <?= $this->session->flashdata('success'); ?>
+                </div>
+            <?php 
+            $this->session->unset_userdata('success');
+            endif; ?>
+
+            <?php if ($this->session->flashdata('error')): ?>
+                <div class="alert alert-danger alert-dismissible">
+                    <?= $this->session->flashdata('error'); ?>
+                </div>
+            <?php 
+            $this->session->unset_userdata('error');
+            endif; ?>
     <div class="row contact-info-section">
         <div class="col-md-4 contact-info-left">
             <h4 class="contact-heading">Contact Us</h4>
@@ -325,21 +341,6 @@ foreach ($reCaptcha as $row) {
                 <strong>Got a question? Let’s talk!</strong><br>
                 Drop us a message, and our team will be happy to assist you.
             </p>
-            <?php if ($this->session->flashdata('success')): ?>
-                <div class="alert alert-success alert-dismissible">
-                    <?= $this->session->flashdata('success'); ?>
-                </div>
-            <?php 
-            $this->session->unset_userdata('success');
-            endif; ?>
-
-            <?php if ($this->session->flashdata('error')): ?>
-                <div class="alert alert-danger alert-dismissible">
-                    <?= $this->session->flashdata('error'); ?>
-                </div>
-            <?php 
-            $this->session->unset_userdata('error');
-            endif; ?>
             <form class="contact-form" action="<?php echo site_url('submissions/submit'); ?>" method="post">
                 <div class="form-group">
                     <input type="text" name="name" class="form-control contact-form-input" placeholder="Your Name" required>
