@@ -20,6 +20,15 @@ class Settings_model extends Base_model
     {
         return $this->db->get('currencies')->result_array();
     }
+    // GET CURRENCIES
+    public function get_system_recaptcha()
+    {
+        return $this->db
+            ->where_in('key', ['recaptcha_sitekey', 'recaptcha_secretkey'])
+            ->get('system_settings')
+            ->result();
+    }
+
     // UPDATE METHOD UPDATES THE SETTINGS DATA
     public function update()
     {

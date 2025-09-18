@@ -1,6 +1,7 @@
 <!-- INIT JS -->
 <script src="<?php echo base_url('assets/frontend/default/js/init.js') ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/frontend/default/js/owl.carousel.min.js') ?>"></script>
 
 <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRluKUOUHip7mS2d-BWqzfXpIu--VXroo&callback=initMap&libraries=places&v=weekly"
@@ -41,14 +42,65 @@
         jQuery(".filtering").on("click", "span", function() {
             jQuery(this).addClass("active").siblings().removeClass("active");
         });
-    })
+    });
 
+    jQuery('.order-detail-slider').owlCarousel({
+        loop: false,
+        margin: 13,
+        nav: true,
+        dots: false,
+        autoWidth: true,
+        responsive: {
+            550: {
+                items: 1
+            },
+            768: {
+                items: 3
+            },
+            1000: {
+                items: 8
+            }
+        }
+    });
 
     // INITIALIZE TOOLTIPS
     initToolTip();
 </script>
 
 <script>
+$(document).ready(function() {
+    // Pehli category ka ID lo
+    var firstCategoryId = $(".category-tab.active").data("id");
+    if (firstCategoryId) {
+        loadRestaurants(firstCategoryId);
+    }
+
+    // Click event
+    $(document).on('click', '.category-tab', function() {
+        $(".category-tab").removeClass("active");
+        $(this).addClass("active");
+
+        var categoryId = $(this).data('id');
+        loadRestaurants(categoryId);
+    });
+
+    // Load function
+    function loadRestaurants(categoryId) {
+        $.ajax({
+            url: "<?php echo site_url('site/get_restaurants_by_category/'); ?>" + categoryId,
+            type: "GET",
+            beforeSend: function() {
+                $("#restaurant-list").html('<p class="text-center">Loading...</p>');
+            },
+            success: function(response) {
+                $("#restaurant-list").html(response);
+            },
+            error: function() {
+                $("#restaurant-list").html('<p class="text-danger text-center">Failed to load restaurants.</p>');
+            }
+        });
+    }
+});
         window.console = {
     log: function() {},
     warn: function() {},
@@ -263,6 +315,11 @@
     } else {
         // Agar variant hai → pehle restaurant page open karo aur uske baad popup dikhana
         let restaurantUrl = "<?= base_url() ?>site/restaurant/" + restaurantSlug + "/" + restId + "#menu-" + menuId;
+        window.location.href = restaurantUrl;
+    }
+
+    function handleCuisine(restaurantSlug, restId, categoryName){
+        let restaurantUrl = "<?= base_url() ?>site/restaurant/" + restaurantSlug + "/" + restId + "#" + categoryName;
         window.location.href = restaurantUrl;
     }
 }

@@ -70,12 +70,15 @@ if (count($restaurant_ids) > 0) {
                                         </a>
                                     </div>
                                 </li>
-                                <?php } ?>
+                                <?php } 
+                                if(!$this->session->userdata('is_logged_in')):
+                                ?>
                                 <li class="nav-item reg-btn">
-                                    <a class="nav-link" href="<?php echo site_url('register'); ?>">
-                                        <?php echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('register', true); ?>
+                                    <a class="nav-link" href="<?php echo site_url('auth/roles'); ?>">
+                                        <?php echo  site_phrase('register', true); ?>
                                     </a>
                                 </li>
+                                <?php endif; ?>
                                 <li class="nav-item login-btn">
                                     <a class="nav-link" href="<?php echo site_url('login'); ?>">
                                         <?php echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('login', true); ?>

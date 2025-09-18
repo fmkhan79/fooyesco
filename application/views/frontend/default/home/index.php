@@ -379,26 +379,6 @@
 </section>
 <!--// SLIDER -->
 <!--//END HEADER -->
-<!--============================= FEATURED CUISINES =============================-->
-<div class="container">
-    <div class="about-txt my-5 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right; height: 60vh;
-    display: flex;
-    align-items: center;">
-<div class="container px-0 pt-md-5 px-md-4 " style="padding-bottom: 20px  max-width: 1000px!important">
-
-            <div class="p-0 m-0 " style="margin-left: 0px;">
-                <div class="welcome-foo col-md-6 ">
-                <h2 class="fooyes-section-title">
-            Welcome to <span class="fooyes-highlight-red">Fooyes</span> <span class="fooyes-highlight-yellow">UK</span>
-        </h2>
-                    <p style="font-size: 18px; line-height: 31px;">At <b>Fooyes UK</b>, we bring you an unforgettable food experience, combining the finest ingredients,
-bold flavors, and a passion for culinary excellence. Whether you're craving classic British
-favorites or globally inspired delights, we've got something to satisfy every palate.</p>
-            </div>
-        </div>
-        </div>
-</div>
-</div>
 
 
 <!-- Special offer -->
@@ -489,6 +469,234 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 
     </div>
 </section>
+
+<section class="multi-service-box">
+    <div class="container" style="max-width: 1000px!important pl-0!important">
+        <div class="d-md-flex align-items-center">
+            <div class="col-md-5"><img class="img-fluid"
+                    src="<?php echo base_url('assets/frontend/default/images/mult-service.png') ?>"></div>
+            <div class="col-md-7">
+                <h3>We are <span class="red">more</span> than<br /> <span class="yellow">multiple</span> service</h3>
+                <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments
+                    such as
+                    baked goods or snacks. The term comes frome the rench word meaning food</p>
+                <div class="row multi-service-list mt-4 mb-3">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/online-order-icon.png') ?>" />
+                        Online Order</div>
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/24-7-icon.png') ?>" /> 24/7 Service
+                    </div>
+                </div>
+                <div class="row multi-service-list mb-3 ">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Pre-Reservation
+                    </div>
+                    <div class="col-lg-5 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Oragonized
+                        Foodhut Place</div>
+                </div>
+                <div class="row multi-service-list mb-3 ">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Super Chef
+                    </div>
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Clean Kitchen
+                    </div>
+                </div>
+
+                <a class="rr-btn mt-4" href="<?php echo site_url('about-us'); ?>">About Us</a>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- cuisines offer -->
+<section class="order-listing featured-responsive-card-section">
+    <div class="container p-0" style="max-width: 1045px!important">
+        <div class="special-offer-titlebox">
+            <h2>
+                <span class="red">Menu</span> That 
+                <span class="fooyes-highlight-yellow">Always</span> 
+                Make You Fall In <span class="red">Love</span>
+            </h2>
+        </div>
+
+        <?php 
+        $restaurant_categories = $this->category_model->get_all_categories();
+        ?>
+
+        <!-- Category tabs with scroll nav -->
+   <!-- Category tabs -->
+<section class="order-detail-btns container d-lg-block" style="border-radius: 20px;">
+    <div class="container">
+        <div class="order-detail-slider owl-carousel owl-theme my-5">
+            <?php 
+            $firstCategoryId = null;
+            if (!empty($restaurant_categories)) {
+                $firstCategoryId = $restaurant_categories[0]['id'];
+            }
+            foreach ($restaurant_categories as $index => $restaurant_category): ?>
+                <a href="javascript:void(0);" 
+                   class="category-tab <?php echo $index == 0 ? 'active' : ''; ?>" 
+                   data-id="<?php echo $restaurant_category['id']; ?>">
+                   <?php echo sanitize($restaurant_category['name']); ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+
+<!-- Restaurants will load here -->
+<div class="row gallery featured-responsive-card justify-content-between" id="restaurant-list">
+    <p class="text-center">Loading restaurants...</p>
+</div>
+
+
+
+    </div>
+</section>
+
+<!-- <section class="featured-responsive-card-section">
+    <div class="container p-0">
+        <div class="special-offer-titlebox text-center">
+            <h2>
+                <sapn class="red">Menu</sapn> That <sapn class="yellow">Always</sapn> Make<br /> You Fall In <sapn
+                    class="red">
+                    Love</sapn>
+            </h2>
+        </div>
+
+    
+        <div class="special-offer-btnlist mt-5">
+            <ul class="m-0 p-0 text-center filtering">
+                <span data-filter="*" class="gb-btn active" href="#">All</span>
+                <?php foreach ($cuisines as $cuisine_row) :  ?>
+                    <span data-filter=".cuisine_<?php echo sanitize($cuisine_row['id']); ?>" class="gb-btn"
+                        href="#"><?php echo sanitize($cuisine_row['name']); ?></span>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+
+        <?php if (!empty($featured_restaurants)): ?>
+            <div class="grid gallery featured-responsive-card">
+                <?php foreach ($featured_restaurants as $key => $restaurant):
+                    $idArray = json_decode($restaurant['cuisine']);
+                    $cuisineClasses = '';
+
+                    if (!empty($idArray)) {
+                        $cuisineClasses = implode(' ', array_map(function ($id) {
+                            return 'cuisine_' . $id;
+                        }, $idArray));
+                    }
+                ?>
+                    <div class="card grid-item <?php echo $cuisineClasses; ?> restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
+                        <div class="order-img-box main-img">
+                            <a
+                                href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
+                                <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>"
+                                    alt="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250"
+                                    fill="none">
+                                    <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)"
+                                        stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
+                                    <defs>
+                                        <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
+                                            y2="280.046" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#F54748" stop-opacity="0"></stop>
+                                            <stop offset="1" stop-color="#FDC55E"></stop>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <div class="percent-box">15%</div>
+                            </a>
+                        </div>
+                        <div class="restaurant-body text-center">
+                            <div class="review-grid d-flex justify-content-around align-items-center m-auto">
+                                <?php if ($restaurant['rating']) { ?>
+                                    <ul class="inline-grid m-0 p-0">
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
+                                                height="38">
+                                        </li>
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
+                                                height="38">
+                                        </li>
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
+                                                height="38">
+                                        </li>
+                                    </ul>
+                                    <div class="star">
+                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M11.0489 0.926805C11.3483 0.00549436 12.6517 0.00549579 12.9511 0.926806L14.9187 6.98253C15.0526 7.39456 15.4365 7.67352 15.8697 7.67352H22.2371C23.2058 7.67352 23.6086 8.91313 22.8249 9.48253L17.6736 13.2252C17.3231 13.4798 17.1764 13.9312 17.3103 14.3432L19.2779 20.3989C19.5773 21.3203 18.5228 22.0864 17.7391 21.517L12.5878 17.7743C12.2373 17.5197 11.7627 17.5197 11.4122 17.7743L6.2609 21.517C5.47719 22.0864 4.42271 21.3203 4.72206 20.3989L6.68969 14.3432C6.82356 13.9312 6.6769 13.4798 6.32642 13.2252L1.17511 9.48253C0.391392 8.91313 0.794168 7.67352 1.76289 7.67352H8.13026C8.56349 7.67352 8.94744 7.39456 9.08132 6.98253L11.0489 0.926805Z"
+                                                fill="#FFB800"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="p-0 m-0">(
+                                        <?php echo sanitize($restaurant['rating']); ?>)
+                                    </p>
+                                <?php } ?>
+                            </div>
+                            <h3><?php echo sanitize($restaurant['name']); ?></h3>
+                            <p><?php echo sanitize($restaurant['restaurant_about']) ?></p>
+                        </div>
+                        <a class="btn btn-danger"
+                            href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
+                            Now</a>
+
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+    </div>
+</section> -->
+
+
+<section class="dt-hide d-none"><img class="img-fluid"
+        src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" /></section>
+<section class="before-footer mt-4">
+    <div class="container" style="max-width: 1000px!important">
+        <div class="d-md-flex ">
+            <div class="col-md-6">
+                <h3>Join the <span class="red">Fooyes</span> Community </span></h3>
+                <p>Follow us on social media and sign up for exclusive offers, new menu launches, and foodie events.</p>
+                <p><i class="fas fa-map-marker-alt fooyes-icon"></i> <strong>Find Us:</strong> 40 High St, March PE15 9JR, United Kingdom</p>
+    <p><i class="fas fa-phone-alt fooyes-icon"></i> <strong>Contact Us:</strong> <a href="tel:+44 1354 654992" style="color:#191919">+44 1354 654992</a></p>
+    <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:chillihutmarchonline.com" style="color:#191919">chillihutmarchonline.com</a></p>
+    <p style="font-size:18px"> <b>Delicious moments start here. Welcome to Fooyes UK!</b></p>
+            </div>
+            <div class="col-md-6 mob-hide"><img class="img-fluid"
+                    src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" /></div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="about-txt my-5 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right; height: 60vh;
+    display: flex;
+    align-items: center;">
+<div class="container px-0 pt-md-5 px-md-4 " style="padding-bottom: 20px  max-width: 1000px!important">
+
+            <div class="p-0 m-0 " style="margin-left: 0px;">
+                <div class="welcome-foo col-md-6 ">
+                <h2 class="fooyes-section-title">
+            Welcome to <span class="fooyes-highlight-red">Fooyes</span> <span class="fooyes-highlight-yellow">UK</span>
+        </h2>
+                    <p style="font-size: 18px; line-height: 31px;">At <b>Fooyes UK</b>, we bring you an unforgettable food experience, combining the finest ingredients,
+bold flavors, and a passion for culinary excellence. Whether you're craving classic British
+favorites or globally inspired delights, we've got something to satisfy every palate.</p>
+            </div>
+        </div>
+        </div>
+</div>
+</div>
 
 <!-- Restaurants -->
 <section class="order-listing featured-responsive-card-section">
@@ -605,170 +813,6 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                 <h3>Customer-First Approach</h3>
                 <p>Your satisfaction is at the heart of everything we do.</p>
             </div>
-        </div>
-    </div>
-</section>
-
-
-<section class="multi-service-box">
-    <div class="container" style="max-width: 1000px!important pl-0!important">
-        <div class="d-md-flex align-items-center">
-            <div class="col-md-5"><img class="img-fluid"
-                    src="<?php echo base_url('assets/frontend/default/images/mult-service.png') ?>"></div>
-            <div class="col-md-7">
-                <h3>We are <span class="red">more</span> than<br /> <span class="yellow">multiple</span> service</h3>
-                <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments
-                    such as
-                    baked goods or snacks. The term comes frome the rench word meaning food</p>
-                <div class="row multi-service-list mt-4 mb-3">
-                    <div class="col-lg-4 col-md-6 pl-3"><img
-                            src="<?php echo base_url('assets/frontend/default/images/online-order-icon.png') ?>" />
-                        Online Order</div>
-                    <div class="col-lg-4 col-md-6 pl-3"><img
-                            src="<?php echo base_url('assets/frontend/default/images/24-7-icon.png') ?>" /> 24/7 Service
-                    </div>
-                </div>
-                <div class="row multi-service-list mb-3 ">
-                    <div class="col-lg-4 col-md-6 pl-3"><img
-                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
-                        Pre-Reservation
-                    </div>
-                    <div class="col-lg-5 col-md-6 pl-3"><img
-                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
-                        Oragonized
-                        Foodhut Place</div>
-                </div>
-                <div class="row multi-service-list mb-3 ">
-                    <div class="col-lg-4 col-md-6 pl-3"><img
-                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
-                        Super Chef
-                    </div>
-                    <div class="col-lg-4 col-md-6 pl-3"><img
-                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
-                        Clean Kitchen
-                    </div>
-                </div>
-
-                <a class="rr-btn mt-4" href="<?php echo site_url('about-us'); ?>">About Us</a>
-
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- <section class="featured-responsive-card-section">
-    <div class="container p-0">
-        <div class="special-offer-titlebox text-center">
-            <h2>
-                <sapn class="red">Menu</sapn> That <sapn class="yellow">Always</sapn> Make<br /> You Fall In <sapn
-                    class="red">
-                    Love</sapn>
-            </h2>
-        </div>
-
-    
-        <div class="special-offer-btnlist mt-5">
-            <ul class="m-0 p-0 text-center filtering">
-                <span data-filter="*" class="gb-btn active" href="#">All</span>
-                <?php foreach ($cuisines as $cuisine_row) :  ?>
-                    <span data-filter=".cuisine_<?php echo sanitize($cuisine_row['id']); ?>" class="gb-btn"
-                        href="#"><?php echo sanitize($cuisine_row['name']); ?></span>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-
-        <?php if (!empty($featured_restaurants)): ?>
-            <div class="grid gallery featured-responsive-card">
-                <?php foreach ($featured_restaurants as $key => $restaurant):
-                    $idArray = json_decode($restaurant['cuisine']);
-                    $cuisineClasses = '';
-
-                    if (!empty($idArray)) {
-                        $cuisineClasses = implode(' ', array_map(function ($id) {
-                            return 'cuisine_' . $id;
-                        }, $idArray));
-                    }
-                ?>
-                    <div class="card grid-item <?php echo $cuisineClasses; ?> restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
-                        <div class="order-img-box main-img">
-                            <a
-                                href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
-                                <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>"
-                                    alt="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250"
-                                    fill="none">
-                                    <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)"
-                                        stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
-                                    <defs>
-                                        <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
-                                            y2="280.046" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#F54748" stop-opacity="0"></stop>
-                                            <stop offset="1" stop-color="#FDC55E"></stop>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                                <div class="percent-box">15%</div>
-                            </a>
-                        </div>
-                        <div class="restaurant-body text-center">
-                            <div class="review-grid d-flex justify-content-around align-items-center m-auto">
-                                <?php if ($restaurant['rating']) { ?>
-                                    <ul class="inline-grid m-0 p-0">
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
-                                    </ul>
-                                    <div class="star">
-                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M11.0489 0.926805C11.3483 0.00549436 12.6517 0.00549579 12.9511 0.926806L14.9187 6.98253C15.0526 7.39456 15.4365 7.67352 15.8697 7.67352H22.2371C23.2058 7.67352 23.6086 8.91313 22.8249 9.48253L17.6736 13.2252C17.3231 13.4798 17.1764 13.9312 17.3103 14.3432L19.2779 20.3989C19.5773 21.3203 18.5228 22.0864 17.7391 21.517L12.5878 17.7743C12.2373 17.5197 11.7627 17.5197 11.4122 17.7743L6.2609 21.517C5.47719 22.0864 4.42271 21.3203 4.72206 20.3989L6.68969 14.3432C6.82356 13.9312 6.6769 13.4798 6.32642 13.2252L1.17511 9.48253C0.391392 8.91313 0.794168 7.67352 1.76289 7.67352H8.13026C8.56349 7.67352 8.94744 7.39456 9.08132 6.98253L11.0489 0.926805Z"
-                                                fill="#FFB800"></path>
-                                        </svg>
-                                    </div>
-                                    <p class="p-0 m-0">(
-                                        <?php echo sanitize($restaurant['rating']); ?>)
-                                    </p>
-                                <?php } ?>
-                            </div>
-                            <h3><?php echo sanitize($restaurant['name']); ?></h3>
-                            <p><?php echo sanitize($restaurant['restaurant_about']) ?></p>
-                        </div>
-                        <a class="btn btn-danger"
-                            href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
-                            Now</a>
-
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-
-    </div>
-</section> -->
-
-
-<section class="dt-hide d-none"><img class="img-fluid"
-        src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" /></section>
-<section class="before-footer mt-4">
-    <div class="container" style="max-width: 1000px!important">
-        <div class="d-md-flex ">
-            <div class="col-md-6">
-                <h3>Join the <span class="red">Fooyes</span> Community </span></h3>
-                <p>Follow us on social media and sign up for exclusive offers, new menu launches, and foodie events.</p>
-                <p><i class="fas fa-map-marker-alt fooyes-icon"></i> <strong>Find Us:</strong> 40 High St, March PE15 9JR, United Kingdom</p>
-    <p><i class="fas fa-phone-alt fooyes-icon"></i> <strong>Contact Us:</strong> <a href="tel:+44 1354 654992" style="color:#191919">+44 1354 654992</a></p>
-    <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:chillihutmarchonline.com" style="color:#191919">chillihutmarchonline.com</a></p>
-    <p style="font-size:18px"> <b>Delicious moments start here. Welcome to Fooyes UK!</b></p>
-            </div>
-            <div class="col-md-6 mob-hide"><img class="img-fluid"
-                    src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" /></div>
         </div>
     </div>
 </section>

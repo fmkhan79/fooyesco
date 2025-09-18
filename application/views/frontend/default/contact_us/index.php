@@ -46,6 +46,9 @@
 .map-section {
     margin-bottom: 30px;
 }
+.map-section iframe{
+    border-radius: 15px !important;
+}
 
 .map-heading {
     font-weight: bold;
@@ -125,15 +128,52 @@
     font-weight: bold !important;
     font-size: 17px;
 }
+.contact-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #F54748; /* Red background */
+    color: #ffffff; /* White icon */
+    border-radius: 50%; /* Circular shape */
+    font-size: 20px; /* Adjust icon size */
+    margin-right: 10px; /* Space between icon and text */
+    vertical-align: middle;
+    padding: 10px 18px;
+}
 
+.contact-details-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* Space between list items */
+}
+
+.contact-detail-text {
+    font-size: 16px;
+}
 </style>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+<?php
+$siteKey = '';
+$secretKey = '';
+foreach ($reCaptcha as $row) {
+    if ($row->key == 'recaptcha_sitekey') {
+        $siteKey = $row->value;
+    } elseif ($row->key == 'recaptcha_secretkey') {
+        $secretKey = $row->value;
+    }
+}
+// print_r($siteKey);
+// die();
+?>
 
 
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
     <div class="row contact-info-section">
-        <div class="col-md-6 contact-info-left">
+        <div class="col-md-4 contact-info-left">
             <h4 class="contact-heading">Contact Us</h4>
             <?php if (!empty($restaurant_details)) { ?>
                 <p class="contact-timing">
@@ -147,17 +187,34 @@
                 </p>
             <?php } ?>
         </div>
-        <div class="col-md-6 contact-info-right">
+        <div class="col-md-8 contact-info-right">
             <ul class="contact-details-list list-unstyled">
 
                 <?php if (!empty($restaurant_details)) { ?>
-                    <li><i class="fab fa-whatsapp contact-icon"></i> <a href="https://wa.me/+44<?= $restaurant_details['phone'] ?>" target="_blank" class="contact-detail-text text-dark"> <?= $restaurant_details['phone'] ?></a></li>
+                    <li><i class="fab fa-phone contact-icon"></i> <a href="https://wa.me/+44<?= $restaurant_details['phone'] ?>" target="_blank" class="contact-detail-text text-dark"> <?= $restaurant_details['phone'] ?></a></li>
                     <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:<?= $restaurant_details['owner_email'] ?>" class="contact-detail-text text-dark"><?= $restaurant_details['owner_email'] ?></a></li>
                     <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant_details['address'] ?></span></li>    
                 <?php } else{ ?>
-                <li><i class="fab fa-whatsapp contact-icon"></i> <a href="https://wa.me/+447438797814" target="_blank" class="contact-detail-text text-dark"> 07438797814</a></li>
-                <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">support@fooyes.co.uk</a></li>
-                <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text">110 Eastern Ave, Peterborough PE1 4PW, UK</span></li>
+                    <div class="row">
+                        <div class="col-md-6 my-2">
+                            <li>
+                                <i class="fas fa-phone contact-icon"></i> 
+                                <div class="">
+                                    <a href="https://wa.me/+447438797814" target="_blank" class="contact-detail-text text-dark">Tel: 07438797814</a><br>
+                                    <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Email: support@fooyes.co.uk</a>
+                                </div>
+                            </li>
+                        </div>
+                        <div class="col-md-6 my-2">
+                            <li><i class="fas fa-file-alt contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Support Forum <br> For 24hr</a></li>
+                        </div>
+                        <div class="col-md-6 my-2">
+                            <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text">110 Eastern Ave, Peterborough PE1 4PW, UK</span></li>
+                        </div>
+                        <div class="col-md-6 my-2">
+                            <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li>
+                        </div>
+                    </div>
                 <!-- <li><i class="fas fa-shipping-fast contact-icon"></i> <span class="contact-detail-text">Free standard shipping on all orders.</span></li> -->
                 <?php } ?>
 
@@ -248,6 +305,21 @@
                 <strong>Got a question? Let’s talk!</strong><br>
                 Drop us a message, and our team will be happy to assist you.
             </p>
+            <?php if ($this->session->flashdata('success')): ?>
+                <div class="alert alert-success alert-dismissible">
+                    <?= $this->session->flashdata('success'); ?>
+                </div>
+            <?php 
+            $this->session->unset_userdata('success');
+            endif; ?>
+
+            <?php if ($this->session->flashdata('error')): ?>
+                <div class="alert alert-danger alert-dismissible">
+                    <?= $this->session->flashdata('error'); ?>
+                </div>
+            <?php 
+            $this->session->unset_userdata('error');
+            endif; ?>
             <form class="contact-form" action="<?php echo site_url('submissions/submit'); ?>" method="post">
                 <div class="form-group">
                     <input type="text" name="name" class="form-control contact-form-input" placeholder="Your Name" required>
@@ -261,6 +333,8 @@
                 <div class="form-group">
                     <textarea name="message" class="form-control contact-form-textarea" rows="4" placeholder="Type Your Message" required></textarea>
                 </div>
+                <!-- Google reCAPTCHA -->
+                <div class="g-recaptcha mb-3" data-sitekey="<?= $siteKey ?>"></div>
                 <button type="submit" class="btn contact-form-submit-btn">Submit</button>
             </form>
         </div>
@@ -333,6 +407,25 @@
             <div class="col-md-6 mob-hide">
                 <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-top-img.png') ?>" />
             </div>
+        </div>
+    </div>
+</section>
+
+<section class="dt-hide d-none"><img class="img-fluid"
+        src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" /></section>
+<section class="before-footer mt-4">
+    <div class="container" style="max-width: 1000px!important">
+        <div class="d-md-flex ">
+            <div class="col-md-6">
+                <h3>Join the <span class="red">Fooyes</span> Community </span></h3>
+                <p>Follow us on social media and sign up for exclusive offers, new menu launches, and foodie events.</p>
+                <p><i class="fas fa-map-marker-alt fooyes-icon"></i> <strong>Find Us:</strong> 40 High St, March PE15 9JR, United Kingdom</p>
+    <p><i class="fas fa-phone-alt fooyes-icon"></i> <strong>Contact Us:</strong> <a href="tel:+44 1354 654992" style="color:#191919">+44 1354 654992</a></p>
+    <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:chillihutmarchonline.com" style="color:#191919">chillihutmarchonline.com</a></p>
+    <p style="font-size:18px"> <b>Delicious moments start here. Welcome to Fooyes UK!</b></p>
+            </div>
+            <div class="col-md-6 mob-hide"><img class="img-fluid"
+                    src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" /></div>
         </div>
     </div>
 </section>
