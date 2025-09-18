@@ -146,4 +146,23 @@ class Category_model extends Base_model
         }
         return array();
     }
+
+    public function get_all_categories()
+    {
+        // FIRST GET ALL THE CATEGORY ID AS NUMERIC ARRAY
+        $this->db->distinct();
+        $this->db->select('category_id');
+        $categories_array = $this->db->get('food_menus')->result_array();
+        $categories = array();
+        foreach ($categories_array as $category) {
+            array_push($categories, $category['category_id']);
+        }
+
+        // NOW GET THE ACTUAL CATEGORY DETAILS
+        if (count($categories) > 0) {
+            $this->db->where_in('id', $categories);
+            return $this->db->get('food_categories')->result_array();
+        }
+        return array();
+    }
 }

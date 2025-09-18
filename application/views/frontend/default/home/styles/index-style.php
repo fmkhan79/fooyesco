@@ -1,3 +1,5 @@
+<link href="<?php echo base_url('assets/frontend/default/css/owl.carousel.min.css'); ?>" rel="stylesheet">
+
 <style media="screen">
     /* .btn-group1 {
         width: 73%;
@@ -421,4 +423,24 @@ letter-spacing: 0.16px;
 .gb-btn:hover,.gb-btn.active{color: #FFF; background: #F54748; border-color: #F54748;}
 .special-offer-btnlist ul{ list-style: none;}
 .special-offer-btnlist ul span{ display: inline-block; margin: 10px 5px;}
+
+/* Nav fixation .owl-carousel */
+/* .owl-carousel {
+    z-index: unset;
+} */
+
+    .order-detail-btns {
+  position: relative !important;
+  background: #fff;
+  top: 5px !important;
+  z-index: 0 !important;
+  /* border-radius: 20px; */
+}
+
+.order-detail-btns .owl-item .active{
+    background-color: #F54748 !important;
+    color: white !important;
+}
+
 </style>
+

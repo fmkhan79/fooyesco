@@ -519,87 +519,45 @@
 <!-- cuisines offer -->
 <section class="order-listing featured-responsive-card-section">
     <div class="container p-0" style="max-width: 1045px!important">
-        <div class="special-offer-titlebox ">
-            <h2><span class="red">Menu</span> That <span class="fooyes-highlight-yellow">Always</span> Make <br> You Fall In <span class="red">Love</span></h2>
+        <div class="special-offer-titlebox">
+            <h2>
+                <span class="red">Menu</span> That 
+                <span class="fooyes-highlight-yellow">Always</span> 
+                Make You Fall In <span class="red">Love</span>
+            </h2>
         </div>
 
-            <div class="row gallery featured-responsive-card justify-content-between">
-                <?php 
-                $menus = $this->menu_model->get_menu_by_condition(['today_special' => true]);
-                if(!empty($menus)):
-                foreach ($menus as $key => $menu): 
-                //  print_r($menu);
-                //  die();
-                 $restaurant = $this->restaurant_model->get_by_id($menu['restaurant_id']);
-                ?>
-                    <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
-                       <div class="order-img-box main-img">
-    <a href="javascript:void(0)">
-        <img src="<?php echo base_url('uploads/menu/' . sanitize($menu['thumbnail'])); ?>" alt="#">
-        <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250" fill="none">
-            <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)"
-                stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
-            <defs>
-                <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
-                    y2="280.046" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#F57484" stop-opacity="0"></stop>
-                    <stop offset="1" stop-color="#FDC55E"></stop>
-                </linearGradient>
-            </defs>
-        </svg>
-        <div class="percent-box">
+        <?php 
+        $restaurant_categories = $this->category_model->get_all_categories();
+        ?>
+
+        <!-- Category tabs with scroll nav -->
+   <!-- Category tabs -->
+<section class="order-detail-btns container d-lg-block" style="border-radius: 20px;">
+    <div class="container">
+        <div class="order-detail-slider owl-carousel owl-theme my-5">
             <?php 
-                $jsonDecodePrice = json_decode($menu['price']);
-                $jsonDecodeDiscounted = json_decode($menu['discounted_price']);
-                $jsonDecodeHasDiscount = json_decode($menu['has_discount']);
-
-                $originalPrice = (float) $jsonDecodePrice->menu;
-                $discountedPrice = (float) $jsonDecodeDiscounted->menu;
-
-                if (!empty($jsonDecodeHasDiscount->menu) && $jsonDecodeHasDiscount->menu == 1 && $discountedPrice > 0) {
-                    $discountPercent = round((($originalPrice - $discountedPrice) / $originalPrice) * 100);
-                    echo $discountPercent . '% OFF';
-                }
-            ?>
+            $firstCategoryId = null;
+            if (!empty($restaurant_categories)) {
+                $firstCategoryId = $restaurant_categories[0]['id'];
+            }
+            foreach ($restaurant_categories as $index => $restaurant_category): ?>
+                <a href="javascript:void(0);" 
+                   class="category-tab <?php echo $index == 0 ? 'active' : ''; ?>" 
+                   data-id="<?php echo $restaurant_category['id']; ?>">
+                   <?php echo sanitize($restaurant_category['name']); ?>
+                </a>
+            <?php endforeach; ?>
         </div>
-    </a>
-</div>
-                        <div class="restaurant-body text-center">
-    <h3><?php echo sanitize($menu['name']); ?></h3>
-    <p><?php echo sanitize($menu['details']) ?></p>
-
-    <!-- Restaurant Name -->
-    <p class="restaurant-name" style="font-weight: 600; color:#d9534f;">
-        <?php echo sanitize($menu['restaurant_name']); ?>
-    </p>
-
-    <!-- Price Section -->
-    <div class="price-box">
-        <?php if (!empty($jsonDecodeHasDiscount->menu) && $jsonDecodeHasDiscount->menu == 1 && $discountedPrice > 0): ?>
-            <span class="discounted"><?php echo currency($discountedPrice); ?></span>
-            <span class="original" style="text-decoration: line-through; color:#888;">
-                <?php echo currency($originalPrice); ?>
-            </span>
-        <?php else: ?>
-            <span class="discounted"><?php echo currency($originalPrice); ?></span>
-        <?php endif; ?>
     </div>
+</section>
+
+<!-- Restaurants will load here -->
+<div class="row gallery featured-responsive-card justify-content-between" id="restaurant-list">
+    <p class="text-center">Loading restaurants...</p>
 </div>
-                        <a class="btn btn-danger"
-   href="javascript:void(0);"
-   onclick="handleOrderNow('<?php echo $menu['id']; ?>', '<?php $jsonDecodePrice = json_decode($menu['price']); echo $jsonDecodePrice->menu; ?>', '<?php echo $menu['has_variant']; ?>', '<?php echo $restaurant['slug']; ?>', '<?php echo $restaurant['id']; ?>')">
-   Order Now
-</a>
 
-                        <!-- <a class="btn btn-danger"
-                            href="http://<?= $restaurant['slug']; ?>.fooyes.local">Order
-                            Now</a> -->
 
-                    </div>
-                <?php endforeach;
-                    endif;
-                ?>
-            </div>
 
     </div>
 </section>
