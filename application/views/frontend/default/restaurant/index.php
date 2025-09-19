@@ -410,7 +410,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
 
-<section class="order-detail-btns container d-none d-lg-block " style="border-radius: 20px;">
+<section class="order-detail-btns container d-lg-block " style="border-radius: 20px;">
     <div class="container">
         <div class="order-detail-slider owl-carousel owl-theme my-5 ">
             <?php foreach ($restaurant_categories as $restaurant_category) { ?>
