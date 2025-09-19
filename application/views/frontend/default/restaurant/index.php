@@ -512,7 +512,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                                 <div class="item-img-box mr-3"><a><img class="rounded-circle"
                                                             src="<?php echo base_url('uploads/menu/') . $menu['thumbnail']; ?>" height="80  px" width="80px" /></a></div>
                                                 <div class="order col-md-2 d-md-none" id="order-add">
-                                                    <a href="#"
+                                                    <a href="javascript:void(0)"
                                                         onclick="viewselected_menu(<?php echo $menu['id']; ?>, <?php echo json_decode($menu['price'])->menu; ?>, <?php echo $menu['has_variant'] ?>,true)">
 
 
