@@ -305,7 +305,7 @@
                                 <div class="form-group has-search">
                                     <span class="fa fa-search form-control-feedback"></span>
                                 </div>
-                                <input type="text" id="address-sc" placeholder="<?php echo site_phrase('which_restaurant_are_you_looking_for'); ?>?"
+                                <input type="text" id="address-sc" placeholder="Search food with postal codes"
                                     class="btn-group1 banner-search" name="query" onchange="updateButtonStatesc()">
                                 <input type="hidden" name="latitude_1" class="form-control" id="latitude_sc">
                                 <input type="hidden" class="form-control" id="longitude_sc" name="longitude_1">
@@ -321,22 +321,22 @@
                         <div class="slider-link text-left mt-4 !important">
                             <button type="submit" class="btn btn-danger banner-btn disabled" style="
                             color: #FFF;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 100%;
-    letter-spacing: 0.16px;
-    border-radius: 41px;
-    padding: 13px;
-    vertical-align: sub;
-    margin-right: 5px;
-    background: #F54748 !important;
-    border-color: #F54748 !important;
+                                font-size: 14px;
+                                font-style: normal;
+                                font-weight: 600;
+                                line-height: 100%;
+                                letter-spacing: 0.16px;
+                                border-radius: 41px;
+                                padding: 13px;
+                                vertical-align: sub;
+                                margin-right: 5px;
+                                background: #F54748 !important;
+                                border-color: #F54748 !important;
 
 
-                            " id="searchwc">
-                               
-                            Order Now
+                                                        " id="searchwc">
+                                                        
+                            Search Now
 
                                     </button>
 
@@ -522,52 +522,7 @@
 </section>
 
 <!-- cuisines offer -->
-<section class="order-listing featured-responsive-card-section">
-    <div class="container p-0" style="max-width: 1045px!important">
-        <div class="special-offer-titlebox">
-            <h2>
-                <span class="red">Menu</span> That 
-                <span class="fooyes-highlight-yellow">Always</span> 
-                Make You Fall In <span class="red">Love</span>
-            </h2>
-        </div>
-
-        <?php 
-        $restaurant_categories = $this->category_model->get_all_categories();
-        ?>
-
-        <!-- Category tabs with scroll nav -->
-   <!-- Category tabs -->
-<section class="order-detail-btns container d-lg-block" style="border-radius: 20px;">
-    <div class="container">
-        <div class="order-detail-slider owl-carousel owl-theme my-5">
-            <?php 
-            $firstCategoryId = null;
-            if (!empty($restaurant_categories)) {
-                $firstCategoryId = $restaurant_categories[0]['id'];
-            }
-            foreach ($restaurant_categories as $index => $restaurant_category): ?>
-                <a href="javascript:void(0);" 
-                   class="category-tab <?php echo $index == 0 ? 'active' : ''; ?>" 
-                   data-id="<?php echo $restaurant_category['id']; ?>">
-                   <?php echo sanitize($restaurant_category['name']); ?>
-                </a>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-
-<!-- Restaurants will load here -->
-<div class="row gallery featured-responsive-card justify-content-between" id="restaurant-list">
-    <p class="text-center">Loading restaurants...</p>
-</div>
-
-
-
-    </div>
-</section>
-
-<!-- <section class="featured-responsive-card-section">
+<section class="featured-responsive-card-section">
     <div class="container p-0">
         <div class="special-offer-titlebox text-center">
             <h2>
@@ -661,7 +616,7 @@
         <?php endif; ?>
 
     </div>
-</section> -->
+</section>
 
 
 <section class="dt-hide d-none"><img class="img-fluid"
