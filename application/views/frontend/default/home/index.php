@@ -255,6 +255,9 @@
      .order-listing .gallery{
         justify-content: center !important;
     }
+     .featured-responsive-card-section .gallery{
+        justify-content: center !important;
+    }
 }
 
 </style>
@@ -544,7 +547,7 @@
         </div>
 
         <?php if (!empty($featured_restaurants)): ?>
-            <div class="grid gallery featured-responsive-card">
+            <div class="row gallery featured-responsive-card">
                 <?php foreach ($featured_restaurants as $key => $restaurant):
                     $idArray = json_decode($restaurant['cuisine']);
                     $cuisineClasses = '';
@@ -555,7 +558,7 @@
                         }, $idArray));
                     }
                 ?>
-                    <div class="card grid-item <?php echo $cuisineClasses; ?> restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
+                    <div class="card <?php echo $cuisineClasses; ?> restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
                         <div class="order-img-box main-img">
                             <a
                                 href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
