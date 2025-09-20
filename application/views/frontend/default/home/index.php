@@ -459,6 +459,11 @@
         <?php endif; ?>
     </div>
 </div>
+                        <!-- <a class="btn btn-danger"
+   href="javascript:void(0);"
+   onclick="handleOrderNow('<?php echo $menu['id']; ?>', '<?php $jsonDecodePrice = json_decode($menu['price']); echo $jsonDecodePrice->menu; ?>', '<?php echo $menu['has_variant']; ?>', '<?php echo $restaurant['slug']; ?>', '<?php echo $restaurant['id']; ?>')">
+   Order Now
+</a> -->
                         <a class="btn btn-danger"
    href="javascript:void(0);"
    onclick="handleOrderNow('<?php echo $menu['id']; ?>', '<?php $jsonDecodePrice = json_decode($menu['price']); echo $jsonDecodePrice->menu; ?>', '<?php echo $menu['has_variant']; ?>', '<?php echo $restaurant['slug']; ?>', '<?php echo $restaurant['id']; ?>')">
