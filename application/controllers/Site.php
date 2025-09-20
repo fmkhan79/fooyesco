@@ -168,25 +168,26 @@ class Site extends Base
      *
      * @return void
      */
-    public function contact_us() {
+public function contact_us() {
+    $host = get_subdomain();
+    $page_data['reCaptcha'] = $this->settings_model->get_system_recaptcha();
+    $page_data['page_name'] = 'contact_us/index';
+    $page_data['page_title'] = site_phrase("contact_us", true);
 
-        $host = get_subdomain();
-        $checkSlugInDb = $this->restaurant_model->find_slug($host);
-
-        if($checkSlugInDb){
-            $page_data['reCaptcha'] = $this->settings_model->get_system_recaptcha();
-            $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($host);
-            $page_data['page_name'] = 'contact_us/index';
-            $page_data['page_title'] = site_phrase("contact _us", true);
-            $this->load->view(frontend('index'), $page_data);  
-            return;  
+    try {
+        if ($host !== 'fooyes' && $host !== 'staging') {
+            $checkSlugInDb = $this->restaurant_model->find_slug($host);
+            if ($checkSlugInDb) {
+                $page_data['restaurant'] = $this->restaurant_model->get_by_slug($host);
+            }
         }
-
-        $page_data['reCaptcha'] = $this->settings_model->get_system_recaptcha();
-        $page_data['page_name'] = 'contact_us/index';
-        $page_data['page_title'] = site_phrase("contact _us", true);
+        $this->load->view(frontend('index'), $page_data);
+    } catch (Exception $e) {
+        log_message('error', 'Contact Us Error: ' . $e->getMessage());
+        $this->session->set_flashdata('error', 'An error occurred. Please try again later.');
         $this->load->view(frontend('index'), $page_data);
     }
+}
     /**
      * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE ABOUT US PAGE
      *

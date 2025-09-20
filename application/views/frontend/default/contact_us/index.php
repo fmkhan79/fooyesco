@@ -2,7 +2,7 @@
 <?php include APPPATH . 'views/frontend/default/navigation/dark.php'; 
 
 // echo '<pre>';
-// print_r($restaurant_details);
+// print_r($restaurant);
 // echo '</pre>';
 // die();
 ?>
@@ -152,6 +152,13 @@
 .contact-detail-text {
     font-size: 16px;
 }
+
+@media (max-width: 768px) {
+    .navbar{
+        display: block !important;
+    }
+}
+
 </style>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
@@ -191,9 +198,9 @@ foreach ($reCaptcha as $row) {
     <div class="row contact-info-section">
         <div class="col-md-4 contact-info-left">
             <h4 class="contact-heading">Contact Us</h4>
-            <?php if (!empty($restaurant_details)) { ?>
+            <?php if (!empty($restaurant)) { ?>
                 <p class="contact-timing">
-                    <?= $restaurant_details['restaurant_about'] ?>
+                    <?= $restaurant['restaurant_about'] ?>
                 </p>
             <?php } else{ ?>            
                 <p class="contact-timing">
@@ -206,14 +213,14 @@ foreach ($reCaptcha as $row) {
         <div class="col-md-8 contact-info-right">
             <ul class="contact-details-list list-unstyled">
 
-                <?php if (!empty($restaurant_details)) { ?>
+                <?php if (!empty($restaurant)) { ?>
                     <div class="row">
                         <div class="col-md-6 my-2">
                             <li>
                                 <i class="fas fa-phone contact-icon"></i> 
                                 <div class="">
-                                    <a href="https://wa.me/+44<?= $restaurant_details['phone'] ?>" target="_blank" class="contact-detail-text text-dark">Tel: <?= $restaurant_details['phone'] ?></a><br>
-                                    <a href="mailto:<?= $restaurant_details['owner_email'] ?>" class="contact-detail-text text-dark">Email: <?= $restaurant_details['owner_email'] ?></a>
+                                    <a href="https://wa.me/+44<?= $restaurant['phone'] ?>" target="_blank" class="contact-detail-text text-dark">Tel: <?= $restaurant['phone'] ?></a><br>
+                                    <a href="mailto:<?= $restaurant['owner_email'] ?>" class="contact-detail-text text-dark">Email: <?= $restaurant['owner_email'] ?></a>
                                 </div>
                             </li>
                         </div>
@@ -221,15 +228,15 @@ foreach ($reCaptcha as $row) {
                             <li><i class="fas fa-file-alt contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Support Forum <br> For 24hr</a></li>
                         </div>
                         <div class="col-md-6 my-2">
-                            <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant_details['address'] ?></span></li>
+                            <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant['address'] ?></span></li>
                         </div>
                         <div class="col-md-6 my-2">
                             <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li>
                         </div>
                     </div>
-                    <!-- <li><i class="fab fa-phone contact-icon"></i> <a href="https://wa.me/+44<?= $restaurant_details['phone'] ?>" target="_blank" class="contact-detail-text text-dark"> <?= $restaurant_details['phone'] ?></a></li>
-                    <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:<?= $restaurant_details['owner_email'] ?>" class="contact-detail-text text-dark"><?= $restaurant_details['owner_email'] ?></a></li>
-                    <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant_details['address'] ?></span></li>     -->
+                    <!-- <li><i class="fab fa-phone contact-icon"></i> <a href="https://wa.me/+44<?= $restaurant['phone'] ?>" target="_blank" class="contact-detail-text text-dark"> <?= $restaurant['phone'] ?></a></li>
+                    <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:<?= $restaurant['owner_email'] ?>" class="contact-detail-text text-dark"><?= $restaurant['owner_email'] ?></a></li>
+                    <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant['address'] ?></span></li>     -->
                 <?php } else{ ?>
                     <div class="row">
                         <div class="col-md-6 my-2">
@@ -259,9 +266,9 @@ foreach ($reCaptcha as $row) {
     </div>
 
     <!-- Map -->
-    <?php if (!empty($restaurant_details)) {
-    $lat = $restaurant_details['latitude'];
-    $lng = $restaurant_details['longitude'];
+    <?php if (!empty($restaurant)) {
+    $lat = $restaurant['latitude'];
+    $lng = $restaurant['longitude'];
     
 
     // Google Maps Embed API URL
@@ -295,7 +302,7 @@ foreach ($reCaptcha as $row) {
     <?php } ?>
 
 
-    <?php if (!empty($restaurant_details)) { ?>
+    <?php if (!empty($restaurant)) { ?>
                         <h5 class="map-heading">Opening Hours</h5>
                 <table cellpadding="5" border="1">
                     <thead>
@@ -308,7 +315,7 @@ foreach ($reCaptcha as $row) {
                     <tbody>
                         <?php
                         // JSON ko array me convert karna
-                        $opening_hours = json_decode($restaurant_details['schedule'], true);
+                        $opening_hours = json_decode($restaurant['schedule'], true);
 
                         if (json_last_error() === JSON_ERROR_NONE) {
                             foreach ($opening_hours as $day => $times) {
@@ -326,7 +333,7 @@ foreach ($reCaptcha as $row) {
                 </table>
             <?php } ?>
     <!-- General Information and Contact Form -->
-     <?php if (empty($restaurant_details) || !is_array($restaurant_details)) { ?>
+     <?php if (empty($restaurant) || !is_array($restaurant)) { ?>
     <div class="row general-info-section">
         <div class="col-md-6 general-info-left">
             <h5 class="general-info-heading">General Information</h5>

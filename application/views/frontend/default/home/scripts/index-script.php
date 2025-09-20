@@ -189,8 +189,22 @@ $(document).ready(function() {
         }
     }
 
+    function handleOrderNow(menuId, menuPrice, hasVariant, restaurantSlug, restId) {
+            // debugger;
+        if (hasVariant == 0) {
+            // Agar variant nahi hai → direct add to cart
+            addToCart(menuId, menuPrice, true, restaurantSlug, restId);
+        } else {
+            // Agar variant hai → pehle restaurant page open karo aur uske baad popup dikhana
+            let restaurantUrl = "<?= base_url() ?>site/restaurant/" + restaurantSlug + "/" + restId + "#menu-" + menuId;
+            window.location.href = restaurantUrl;
+        }
+
+    }
+
      // CART OPERATIONS
     function addToCart(menu_id, price, isButton, restaurantSlug, restId) {
+            // debugger;
         if(
             menu_id != undefined && //If click on when have no variant
             isButton == false && // clicked on div
@@ -199,14 +213,14 @@ $(document).ready(function() {
             return;
         }
 
-        if(
-            window.innerWidth < 450 && 
-            menu_id != undefined && //If click on when have no variant
-            isButton == true // clicked on div
+        // if(
+        //     window.innerWidth < 450 && 
+        //     menu_id != undefined && //If click on when have no variant
+        //     isButton == true // clicked on div
             
-        ){
-            return;
-        }
+        // ){
+        //     return;
+        // }
 
         var menuId = menu_id || $('#menu-id').val();
 
@@ -308,22 +322,12 @@ $(document).ready(function() {
         // holdModal('popup');
     }
 
-    function handleOrderNow(menuId, menuPrice, hasVariant, restaurantSlug, restId) {
-    if (hasVariant == 0) {
-        // Agar variant nahi hai → direct add to cart
-        addToCart(menuId, menuPrice, true, restaurantSlug, restId);
-    } else {
-        // Agar variant hai → pehle restaurant page open karo aur uske baad popup dikhana
-        let restaurantUrl = "<?= base_url() ?>site/restaurant/" + restaurantSlug + "/" + restId + "#menu-" + menuId;
-        window.location.href = restaurantUrl;
-    }
+    
 
-    function handleCuisine(restaurantSlug, restId, categoryName){
-        let restaurantUrl = "<?= base_url() ?>site/restaurant/" + restaurantSlug + "/" + restId + "#" + categoryName;
-        window.location.href = restaurantUrl;
-    }
+function handleCuisine(restaurantSlug, restId, categoryName){
+    let restaurantUrl = "<?= base_url() ?>site/restaurant/" + restaurantSlug + "/" + restId + "#" + categoryName;
+    window.location.href = restaurantUrl;
 }
-
 
     // Update button state for mobile map
     function updateButtonState(input, latId, longId, buttonId) {

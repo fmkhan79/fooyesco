@@ -134,6 +134,21 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
     font-weight: 500;
 }
 
+@media (max-width: 769px) {
+    .parent{
+        height: 65vh !important;
+    }
+    .box2{
+        height: 75% !important;
+    }
+    .container-99{
+        height: 100% !important;
+    }
+    .modal{
+        top: 80px !important;
+    }
+}
+
 </style>
 <!-- RESTAURANT GALLERY -->
 
@@ -413,7 +428,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
 
-<section class="order-detail-btns container d-none d-lg-block " style="border-radius: 20px;">
+<section class="order-detail-btns container d-lg-block " style="border-radius: 20px;">
     <div class="container">
         <div class="order-detail-slider owl-carousel owl-theme my-5 ">
             <?php foreach ($restaurant_categories as $restaurant_category) { ?>
@@ -628,7 +643,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                         <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
-                                                    <button style="text-align: right; margin: 20px 20px 0 0; cursor: pointer;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <button style="text-align: right; margin: 20px 20px 0 0; cursor: pointer;" type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                     <div class="modal-body p-0" id="getdetails_selected_menu">
