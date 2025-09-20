@@ -62,6 +62,9 @@ $stripe_settings = json_decode($stripe_settings);
         .delivery-text {
             font-size: large;
         }
+        .navbar{
+            display: block !important;
+        }
 
     }
 
@@ -167,8 +170,8 @@ $stripe_settings = json_decode($stripe_settings);
 
 
 </style>
-<section class="detail-wbox mt-4 mb-2 p-5 d-flex justify-content-around">
-    <div class="container bg-white text-dark border border-light p-3 w-75 p-md-5">
+<section class="detail-wbox mt-4 mb-2 p-md-5 d-flex justify-content-around">
+    <div class="container bg-white text-dark border border-light p-3 w-lg-75 p-md-5">
         <ul id="step-indicator" class="d-flex justify-content-between align-item-center billing-list-topbar p-0">
             
            <script>
@@ -278,7 +281,7 @@ $stripe_settings = json_decode($stripe_settings);
 
 
         <div id="payment-option">
-            <div class="row">
+            <div class="row flex-column-reverse flex-md-row">
                 <div class="col-md-6">
                 <div class="d-flex">
                     <h4 class="delivery-text mt-3"><span class="order_type">Delivery</span> Address</h4>
