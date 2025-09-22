@@ -483,6 +483,20 @@ document.querySelectorAll(".basket-switcher-error").forEach(el => {
         });
     }
 
+$(document).ready(function() {
+    let hash = window.location.hash;
+    if (hash.startsWith("#menu-")) {
+        let menuId = hash.replace("#menu-", "");
+        // abhi menu ka price aur variant backend se fetch karna hoga
+        $.ajax({
+            url: '<?php echo base_url(); ?>site/get_menu_info/' + menuId,
+            success: function(res) {
+                let data = JSON.parse(res);
+                viewselected_menu(menuId, data.price, data.has_variant, false);
+            }
+        });
+    }
+});
 
 
     //  GET AND DISPALY THE MENU MAIN CATAGORIES BASED ON THE CLICK MENU 

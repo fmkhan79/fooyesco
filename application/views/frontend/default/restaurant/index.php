@@ -2,7 +2,10 @@
 
 
 
-<?php include APPPATH . 'views/frontend/default/navigation/dark.php';
+<?php
+$cartView = true;
+
+include APPPATH . 'views/frontend/default/navigation/dark.php';
 ?>
 <style>
     .disabled {
@@ -129,6 +132,21 @@
     font-size: 14px;
     color: #fff;
     font-weight: 500;
+}
+
+@media (max-width: 769px) {
+    .parent{
+        height: 80vh !important;
+    }
+    .box2{
+        height: 80% !important;
+    }
+    .container-99{
+        height: 100% !important;
+    }
+    .modal{
+        top: 40px !important;
+    }
 }
 
 </style>
@@ -625,7 +643,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                         <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
-                                                    <button style="text-align: right; margin: 20px 20px 0 0; cursor: pointer;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <button style="text-align: right; margin: 20px 20px 0 0; cursor: pointer;" type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                     <div class="modal-body p-0" id="getdetails_selected_menu">

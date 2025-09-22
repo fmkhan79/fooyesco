@@ -32,12 +32,12 @@ class Email_model extends Base_model
 $mail->isSMTP();
 $mail->Host       = 'mail.fooyes.co.uk'; // Your SMTP server
 $mail->SMTPAuth   = true;
-$mail->Username   = 'no-reply@fooyes.co.uk'; // Your email username
-$mail->Password   = '^X{zK)uB%XrS'; // Your email password
+$mail->Username   = 'noreplay@fooyes.co.uk'; // Your email username
+$mail->Password   = '_AmP1DLB]]LA9-2k'; // Your email password
 $mail->SMTPSecure = 'ssl'; // Use 'ssl' for SSL
 $mail->Port       = 465; // Use 465 for SSL
 
-$mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes'); // Your email and name
+$mail->setFrom('noreplay@fooyes.co.uk', 'Fooyes'); // Your email and name
 
 		// Add a recipient
 		$mail->addAddress($to);
@@ -62,11 +62,11 @@ $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes'); // Your email and name
 				$mail2->isSMTP();
 				$mail2->Host = 'mail.fooyes.co.uk';
 				$mail2->SMTPAuth = true;
-				$mail2->Username = 'no-reply@fooyes.co.uk';
-				$mail2->Password = '^X{zK)uB%XrS';
+				$mail2->Username = 'noreplay@fooyes.co.uk';
+				$mail2->Password = '_AmP1DLB]]LA9-2k';
 				$mail2->SMTPSecure = 'ssl';
 				$mail2->Port = 465;
-				$mail2->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
+				$mail2->setFrom('noreplay@fooyes.co.uk', 'Fooyes');
 				$mail2->isHTML(true);
 				$mail2->SMTPDebug = false;
 

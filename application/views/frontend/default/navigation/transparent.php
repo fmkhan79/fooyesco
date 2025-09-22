@@ -35,13 +35,13 @@
                         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                             <ul class="navbar-nav">
                                 
-                                <li class="cart-menu ml-3">
+                                <!-- <li class="cart-menu ml-3">
                                     <a href="<?php echo site_url('chilli-hut-march'); ?>" class="cart-btn"><span
                                             class="cart-items" id="#cart-items">
                                             <?php echo sanitize($this->cart_model->total_cart_items()); ?>
                                         </span><img
                                             src="<?php echo base_url('assets/frontend/default/images/cart-icon.png') ?>" /></a>
-                                </li>
+                                </li> -->
                                 <!-- <li class="nav-item">
                                     <a class="btn btn-outline-light top-btn" href="<?php echo site_url('auth/registration/driver'); ?>"><?php echo site_phrase('become_a_delivery_man', true); ?></a>
                                 </li> -->
@@ -71,12 +71,15 @@
                                         </a>
                                     </div>
                                 </li>
-                                <?php } ?>
+                                <?php } 
+                                if(!$this->session->userdata('is_logged_in')):
+                                ?>
                                 <li class="nav-item reg-btn">
-                                    <a class="nav-link" href="<?php echo site_url('register'); ?>">
-                                        <?php echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('register', true); ?>
+                                    <a class="nav-link" href="<?php echo site_url('auth/roles'); ?>">
+                                        <?php echo  site_phrase('register', true); ?>
                                     </a>
                                 </li>
+                                <?php endif; ?>
                                 <li class="nav-item login-btn">
                                     <a class="nav-link" href="<?php echo site_url('login'); ?>">
                                         <?php echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('login', true); ?>

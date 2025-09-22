@@ -168,23 +168,26 @@ class Site extends Base
      *
      * @return void
      */
-    public function contact_us() {
+public function contact_us() {
+    $host = get_subdomain();
+    $page_data['reCaptcha'] = $this->settings_model->get_system_recaptcha();
+    $page_data['page_name'] = 'contact_us/index';
+    $page_data['page_title'] = site_phrase("contact_us", true);
 
-        $host = get_subdomain();
-        $checkSlugInDb = $this->restaurant_model->find_slug($host);
-
-        if($checkSlugInDb){
-            $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($host);
-            $page_data['page_name'] = 'contact_us/index';
-            $page_data['page_title'] = site_phrase("contact _us", true);
-            $this->load->view(frontend('index'), $page_data);  
-            return;  
+    try {
+        if ($host !== 'fooyes' && $host !== 'staging') {
+            $checkSlugInDb = $this->restaurant_model->find_slug($host);
+            if ($checkSlugInDb) {
+                $page_data['restaurant'] = $this->restaurant_model->get_by_slug($host);
+            }
         }
-
-        $page_data['page_name'] = 'contact_us/index';
-        $page_data['page_title'] = site_phrase("contact _us", true);
+        $this->load->view(frontend('index'), $page_data);
+    } catch (Exception $e) {
+        log_message('error', 'Contact Us Error: ' . $e->getMessage());
+        $this->session->set_flashdata('error', 'An error occurred. Please try again later.');
         $this->load->view(frontend('index'), $page_data);
     }
+}
     /**
      * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE ABOUT US PAGE
      *
@@ -269,6 +272,85 @@ class Site extends Base
         $this->session->set_userdata('language', $selected_language);
         echo true;
     }
+
+    public function get_menu_info($menu_id) {
+    $menu = $this->menu_model->get_by_id($menu_id);
+    $response = [
+        'price' => json_decode($menu['price'])->menu,
+        'has_variant' => $menu['has_variant']
+    ];
+    echo json_encode($response);
+}
+
+public function get_restaurants_by_category($category_id)
+{
+    $category_id = sanitize($category_id);
+
+    // Us category ka naam nikaalo
+    $category = $this->db->get_where('food_categories', ['id' => $category_id])->row_array();
+    $category_name = $category ? $category['name'] : 'Category';
+
+    // Us category ke menus nikaalo
+    $menus = $this->menu_model->get_menu_by_condition([
+        'category_id' => $category_id
+    ]);
+
+    $uniqueRestaurants = array();
+
+    if (!empty($menus)) {
+        foreach ($menus as $menu) {
+            $restId = $menu['restaurant_id'];
+            if (!isset($uniqueRestaurants[$restId])) {
+                $uniqueRestaurants[$restId] = [
+                    'data' => $this->restaurant_model->get_by_id($restId),
+                    'category_name' => $category_name
+                ];
+            }
+        }
+    }
+
+    // Agar koi restaurant nahi mila
+    if (empty($uniqueRestaurants)) {
+        echo '<p class="text-center text-muted">No restaurants found for this category.</p>';
+        return;
+    }
+
+    // Restaurants ka HTML cards return karo
+    foreach ($uniqueRestaurants as $restaurantInfo) {
+        $restaurant = $restaurantInfo['data'];
+        $catName = $restaurantInfo['category_name'];
+        ?>
+        <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
+            <div class="order-img-box main-img">
+                <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
+                    <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>" alt="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250" fill="none">
+                        <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)"
+                            stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
+                        <defs>
+                            <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
+                                y2="280.046" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#F57484" stop-opacity="0"></stop>
+                                <stop offset="1" stop-color="#FDC55E"></stop>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </a>
+            </div>
+            <div class="restaurant-body text-center">
+                <h3><?php echo sanitize($restaurant['name']); ?></h3>
+                <h6><?php echo sanitize($catName); ?></h6>
+                <p><?php echo sanitize($restaurant['name']); ?> provides different products in <?php echo sanitize($catName); ?>.</p>
+            </div>
+            <a class="btn btn-danger"
+                href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id']) . '/#' . strtolower(str_replace(' ', '-', $catName))); ?>">Explore Menu</a>
+        </div>
+        <?php
+    }
+}
+
+
+
 }
 
 /* End of file Site.php */

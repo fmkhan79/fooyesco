@@ -148,7 +148,7 @@ class CustomersInfo extends Authorization
 
             // Send Email
             if ($send_email) {
-                $mailData = [
+                $mailData = [   
                     'message_body' => $personalMessage,
                     'customer' => $cust
                 ];
@@ -157,37 +157,39 @@ class CustomersInfo extends Authorization
                 $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, false, true);
             }
 
-            // Send SMS using Twilio via cURL
-            if ($send_sms && !empty($cust['phone'])) {
-                $url = 'https://api.twilio.com/2010-04-01/Accounts/' . $sid . '/Messages.json';
+                        // Send SMS using Twilio via cURL
+                         // Send SMS using Twilio via cURL
+                        if ($send_sms && !empty($cust['phone'])) {
+                            $url = 'https://api.twilio.com/2010-04-01/Accounts/' . $sid . '/Messages.json';
 
-                $data = http_build_query([
-                    'From' => $twilio_number,
-                    'To' => '+923168232627', // should be in +92xxxxxxxxxx format $cust['phone'], $formattedPhone
-                    'Body' => $personalMessage
-                ]);
+                            $data = http_build_query([
+                                'From' => $twilio_number,
+                                'To'   => $formattedPhone, 
+                                'Body' => $personalMessage
+                            ]);
 
-                $ch = curl_init();
+                            $ch = curl_init();
 
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_USERPWD, $sid . ':' . $token);
+                            curl_setopt($ch, CURLOPT_URL, $url);
+                            curl_setopt($ch, CURLOPT_POST, true);
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            curl_setopt($ch, CURLOPT_USERPWD, $sid . ':' . $token);
 
-                $response = curl_exec($ch);
+                            $response = curl_exec($ch);
 
-                if (curl_errno($ch)) {
-                    log_message('error', 'Twilio SMS CURL Error: ' . curl_error($ch));
-                } else {
-                    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                    if ($httpCode >= 400) {
-                        log_message('error', 'Twilio SMS failed. Response: ' . $response);
-                    }
-                }
+                            if (curl_errno($ch)) {
+                                log_message('error', 'Twilio SMS CURL Error: ' . curl_error($ch));
+                            } else {
+                                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                                if ($httpCode >= 400) {
+                                    log_message('error', 'Twilio SMS failed. Response: ' . $response);
+                                }
+                            }
 
-                curl_close($ch);
-            }
+                            curl_close($ch);
+                        }
+
         }
 
         redirect(site_url('customers-info/index'));

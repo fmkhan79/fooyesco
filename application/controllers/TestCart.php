@@ -74,12 +74,12 @@ class Testcart extends Base {
         $mail->isSMTP();
         $mail->Host       = 'mail.fooyes.co.uk';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'no-reply@fooyes.co.uk';
-        $mail->Password   = '^X{zK)uB%XrS';
+        $mail->Username   = 'noreplay@fooyes.co.uk';
+        $mail->Password   = '_AmP1DLB]]LA9-2k';
         $mail->SMTPSecure = 'ssl';
         $mail->Port       = 465;
 
-        $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
+        $mail->setFrom('noreplay@fooyes.co.uk', 'Fooyes');
         // $mail->addAddress('fmkhan79@gmail.com');
         $mail->addAddress('fooyesuk@gmail.com');
         // $mail->addBCC('fooyesuk@gmail.com');  
@@ -98,8 +98,9 @@ class Testcart extends Base {
 
     public function missedresponsenoti() 
     {
-        return;
-
+        // return;
+        print_r("Das");
+        // die();
         $user_id = 3; 
     
         // Get all orders with no response = 1
@@ -107,7 +108,8 @@ class Testcart extends Base {
         $this->db->where('no_response', 1);
         $this->db->order_by('id', 'DESC');
         $orders = $this->db->get()->result_array();
-        
+                print_r("Das");
+
         if (!empty($orders)) {
             // Get user (owner) info
             $owner = $this->db->get_where('users', ['id' => $user_id])->row_array();
@@ -154,14 +156,14 @@ class Testcart extends Base {
                 $mail->isSMTP();
                 $mail->Host       = 'mail.fooyes.co.uk';
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'no-reply@fooyes.co.uk';
-                $mail->Password   = '^X{zK)uB%XrS';
+                $mail->Username   = 'noreplay@fooyes.co.uk';
+                $mail->Password   = 'p[HsT)sTq0J84CiK';
                 $mail->SMTPSecure = 'ssl';
                 $mail->Port       = 465;
     
-                $mail->setFrom('no-reply@fooyes.co.uk', 'Fooyes');
+                $mail->setFrom('noreplay@fooyes.co.uk', 'Fooyes');
                 // $mail->addAddress('fmkhan79@gmail.com');
-                $mail->addAddress('fooyesuk@gmail.com');
+                // $mail->addAddress('fooyesuk@gmail.com');
                 // $mail->addBCC('fooyesuk@gmail.com');   
                 $mail->addAddress('website25developer@gmail.com'); 
     
