@@ -118,7 +118,7 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
     <input name="variant" class="menuoptions" data-menu-option="menu-option-1"
         data-item-price="<?php if($menu_main_catagory["price"] > 0) { echo $menu_main_catagory["price"]; } else { echo $starts_from->menu; } ?>"
         id="variant" type="radio" value="<?php echo $menu_main_catagory['id']; ?>"
-        onclick="viewselected_cat_items(<?php echo $menu_main_catagory['id']; ?>, 'menu-option-1'); updateOrderButton()"/>
+        onclick="viewselected_cat_items(<?php echo $menu_main_catagory['id']; ?>, 'menu-option-1'); updateOrderButton();"/>
     <?php echo $menu_main_catagory["name"]; ?>
 </label>
             </div>
@@ -413,11 +413,10 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
     });
 
     function updateOrderButton() {
-        
         let groupArr = [];
         $(".modal-body input[type='radio']").each( (index, item) => { 
             groupArr.push(item.getAttribute('name')); 
-        });
+        }); 
         let ar = [...new Set(groupArr)];
         let button = document.querySelector("#add-to-order-container");
         
@@ -425,7 +424,7 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
         
         console.log(ar.length, $(".modal-body input[type='radio']:checked").length, button.classList);
 
-}   
+    }   
 
 
 

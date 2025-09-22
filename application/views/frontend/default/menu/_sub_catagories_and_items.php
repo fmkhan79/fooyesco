@@ -33,7 +33,7 @@ if($menu_sub_catagory_item["name"]){
                     class="d-flex align-items-center p-4 choice-box align-items-center justify-content-between gray-border">
                     <div class="label-box">
                       <label>
-                        <input name="<?php if($option == "menu-option-2"){ echo $option.$menu_sub_catagory_item["name"]; }else{ echo $menu_sub_catagory_item["name"]; }  ?>"   data-item-price="<?php echo $item["price"];  ?>" data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"] ?>"   data-item-id="<?php echo $item["id"];  ?>" class="menuoptions required-item" type="radio" value="<?php echo  $item["id"]; ?>"  />
+                        <input onclick="updateOrderButton()" name="<?php if($option == "menu-option-2"){ echo $option.$menu_sub_catagory_item["name"]; }else{ echo $menu_sub_catagory_item["name"]; }  ?>"   data-item-price="<?php echo $item["price"];  ?>" data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"] ?>"   data-item-id="<?php echo $item["id"];  ?>" class="menuoptions required-item" type="radio" value="<?php echo  $item["id"]; ?>"  />
                         <?php echo $item["variant"];  ?>
                       </label>
                     </div>
