@@ -536,52 +536,68 @@ $(document).ready(function() {
         $('#popup #add-order-price').text(menuPrice); // Replace '£15.99' with the new price you want to set
     }
     // GET AND DISPLAY THE MENU ITEMS BASED ON SUB CATAGORY
-    function viewselected_cat_items(maincatid, menu_selection = null) {
+function viewselected_cat_items(maincatid, menu_selection = null) {
 
-        var menu_option = menu_selection;
-        menu_selection = '.' + menu_selection;
-        // Get the selected radio button element
-        var selectedRadioButton = document.querySelector('input[type="radio"][value="' + maincatid + '"].menuoptions');
+    var menu_option = menu_selection;
+    console.log('--menu_selection', menu_selection);
+    menu_selection = '.' + menu_selection;
+    console.log('--menu_selection:after', menu_selection);
+    // Get the selected radio button element
+    var selectedRadioButton = document.querySelector('input[type="radio"][value="' + maincatid + '"].menuoptions');
 
-        // Check if the radio button is found
-        if (selectedRadioButton) {
-            // Get the data-item-price attribute value
-            var itemPrice = selectedRadioButton.getAttribute('data-item-price');
+    // Check if the radio button is found
+    if (selectedRadioButton) {
+        // Get the data-item-price attribute value
+        var itemPrice = selectedRadioButton.getAttribute('data-item-price');
 
-            if (itemPrice) {
-                var currency = $('#currency').val();
-                // Use the itemPrice as needed (e.g., log it to the console)
-                itemPrice = currency + itemPrice;
-                // Find the price element within the modal content and update its text
-                $('#popup #add-order-price').text(itemPrice); // Replace '£15.99' with the new price you want to set
+        if (itemPrice) {
+            var currency = $('#currency').val();
+            // Use the itemPrice as needed (e.g., log it to the console)
+            console.log("Item price: " + itemPrice);
+            itemPrice = currency + itemPrice;
+            // Find the price element within the modal content and update its text
+            $('#popup #add-order-price').text(itemPrice); // Replace '£15.99' with the new price you want to set
 
-            } else {
-                var menuPrice = $('#menu-price').val();
-
-                var currency = $('#currency').val();
-                menuPrice = currency + menuPrice;
-                $('#popup #add-order-price').text(menuPrice.toFixed(
-                    2)); // Replace '£15.99' with the new price you want to set
-            }
-
-            // You can perform further actions with the itemPrice value here
         } else {
-            console.log("Radio button not found");
+            var menuPrice = $('#menu-price').val();
+            console.log("--menu-price", menuPrice);
+
+            var currency = $('#currency').val();
+            menuPrice = currency + menuPrice;
+            $('#popup #add-order-price').text(menuPrice.toFixed(
+                2)); // Replace '£15.99' with the new price you want to set
         }
-        $.ajax({
-            url: '<?php echo base_url(); ?>site/selected_cat_items/' + maincatid + '/' + menu_option,
-            success: function(res) {
-                // $("#sub-catagories-and-items").html(res);
-                $(menu_selection).html(res);
-                // menu-option-1
-                // console.log(res);
-            },
-            error: function() {
-                // alert("<?php echo $this->lang->line('fail'); ?>")
-            }
-        });
-        // holdModal('popup');
+
+        // You can perform further actions with the itemPrice value here
+    } else {
+        console.log("Radio button not found");
     }
+    $.ajax({
+        url: '<?php echo base_url(); ?>site/selected_cat_items/' + maincatid + '/' + menu_option,
+        success: function(res) {
+            // $("#sub-catagories-and-items").html(res);
+            $(menu_selection).html(res);
+            let groupArr = [];
+     
+        $(".modal-body input[type='radio']").each( (index, item) => { 
+            groupArr.push(item.getAttribute('name')); 
+        }); 
+        let ar = [...new Set(groupArr)];
+        let button = document.querySelector("#add-to-order-container");
+        
+        ar.length == $(".modal-body input[type='radio']:checked").length ? button.classList.remove("disabled") : button.classList.add("disabled");
+        
+        console.log(ar.length, $(".modal-body input[type='radio']:checked").length, button.classList);
+        },
+        error: function() {
+            // alert("<?php echo $this->lang->line('fail'); ?>")
+        }
+    });
+
+     
+
+    // holdModal('popup');
+}
 
 
     // GET THE CART SUMMARY AND DISPAY IN RIGHT SIDE
