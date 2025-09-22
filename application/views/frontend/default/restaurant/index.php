@@ -136,16 +136,16 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
 
 @media (max-width: 769px) {
     .parent{
-        height: 65vh !important;
+        height: 80vh !important;
     }
     .box2{
-        height: 75% !important;
+        height: 80% !important;
     }
     .container-99{
         height: 100% !important;
     }
     .modal{
-        top: 80px !important;
+        top: 40px !important;
     }
 }
 
