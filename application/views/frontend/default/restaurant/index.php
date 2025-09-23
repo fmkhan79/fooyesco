@@ -145,7 +145,7 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
         height: 100% !important;
     }
     .modal{
-        top: 40px !important;
+        top: 25px !important;
     }
 }
 
@@ -735,6 +735,9 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
 <script>
+    document.getElementById('popup').addEventListener('hidden.bs.modal', function () {
+    window.location.reload(); // reload the page
+  });
 
         document.querySelectorAll(".owl-item.cloned").forEach(function(element) {
 
@@ -763,7 +766,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                 }
             }
         });
-    });
+    
 
 
 

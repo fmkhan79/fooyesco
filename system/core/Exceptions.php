@@ -108,7 +108,13 @@ class CI_Exceptions {
 			return;
 		}
 
-		$subject = 'Alert! Error in Fooyes';
+		if (stripos($message, 'Cannot access offset of type string on string') !== false) {
+			return;
+		}
+
+		$host = $_SERVER['HTTP_HOST'];
+
+		$subject = 'Alert! Error in ' . $host;
         $to = 'website25developer@gmail.com';
 
         $errorData = [
