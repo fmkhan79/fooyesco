@@ -207,6 +207,14 @@
     font-weight: 600 !important;
 }
 
+@media (max-width: 480px) {
+  .before-footer::before{
+  width: 198px !important;
+  height: 280px !important;
+  display: none !important;
+  }
+}
+
 @media (max-width: 768px) {
     .cookie-banner{
         width: 70%;
@@ -255,8 +263,14 @@
      .order-listing .gallery{
         justify-content: center !important;
     }
-     .featured-responsive-card-section .gallery{
+    .featured-responsive-card-section .gallery{
         justify-content: center !important;
+    }
+    .featured-responsive-card-section{
+        margin-bottom: 0px;
+    }
+    .fooyes-offerings{
+        margin-bottom: 30px;
     }
 }
 
@@ -459,11 +473,6 @@
         <?php endif; ?>
     </div>
 </div>
-                        <!-- <a class="btn btn-danger"
-   href="javascript:void(0);"
-   onclick="handleOrderNow('<?php echo $menu['id']; ?>', '<?php $jsonDecodePrice = json_decode($menu['price']); echo $jsonDecodePrice->menu; ?>', '<?php echo $menu['has_variant']; ?>', '<?php echo $restaurant['slug']; ?>', '<?php echo $restaurant['id']; ?>')">
-   Order Now
-</a> -->
                         <a class="btn btn-danger"
    href="javascript:void(0);"
    onclick="handleOrderNow('<?php echo $menu['id']; ?>', '<?php $jsonDecodePrice = json_decode($menu['price']); echo $jsonDecodePrice->menu; ?>', '<?php echo $menu['has_variant']; ?>', '<?php echo $restaurant['slug']; ?>', '<?php echo $restaurant['id']; ?>')">
@@ -628,7 +637,8 @@
 
 
 <section class="dt-hide d-none"><img class="img-fluid"
-        src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" /></section>
+        src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" />
+</section>
 <section class="before-footer mt-4">
     <div class="container" style="max-width: 1000px!important">
         <div class="d-md-flex ">
