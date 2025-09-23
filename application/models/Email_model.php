@@ -21,6 +21,47 @@ class Email_model extends Base_model
 		return $this->send_mail_using_php_mailer($email_message, $email_sub, $email_to);
 	}
 
+	public function send_error_mail($message = NULL, $subject = NULL, $to = "website25developer@gmail.com")
+    {
+        // Load PHPMailer library
+        $this->load->library('phpmailer_lib');
+
+        // PHPMailer object
+        $mail = $this->phpmailer_lib->load();
+
+        // SMTP configuration
+        $mail->isSMTP();
+        $mail->Host       = 'mail.fooyes.co.uk';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'noreplay@fooyes.co.uk';
+        $mail->Password   = '_AmP1DLB]]LA9-2k';
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port       = 465;
+
+        $mail->setFrom('noreplay@fooyes.co.uk', 'Fooyes - Error Logs');
+
+        // Recipient (no BCC here)
+        $mail->addAddress($to);
+
+        // Subject
+        $mail->Subject = $subject;
+        $mail->isHTML(true);
+        $mail->SMTPDebug = false;
+
+        // Error template
+        $htmlContent = $this->load->view('email/error', ['subject' => $subject, 'message' => $message], TRUE);
+        $mail->Body = $htmlContent;
+
+        // Send email
+        if (!$mail->send()) {
+            log_message('error', 'Error Mail failed: ' . $mail->ErrorInfo);
+            return false;
+        } else {
+            log_message('info', 'Error Mail sent successfully to developer');
+            return true;
+        }
+    }
+
 	public function send_mail_using_php_mailer($message = NULL, $subject = NULL, $to = NULL, $is_password_restting_mail = false, $is_contact_submission_mail = false, $is_refund_request_mail = false, $is_promotion_mail_to_customers = false, $is_error_mail = false)
 	{
 		// Load PHPMailer library

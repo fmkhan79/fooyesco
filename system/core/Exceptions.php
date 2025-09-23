@@ -104,18 +104,23 @@ class CI_Exceptions {
 		$severity = isset($this->levels[$severity]) ? $this->levels[$severity] : $severity;
 		log_message('error', 'Severity: '.$severity.' --> '.$message.' '.$filepath.' '.$line);
 
-		if (stripos($severity, 'Warning') !== false) {
+		$emailAllowed = ['Parsing Error', 'Core Error', 'Compile Error'];
+
+		if (!in_array($severity, $emailAllowed)) {
 			return;
 		}
 
-		if (stripos($message, 'Cannot access offset of type string on string') !== false) {
-			return;
-		}
+		// if (stripos($severity, 'Warning') !== false) {
+		// 	return;
+		// }
+
+		// if (stripos($message, 'Cannot access offset of type string on string') !== false) {
+		// 	return;
+		// }
 
 		$host = $_SERVER['HTTP_HOST'];
 
 		$subject = 'Alert! Error in ' . $host;
-        $to = 'website25developer@gmail.com';
 
         $errorData = [
             'Severity' => $severity,
@@ -128,7 +133,8 @@ class CI_Exceptions {
         $CI =& get_instance();
         try {
             $CI->load->model('Email_model');
-            $CI->email_model->send_mail_using_php_mailer($errorData, $subject, $to, false, false, false, false, true);
+            // $CI->email_model->send_mail_using_php_mailer($errorData, $subject, $to, false, false, false, false, true);
+			$CI->email_model->send_error_mail($errorData, $subject);
         } catch (Exception $e) {
             log_message('error', 'Error mail sending failed: ' . $e->getMessage());
         }
