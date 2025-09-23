@@ -735,9 +735,9 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
 <script>
-    document.getElementById('popup').addEventListener('hidden.bs.modal', function () {
-    window.location.reload(); // reload the page
-  });
+//     document.getElementById('popup').addEventListener('hidden.bs.modal', function () {
+//     window.location.reload(); // reload the page
+//   });
 
         document.querySelectorAll(".owl-item.cloned").forEach(function(element) {
 
