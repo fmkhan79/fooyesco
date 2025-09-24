@@ -256,10 +256,10 @@
 
 
                             <a onclick="red(this)"
-   data-href="<?php echo site_url('GuestCheckout?guest=1'); ?>" 
-   class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 color-white cursor">
-   Guest Checkout
-</a>
+                                    data-href="<?php echo site_url('GuestCheckout?guest=1'); ?>" 
+                                    class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 color-white cursor">
+                                    Guest Checkout
+                                    </a>
                             </div>
                             <!-- <div class="btn-proceed">
                                 <a href="<?php echo site_url('auth/google_login'); ?>" class="d-block order-red-btn-main text-center mt-4">
@@ -273,11 +273,35 @@
 
 
                 </div>
-                    
+
 
                 <!-- <a href="<?php echo base_url('cart'); ?>" class="d-block order-red-btn text-center mt-4">Order
                         Now!</a> -->
             </div>
+
+                            <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const checkbox = document.getElementById("terms");
+                            const loginBtn = document.querySelector("a[href$='auth']");
+
+                            function toggleLoginButton() {
+                                if (checkbox.checked) {
+                                    loginBtn.classList.remove("disabled");
+                                    loginBtn.style.pointerEvents = "auto";
+                                    loginBtn.style.opacity = "1";
+                                } else {
+                                    loginBtn.classList.add("disabled");
+                                    loginBtn.style.pointerEvents = "none";
+                                    loginBtn.style.opacity = "0.6";
+                                }
+                            }
+
+                            toggleLoginButton();
+
+                            checkbox.addEventListener("change", toggleLoginButton);
+                        });
+                    </script>
+
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
