@@ -4,7 +4,7 @@
     .nav-item{
         margin: 0px !important;
     }
-
+   
 </style>
 <div class="nav-menu">
     <div class="bg transition">
@@ -71,20 +71,22 @@
                                         </a>
                                     </div>
                                 </li>
-                                <?php } 
-                                if(!$this->session->userdata('is_logged_in')):
-                                ?>
-                                <li class="nav-item reg-btn">
-                                    <a class="nav-link" href="<?php echo site_url('auth/roles'); ?>">
-                                        <?php echo  site_phrase('register', true); ?>
-                                    </a>
-                                </li>
-                                <?php endif; ?>
-                                <li class="nav-item login-btn">
-                                    <a class="nav-link" href="<?php echo site_url('login'); ?>">
-                                        <?php echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('login', true); ?>
-                                    </a>
-                                </li>
+                                <?php } ?>
+                                <div class="auth-btn">
+                                        <?php if(!$this->session->userdata('is_logged_in')):
+                                    ?>
+                                    <li class="nav-item reg-btn">
+                                        <a class="nav-link" href="<?php echo site_url('auth/roles'); ?>">
+                                            <?php echo  site_phrase('register', true); ?>
+                                        </a>
+                                    </li>
+                                    <?php endif; ?>
+                                    <li class="nav-item login-btn">
+                                        <a class="nav-link" href="<?php echo site_url('login'); ?>">
+                                            <?php echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('login', true); ?>
+                                        </a>
+                                    </li>
+                                </div>
                             </ul>
                         </div>
                         </div>

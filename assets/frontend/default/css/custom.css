@@ -508,6 +508,10 @@ a {
   clear: both;
 }
 
+ .auth-btn{
+        display: flex !important;
+    }
+
     @media (max-width: 430px) {
         .navbar{
             display: block;
@@ -515,8 +519,8 @@ a {
         .navbar .reg-btn{
             margin-left: 8px !important;
         }
-        .navbar .login-btn{
-            margin-top: 5px !important;
+        .auth-btn{
+            margin-top: 8px !important;
         }
         .main-banner{
             margin-top: 190px !important;
