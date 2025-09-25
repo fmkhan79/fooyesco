@@ -157,6 +157,9 @@
     .navbar{
         display: block !important;
     }
+    .before-footer::before {
+  display: none !important;
+}
 }
 
 </style>
@@ -415,7 +418,7 @@ foreach ($reCaptcha as $row) {
 </section>
 
 <section class="dt-hide">
-    <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>" />
+    <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" />
 </section>                                                                                                                  
 
 <section class="footer-top mt-4">
@@ -433,7 +436,7 @@ foreach ($reCaptcha as $row) {
                 </div>
             </div>
             <div class="col-md-6 mob-hide">
-                <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-top-img.png') ?>" />
+                <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" />
             </div>
         </div>
     </div>
@@ -447,9 +450,9 @@ foreach ($reCaptcha as $row) {
             <div class="col-md-6">
                 <h3>Join the <span class="red">Fooyes</span> Community </span></h3>
                 <p>Follow us on social media and sign up for exclusive offers, new menu launches, and foodie events.</p>
-                <p><i class="fas fa-map-marker-alt fooyes-icon"></i> <strong>Find Us:</strong> 40 High St, March PE15 9JR, United Kingdom</p>
-    <p><i class="fas fa-phone-alt fooyes-icon"></i> <strong>Contact Us:</strong> <a href="tel:+44 1354 654992" style="color:#191919">+44 1354 654992</a></p>
-    <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:chillihutmarchonline.com" style="color:#191919">chillihutmarchonline.com</a></p>
+                <p><i class="fas fa-map-marker-alt fooyes-icon"></i> <strong>Find Us:</strong> 110 Eastern Ave, Peterborough PE1 4PW, UK</p>
+    <p><i class="fas fa-phone-alt fooyes-icon"></i> <strong>Contact Us:</strong> <a href="tel:+447438797814" style="color:#191919">+44-7438797814</a></p>
+    <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:support@fooyes.co.uk" style="color:#191919">support@fooyes.co.uk</a></p>
     <p style="font-size:18px"> <b>Delicious moments start here. Welcome to Fooyes UK!</b></p>
             </div>
             <div class="col-md-6 mob-hide"><img class="img-fluid"

@@ -37,23 +37,64 @@ class Variation_model extends Base_model
     }
 
 
+    // public function update_sub_variant()
+    // {
+    //     echo "adas";
+
+    //     $val = $this->input->post('variation_attr_value') == "" ? "0" : $this->input->post('variation_attr_value');
+    //     $data[required(sanitize($this->input->post('variation_attr_name')))] = required(sanitize($val));
+    //     //  $data['variation_item_id'] = required(sanitize($this->input->post('variation_item_id')));
+    //     //  $data['options'] = required(trim(strtolower(str_replace('-', ' ', sanitize($this->input->post('options'))))));
+
+
+    //     $variation_item_id = required(sanitize($this->input->post('variation_item_id')));
+
+    //     $this->db->where('id', $variation_item_id);
+    //     $this->db->update('variant_sub_options', $data);
+    //     return true;
+
+    // }
     public function update_sub_variant()
     {
-        echo "adas";
-
         $val = $this->input->post('variation_attr_value') == "" ? "0" : $this->input->post('variation_attr_value');
-        $data[required(sanitize($this->input->post('variation_attr_name')))] = required(sanitize($val));
-        //  $data['variation_item_id'] = required(sanitize($this->input->post('variation_item_id')));
-        //  $data['options'] = required(trim(strtolower(str_replace('-', ' ', sanitize($this->input->post('options'))))));
-
-
+        $fieldName = sanitize($this->input->post('variation_attr_name'));
+        $fieldValue = sanitize($val);
         $variation_item_id = required(sanitize($this->input->post('variation_item_id')));
+        $menu_id = sanitize($this->input->post('menu_id'));
 
+        $response = ['status' => 'error', 'message' => 'Something went wrong'];
+
+        // Duplicate check for name
+        if ($fieldName === "name") {
+            $this->db->where('menu_id', $menu_id);
+            $this->db->where('LOWER(name)', strtolower($fieldValue));
+            $this->db->where('id !=', $variation_item_id);
+            $duplicate = $this->db->get('variant_sub_options')->row();
+
+            if ($duplicate) {
+                $response = [
+                    'status' => 'error',
+                    'message' => '⚠️ A sub variant with the same name already exists. Please choose another name.'
+                ];
+                echo json_encode($response);
+                return;
+            }
+        }
+
+        // Update if no duplicate
+        $data[$fieldName] = $fieldValue;
         $this->db->where('id', $variation_item_id);
-        $this->db->update('variant_sub_options', $data);
-        return true;
+        if ($this->db->update('variant_sub_options', $data)) {
+            $response = [
+                'status' => 'success',
+                'message' => '✅ Sub variant updated successfully.'
+            ];
+        }
 
+        echo json_encode($response);
     }
+
+
 
     // create a duplicate of sub variant with items
     public function duplicate_sub_variant()
