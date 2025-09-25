@@ -66,7 +66,7 @@
 
 .fooyes-why-choose {
     background: #fff;
-    padding: 0px 20px 60px 20px;
+    padding: 0px 20px 0px 20px;
     text-align: center;
 }
 
@@ -207,6 +207,11 @@
     font-weight: 600 !important;
 }
 
+.featured-responsive-card .card {
+    display: flex;
+    justify-content: space-between;
+}
+
 @media (max-width: 480px) {
   .before-footer::before{
   width: 198px !important;
@@ -276,7 +281,7 @@
 
 </style>
 <!-- SLIDER -->
-<section class="main-banner d-flex align-items-center">
+<section class="main-banner d-flex align-items-center" style="margin-bottom: 50px;">
     <div class="container my-5" style="max-width: 1000px!important">
         <div class="row d-flex justify-content-center">
             <div class="col-md-12">
@@ -404,7 +409,7 @@
 
 
 <!-- Special offer -->
-<section class="order-listing featured-responsive-card-section">
+<section class="order-listing featured-responsive-card-section" style="margin-bottom: 50px;">
     <div class="container p-0" style="max-width: 1045px!important">
         <div class="special-offer-titlebox ">
             <h2>Today<span class="red">Special</span> Offers</h2>
@@ -454,7 +459,7 @@
 </div>
                         <div class="restaurant-body text-center">
     <h3><?php echo sanitize($menu['name']); ?></h3>
-    <p><?php echo sanitize($menu['details']) ?></p>
+    <p class="clamp-text"><?php echo sanitize($menu['details']) ?></p>
 
     <!-- Restaurant Name -->
     <p class="restaurant-name" style="font-weight: 600; color:#d9534f;">
@@ -492,7 +497,7 @@
     </div>
 </section>
 
-<section class="multi-service-box">
+<section class="multi-service-box" style="padding-bottom:0px; margin-bottom: 50px;">
     <div class="container" style="max-width: 1000px!important pl-0!important">
         <div class="d-md-flex align-items-center">
             <div class="col-md-5"><img class="img-fluid"
@@ -539,7 +544,7 @@
 </section>
 
 <!-- cuisines offer -->
-<section class="featured-responsive-card-section">
+<section class="featured-responsive-card-section" style="margin-bottom: 50px;">
     <div class="container p-0">
         <div class="special-offer-titlebox text-center">
             <h2>
@@ -548,9 +553,22 @@
                     Love</sapn>
             </h2>
         </div>
+        
+        <section class="special-offer-btnlist container d-lg-block " style="border-radius: 20px;">
+            <div class="container">
+                <div class="order-detail-slider owl-carousel owl-theme my-5 filtering">
+                    <span data-filter="*" class="gb-btn" href="#">All</span>
+                    <?php foreach ($cuisines as $cuisine_row) :  ?>
+                            <span data-filter=".cuisine_<?php echo sanitize($cuisine_row['id']); ?>" class="gb-btn"
+                                href="#"><?php echo sanitize($cuisine_row['name']); ?></span>
+                        <?php endforeach; ?>
+                </div>
+            </div>
+
+        </section>
 
     
-        <div class="special-offer-btnlist mt-5">
+        <!-- <div class="special-offer-btnlist mt-5">
             <ul class="m-0 p-0 text-center filtering">
                 <span data-filter="*" class="gb-btn active" href="#">All</span>
                 <?php foreach ($cuisines as $cuisine_row) :  ?>
@@ -558,7 +576,7 @@
                         href="#"><?php echo sanitize($cuisine_row['name']); ?></span>
                 <?php endforeach; ?>
             </ul>
-        </div>
+        </div> -->
 
         <?php if (!empty($featured_restaurants)): ?>
             <div class="row gallery featured-responsive-card">
@@ -621,7 +639,7 @@
                                 <?php } ?>
                             </div>
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
-                            <p><?php echo sanitize($restaurant['restaurant_about']) ?></p>
+                            <p class="clamp-text"><?php echo sanitize($restaurant['restaurant_about']) ?></p>
                         </div>
                         <a class="btn btn-danger"
                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
@@ -645,9 +663,9 @@
             <div class="col-md-6">
                 <h3>Join the <span class="red">Fooyes</span> Community </span></h3>
                 <p>Follow us on social media and sign up for exclusive offers, new menu launches, and foodie events.</p>
-                <p><i class="fas fa-map-marker-alt fooyes-icon"></i> <strong>Find Us:</strong> 40 High St, March PE15 9JR, United Kingdom</p>
-    <p><i class="fas fa-phone-alt fooyes-icon"></i> <strong>Contact Us:</strong> <a href="tel:+44 1354 654992" style="color:#191919">+44 1354 654992</a></p>
-    <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:chillihutmarchonline.com" style="color:#191919">chillihutmarchonline.com</a></p>
+                <p><i class="fas fa-map-marker-alt fooyes-icon"></i> <strong>Find Us:</strong> 110 Eastern Ave, Peterborough PE1 4PW, UK</p>
+    <p><i class="fas fa-phone-alt fooyes-icon"></i> <strong>Contact Us:</strong> <a href="tel:+44 1354 654992" style="color:#191919">07438797814</a></p>
+    <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:chillihutmarchonline.com" style="color:#191919">support@fooyes.co.uk</a></p>
     <p style="font-size:18px"> <b>Delicious moments start here. Welcome to Fooyes UK!</b></p>
             </div>
             <div class="col-md-6 mob-hide"><img class="img-fluid"
@@ -656,7 +674,7 @@
     </div>
 </section>
 
-<div class="container">
+<div class="container" style="margin-bottom:50px;">
     <div class="about-txt my-5 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right; height: 60vh;
     display: flex;
     align-items: center;">
@@ -677,7 +695,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 </div>
 
 <!-- Restaurants -->
-<section class="order-listing featured-responsive-card-section">
+<section class="order-listing featured-responsive-card-section" style="margin-bottom: 50px;">
     <div class="container p-0" style="max-width: 1045px !important">
         <div class="special-offer-titlebox">
             <h2>Explore <span style="color:#fdc55e;">-</span> <span class="red">Restaurants</span></h2>
@@ -736,7 +754,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                                 <?php } ?>
                             </div>
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
-                            <p><?php echo sanitize($restaurant['restaurant_about']) ?></p>
+                            <p class="clamp-text"><?php echo sanitize($restaurant['restaurant_about']) ?></p>
                         </div>
                         <a class="btn btn-danger"
                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
@@ -754,7 +772,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 </section>
 
 
-<section class="fooyes-offerings">
+<section class="fooyes-offerings" style="margin-bottom: 50px;">
     <div class="fooyes-offerings-container">
         <h2 class="fooyes-offerings-title"><span class="yellow">Explore</span> <span style="color:white;">Our Offerings</span></h2>
         <p class="fooyes-offerings-text">
