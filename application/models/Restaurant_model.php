@@ -50,12 +50,11 @@ class Restaurant_model extends Base_model
 
     public function find_slug($slug) {
         $query = $this->db->where('slug', $slug)->get('domains');
-        // print_r($query);
-        if ($query->num_rows() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        
+        if ($query->num_rows() > 0) 
+            return $query->row()->restaurant_slug;
+            
+        return null;
     }
 
 
