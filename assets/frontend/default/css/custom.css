@@ -856,7 +856,7 @@ a.w-rounded-btn:hover {
 .before-footer {
 
   position: relative;
-  padding: 88px 50px 0 0px;
+  padding: 0px 50px 0 0px;
   background: url(../images/footer-top-bg.fw.png) no-repeat bottom center;
   background-size: cover;
   font-size: 18px;
@@ -2375,3 +2375,10 @@ a:hover {
   font-size: 15px;
 }
 
+.clamp-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;   /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Optional: adds "..." at the end */
+}
