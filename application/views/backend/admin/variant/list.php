@@ -91,7 +91,9 @@ $menu_variant_options = $this->variation_model->get_variant_options(sanitize($me
             </label>
            
             <div class="col-sm-4 flex-align">
-              
+              <button style="margin:2px;font-size: 18px;" class="btn btn-info btn-sm add_variant">
+Save Varirants
+</button>
          
             <button style="margin:2px;font-size: 18px;" data-menu-id="<?php echo $menu_option['menu_id']; ?>"
                 data-variation-id="<?php echo $menu_option['id']; ?>"
