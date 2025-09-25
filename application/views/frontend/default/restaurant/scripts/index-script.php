@@ -585,7 +585,7 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
         let ar = [...new Set(groupArr)];
         let button = document.querySelector("#add-to-order-container");
         
-        ar.length == $(".modal-body input[type='radio']:checked").length ? button.classList.remove("disabled") : button.classList.add("disabled");
+        ar.length == $(".modal-body input[type='radio']:checked").length ? button.classList.remove("disabled") : button.classList.remove("disabled");
         
         console.log(ar.length, $(".modal-body input[type='radio']:checked").length, button.classList);
         },

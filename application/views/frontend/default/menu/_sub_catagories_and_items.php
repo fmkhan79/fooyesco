@@ -17,9 +17,12 @@ if($menu_sub_catagory_item["name"]){
                     if($menu_sub_catagory_item["isoptional"] == 0){
                   ?>
 <div class="d-flex align-items-center justify-content-between p-4 popup-gray-box">
-                    <h3 class="p-0 m-0"> <?php echo $menu_sub_catagory_item["name"];  ?></h3>
-                    <div class="op-rq-box"><span>Required</span></div>
-                  </div>
+  <div class="d-block">
+    <h3 class="p-0 m-0"> <?php echo $menu_sub_catagory_item["name"];  ?></h3>
+  <div class="error-msg"></div>
+  </div>
+  <div class="op-rq-box"><span>Required</span></div>
+</div>
 
                  <?php   $items = $this->menu_model->get_sub_option_items($menu_sub_catagory_item["id"]); 
                 //  var_dump($items);  ?>
@@ -33,7 +36,7 @@ if($menu_sub_catagory_item["name"]){
                     class="d-flex align-items-center p-4 choice-box align-items-center justify-content-between gray-border">
                     <div class="label-box">
                       <label>
-                        <input onclick="updateOrderButton()" name="<?php if($option == "menu-option-2"){ echo $option.$menu_sub_catagory_item["name"]; }else{ echo $menu_sub_catagory_item["name"]; }  ?>"   data-item-price="<?php echo $item["price"];  ?>" data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"] ?>"   data-item-id="<?php echo $item["id"];  ?>" class="menuoptions required-item" type="radio" value="<?php echo  $item["id"]; ?>"  />
+                        <input required name="<?php if($option == "menu-option-2"){ echo $option.$menu_sub_catagory_item["name"]; }else{ echo $menu_sub_catagory_item["name"]; }  ?>"   data-item-price="<?php echo $item["price"];  ?>" data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"] ?>"   data-item-id="<?php echo $item["id"];  ?>" class="menuoptions required-item" type="radio" value="<?php echo  $item["id"]; ?>"  />
                         <?php echo $item["variant"];  ?>
                       </label>
                     </div>
