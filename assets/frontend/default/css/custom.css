@@ -538,7 +538,7 @@ a {
 
 .navbar-expand-lg .navbar-nav .nav-link {
   padding-right: 25px !important;
-  padding-left: 25px !important;
+  /* padding-left: 25px !important; */
 }
 
 .navbar-nav {
@@ -568,7 +568,7 @@ a {
 .navbar-light .nav-item.reg-btn .nav-link {
   font-size: 14px;
   color: #f54748 !important;
-  padding: 5px 17px !important;
+  padding: 5px 32px !important;
   border: 2px solid #f54748;
   border-radius: 50px;
   display: block;
@@ -758,7 +758,7 @@ a.w-rounded-btn:hover {
 
 .order-img-box {
   position: relative;
-  max-width: 250px;
+  max-width: 230px;
   margin: 0 auto;
 }
 
@@ -768,7 +768,7 @@ a.w-rounded-btn:hover {
   height: 198px;
   position: absolute;
   top: 25px;
-  right: 25px;
+  right: 6px;
 }
 
 .order-box .order-detail {
@@ -1013,7 +1013,7 @@ footer ul.footer-links li {
   border-radius: 50px;
   padding: 7px 14px;  
   position: absolute;
-  top: 68%;
+  top: 38%;
   right: 40px;
   width: 60px;
   height: 60px;
@@ -2380,5 +2380,7 @@ a:hover {
   -webkit-line-clamp: 3;   /* Number of lines to show */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis; /* Optional: adds "..." at the end */
+  text-overflow: ellipsis; 
+  line-height: 1.5em;      
+  min-height: calc(1.5em * 3);
 }

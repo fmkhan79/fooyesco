@@ -202,6 +202,18 @@ public function contact_us() {
     }
 
     /**
+     * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE ABOUT US PAGE
+     *
+     * @return void
+     */
+    public function solutions() {
+        $page_data['page_name'] = 'solutions/index';
+        $page_data['page_title'] = site_phrase("solutions", true);
+        $this->load->view(frontend('index'), $page_data);
+    }
+
+
+    /**
      * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE HOW TO ORDER
      *
      * @return void
