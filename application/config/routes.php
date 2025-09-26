@@ -8,6 +8,7 @@ $route['login'] = 'auth/index';
 $route['logout'] = 'auth/logout';
 $route['translate_uri_dashes'] = FALSE;
 $route['contact-us'] = 'site/contact_us';
+$route['solutions'] = 'site/solutions';
 $route['about-us'] = 'site/about_us';
 $route['privacy-policy'] = 'site/privacy_policy';
 $route['terms-and-conditions'] = 'site/terms_and_conditions';

@@ -365,7 +365,7 @@ letter-spacing: 0.16px;
     .special-offer-titlebox p{color: #191919;
     font-size: 18px;
     font-style: normal;
-    font-weight: 400; max-width: 856px; }
+    font-weight: 400; }
 
     .featured-responsive-card-section {
         margin-top: 60px;

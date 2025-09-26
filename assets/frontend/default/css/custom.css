@@ -538,7 +538,7 @@ a {
 
 .navbar-expand-lg .navbar-nav .nav-link {
   padding-right: 25px !important;
-  padding-left: 25px !important;
+  /* padding-left: 25px !important; */
 }
 
 .navbar-nav {
@@ -568,7 +568,7 @@ a {
 .navbar-light .nav-item.reg-btn .nav-link {
   font-size: 14px;
   color: #f54748 !important;
-  padding: 5px 17px !important;
+  padding: 5px 32px !important;
   border: 2px solid #f54748;
   border-radius: 50px;
   display: block;

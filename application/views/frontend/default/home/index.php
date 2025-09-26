@@ -411,9 +411,9 @@
 <!-- Special offer -->
 <section class="order-listing featured-responsive-card-section" style="margin-bottom: 50px;">
     <div class="container p-0" style="max-width: 1045px!important">
-        <div class="special-offer-titlebox ">
+        <div class="special-offer-titlebox text-center">
             <h2>Today<span class="red">Special</span> Offers</h2>
-            <p>7 DAYS ONLY! Enjoy 25% OFF on all collection orders and 20% OFF on delivery orders. Don't miss out—order now and indulge in your favorite flavors at a discounted price!</p>
+            <p class="text-center">7 DAYS ONLY! Enjoy 25% OFF on all collection orders and 20% OFF on delivery orders. Don't miss out—order now and indulge in your favorite flavors at a discounted price!</p>
         </div>
 
             <div class="row gallery featured-responsive-card justify-content-between">
@@ -546,10 +546,10 @@
 <!-- cuisines offer -->
 <section class="featured-responsive-card-section" style="margin-bottom: 50px;">
     <div class="container p-0">
-        <div class="special-offer-titlebox text-center">
+        <div class="special-offer-titlebox text-lg-center">
             <h2>
-                <sapn class="red">Menu</sapn> That <sapn class="yellow">Always</sapn> Make<br /> You Fall In <sapn
-                    class="red">
+                <span style="color: #F54748;">Menu</span> That <sapn class="yellow">Always</sapn> Make <br class="d-none d-lg-block" > You Fall In <sapn
+                    style="color: #F54748;">
                     Love</sapn>
             </h2>
         </div>
@@ -695,7 +695,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 </div>
 
 <!-- Restaurants -->
-<section class="order-listing featured-responsive-card-section" style="margin-bottom: 50px;">
+<!-- <section class="order-listing featured-responsive-card-section" style="margin-bottom: 50px;">
     <div class="container p-0" style="max-width: 1045px !important">
         <div class="special-offer-titlebox">
             <h2>Explore <span style="color:#fdc55e;">-</span> <span class="red">Restaurants</span></h2>
@@ -759,9 +759,6 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                         <a class="btn btn-danger"
                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
                             Now</a>
-                        <!-- <a class="btn btn-danger"
-                            href="http://<?= $restaurant['slug']; ?>.fooyes.local">Order
-                            Now</a> -->
 
                     </div>
                 <?php endforeach; ?>
@@ -769,7 +766,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
         <?php endif; ?>
 
     </div>
-</section>
+</section> -->
 
 
 <section class="fooyes-offerings" style="margin-bottom: 50px;">
