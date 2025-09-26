@@ -210,6 +210,23 @@
 .featured-responsive-card .card {
     display: flex;
     justify-content: space-between;
+    margin: 0px 5px 0px 5px !important;
+}
+
+.featured-responsive-card h3{
+    display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  line-height: 1.5em;      
+  min-height: calc(1.5em * 2);
+    margin-top: 10px !important;
+}
+
+.cuisines .percent-box{
+    top: 166px !important;
+    right: 12px !important;
 }
 
 @media (max-width: 480px) {
@@ -277,6 +294,10 @@
     .fooyes-offerings{
         margin-bottom: 30px;
     }
+
+    .cuisines .card {
+    margin: 0px 5px 64px 5px !important;
+}
 }
 
 </style>
@@ -425,7 +446,8 @@
                 //  die();
                  $restaurant = $this->restaurant_model->get_by_id($menu['restaurant_id']);
                 ?>
-                    <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
+                <div class="col-lg-3 col-md-4 my-5 d-flex justify-content-center">
+                    <div class="card restaurant-card h-100  mb-lg-0 mb-5">
                        <div class="order-img-box main-img">
     <a href="javascript:void(0)">
         <img src="<?php echo base_url('uploads/menu/' . sanitize($menu['thumbnail'])); ?>" alt="#">
@@ -456,20 +478,20 @@
             ?>
         </div>
     </a>
-</div>
-                        <div class="restaurant-body text-center">
+
+    <div class="restaurant-body text-center">
     <h3><?php echo sanitize($menu['name']); ?></h3>
     <p class="clamp-text"><?php echo sanitize($menu['details']) ?></p>
 
     <!-- Restaurant Name -->
-    <p class="restaurant-name" style="font-weight: 600; color:#d9534f;">
+    <p class="restaurant-name" style="font-weight: 600; color:#F54748;">
         <?php echo sanitize($menu['restaurant_name']); ?>
     </p>
 
     <!-- Price Section -->
     <div class="price-box">
         <?php if (!empty($jsonDecodeHasDiscount->menu) && $jsonDecodeHasDiscount->menu == 1 && $discountedPrice > 0): ?>
-            <span class="discounted"><?php echo currency($discountedPrice); ?></span>
+            <h3 class="discounted d-inline"><?php echo currency($discountedPrice); ?></h3>
             <span class="original" style="text-decoration: line-through; color:#888;">
                 <?php echo currency($originalPrice); ?>
             </span>
@@ -478,6 +500,8 @@
         <?php endif; ?>
     </div>
 </div>
+</div>
+                        
                         <a class="btn btn-danger"
    href="javascript:void(0);"
    onclick="handleOrderNow('<?php echo $menu['id']; ?>', '<?php $jsonDecodePrice = json_decode($menu['price']); echo $jsonDecodePrice->menu; ?>', '<?php echo $menu['has_variant']; ?>', '<?php echo $restaurant['slug']; ?>', '<?php echo $restaurant['id']; ?>')">
@@ -488,6 +512,7 @@
                             href="http://<?= $restaurant['slug']; ?>.fooyes.local">Order
                             Now</a> -->
 
+                    </div>
                     </div>
                 <?php endforeach;
                     endif;
@@ -544,7 +569,7 @@
 </section>
 
 <!-- cuisines offer -->
-<section class="featured-responsive-card-section" style="margin-bottom: 50px;">
+<section class="featured-responsive-card-section cuisines" style="margin-bottom: 50px;">
     <div class="container p-0">
         <div class="special-offer-titlebox text-lg-center">
             <h2>
@@ -553,44 +578,40 @@
                     Love</sapn>
             </h2>
         </div>
-        
-        <section class="special-offer-btnlist container d-lg-block " style="border-radius: 20px;">
+
+        <section class="order-detail-btns container d-lg-block " style="border-radius: 20px;">
             <div class="container">
-                <div class="order-detail-slider owl-carousel owl-theme my-5 filtering">
-                    <span data-filter="*" class="gb-btn" href="#">All</span>
+                <div class="order-detail-slider owl-carousel owl-theme my-5 ">
                     <?php foreach ($cuisines as $cuisine_row) :  ?>
-                            <span data-filter=".cuisine_<?php echo sanitize($cuisine_row['id']); ?>" class="gb-btn"
-                                href="#"><?php echo sanitize($cuisine_row['name']); ?></span>
+                            <a data-filter=".cuisine_<?php echo sanitize($cuisine_row['id']); ?>" class="gb-btn border-0"
+                                href="#"><?php echo sanitize($cuisine_row['name']); ?></a>
                         <?php endforeach; ?>
                 </div>
             </div>
 
         </section>
+        
+        <?php if (!empty($featured_restaurants)): 
+            ?>
+            <div class="row gallery featured-responsive-card justify-content-between">
+                <?php foreach ($featured_restaurants as $key => $restaurant): ?>
+                     <?php 
+                        // Cuisine IDs ko array banalo
+                        $cuisine_ids = is_array($restaurant['cuisine']) 
+                                        ? $restaurant['cuisine'] 
+                                        : json_decode($restaurant['cuisine'], true);
 
-    
-        <!-- <div class="special-offer-btnlist mt-5">
-            <ul class="m-0 p-0 text-center filtering">
-                <span data-filter="*" class="gb-btn active" href="#">All</span>
-                <?php foreach ($cuisines as $cuisine_row) :  ?>
-                    <span data-filter=".cuisine_<?php echo sanitize($cuisine_row['id']); ?>" class="gb-btn"
-                        href="#"><?php echo sanitize($cuisine_row['name']); ?></span>
-                <?php endforeach; ?>
-            </ul>
-        </div> -->
-
-        <?php if (!empty($featured_restaurants)): ?>
-            <div class="row gallery featured-responsive-card">
-                <?php foreach ($featured_restaurants as $key => $restaurant):
-                    $idArray = json_decode($restaurant['cuisine']);
-                    $cuisineClasses = '';
-
-                    if (!empty($idArray)) {
-                        $cuisineClasses = implode(' ', array_map(function ($id) {
-                            return 'cuisine_' . $id;
-                        }, $idArray));
-                    }
-                ?>
-                    <div class="card <?php echo $cuisineClasses; ?> restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
+                        $cuisine_names = [];
+                        if (!empty($cuisine_ids)) {
+                            foreach ($cuisine_ids as $cid) {
+                                $cuisine = $this->cuisine_model->get_by_id($cid); // <-- apna method call
+                                if (!empty($cuisine)) {
+                                    $cuisine_names[] = $cuisine['name']; 
+                                }
+                            }
+                        }
+                        ?>
+                    <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
                         <div class="order-img-box main-img">
                             <a
                                 href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
@@ -603,12 +624,12 @@
                                     <defs>
                                         <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
                                             y2="280.046" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#F54748" stop-opacity="0"></stop>
+                                            <stop stop-color="#F57484" stop-opacity="0"></stop>
                                             <stop offset="1" stop-color="#FDC55E"></stop>
                                         </linearGradient>
                                     </defs>
                                 </svg>
-                                <div class="percent-box">15%</div>
+                                <div class="percent-box">20%</div>
                             </a>
                         </div>
                         <div class="restaurant-body text-center">
@@ -639,7 +660,10 @@
                                 <?php } ?>
                             </div>
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
-                            <p class="clamp-text"><?php echo sanitize($restaurant['restaurant_about']) ?></p>
+                            <!-- <p class="clamp-text"><?php echo sanitize($restaurant['restaurant_about']) ?></p> -->
+                             <?php if (!empty($cuisine_names)): ?>
+                        <p><strong>Cuisines:</strong> <?php echo implode(', ', $cuisine_names); ?></p>
+                    <?php endif; ?>
                         </div>
                         <a class="btn btn-danger"
                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
@@ -649,9 +673,78 @@
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+        
 
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const filterButtons = document.querySelectorAll('.cuisine-filter');
+    const restaurantGrid = document.getElementById('restaurant-grid');
+    const restaurantCards = Array.from(document.querySelectorAll('#restaurant-grid .restaurant-card'));
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const filter = this.getAttribute('data-filter');
+            
+            // Remove active class from all buttons and add to the clicked one
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            // If no filter is selected, show all restaurants in original order
+            if (!filter || filter === '') {
+                restaurantCards.forEach(card => {
+                    card.style.display = 'block';
+                    restaurantGrid.appendChild(card); // Reset to original order
+                });
+                return;
+            }
+
+            // Separate matching and non-matching cards
+            const matchingCards = [];
+            const nonMatchingCards = [];
+
+            restaurantCards.forEach(card => {
+                if (card.classList.contains(filter.slice(1))) { // Remove dot from filter
+                    matchingCards.push(card);
+                } else {
+                    nonMatchingCards.push(card);
+                }
+            });
+
+            // Clear the restaurant grid
+            restaurantGrid.innerHTML = '';
+
+            // Append matching cards first, then non-matching
+            matchingCards.forEach(card => {
+                card.style.display = 'block';
+                restaurantGrid.appendChild(card);
+            });
+            nonMatchingCards.forEach(card => {
+                card.style.display = 'block';
+                restaurantGrid.appendChild(card);
+            });
+        });
+    });
+});
+</script>
+
+<style>
+.cuisine-filter {
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+}
+.cuisine-filter.active {
+    background-color: #F54748;
+    color: white;
+}
+</style>
 
 
 <section class="dt-hide d-none"><img class="img-fluid"

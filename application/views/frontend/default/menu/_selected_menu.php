@@ -542,7 +542,7 @@ function checkRequireds() {
 
             // Modal container
             let container = $('.box2'); // modal ka scrollable div
-            let scrollPos = el.position().top + container.scrollTop() - 100;
+            let scrollPos = el.position().top + container.scrollTop() - 150;
 
             // Scroll to missing required group
             container.animate({ scrollTop: scrollPos }, 500);
