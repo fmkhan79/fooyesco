@@ -468,7 +468,7 @@
             <p class="text-center">7 DAYS ONLY! Enjoy 25% OFF on all collection orders and 20% OFF on delivery orders. Don't miss out—order now and indulge in your favorite flavors at a discounted price!</p>
         </div>
 
-            <div class="row gallery featured-responsive-card justify-content-between">
+            <div class="row gallery featured-responsive-card">
                 <?php 
                 $menus = $this->menu_model->get_menu_by_condition(['today_special' => true]);
                 if(!empty($menus)):
