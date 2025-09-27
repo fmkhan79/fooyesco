@@ -292,6 +292,17 @@
     margin-top: 10px !important;
 }
 
+.cuisines h3{
+        display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  line-height: 1.5em;      
+  min-height: calc(1.5em * 2);
+
+}
+
 /* @media (min-width: 480px) {
 .welcome-foo {
     padding-left: 7rem !important
@@ -516,7 +527,7 @@
                 <?php echo currency($originalPrice); ?>
             </span>
         <?php else: ?>
-            <span class="discounted"><?php echo currency($originalPrice); ?></span>
+            <h3 class="discounted"><?php echo currency($originalPrice); ?></h3>
         <?php endif; ?>
     </div>
 </div>
@@ -591,7 +602,7 @@
 <!-- cuisines offer -->
 <section class="featured-responsive-card-section cuisines" style="margin-bottom: 50px;">
     <div class="container p-0">
-        <div class="special-offer-titlebox text-lg-center">
+        <div class="special-offer-titlebox text-center">
             <h2>
                 <span style="color: #F54748;">Menu</span> That <span class="yellow">Always</span> Make <br class="d-none d-lg-block" > You Fall In <span style="color: #F54748;">Love</span>
             </h2>

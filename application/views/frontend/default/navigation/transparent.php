@@ -84,7 +84,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item login-btn">
-                                        <a class="nav-link" href="<?php echo site_url(); ?>">
+                                        <a class="nav-link" href="<?php echo site_url('become-a-partner'); ?>">
                                             <?php echo  site_phrase('get_a_demo', true); ?>
                                         </a>
                                     </li>
