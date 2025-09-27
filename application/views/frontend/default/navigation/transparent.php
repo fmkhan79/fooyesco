@@ -1,5 +1,12 @@
 <!--============================= HEADER =============================-->
+<?php
 
+$isFooyes = false;
+$host = get_subdomain();
+
+if($host === 'fooyes' || $host === 'staging')
+    $isFooyes=true;
+?>
 <style>
     .nav-item{
         margin: 0px !important;
@@ -23,8 +30,14 @@
                     <nav class="navbar navbar-expand-lg navbar-light">
                         <div class="container px-lg-5">
                             <a class="navbar-brand" href="<?php echo site_url(); ?>">
+                            <?php if($isFooyes): ?>
                             <img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>"
                                 class="system-icon">
+                                <?php else: ?>
+                                    <img width="80px" src="<?php echo base_url('uploads/system/restaurant.png'); ?>"
+                                class="system-icon">
+                                <?php endif; ?>
+                                
                             <!-- <span class="d-none d-sm-inline-block"></?php echo get_system_settings('system_name'); ?></span>  -->
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"

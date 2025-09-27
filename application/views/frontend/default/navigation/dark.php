@@ -4,6 +4,12 @@ $restaurant_ids = $this->cart_model->get_restaurant_ids();
 if (count($restaurant_ids) > 0) {
     $restaurant_details = $this->restaurant_model->get_by_id($restaurant_ids[0]);
 }
+
+$isFooyes = false;
+$host = get_subdomain();
+
+if($host === 'fooyes' || $host === 'staging')
+    $isFooyes=true;
 ?>
 
 <style>
@@ -19,8 +25,13 @@ if (count($restaurant_ids) > 0) {
                 <nav class="navbar navbar-expand-lg navbar-light">
                    <div class="container">
                      <a class="navbar-brand" href="<?php echo site_url(); ?>">
-                        <img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>"
-                            class="system-icon">
+                        <?php if($isFooyes): ?>
+                            <img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>"
+                                class="system-icon">
+                                <?php else: ?>
+                                    <img width="80px" src="<?php echo base_url('uploads/system/restaurant.png'); ?>"
+                                class="system-icon">
+                                <?php endif; ?>
                         <!-- </?php echo get_system_settings('system_name'); ?> -->
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
