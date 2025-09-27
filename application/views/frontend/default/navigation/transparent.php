@@ -72,18 +72,20 @@
                                     </div>
                                 </li>
                                 <?php } ?>
-                                <div class="auth-btn">
-                                        <?php if(!$this->session->userdata('is_logged_in')):
-                                    ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?php echo site_url('contact-us'); ?>">
+                                        <?php echo site_phrase('support'); ?>
+                                    </a>
+                                </li>
+                                <div class="auth-btn ms-4">
                                     <li class="nav-item reg-btn">
-                                        <a class="nav-link" href="<?php echo site_url('auth/roles'); ?>">
-                                            <?php echo  site_phrase('register', true); ?>
-                                        </a>
-                                    </li>
-                                    <?php endif; ?>
-                                    <li class="nav-item login-btn">
                                         <a class="nav-link" href="<?php echo site_url('login'); ?>">
                                             <?php echo sanitize($this->session->userdata('is_logged_in')) ? site_phrase('manage_profile', true) : site_phrase('login', true); ?>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item login-btn">
+                                        <a class="nav-link" href="<?php echo site_url('become-a-partner'); ?>">
+                                            <?php echo  site_phrase('get_a_demo', true); ?>
                                         </a>
                                     </li>
                                 </div>

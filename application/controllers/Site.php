@@ -16,12 +16,14 @@ class Site extends Base
     function index()
     {
         $host = get_subdomain();
+        
         $checkSlugInDb = $this->restaurant_model->find_slug($host);
 
         if($checkSlugInDb){    
             $page_data['reviews_count'] = 0;
+            
 
-            $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($host);
+            $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($checkSlugInDb);
             $page_data['page_name']          = 'restaurant/index';
             $page_data['page_title']         = site_phrase("restaurant", true);
 
@@ -59,7 +61,7 @@ class Site extends Base
         $page_data['restaurant_details'] = $this->restaurant_model->get_by_id($id);
         $page_data['page_name']          = 'restaurant/index';
         $page_data['page_title']         = site_phrase("restaurant", true);
-
+            
         // print_r($page_data);
         if (isset($restaurant_id) && trim($restaurant_id) !== '') {
             // print_r($restaurant_id)
@@ -198,6 +200,18 @@ public function contact_us() {
         $page_data['page_title'] = site_phrase("about_us", true);
         $this->load->view(frontend('index'), $page_data);
     }
+
+    /**
+     * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE ABOUT US PAGE
+     *
+     * @return void
+     */
+    public function solutions() {
+        $page_data['page_name'] = 'solutions/index';
+        $page_data['page_title'] = site_phrase("solutions", true);
+        $this->load->view(frontend('index'), $page_data);
+    }
+
 
     /**
      * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE HOW TO ORDER

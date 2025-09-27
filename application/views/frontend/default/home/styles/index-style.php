@@ -365,7 +365,7 @@ letter-spacing: 0.16px;
     .special-offer-titlebox p{color: #191919;
     font-size: 18px;
     font-style: normal;
-    font-weight: 400; max-width: 856px; }
+    font-weight: 400; }
 
     .featured-responsive-card-section {
         margin-top: 60px;
@@ -391,7 +391,8 @@ letter-spacing: 0.16px;
         line-height: normal;
         text-transform: capitalize; padding: 10px 18px; border-radius: 100px;
         background: #F54748;    width: fit-content;
-        margin: 10px auto -20px;}
+        margin: 10px auto -20px;
+    }
 .featured-responsive-card a.btn:hover{ background: #191919; color: #fff;}
 
 .multi-service-box{ background: no-repeat top left;color:#191919;

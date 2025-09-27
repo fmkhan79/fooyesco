@@ -290,39 +290,41 @@ $(document).on("change",".variant_item",function(){
             
 
 
-$(document).on("change",".variant_sub_cat",function(){
-    // alert("great its working");
-    var variation_item_id =   this.getAttribute("data-variant-sub-id");
-    var variation_attr_name =   this.getAttribute("data-item-name");
+$(document).on("change", ".variant_sub_cat", function () {
+    var variation_item_id = this.getAttribute("data-variant-sub-id");
+    var variation_attr_name = this.getAttribute("data-item-name");
+    var menu_id = $(this).closest(".v_var_div").find(".add_variant").data("menu-id");
     var variation_attr_value = 0;
-    console.log($(this).is(':checked'));
-    if(variation_attr_name == "isoptional"){
-        if($(this).is(':checked')){
-            variation_attr_value = 1;
-        }
-    }else{
-         variation_attr_value =   $(this).val();
+
+    if (variation_attr_name == "isoptional") {
+        variation_attr_value = $(this).is(':checked') ? 1 : 0;
+    } else {
+        variation_attr_value = $(this).val();
     }
-   
-    console.log(variation_attr_value);
-    
 
-	$.ajax({
-			url: '<?php echo site_url('variation/update_sub_vartiation'); ?>',
-			type: 'post',
-			data: {
-				variation_item_id: variation_item_id,
-                variation_attr_name:variation_attr_name,
-                variation_attr_value:variation_attr_value,
-
-			},
-			success: function(response) {
-				console.log("updated successfully");
-			}
-		});
-
-
+    $.ajax({
+        url: '<?php echo site_url('variation/update_sub_vartiation'); ?>',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            variation_item_id: variation_item_id,
+            variation_attr_name: variation_attr_name,
+            variation_attr_value: variation_attr_value,
+            menu_id: menu_id
+        },
+        success: function (response) {
+            if (response.status === "success") {
+                // alert(response.message); // ya toastr.success(response.message);
+            } else {
+                alert(response.message); // ya toastr.error(response.message);
+            }
+        },
+        error: function () {
+            alert("❌ Server error, please try again.");
+        }
+    });
 });
+
 
 
 $(document).on("click",".delete_sub_variant",function(){

@@ -66,7 +66,7 @@
 
 .fooyes-why-choose {
     background: #fff;
-    padding: 0px 20px 60px 20px;
+    padding: 0px 20px 0px 20px;
     text-align: center;
 }
 
@@ -207,6 +207,28 @@
     font-weight: 600 !important;
 }
 
+.featured-responsive-card .card {
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 5px 0px 5px !important;
+}
+
+.featured-responsive-card h3{
+    display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  line-height: 1.5em;      
+  min-height: calc(1.5em * 2);
+    margin-top: 10px !important;
+}
+
+.cuisines .percent-box{
+    top: 166px !important;
+    right: 12px !important;
+}
+
 @media (max-width: 480px) {
   .before-footer::before{
   width: 198px !important;
@@ -250,6 +272,37 @@
 
 }
 
+.cuisines 
+
+.cuisines a.btn{
+    margin: 10px 65px -20px !important;
+}
+.cuisines .card{
+    display: flex !important;
+    justify-content: space-between !important;
+}
+.cuisines p{
+    display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  line-height: 1.5em;      
+  min-height: calc(1.5em * 2);
+    margin-top: 10px !important;
+}
+
+.cuisines h3{
+        display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  line-height: 1.5em;      
+  min-height: calc(1.5em * 2);
+
+}
+
 /* @media (min-width: 480px) {
 .welcome-foo {
     padding-left: 7rem !important
@@ -272,11 +325,15 @@
     .fooyes-offerings{
         margin-bottom: 30px;
     }
+
+    .cuisines .card {
+    margin: 0px 5px 64px 5px !important;
+}
 }
 
 </style>
 <!-- SLIDER -->
-<section class="main-banner d-flex align-items-center">
+<section class="main-banner d-flex align-items-center" style="margin-bottom: 50px;">
     <div class="container my-5" style="max-width: 1000px!important">
         <div class="row d-flex justify-content-center">
             <div class="col-md-12">
@@ -404,11 +461,11 @@
 
 
 <!-- Special offer -->
-<section class="order-listing featured-responsive-card-section">
+<section class="order-listing featured-responsive-card-section" style="margin-bottom: 50px;">
     <div class="container p-0" style="max-width: 1045px!important">
-        <div class="special-offer-titlebox ">
+        <div class="special-offer-titlebox text-center">
             <h2>Today<span class="red">Special</span> Offers</h2>
-            <p>7 DAYS ONLY! Enjoy 25% OFF on all collection orders and 20% OFF on delivery orders. Don't miss out—order now and indulge in your favorite flavors at a discounted price!</p>
+            <p class="text-center">7 DAYS ONLY! Enjoy 25% OFF on all collection orders and 20% OFF on delivery orders. Don't miss out—order now and indulge in your favorite flavors at a discounted price!</p>
         </div>
 
             <div class="row gallery featured-responsive-card justify-content-between">
@@ -420,7 +477,8 @@
                 //  die();
                  $restaurant = $this->restaurant_model->get_by_id($menu['restaurant_id']);
                 ?>
-                    <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
+                <div class="col-lg-3 col-md-4 my-5 d-flex justify-content-center">
+                    <div class="card restaurant-card h-100  mb-lg-0 mb-5">
                        <div class="order-img-box main-img">
     <a href="javascript:void(0)">
         <img src="<?php echo base_url('uploads/menu/' . sanitize($menu['thumbnail'])); ?>" alt="#">
@@ -451,28 +509,30 @@
             ?>
         </div>
     </a>
-</div>
-                        <div class="restaurant-body text-center">
+
+    <div class="restaurant-body text-center">
     <h3><?php echo sanitize($menu['name']); ?></h3>
-    <p><?php echo sanitize($menu['details']) ?></p>
+    <p class="clamp-text"><?php echo sanitize($menu['details']) ?></p>
 
     <!-- Restaurant Name -->
-    <p class="restaurant-name" style="font-weight: 600; color:#d9534f;">
+    <p class="restaurant-name" style="font-weight: 600; color:#F54748;">
         <?php echo sanitize($menu['restaurant_name']); ?>
     </p>
 
     <!-- Price Section -->
     <div class="price-box">
         <?php if (!empty($jsonDecodeHasDiscount->menu) && $jsonDecodeHasDiscount->menu == 1 && $discountedPrice > 0): ?>
-            <span class="discounted"><?php echo currency($discountedPrice); ?></span>
+            <h3 class="discounted d-inline"><?php echo currency($discountedPrice); ?></h3>
             <span class="original" style="text-decoration: line-through; color:#888;">
                 <?php echo currency($originalPrice); ?>
             </span>
         <?php else: ?>
-            <span class="discounted"><?php echo currency($originalPrice); ?></span>
+            <h3 class="discounted"><?php echo currency($originalPrice); ?></h3>
         <?php endif; ?>
     </div>
 </div>
+</div>
+                        
                         <a class="btn btn-danger"
    href="javascript:void(0);"
    onclick="handleOrderNow('<?php echo $menu['id']; ?>', '<?php $jsonDecodePrice = json_decode($menu['price']); echo $jsonDecodePrice->menu; ?>', '<?php echo $menu['has_variant']; ?>', '<?php echo $restaurant['slug']; ?>', '<?php echo $restaurant['id']; ?>')">
@@ -484,6 +544,7 @@
                             Now</a> -->
 
                     </div>
+                    </div>
                 <?php endforeach;
                     endif;
                 ?>
@@ -492,7 +553,7 @@
     </div>
 </section>
 
-<section class="multi-service-box">
+<section class="multi-service-box" style="padding-bottom:0px; margin-bottom: 50px;">
     <div class="container" style="max-width: 1000px!important pl-0!important">
         <div class="d-md-flex align-items-center">
             <div class="col-md-5"><img class="img-fluid"
@@ -539,101 +600,160 @@
 </section>
 
 <!-- cuisines offer -->
-<section class="featured-responsive-card-section">
+<section class="featured-responsive-card-section cuisines" style="margin-bottom: 50px;">
     <div class="container p-0">
         <div class="special-offer-titlebox text-center">
             <h2>
-                <sapn class="red">Menu</sapn> That <sapn class="yellow">Always</sapn> Make<br /> You Fall In <sapn
-                    class="red">
-                    Love</sapn>
+                <span style="color: #F54748;">Menu</span> That <span class="yellow">Always</span> Make <br class="d-none d-lg-block" > You Fall In <span style="color: #F54748;">Love</span>
             </h2>
         </div>
 
-    
-        <div class="special-offer-btnlist mt-5">
-            <ul class="m-0 p-0 text-center filtering">
-                <span data-filter="*" class="gb-btn active" href="#">All</span>
-                <?php foreach ($cuisines as $cuisine_row) :  ?>
-                    <span data-filter=".cuisine_<?php echo sanitize($cuisine_row['id']); ?>" class="gb-btn"
-                        href="#"><?php echo sanitize($cuisine_row['name']); ?></span>
-                <?php endforeach; ?>
-            </ul>
-        </div>
+        <section class="order-detail-btns container d-lg-block" style="border-radius: 20px;">
+            <div class="container">
+                <div class="order-detail-slider owl-carousel owl-theme my-5">
+                    <?php foreach ($cuisines as $cuisine_row) : ?>
+                        <a data-filter=".cuisine_<?php echo sanitize($cuisine_row['id']); ?>" class="gb-btn border-0 cuisine-filter" href="#"><?php echo sanitize($cuisine_row['name']); ?></a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
 
         <?php if (!empty($featured_restaurants)): ?>
-            <div class="row gallery featured-responsive-card">
-                <?php foreach ($featured_restaurants as $key => $restaurant):
-                    $idArray = json_decode($restaurant['cuisine']);
-                    $cuisineClasses = '';
+            <div class="row gallery featured-responsive-card" id="restaurant-grid">
+                <?php foreach ($featured_restaurants as $key => $restaurant): ?>
+                    <?php
+                        // Cuisine IDs ko array banalo
+                        $cuisine_ids = is_array($restaurant['cuisine']) 
+                            ? $restaurant['cuisine'] 
+                            : json_decode($restaurant['cuisine'], true);
 
-                    if (!empty($idArray)) {
-                        $cuisineClasses = implode(' ', array_map(function ($id) {
-                            return 'cuisine_' . $id;
-                        }, $idArray));
-                    }
-                ?>
-                    <div class="card <?php echo $cuisineClasses; ?> restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
+                        $cuisine_names = [];
+                        $cuisine_classes = [];
+                        if (!empty($cuisine_ids)) {
+                            foreach ($cuisine_ids as $cid) {
+                                $cuisine = $this->cuisine_model->get_by_id($cid);
+                                if (!empty($cuisine)) {
+                                    $cuisine_names[] = $cuisine['name'];
+                                    $cuisine_classes[] = 'cuisine_' . $cuisine['id'];
+                                }
+                            }
+                        }
+                    ?>
+                    <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5 <?php echo implode(' ', $cuisine_classes); ?>">
                         <div class="order-img-box main-img">
-                            <a
-                                href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
-                                <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>"
-                                    alt="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250"
-                                    fill="none">
-                                    <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)"
-                                        stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
+                            <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
+                                <img src="<?php echo base_url('Uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>" alt="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250" fill="none">
+                                    <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)" stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
                                     <defs>
-                                        <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
-                                            y2="280.046" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#F54748" stop-opacity="0"></stop>
+                                        <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787" y2="280.046" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#F57484" stop-opacity="0"></stop>
                                             <stop offset="1" stop-color="#FDC55E"></stop>
                                         </linearGradient>
                                     </defs>
                                 </svg>
-                                <div class="percent-box">15%</div>
+                                <div class="percent-box">20%</div>
                             </a>
                         </div>
                         <div class="restaurant-body text-center">
                             <div class="review-grid d-flex justify-content-around align-items-center m-auto">
                                 <?php if ($restaurant['rating']) { ?>
                                     <ul class="inline-grid m-0 p-0">
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38" height="38"></li>
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38" height="38"></li>
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38" height="38"></li>
                                     </ul>
                                     <div class="star">
-                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M11.0489 0.926805C11.3483 0.00549436 12.6517 0.00549579 12.9511 0.926806L14.9187 6.98253C15.0526 7.39456 15.4365 7.67352 15.8697 7.67352H22.2371C23.2058 7.67352 23.6086 8.91313 22.8249 9.48253L17.6736 13.2252C17.3231 13.4798 17.1764 13.9312 17.3103 14.3432L19.2779 20.3989C19.5773 21.3203 18.5228 22.0864 17.7391 21.517L12.5878 17.7743C12.2373 17.5197 11.7627 17.5197 11.4122 17.7743L6.2609 21.517C5.47719 22.0864 4.42271 21.3203 4.72206 20.3989L6.68969 14.3432C6.82356 13.9312 6.6769 13.4798 6.32642 13.2252L1.17511 9.48253C0.391392 8.91313 0.794168 7.67352 1.76289 7.67352H8.13026C8.56349 7.67352 8.94744 7.39456 9.08132 6.98253L11.0489 0.926805Z"
-                                                fill="#FFB800"></path>
+                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11.0489 0.926805C11.3483 0.00549436 12.6517 0.00549579 12.9511 0.926806L14.9187 6.98253C15.0526 7.39456 15.4365 7.67352 15.8697 7.67352H22.2371C23.2058 7.67352 23.6086 8.91313 22.8249 9.48253L17.6736 13.2252C17.3231 13.4798 17.1764 13.9312 17.3103 14.3432L19.2779 20.3989C19.5773 21.3203 18.5228 22.0864 17.7391 21.517L12.5878 17.7743C12.2373 17.5197 11.7627 17.5197 11.4122 17.7743L6.2609 21.517C5.47719 22.0864 4.42271 21.3203 4.72206 20.3989L6.68969 14.3432C6.82356 13.9312 6.6769 13.4798 6.32642 13.2252L1.17511 9.48253C0.391392 8.91313 0.794168 7.67352 1.76289 7.67352H8.13026C8.56349 7.67352 8.94744 7.39456 9.08132 6.98253L11.0489 0.926805Z" fill="#FFB800"></path>
                                         </svg>
                                     </div>
-                                    <p class="p-0 m-0">(
-                                        <?php echo sanitize($restaurant['rating']); ?>)
-                                    </p>
+                                    <p class="p-0 m-0">(<?php echo sanitize($restaurant['rating']); ?>)</p>
                                 <?php } ?>
                             </div>
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
-                            <p><?php echo sanitize($restaurant['restaurant_about']) ?></p>
+                            <?php if (!empty($cuisine_names)): ?>
+                                <p><strong>Cuisines:</strong> <?php echo implode(', ', $cuisine_names); ?></p>
+                            <?php else: ?>
+                                <p>No Cuisines</p>
+                            <?php endif; ?>
                         </div>
-                        <a class="btn btn-danger"
-                            href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
-                            Now</a>
-
+                        <a class="btn btn-danger" href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order Now</a>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const filterButtons = document.querySelectorAll('.cuisine-filter');
+    const restaurantGrid = document.querySelector('#restaurant-grid');
+    const restaurantCards = Array.from(document.querySelectorAll('#restaurant-grid .restaurant-card'));
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent default anchor behavior
+            const filter = this.getAttribute('data-filter');
+
+            // Remove active class from all buttons and add to the clicked one
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            // If no filter or empty, reset to original order
+            if (!filter || filter === '') {
+                restaurantCards.forEach(card => {
+                    card.style.display = 'block';
+                    restaurantGrid.appendChild(card);
+                });
+                return;
+            }
+
+            // Separate matching and non-matching cards
+            const matchingCards = [];
+            const nonMatchingCards = [];
+
+            restaurantCards.forEach(card => {
+                if (card.classList.contains(filter.slice(1))) { // Remove dot from filter
+                    matchingCards.push(card);
+                } else {
+                    nonMatchingCards.push(card);
+                }
+            });
+
+            // Clear the restaurant grid
+            restaurantGrid.innerHTML = '';
+
+            // Append matching cards first, then non-matching
+            matchingCards.forEach(card => {
+                card.style.display = 'block';
+                restaurantGrid.appendChild(card);
+            });
+            nonMatchingCards.forEach(card => {
+                card.style.display = 'block';
+                restaurantGrid.appendChild(card);
+            });
+        });
+    });
+});
+</script>
+
+<style>
+.cuisine-filter {
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+}
+.cuisine-filter.active {
+    background-color: #F54748;
+    color: white;
+}
+</style>
 
 
 <section class="dt-hide d-none"><img class="img-fluid"
@@ -645,9 +765,9 @@
             <div class="col-md-6">
                 <h3>Join the <span class="red">Fooyes</span> Community </span></h3>
                 <p>Follow us on social media and sign up for exclusive offers, new menu launches, and foodie events.</p>
-                <p><i class="fas fa-map-marker-alt fooyes-icon"></i> <strong>Find Us:</strong> 40 High St, March PE15 9JR, United Kingdom</p>
-    <p><i class="fas fa-phone-alt fooyes-icon"></i> <strong>Contact Us:</strong> <a href="tel:+44 1354 654992" style="color:#191919">+44 1354 654992</a></p>
-    <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:chillihutmarchonline.com" style="color:#191919">chillihutmarchonline.com</a></p>
+                <p><i class="fas fa-map-marker-alt fooyes-icon"></i> <strong>Find Us:</strong> 110 Eastern Ave, Peterborough PE1 4PW, UK</p>
+    <p><i class="fas fa-phone-alt fooyes-icon"></i> <strong>Contact Us:</strong> <a href="tel:+44 1354 654992" style="color:#191919">07438797814</a></p>
+    <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:chillihutmarchonline.com" style="color:#191919">support@fooyes.co.uk</a></p>
     <p style="font-size:18px"> <b>Delicious moments start here. Welcome to Fooyes UK!</b></p>
             </div>
             <div class="col-md-6 mob-hide"><img class="img-fluid"
@@ -656,7 +776,7 @@
     </div>
 </section>
 
-<div class="container">
+<div class="container" style="margin-bottom:50px;">
     <div class="about-txt my-5 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right; height: 60vh;
     display: flex;
     align-items: center;">
@@ -677,7 +797,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
 </div>
 
 <!-- Restaurants -->
-<section class="order-listing featured-responsive-card-section">
+<!-- <section class="order-listing featured-responsive-card-section" style="margin-bottom: 50px;">
     <div class="container p-0" style="max-width: 1045px !important">
         <div class="special-offer-titlebox">
             <h2>Explore <span style="color:#fdc55e;">-</span> <span class="red">Restaurants</span></h2>
@@ -736,14 +856,11 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                                 <?php } ?>
                             </div>
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
-                            <p><?php echo sanitize($restaurant['restaurant_about']) ?></p>
+                            <p class="clamp-text"><?php echo sanitize($restaurant['restaurant_about']) ?></p>
                         </div>
                         <a class="btn btn-danger"
                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
                             Now</a>
-                        <!-- <a class="btn btn-danger"
-                            href="http://<?= $restaurant['slug']; ?>.fooyes.local">Order
-                            Now</a> -->
 
                     </div>
                 <?php endforeach; ?>
@@ -751,10 +868,10 @@ favorites or globally inspired delights, we've got something to satisfy every pa
         <?php endif; ?>
 
     </div>
-</section>
+</section> -->
 
 
-<section class="fooyes-offerings">
+<section class="fooyes-offerings" style="margin-bottom: 50px;">
     <div class="fooyes-offerings-container">
         <h2 class="fooyes-offerings-title"><span class="yellow">Explore</span> <span style="color:white;">Our Offerings</span></h2>
         <p class="fooyes-offerings-text">

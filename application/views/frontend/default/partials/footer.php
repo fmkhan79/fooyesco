@@ -57,6 +57,9 @@
                 <li><a href="<?php echo site_url('terms-of-use'); ?>">
                             <?php echo site_phrase('terms_of_use'); ?>
                         </a></li>
+                <li><a href="<?php echo site_url('solutions'); ?>">
+                            <?php echo site_phrase('solutions'); ?>
+                        </a></li>
                 </ul>
             </div>
             <div class="col-md-4">

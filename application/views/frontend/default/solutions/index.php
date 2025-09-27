@@ -161,7 +161,15 @@
   display: none !important;
 }
 }
-
+.multi-service-box{ background: no-repeat top left;color:#191919;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal; padding: 35px 0 150px;}
+.multi-service-box h3{color: #000;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700; padding: 0; margin: 0 0 21px;}
 </style>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
@@ -200,48 +208,16 @@ foreach ($reCaptcha as $row) {
             endif; ?>
     <div class="row contact-info-section">
         <div class="col-md-4 contact-info-left">
-            <h4 class="contact-heading">Contact Us</h4>
-            <?php if (!empty($restaurant)) { ?>
-                <p class="contact-timing">
-                    <?= $restaurant['restaurant_about'] ?>
-                </p>
-            <?php } else{ ?>            
-                <p class="contact-timing">
+            <h4 class="contact-heading">Solutions</h4>
+            <p class="contact-timing">
                     Monday to Friday: 9AM to 5PM<br>
                     Saturday: 11AM to 5PM<br>
                     Sunday: 12AM to 5PM
                 </p>
-            <?php } ?>
         </div>
         <div class="col-md-8 contact-info-right">
             <ul class="contact-details-list list-unstyled">
-
-                <?php if (!empty($restaurant)) { ?>
-                    <div class="row">
-                        <div class="col-md-6 my-2">
-                            <li>
-                                <i class="fas fa-phone contact-icon"></i> 
-                                <div class="">
-                                    <a href="https://wa.me/+44<?= $restaurant['phone'] ?>" target="_blank" class="contact-detail-text text-dark">Tel: <?= $restaurant['phone'] ?></a><br>
-                                    <a href="mailto:<?= $restaurant['owner_email'] ?>" class="contact-detail-text text-dark">Email: <?= $restaurant['owner_email'] ?></a>
-                                </div>
-                            </li>
-                        </div>
-                        <div class="col-md-6 my-2">
-                            <li><i class="fas fa-file-alt contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Support Forum <br> For 24hr</a></li>
-                        </div>
-                        <div class="col-md-6 my-2">
-                            <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant['address'] ?></span></li>
-                        </div>
-                        <div class="col-md-6 my-2">
-                            <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li>
-                        </div>
-                    </div>
-                    <!-- <li><i class="fab fa-phone contact-icon"></i> <a href="https://wa.me/+44<?= $restaurant['phone'] ?>" target="_blank" class="contact-detail-text text-dark"> <?= $restaurant['phone'] ?></a></li>
-                    <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:<?= $restaurant['owner_email'] ?>" class="contact-detail-text text-dark"><?= $restaurant['owner_email'] ?></a></li>
-                    <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant['address'] ?></span></li>     -->
-                <?php } else{ ?>
-                    <div class="row">
+<div class="row">
                         <div class="col-md-6 my-2">
                             <li>
                                 <i class="fas fa-phone contact-icon"></i> 
@@ -261,8 +237,6 @@ foreach ($reCaptcha as $row) {
                             <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li>
                         </div>
                     </div>
-                <!-- <li><i class="fas fa-shipping-fast contact-icon"></i> <span class="contact-detail-text">Free standard shipping on all orders.</span></li> -->
-                <?php } ?>
 
             </ul>
         </div>
@@ -416,6 +390,51 @@ foreach ($reCaptcha as $row) {
         </ul> -->
     </div>
 </section>
+
+<section class="multi-service-box" style="padding-bottom:0px; margin-bottom: 50px;">
+    <div class="container" style="max-width: 1000px!important pl-0!important">
+        <div class="d-md-flex align-items-center">
+            <div class="col-md-5"><img class="img-fluid"
+                    src="<?php echo base_url('assets/frontend/default/images/mult-service.png') ?>"></div>
+            <div class="col-md-7">
+                <h3>All in one <span class="red">POS</span> system</h3>
+                <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments
+                    such as
+                    baked goods or snacks. The term comes frome the rench word meaning food</p>
+                <div class="row multi-service-list mt-4 mb-3">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/online-order-icon.png') ?>" />
+                        Online Order</div>
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/24-7-icon.png') ?>" /> 24/7 Service
+                    </div>
+                </div>
+                <div class="row multi-service-list mb-3 ">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Pre-Reservation
+                    </div>
+                    <div class="col-lg-5 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Oragonized
+                        Foodhut Place</div>
+                </div>
+                <div class="row multi-service-list mb-3 ">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Super Chef
+                    </div>
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Clean Kitchen
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <section class="dt-hide">
     <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" />
