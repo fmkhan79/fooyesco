@@ -243,7 +243,7 @@
                         <?php else : ?>
                             <div class="row mt-2 d-flex flex-row gap-2">
                                 <div class="btn-proceed">
-                                <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn-main text-center mt-4 border-0">
+                                <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn-main text-center mt-4 border-0 CheckoutBtn">
                                     Login
                                 </a>
                             </div>
@@ -280,26 +280,26 @@
             </div>
 
                             <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            const checkbox = document.getElementById("terms");
-                            const loginBtn = document.querySelector("a[href$='auth']");
+                        // document.addEventListener("DOMContentLoaded", function () {
+                        //     const checkbox = document.getElementById("terms");
+                        //     const loginBtn = document.querySelector("a[href$='auth']");
 
-                            function toggleLoginButton() {
-                                if (checkbox.checked) {
-                                    loginBtn.classList.remove("disabled");
-                                    loginBtn.style.pointerEvents = "auto";
-                                    loginBtn.style.opacity = "1";
-                                } else {
-                                    loginBtn.classList.add("disabled");
-                                    loginBtn.style.pointerEvents = "none";
-                                    loginBtn.style.opacity = "0.6";
-                                }
-                            }
+                        //     function toggleLoginButton() {
+                        //         if (checkbox.checked) {
+                        //             loginBtn.classList.remove("disabled");
+                        //             loginBtn.style.pointerEvents = "auto";
+                        //             loginBtn.style.opacity = "1";
+                        //         } else {
+                        //             loginBtn.classList.add("disabled");
+                        //             loginBtn.style.pointerEvents = "none";
+                        //             loginBtn.style.opacity = "0.6";
+                        //         }
+                        //     }
 
-                            toggleLoginButton();
+                        //     toggleLoginButton();
 
-                            checkbox.addEventListener("change", toggleLoginButton);
-                        });
+                        //     checkbox.addEventListener("change", toggleLoginButton);
+                        // });
                     </script>
 
 
@@ -316,21 +316,57 @@
             </script>
 
 <script>
- function red(param) {
+//  function red(param) {
     
-    //  debugger;
+//     //  debugger;
+//     const isActive = document.querySelector(".c-basketSwitcher-switch.c-basketSwitcher-switch--active") !== null;
+//     const switcherBox = document.querySelector(".c-basketSwitcher");
+//     if (!isActive) {
+//         // Add red border to switcher box
+//         document.querySelectorAll(".c-basketSwitcher-switch").forEach(function(switcherBox) {
+//     switcherBox.classList.add("basket-error-border");
+// });
+
+//         // Show error message
+//         document.querySelectorAll(".basket-switcher-error").forEach(el => {
+//             el.textContent = "Please Select Order Type.";
+//             el.style.display = "flex";
+//         });
+//         return;
+//     }
+
+//     // Remove error border and hide error message
+//     switcherBox.classList.remove("basket-error-border");
+//     document.querySelectorAll(".basket-switcher-error").forEach(el => {
+//         el.style.display = "none";
+//         el.textContent = "";
+//     });
+
+//     // Redirect
+//     const href = param.getAttribute("data-href");
+//     window.location.href = href;
+// }
+
+function red(param) {
     const isActive = document.querySelector(".c-basketSwitcher-switch.c-basketSwitcher-switch--active") !== null;
     const switcherBox = document.querySelector(".c-basketSwitcher");
+
     if (!isActive) {
         // Add red border to switcher box
-        document.querySelectorAll(".c-basketSwitcher-switch").forEach(function(switcherBox) {
-    switcherBox.classList.add("basket-error-border");
-});
+        document.querySelectorAll(".c-basketSwitcher-switch").forEach(function (switcher) {
+            switcher.classList.add("basket-error-border");
+        });
 
         // Show error message
         document.querySelectorAll(".basket-switcher-error").forEach(el => {
             el.textContent = "Please Select Order Type.";
             el.style.display = "flex";
+
+            // Scroll to error message smoothly
+            el.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
         });
         return;
     }
@@ -346,5 +382,6 @@
     const href = param.getAttribute("data-href");
     window.location.href = href;
 }
+
 
 </script>
