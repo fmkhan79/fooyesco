@@ -272,6 +272,26 @@
 
 }
 
+.cuisines 
+
+.cuisines a.btn{
+    margin: 10px 65px -20px !important;
+}
+.cuisines .card{
+    display: flex !important;
+    justify-content: space-between !important;
+}
+.cuisines p{
+    display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  line-height: 1.5em;      
+  min-height: calc(1.5em * 2);
+    margin-top: 10px !important;
+}
+
 /* @media (min-width: 480px) {
 .welcome-foo {
     padding-left: 7rem !important
@@ -573,57 +593,49 @@
     <div class="container p-0">
         <div class="special-offer-titlebox text-lg-center">
             <h2>
-                <span style="color: #F54748;">Menu</span> That <sapn class="yellow">Always</sapn> Make <br class="d-none d-lg-block" > You Fall In <sapn
-                    style="color: #F54748;">
-                    Love</sapn>
+                <span style="color: #F54748;">Menu</span> That <span class="yellow">Always</span> Make <br class="d-none d-lg-block" > You Fall In <span style="color: #F54748;">Love</span>
             </h2>
         </div>
 
-        <section class="order-detail-btns container d-lg-block " style="border-radius: 20px;">
+        <section class="order-detail-btns container d-lg-block" style="border-radius: 20px;">
             <div class="container">
-                <div class="order-detail-slider owl-carousel owl-theme my-5 ">
-                    <?php foreach ($cuisines as $cuisine_row) :  ?>
-                            <a data-filter=".cuisine_<?php echo sanitize($cuisine_row['id']); ?>" class="gb-btn border-0"
-                                href="#"><?php echo sanitize($cuisine_row['name']); ?></a>
-                        <?php endforeach; ?>
+                <div class="order-detail-slider owl-carousel owl-theme my-5">
+                    <?php foreach ($cuisines as $cuisine_row) : ?>
+                        <a data-filter=".cuisine_<?php echo sanitize($cuisine_row['id']); ?>" class="gb-btn border-0 cuisine-filter" href="#"><?php echo sanitize($cuisine_row['name']); ?></a>
+                    <?php endforeach; ?>
                 </div>
             </div>
-
         </section>
-        
-        <?php if (!empty($featured_restaurants)): 
-            ?>
-            <div class="row gallery featured-responsive-card justify-content-between">
+
+        <?php if (!empty($featured_restaurants)): ?>
+            <div class="row gallery featured-responsive-card" id="restaurant-grid">
                 <?php foreach ($featured_restaurants as $key => $restaurant): ?>
-                     <?php 
+                    <?php
                         // Cuisine IDs ko array banalo
                         $cuisine_ids = is_array($restaurant['cuisine']) 
-                                        ? $restaurant['cuisine'] 
-                                        : json_decode($restaurant['cuisine'], true);
+                            ? $restaurant['cuisine'] 
+                            : json_decode($restaurant['cuisine'], true);
 
                         $cuisine_names = [];
+                        $cuisine_classes = [];
                         if (!empty($cuisine_ids)) {
                             foreach ($cuisine_ids as $cid) {
-                                $cuisine = $this->cuisine_model->get_by_id($cid); // <-- apna method call
+                                $cuisine = $this->cuisine_model->get_by_id($cid);
                                 if (!empty($cuisine)) {
-                                    $cuisine_names[] = $cuisine['name']; 
+                                    $cuisine_names[] = $cuisine['name'];
+                                    $cuisine_classes[] = 'cuisine_' . $cuisine['id'];
                                 }
                             }
                         }
-                        ?>
-                    <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5">
+                    ?>
+                    <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5 <?php echo implode(' ', $cuisine_classes); ?>">
                         <div class="order-img-box main-img">
-                            <a
-                                href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
-                                <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>"
-                                    alt="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250"
-                                    fill="none">
-                                    <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)"
-                                        stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
+                            <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
+                                <img src="<?php echo base_url('Uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>" alt="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250" fill="none">
+                                    <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)" stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
                                     <defs>
-                                        <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787"
-                                            y2="280.046" gradientUnits="userSpaceOnUse">
+                                        <linearGradient id="paint0_linear_33_536" x1="131.787" y1="144.132" x2="131.787" y2="280.046" gradientUnits="userSpaceOnUse">
                                             <stop stop-color="#F57484" stop-opacity="0"></stop>
                                             <stop offset="1" stop-color="#FDC55E"></stop>
                                         </linearGradient>
@@ -636,67 +648,51 @@
                             <div class="review-grid d-flex justify-content-around align-items-center m-auto">
                                 <?php if ($restaurant['rating']) { ?>
                                     <ul class="inline-grid m-0 p-0">
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
-                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38"
-                                                height="38">
-                                        </li>
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38" height="38"></li>
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38" height="38"></li>
+                                        <li><img class="rounded-img" src="https://dummyimage.com/600x400/000/fff" alt="" width="38" height="38"></li>
                                     </ul>
                                     <div class="star">
-                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M11.0489 0.926805C11.3483 0.00549436 12.6517 0.00549579 12.9511 0.926806L14.9187 6.98253C15.0526 7.39456 15.4365 7.67352 15.8697 7.67352H22.2371C23.2058 7.67352 23.6086 8.91313 22.8249 9.48253L17.6736 13.2252C17.3231 13.4798 17.1764 13.9312 17.3103 14.3432L19.2779 20.3989C19.5773 21.3203 18.5228 22.0864 17.7391 21.517L12.5878 17.7743C12.2373 17.5197 11.7627 17.5197 11.4122 17.7743L6.2609 21.517C5.47719 22.0864 4.42271 21.3203 4.72206 20.3989L6.68969 14.3432C6.82356 13.9312 6.6769 13.4798 6.32642 13.2252L1.17511 9.48253C0.391392 8.91313 0.794168 7.67352 1.76289 7.67352H8.13026C8.56349 7.67352 8.94744 7.39456 9.08132 6.98253L11.0489 0.926805Z"
-                                                fill="#FFB800"></path>
+                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11.0489 0.926805C11.3483 0.00549436 12.6517 0.00549579 12.9511 0.926806L14.9187 6.98253C15.0526 7.39456 15.4365 7.67352 15.8697 7.67352H22.2371C23.2058 7.67352 23.6086 8.91313 22.8249 9.48253L17.6736 13.2252C17.3231 13.4798 17.1764 13.9312 17.3103 14.3432L19.2779 20.3989C19.5773 21.3203 18.5228 22.0864 17.7391 21.517L12.5878 17.7743C12.2373 17.5197 11.7627 17.5197 11.4122 17.7743L6.2609 21.517C5.47719 22.0864 4.42271 21.3203 4.72206 20.3989L6.68969 14.3432C6.82356 13.9312 6.6769 13.4798 6.32642 13.2252L1.17511 9.48253C0.391392 8.91313 0.794168 7.67352 1.76289 7.67352H8.13026C8.56349 7.67352 8.94744 7.39456 9.08132 6.98253L11.0489 0.926805Z" fill="#FFB800"></path>
                                         </svg>
                                     </div>
-                                    <p class="p-0 m-0">(
-                                        <?php echo sanitize($restaurant['rating']); ?>)
-                                    </p>
+                                    <p class="p-0 m-0">(<?php echo sanitize($restaurant['rating']); ?>)</p>
                                 <?php } ?>
                             </div>
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
-                            <!-- <p class="clamp-text"><?php echo sanitize($restaurant['restaurant_about']) ?></p> -->
-                             <?php if (!empty($cuisine_names)): ?>
-                        <p><strong>Cuisines:</strong> <?php echo implode(', ', $cuisine_names); ?></p>
-                    <?php endif; ?>
+                            <?php if (!empty($cuisine_names)): ?>
+                                <p><strong>Cuisines:</strong> <?php echo implode(', ', $cuisine_names); ?></p>
+                            <?php endif; ?>
                         </div>
-                        <a class="btn btn-danger"
-                            href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
-                            Now</a>
-
+                        <a class="btn btn-danger" href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order Now</a>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        
-
     </div>
 </section>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const filterButtons = document.querySelectorAll('.cuisine-filter');
-    const restaurantGrid = document.getElementById('restaurant-grid');
+    const restaurantGrid = document.querySelector('#restaurant-grid');
     const restaurantCards = Array.from(document.querySelectorAll('#restaurant-grid .restaurant-card'));
 
     filterButtons.forEach(button => {
-        button.addEventListener('click', function () {
+        button.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent default anchor behavior
             const filter = this.getAttribute('data-filter');
-            
+
             // Remove active class from all buttons and add to the clicked one
             filterButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
 
-            // If no filter is selected, show all restaurants in original order
+            // If no filter or empty, reset to original order
             if (!filter || filter === '') {
                 restaurantCards.forEach(card => {
                     card.style.display = 'block';
-                    restaurantGrid.appendChild(card); // Reset to original order
+                    restaurantGrid.appendChild(card);
                 });
                 return;
             }
