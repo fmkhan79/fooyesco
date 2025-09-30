@@ -16,6 +16,7 @@ if($host === 'fooyes' || $host === 'staging')
     .nav-item{
         margin: 0px !important;
     }
+
 </style>
 
 <div class="bg transition">
@@ -94,8 +95,8 @@ if($host === 'fooyes' || $host === 'staging')
                                         </a>
                                     </li>
                                     <li class="nav-item login-btn">
-                                        <a class="nav-link" href="<?php echo site_url('become-a-partner'); ?>">
-                                            <?php echo  site_phrase('get_a_demo', true); ?>
+                                        <a class="nav-link"  href="<?php echo site_url('become-a-partner'); ?>">
+                                              <?php echo site_phrase(ucwords('book_a_demo', true)); ?>
                                         </a>
                                     </li>
                                 </div>
