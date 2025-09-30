@@ -219,9 +219,9 @@
 
                       
                             <h1>We're
-                                <span class="text-danger">Serious</span> For
-                                <span class="text-danger">Food</span> &amp;
-                                <span class="text-warning">Delivery</span>.
+                                <span class="text-danger">The</span> Best
+                                <span class="text-danger">POS</span> Providers
+                         
                             </h1>
                          
                             </div>
@@ -236,8 +236,7 @@
                      <!-- start for desktop -->
                     <div class="banner-form-box d-md-block d-flex  flex-column">
                     <h5 class="text-dark font-weight-light pt-md-0 " style="font-size:18px;">
-                                Best cooks and best delivery guys all at your service. Hot tasty food will reach you in
-                                60 minutes.
+                               We’re the best POS provider, delivering fast, secure, and reliable solutions to help your business grow.
                             </h5>
                       
                             <a  href="<?php echo site_url('become-a-partner'); ?>" class="btn btn-danger banner-btn"style="
