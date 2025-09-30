@@ -220,7 +220,7 @@
                       
                             <h1>We're
                                 <span class="text-danger">The</span> Best
-                                <span class="text-danger">POS</span> Provider.
+                                <span class="text-danger">POS</span> Providers
                          
                             </h1>
                          
