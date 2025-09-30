@@ -443,7 +443,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 <!-- ./Category tabs with scrool nav -->
 
-<div class="container mt-5">
+<div class="container mt-5 mt-md-0">
     <!-- Accordion Wrapper -->
     <div class="accordion" id="accordionExample">
         <div class="accordion-item d-md-none">
@@ -470,8 +470,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 <!-- Menu section -->
 
 
-<section class="order-detail-listing mt-4 mb-2">
-    <div class="container p-md-4 text-dark p-0">
+<section class="order-detail-listing mt-0 mb-2">
+    <div class="container px-4 pb-4 text-dark p-0 pt-md-0">
         <div class="d-md-flex align-items-start">
             <div class="col-md-8  mr-md-5">
 

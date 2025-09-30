@@ -477,7 +477,7 @@
                 //  die();
                  $restaurant = $this->restaurant_model->get_by_id($menu['restaurant_id']);
                 ?>
-                <div class="col-lg-3 col-md-4 my-5 d-flex justify-content-center">
+                <div class="col-lg-3 col-md-4 my-5 d-flex justify-content-center p-0">
                     <div class="card restaurant-card h-100  mb-lg-0 mb-5">
                        <div class="order-img-box main-img">
     <a href="javascript:void(0)">
