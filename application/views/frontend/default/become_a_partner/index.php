@@ -117,7 +117,7 @@
     <?php include APPPATH . 'views/frontend/default/navigation/dark.php'; ?>
 
     <!-- Partnership Section -->
-    <section class="detail-wbox mt-4 mb-2">
+    <section class="detail-wbox mt-5 mb-2">
         <div class="container bg-white text-dark border border-light">
             <h1 class="contact-heading">
                 <span class="text-privacy pr-2">Become</span> A Partner

@@ -10,11 +10,25 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
+ 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 <!--============================= RESERVE A SEAT =============================-->
 <style>
+.main-banner{ margin: 30px 0;}
+    .main-banner h5{color: #191919;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 400;}
 
+    .main-banner h1{color: #191919;
+        font-size: 50px;
+        font-style: normal;
+        font-weight: 900; margin-bottom: 20px;}
+.svg-devider-box{ margin: 15px 0 20px;}
+.main-banner .text-danger{color:#F54748!important;}
+.main-banner h1 .text-warning{color:#FDC55E!important; position: relative;}
+.main-banner h1 .text-warning::after{content: ""; position: absolute; background: no-repeat; width: 257px; height: 9px; left: 10px; bottom: -10px;}
 /* Contact Info Section */
 .contact-info-section {
     margin-bottom: 30px;
@@ -170,226 +184,100 @@
     font-size: 48px;
     font-style: normal;
     font-weight: 700; padding: 0; margin: 0 0 21px;}
+
+
+    
 </style>
+
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <?php
-$siteKey = '';
-$secretKey = '';
-foreach ($reCaptcha as $row) {
-    if ($row->key == 'recaptcha_sitekey') {
-        $siteKey = $row->value;
-    } elseif ($row->key == 'recaptcha_secretkey') {
-        $secretKey = $row->value;
-    }
-}
+// $siteKey = '';
+// $secretKey = '';
+// foreach ($reCaptcha as $row) {
+//     if ($row->key == 'recaptcha_sitekey') {
+//         $siteKey = $row->value;
+//     } elseif ($row->key == 'recaptcha_secretkey') {
+//         $secretKey = $row->value;
+//     }
+// }
 // print_r($siteKey);
 // die();
 ?>
 
 
-<section class="detail-wbox mt-4 mb-2">
-    <div class="container bg-white text-dark border border-light">
-        
-            <?php if ($this->session->flashdata('success')): ?>
-                <div class="alert alert-success alert-dismissible">
-                    <?= $this->session->flashdata('success'); ?>
-                </div>
-            <?php 
-            $this->session->unset_userdata('success');
-            endif; ?>
+<!-- SLIDER -->
+<section class="main-banner d-flex align-items-center mt-0 mt-md-4" >
+    <div class="container my-5" style="max-width: 1000px!important">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-5 pl-3 pl-md-0 mt-0 pt-0 mt-md-5 pt-md-5" >
+                        <div class="slider-content_wrap">
+                           
+                            <div>
 
-            <?php if ($this->session->flashdata('error')): ?>
-                <div class="alert alert-danger alert-dismissible">
-                    <?= $this->session->flashdata('error'); ?>
-                </div>
-            <?php 
-            $this->session->unset_userdata('error');
-            endif; ?>
-    <div class="row contact-info-section">
-        <div class="col-md-4 contact-info-left">
-            <h4 class="contact-heading">Solutions</h4>
-            <p class="contact-timing">
-                    Monday to Friday: 9AM to 5PM<br>
-                    Saturday: 11AM to 5PM<br>
-                    Sunday: 12AM to 5PM
-                </p>
-        </div>
-        <div class="col-md-8 contact-info-right">
-            <ul class="contact-details-list list-unstyled">
-<div class="row">
-                        <div class="col-md-6 my-2">
-                            <li>
-                                <i class="fas fa-phone contact-icon"></i> 
-                                <div class="">
-                                    <a href="https://wa.me/+447438797814" target="_blank" class="contact-detail-text text-dark">Tel: 07438797814</a><br>
-                                    <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Email: support@fooyes.co.uk</a>
-                                </div>
-                            </li>
-                        </div>
-                        <div class="col-md-6 my-2">
-                            <li><i class="fas fa-file-alt contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Support Forum <br> For 24hr</a></li>
-                        </div>
-                        <div class="col-md-6 my-2">
-                            <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text">110 Eastern Ave, Peterborough PE1 4PW, UK</span></li>
-                        </div>
-                        <div class="col-md-6 my-2">
-                            <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li>
+                      
+                            <h1>We're
+                                <span class="text-danger">Serious</span> For
+                                <span class="text-danger">Food</span> &amp;
+                                <span class="text-warning">Delivery</span>.
+                            </h1>
+                         
+                            </div>
+                      
+
+                        <!-- for mobile  -->
+                  
+
+                    <!-- end for mobile  -->
+
+
+                     <!-- start for desktop -->
+                    <div class="banner-form-box d-md-block d-flex  flex-column">
+                    <h5 class="text-dark font-weight-light pt-md-0 " style="font-size:18px;">
+                                Best cooks and best delivery guys all at your service. Hot tasty food will reach you in
+                                60 minutes.
+                            </h5>
+                      
+                            <a  href="<?php echo site_url('become-a-partner'); ?>" class="btn btn-danger banner-btn"style="
+                            color: #FFF;
+                            width: 40%;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%;
+    letter-spacing: 0.16px;
+    border-radius: 41px;
+    padding: 13px;
+    vertical-align: sub;
+    margin-right: 5px;
+    background: #F54748 !important;
+    border-color: #F54748 !important;"
+                               >
+                               
+                                            <?php echo site_phrase(ucwords('book_a_demo', true)); ?>
+                               
+</a>
                         </div>
                     </div>
-
-            </ul>
-        </div>
-    </div>
-
-    <!-- Map -->
-    <?php if (!empty($restaurant)) {
-    $lat = $restaurant['latitude'];
-    $lng = $restaurant['longitude'];
-    
-
-    // Google Maps Embed API URL
-    $map_url = "https://www.google.com/maps/place?q={$lat},{$lng}&hl=es;z=14&output=embed";
-?>
-    <div class="map-section">
-        <h5 class="map-heading">Get In Touch</h5>
-        <iframe 
-            src="<?php echo $map_url; ?>"
-            width="100%" 
-            height="450" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-    </div>
-    <?php } else{ ?>
-    <div class="map-section">
-        <h5 class="map-heading">Get In Touch</h5>
-        <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2423.6450253615!2d-0.22366232387648655!3d52.59411083074067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4877f0eac6b349d7%3A0x3b82c9a230faee40!2s110%20Eastern%20Ave%2C%20Peterborough%20PE1%204PW%2C%20UK!5e0!3m2!1sen!2s!4v1751540971911!5m2!1sen!2s" 
-            width="100%" 
-            height="450" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-    </div>
-    <?php } ?>
-
-
-    <?php if (!empty($restaurant)) { ?>
-                        <h5 class="map-heading">Opening Hours</h5>
-                <table cellpadding="5" border="1">
-                    <thead>
-                        <tr style="background-color: #444; color: #fff;">
-                            <th>Day</th>
-                            <th>Pickup</th>
-                            <th>Delivery</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        // JSON ko array me convert karna
-                        $opening_hours = json_decode($restaurant['schedule'], true);
-
-                        if (json_last_error() === JSON_ERROR_NONE) {
-                            foreach ($opening_hours as $day => $times) {
-                                echo "<tr>";
-                                echo "<td>" . htmlspecialchars($day) . "</td>";
-                                echo "<td>" . htmlspecialchars($times['pickup']) . "</td>";
-                                echo "<td>" . htmlspecialchars($times['delivery']) . "</td>";
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='3'>Invalid opening hours data</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            <?php } ?>
-    <!-- General Information and Contact Form -->
-     <?php if (empty($restaurant) || !is_array($restaurant)) { ?>
-    <div class="row general-info-section">
-        <div class="col-md-6 general-info-left">
-            <h5 class="general-info-heading">General Information</h5>
-            <p class="general-info-text">Have questions about our menu, services, or ingredients?</p>
-            <p class="general-info-text">We’re here to help! Whether it's about orders, catering, or dietary preferences, we’ve got you covered.</p>
-            <p class="general-info-text">Feel free to reach out, and we’ll get back to you as soon as possible</p>
-        </div>
-
-        <div class="col-md-6 contact-form-container bg-light">
-            <h5 class="form-heading">Ask a Question</h5>
-            <p class="form-description">
-                <strong>Got a question? Let’s talk!</strong><br>
-                Drop us a message, and our team will be happy to assist you.
-            </p>
-            <form class="contact-form" action="<?php echo site_url('submissions/submit'); ?>" method="post">
-                <div class="form-group">
-                    <input type="text" name="name" class="form-control contact-form-input" placeholder="Your Name" required>
                 </div>
-                <div class="form-group">
-                    <input type="email" name="email" class="form-control contact-form-input" placeholder="Email" required>
+               
+                <div class="col-md-7 text-md-right">
+                    <!-- add ? <.?.php -->
+                    <img class="img-fluid"
+                        src="<?php echo base_url('assets/frontend/default/images/hero-img.png') ?>" />
                 </div>
-                <div class="form-group">
-                    <input type="text" name="subject" class="form-control contact-form-input" placeholder="Subject" required>
-                </div>
-                <div class="form-group">
-                    <textarea name="message" class="form-control contact-form-textarea" rows="4" placeholder="Type Your Message" required></textarea>
-                </div>
-                <!-- Google reCAPTCHA -->
-                <div class="g-recaptcha mb-3" data-sitekey="<?= $siteKey ?>"></div>
-                <button type="submit" class="btn contact-form-submit-btn">Submit</button>
-            </form>
-        </div>
-    </div>
-     <?php } ?>
-
-        <!-- <h4 class="mt-5 mb-5 text-dark"><?php echo site_phrase('contact_us', true) ?></h4>
-        <div class="about-txt my-4 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right">
-            <div class="row">
-                <div class="col-md-6">
-                    <p >This is a type of resturent which typically serves food and drink, in addition to light
-                        refreshments such as baked goods or snacks. The term comes frome the rench word meaning food Are
-                        you hungry? Did you have a long and stressful day? Interested in getting a cheesy pizza
-                        delivered to your office or looking to avoid the weekly shop? Then Pakistan is the right
-                        destination for you! offers you a long and detailed list of the best restaurants and shops near
-                        you to help make your everyday easier.</p>
-                    <p> Our online food delivery service has it all, whether you fancy Indian, Pakistani or Afghan
-                        cuisine, Pakistan has over 15,000 restaurants available in top cities like Islamabad, Lahore,
-                        Rawalpindi, and Karachi. Did you know you can order your groceries and more from , too? Check
-                        out shops for favourite partners like Al-Fatah, Greenvalley and more. Sit back and relax – let
-                        Pakistan take the pressure off your shoulders.</p>
-                </div>
+                
             </div>
+            
         </div>
-
-        <div class="about-bot-txt my-5">
-            <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments such
-                as baked goods or snacks. The term comes frome the rench word meaning food Are you hungry? Did you have
-                a long and stressful day? Interested in getting a cheesy pizza delivered to your office or looking to
-                avoid the weekly shop? Then Pakistan is the right destination for you! offers you a long and detailed
-                list of the best restaurants and shops near you to help make your everyday easier.</p>
-            <p> Our online food delivery service has it all, whether you fancy Indian, Pakistani or Afghan cuisine,
-                Pakistan has over 15,000 restaurants available in top cities like Islamabad, Lahore, Rawalpindi, and
-                Karachi. Did you know you can order your groceries and more from , too? Check out shops for favourite
-                partners like Al-Fatah, Greenvalley and more. Sit back and relax, let Pakistan take the pressure off
-                your shoulders.</p>
-        </div>
-
-        <ul>
-            <li>This is a type of resturent which typically serves food and drink, in addition to light refreshments
-                such as baked goods or snacks. The term comes frome the rench word meaning food Are you hungry? Did you
-                have a long and stressful</li>
-            <li>Our online food delivery service has it all, whether you fancy Indian, Pakistani or Afghan cuisine,
-                Pakistan has over 15,000 restaurants available in top cities like Islamabad, Lahore, Rawalpindi, and
-                Karachi. Did you know you can order your groceries and more from , too?</li>
-            <li>Check out shops for favourite partners like Al-Fatah, Greenvalley and more. Sit back and relax, let
-                Pakistan take the pressure off your shoulders.</li>
-        </ul> -->
+        
+    </div>
+    
     </div>
 </section>
+<!--// SLIDER -->
 
 <section class="multi-service-box" style="padding-bottom:0px; margin-bottom: 50px;">
     <div class="container" style="max-width: 1000px!important pl-0!important">
@@ -505,4 +393,46 @@ foreach ($reCaptcha as $row) {
     </div>
 </section> -->
 
+<section class="multi-service-box" style="padding-bottom:0px; margin-bottom: 50px;">
+    <div class="container" style="max-width: 1000px!important pl-0!important">
+        <div class="d-md-flex align-items-center">
+            <div class="col-md-5"><img class="img-fluid"
+                    src="<?php echo base_url('assets/frontend/default/images/mult-service.png') ?>"></div>
+            <div class="col-md-7">
+                <h3>All in one <span class="red">POS</span> system</h3>
+                <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments
+                    such as
+                    baked goods or snacks. The term comes frome the rench word meaning food</p>
+                <div class="row multi-service-list mt-4 mb-3">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/online-order-icon.png') ?>" />
+                        Online Order</div>
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/24-7-icon.png') ?>" /> 24/7 Service
+                    </div>
+                </div>
+                <div class="row multi-service-list mb-3 ">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Pre-Reservation
+                    </div>
+                    <div class="col-lg-5 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Oragonized
+                        Foodhut Place</div>
+                </div>
+                <div class="row multi-service-list mb-3 ">
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Super Chef
+                    </div>
+                    <div class="col-lg-4 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
+                        Clean Kitchen
+                    </div>
+                </div>
 
+            </div>
+        </div>
+    </div>
+</section>

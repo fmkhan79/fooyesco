@@ -559,36 +559,35 @@
             <div class="col-md-5"><img class="img-fluid"
                     src="<?php echo base_url('assets/frontend/default/images/mult-service.png') ?>"></div>
             <div class="col-md-7">
-                <h3>We are <span class="red">more</span> than<br /> <span class="yellow">multiple</span> service</h3>
+                <h3>We are <span class="red">more</span> than<br /> <span class="yellow">multiple</span> services</h3>
                 <p>This is a type of resturent which typically serves food and drink, in addition to light refreshments
                     such as
                     baked goods or snacks. The term comes frome the rench word meaning food</p>
                 <div class="row multi-service-list mt-4 mb-3">
-                    <div class="col-lg-4 col-md-6 pl-3"><img
+                    <div class="col-lg-5 col-md-6 pl-3"><img
                             src="<?php echo base_url('assets/frontend/default/images/online-order-icon.png') ?>" />
                         Online Order</div>
-                    <div class="col-lg-4 col-md-6 pl-3"><img
+                    <div class="col-lg-5 col-md-6 pl-3"><img
                             src="<?php echo base_url('assets/frontend/default/images/24-7-icon.png') ?>" /> 24/7 Service
                     </div>
                 </div>
                 <div class="row multi-service-list mb-3 ">
-                    <div class="col-lg-4 col-md-6 pl-3"><img
-                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
-                        Pre-Reservation
-                    </div>
                     <div class="col-lg-5 col-md-6 pl-3"><img
-                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
-                        Oragonized
-                        Foodhut Place</div>
+                            src="<?php echo base_url('assets/frontend/default/images/cuisines.png') ?>" />
+                        Lots Of Cuisines
+                    </div>
+                    <div class="col-lg-6 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/solutions.png') ?>" />
+                        Cost Effective Solutions</div>
                 </div>
                 <div class="row multi-service-list mb-3 ">
-                    <div class="col-lg-4 col-md-6 pl-3"><img
-                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
-                        Super Chef
+                    <div class="col-lg-5 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/interface.png') ?>" />
+                        Easy To Use Interface
                     </div>
-                    <div class="col-lg-4 col-md-6 pl-3"><img
-                            src="<?php echo base_url('assets/frontend/default/images/pre-reservation-icon.png') ?>" />
-                        Clean Kitchen
+                    <div class="col-lg-5 col-md-6 pl-3"><img
+                            src="<?php echo base_url('assets/frontend/default/images/service.png') ?>" />
+                         Top Quality Support
                     </div>
                 </div>
 
