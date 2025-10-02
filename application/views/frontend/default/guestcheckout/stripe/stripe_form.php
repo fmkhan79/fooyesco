@@ -94,4 +94,19 @@ define('STRIPE_PUBLISHABLE_KEY', $public_key);
             }
         });
     });
+
+
+     const orderCompletedBtn = document.getElementById("pay-with-stripe-form");
+    if (orderCompletedBtn) {
+      orderCompletedBtn.addEventListener("click", function () {
+        console.log("pay-with-stripe-form");
+
+        // Send custom GA4 event
+        gtag("event", "pay-with-stripe_order_completed", {
+          event_category: "pay-with-stripe-form",
+          event_label: "pay-with-stripe-form",
+          value: 1,
+        });
+      });
+    }
 </script>

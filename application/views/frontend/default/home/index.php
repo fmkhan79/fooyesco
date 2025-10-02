@@ -279,7 +279,33 @@
     }
 }
 
+
 </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+              const currentOrigin = window.location.origin;
+
+             if (currentOrigin === "https://www.fooyes.co.uk") {
+    var viewItemListBtn = document.getElementById('view_item_list');
+
+    if (viewItemListBtn) {
+      viewItemListBtn.addEventListener('click', function () {
+        console.log('Add To Order clicked');
+
+        // Send custom GA4 event
+        gtag('event', 'view_item_list', {
+          event_category: 'list product seeing',
+          event_label: 'Some seea products list',
+          value: 1
+        });
+      });
+    }
+    }
+  });
+        </script>
+
+
 <!-- SLIDER -->
 <section class="main-banner d-flex align-items-center" style="margin-bottom: 50px;">
     <div class="container my-5" style="max-width: 1000px!important">
@@ -458,6 +484,7 @@
     </a>
 </div>
                         <div class="restaurant-body text-center">
+                            
     <h3><?php echo sanitize($menu['name']); ?></h3>
     <p class="clamp-text"><?php echo sanitize($menu['details']) ?></p>
 
@@ -727,6 +754,7 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                             </a>
                         </div>
                         <div class="restaurant-body text-center">
+                            
                             <div class="review-grid d-flex justify-content-around align-items-center m-auto">
                                 <?php if ($restaurant['rating']) { ?>
                                     <ul class="inline-grid m-0 p-0">
@@ -755,8 +783,10 @@ favorites or globally inspired delights, we've got something to satisfy every pa
                             </div>
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
                             <p class="clamp-text"><?php echo sanitize($restaurant['restaurant_about']) ?></p>
+                        
                         </div>
                         <a class="btn btn-danger"
+                            id="view_item_list"
                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order
                             Now</a>
                         <!-- <a class="btn btn-danger"
@@ -926,4 +956,9 @@ function continueTerms() {
     // Enable scroll again
     document.body.style.overflow = "auto";
 }
+
+      
+    
+
 </script>
+

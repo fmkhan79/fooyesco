@@ -48,6 +48,27 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
   border-left: 0px;
 }
     </style>
+
+    <script>
+        
+    $(document).ready(function () {
+        $('.add-order-txt').on('click', function () {
+            const currentOrigin = window.location.origin;
+
+               if (currentOrigin === "https://www.fooyes.co.uk") {
+            console.log('Add To Order clicked');
+
+            // Send custom GA4 event
+            gtag('event', 'add_to_order', {
+                'event_category': 'ecommerce',
+                'event_label': 'Add To Order Button',
+                'value': 1
+            });
+        }
+        });
+    
+    });
+    </script>
 <div class="parent">
     <div class="container-99">
     <div class="box box1">
@@ -425,7 +446,6 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
         console.log(ar.length, $(".modal-body input[type='radio']:checked").length, button.classList);
 
     }   
-
 
 
     </script>

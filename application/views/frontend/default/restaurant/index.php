@@ -594,7 +594,9 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                                     <?php echo $menu['details']; ?>
                                                 </div>
                                                 <div class="order col-md-2 d-none d-md-block">
-                                                    <a href="#" data-toggle="modal"
+                                                    <a href="#" id="addToOrderBtns" data-toggle="modal"
+                                                        data-menu-name="<?php echo htmlspecialchars($menu['name'], ENT_QUOTES, 'UTF-8'); ?>"
+
                                                         onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
                                                                                                                 echo $price->menu; ?>, <?php echo $menu['has_variant'] ?>)">
 
@@ -875,6 +877,30 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
             behavior: 'smooth'
         }); // Smooth scrolling effect
     }
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var addToOrderBtn = document.getElementById('addToOrderBtns');
+        const currentOrigin = window.location.origin;
+
+         if (currentOrigin === "https://www.fooyes.co.uk") {
+    if (addToOrderBtn) {
+      addToOrderBtn.addEventListener('click', function () {
+        var menuName = this.getAttribute('data-menu-name') || 'Unknown';
+
+        // Send event to Google Analytics 4
+        gtag('event', 'add_to_menus', {
+          event_category: 'ecommerce',
+          event_label: menuName,
+          menu_name: menuName,
+          value: 1
+        });
+
+        console.log('GA4 event sent for:', menuName); // for testing
+      });
+    }
+    }
+  });
 </script>
 
 <!-- ./Mobile app section -->

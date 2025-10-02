@@ -49,9 +49,10 @@ if (count($restaurant_ids) > 0):
             onclick="updateCart('<?php echo sanitize($cart_item['id']); ?>', false)">
             <i class="fas fa-minus"></i>
         </button>
-        <button type="button" class="cart-actions mr-1 cart-btns"
+        <button type="button" id="remove_from_cart" class="cart-actions mr-1 cart-btns"
             onclick="confirm_modal_withoutPopup('<?php echo site_url('cart/delete/' . sanitize($cart_item['id'])); ?>',this)"><i
                 class="fas fa-trash-alt"></i>
+            
         </button>
     </div>
 

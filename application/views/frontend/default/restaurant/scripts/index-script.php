@@ -15,6 +15,27 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
+
+
+
+<script>
+  $(document).ready(function () {
+    $('#remove_from_cart').on('click', function () {
+        const currentOrigin = window.location.origin;
+
+    if (currentOrigin === "https://www.fooyes.co.uk") {
+      console.log('remove_from_cart');
+
+      // Send custom GA4 event
+      gtag('event', 'remove_from_cart', {
+        event_category: 'remove_from_car', 
+        event_label: 'item_removed',
+        value: 1
+      });
+    }
+    });
+  });
+</script>
 <script>
     "use strict";
     $(window).scroll(function() {
