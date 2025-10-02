@@ -151,7 +151,31 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
 
 </style>
 <!-- RESTAURANT GALLERY -->
+<script>
+       // Wait until the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+         const currentOrigin = window.location.origin;
 
+    if (currentOrigin === "https://www.fooyes.co.uk") {
+       
+        const trackSvg = document.getElementById("track-svg-click");
+
+        if (trackSvg) {
+            trackSvg.addEventListener("click", function () {
+                console.log("SVG Clicked");
+
+                // Send a custom event to Google Analytics 4
+                gtag("event", "product_view", {
+                    event_category: "menu-item",
+                    event_label: "SVG Button Clicked",
+                    value: 1, 
+                });
+            });
+        }
+    }
+    });
+
+</script>
 <?php 
 $this->session->unset_userdata('restaurant_id');
 $this->session->set_userdata('restaurant_id', $restaurant_details['id']);
@@ -593,48 +617,38 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                                     </h3>
                                                     <?php echo $menu['details']; ?>
                                                 </div>
-                                                <div class="order col-md-2 d-none d-md-block">
-                                                    <a href="#" data-toggle="modal"
-                                                        onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']);
-                                                                                                                echo $price->menu; ?>, <?php echo $menu['has_variant'] ?>)">
+<div class="order col-md-2 d-none d-md-block">
+    <a href="#" id="track-svg-click" data-toggle="modal" onclick="viewselected_menu(<?php echo $menu['id']; ?>,<?php $price = json_decode($menu['price']); echo $price->menu; ?>, <?php echo $menu['has_variant']; ?>)">
+        <?php
+            $this->load->model('user_model');
+            $user_id = $this->session->userdata('user_id');
+            $isOwner = $this->user_model->check_user_role($user_id);
+            $data['isOwner'] = $isOwner;
+        ?>
+        <?php if ($isOwner): ?>
+            <button class="btn" disabled style="width: 114px; height: 70px; padding: 0; word-wrap: break-word; font-size: 14px; color:red; display: flex; align-items: center; justify-content: center; padding-right: 65px;" disabled>
+                Owner <br> can't <br> order
+            </button>
+        <?php else: ?>
+            <!-- Apply the ID to the SVG -->
+            <svg  xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none" class="svg-mobile">
+                <g clip-path="url(#clip0_4609_18554)">
+                    <path d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M28 21V35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+                <defs>
+                    <clippath id="clip0_4609_18554">
+                        <rect width="56" height="56" fill="white" />
+                    </clippath>
+                </defs>
+            </svg>
+        <?php endif; ?>
+    </a>
+</div>
 
 
 
-                                                        <?php // Load the model
-                                                        $this->load->model('user_model');
-
-                                                        // Get the current user ID from session (assuming user ID is stored in session)
-                                                        $user_id = $this->session->userdata('user_id');
-
-                                                        // Check if the user is an owner (role_id = 3)
-                                                        $isOwner = $this->user_model->check_user_role($user_id);
-
-                                                        // Pass the result to the view
-                                                        $data['isOwner'] = $isOwner; // Pass to the view (if needed)
-                                                        // print_r($isOwner);
-                                                        ?>
-                                                        <?php if ($isOwner): ?>
-                                                            <button class="btn" disabled style="width: 114px; height: 70px; padding: 0; word-wrap: break-word;
- font-size: 14px; color:red; display: flex; align-items: center; justify-content: center; padding-right: 65px;
-" disabled>
-                                                                Owner <br> can't <br> order
-                                                            </button>
-                                                        <?php else: ?>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none" class="svg-mobile">
-                                                                <g clip-path="url(#clip0_4609_18554)">
-                                                                    <path d="M28 49C39.598 49 49 39.598 49 28C49 16.402 39.598 7 28 7C16.402 7 7 16.402 7 28C7 39.598 16.402 49 28 49Z" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                    <path d="M21 28H35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                    <path d="M28 21V35" stroke="#F54748" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                </g>
-                                                                <defs>
-                                                                    <clippath id="clip0_4609_18554">
-                                                                        <rect width="56" height="56" fill="white" />
-                                                                    </clippath>
-                                                                </defs>
-                                                            </svg>
-                                                        <?php endif; ?>
-                                                    </a>
-                                                </div>
                                             </div>
 
 
@@ -875,6 +889,13 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
             behavior: 'smooth'
         }); // Smooth scrolling effect
     }
+
+
+
+ 
 </script>
+
+
+
 
 <!-- ./Mobile app section -->

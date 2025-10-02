@@ -14,6 +14,34 @@
 
 
 </style>
+
+<script>
+       // Wait until the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+            
+       
+        const gcheckout = document.getElementById("gcheckout");
+         const currentOrigin = window.location.origin;
+
+    if (currentOrigin === "https://www.fooyes.co.uk") {
+        if (gcheckout) {
+            gcheckout.addEventListener("click", function () {
+                console.log("gcheckout");
+
+                // Send a custom event to Google Analytics 4
+                gtag("event", "checkout_click", {
+                    event_category: "item-checkout",
+                    event_label: "gcheckout",
+                    value: 1, 
+                });
+            });
+        }
+        }
+    });
+
+</script>
+
+
 <div class="col-12 order-summery-box" id="order-summary">
                 <div class="sticky-offset">
                     <h3>Order Summary</h3>
@@ -257,6 +285,7 @@
 
                             <a onclick="red(this)"
                                     data-href="<?php echo site_url('GuestCheckout?guest=1'); ?>" 
+                                    id="gcheckout"
                                     class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 color-white cursor">
                                     Guest Checkout
                                     </a>
