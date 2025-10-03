@@ -1033,27 +1033,24 @@ function continueTerms() {
 
 
 <script>
-       // Wait until the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function () {
-         const currentOrigin = window.location.origin;
+    const currentOrigin = window.location.origin;
 
     if (currentOrigin === "https://www.fooyes.co.uk") {
-       
-const trackSvg = document.getElementsByClassName("view_item");
+        const trackSvgElements = document.querySelectorAll(".view_item");
 
-        if (trackSvg) {
-            trackSvg.addEventListener("click", function () {
+        trackSvgElements.forEach(function (element) {
+            element.addEventListener("click", function () {
                 console.log("view_item clicked");
 
-                // Send a custom event to Google Analytics 4
                 gtag("event", "view_item", {
                     event_category: "menu-item",
                     event_label: "button is viewed",
-                    value: 1, 
+                    value: 1,
                 });
             });
-        }
+        });
     }
-    });
+});
 
 </script>
