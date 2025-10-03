@@ -18,12 +18,13 @@
 <script>
        // Wait until the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function () {
-            
-       
-        const gcheckout = document.getElementById("gcheckout");
-         const currentOrigin = window.location.origin;
+             const currentOrigin = window.location.origin;
 
     if (currentOrigin === "https://www.fooyes.co.uk") {
+        console.log("order_completed_button");
+       
+        const gcheckout = document.getElementById("gcheckout")[1];
+       
         if (gcheckout) {
             gcheckout.addEventListener("click", function () {
                 console.log("gcheckout");
