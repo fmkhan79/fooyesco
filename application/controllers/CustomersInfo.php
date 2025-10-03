@@ -137,6 +137,20 @@ class CustomersInfo extends Authorization
             } else {
                 $daysText = implode(', ', array_map('ucfirst', $selectedDays));
             }
+            
+
+ $message = str_replace(
+    '{discount}', 
+    '{discount}%', 
+    $message
+);
+
+// $message = str_replace('{promo_code}', '<span style="color:#ff0000;">{promo_code}</span>', $message['message_body']);
+
+
+
+
+
 
             // Replace placeholders
             $personalMessage = str_replace(
@@ -152,7 +166,7 @@ class CustomersInfo extends Authorization
                     'message_body' => $personalMessage,
                     'customer' => $cust
                 ];
-                $subject = 'New Promotion update at ' . $cust['restaurant'] . ' from Fooyes';
+                $subject = 'Your special offer from ' . $cust['restaurant'];
                 $to = $cust['email'];
                 $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, false, true);
             }
