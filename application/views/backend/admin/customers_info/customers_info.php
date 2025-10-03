@@ -114,9 +114,13 @@
 
                             <div class="form-row">
                                 <div class="col-md-12 mb-3">
+    
                                     <textarea class="form-control" name="message" id="message_input" rows="3" placeholder="<?php echo get_phrase('type_your_message'); ?>"></textarea>
                                     <small class="text-muted">
-                                        Note: Message must include <code>{customer_name}</code>, <code>{promo_code}</code>, <code>{valid_days}</code>, and <code>{discount}</code> placeholders for a valid promotion.
+                                        Note: Message must include <code>{customer_name}</code>, <code>{promo_code}</code>, <code>{valid_days}</code> and <code>{discount}</code> placeholders for a valid promotion.
+                                    </small> <br>
+                                         <small class="text-muted">
+                                       Other parameter: <code>{valid_days}</code>
                                     </small>
                                 </div>
                             </div>
@@ -272,13 +276,13 @@ $(document).ready(function () {
             return;
         }
  
-        if (!selectAllDays) {
-            if (!message.includes('{valid_days}')) {
-                alert("Your message must include the {valid_days} placeholder.");
-                e.preventDefault();
-                return;
-            }
-        }
+        // if (!selectAllDays) {
+        //     if (!message.includes('{valid_days}')) {
+        //         alert("Your message must include the {valid_days} placeholder.");
+        //         e.preventDefault();
+        //         return;
+        //     }
+        // }
 
         if (!message.includes('{discount}')) {
             alert("Your message must include the {discount} placeholder.");

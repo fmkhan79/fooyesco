@@ -962,3 +962,40 @@ function goToPaymentTable(){
     });
 
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const currentOrigin = window.location.origin;
+
+    if (currentOrigin === "https://www.fooyes.co.uk") {
+        const submitButton = document.querySelector('#billing-form button[type="submit"]');
+
+        if (submitButton) {
+            submitButton.addEventListener("click", function () {
+                const email = document.getElementById("email")?.value.trim();
+                const phone = document.getElementById("mobile")?.value.trim();
+                const fname = document.getElementById("txtfname")?.value.trim();
+                const lname = document.getElementById("txtlname")?.value.trim();
+
+                if (email && phone) {
+                    gtag("event", "customer_details", {
+                        event_category: "form_submission",
+                        event_label: "billing_step",
+                        email: email,
+                        phone: phone,
+                        first_name: fname,
+                        last_name: lname
+                    });
+
+                    console.log("GA4 event: email_phone_details_entered", {
+                        email,
+                        phone,
+                        first_name: fname,
+                        last_name: lname
+                    });
+                }
+            });
+        }
+    }
+});
+</script>

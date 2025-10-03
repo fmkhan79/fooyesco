@@ -6,7 +6,7 @@ $stripe_keys = get_payment_settings('stripe');
 $userName = $user_details['name'];
 
 // Convert product price to cent
-$stripeAmount = round($amount_to_pay * 100, 2);
+$stripeAmount = (int) round($amount_to_pay * 100);
 
 
 $values = json_decode($stripe_keys);
