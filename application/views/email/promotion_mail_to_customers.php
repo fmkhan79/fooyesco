@@ -83,6 +83,7 @@
     </style>
 </head>
 <body>
+
     <div class="container">
         <div class="header">
             <h1>Hey <?= sanitize($message['customer']['name']) ?>! 👋</h1>
@@ -96,7 +97,7 @@
         </div>
 
         <div class="info">
-            <p><strong><?= sanitize($subject) ?></strong></p>
+            <!-- <p><//?= sanitize($subject) ?></strong></p> -->
             <p><?= nl2br(sanitize($message['message_body'])) ?></p>
             <p>Visit us today: <a href="https://fooyes.co.uk/">fooyes.co.uk</a></p>
         </div>
