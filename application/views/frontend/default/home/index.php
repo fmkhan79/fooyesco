@@ -1025,3 +1025,65 @@ function continueTerms() {
     document.body.style.overflow = "auto";
 }
 </script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const currentOrigin = window.location.origin;
+
+    if (currentOrigin === "https://www.fooyes.co.uk") {
+        const trackSvgElements = document.querySelectorAll(".view_item");
+
+        trackSvgElements.forEach(function (element) {
+            element.addEventListener("click", function () {
+                console.log("view_item clicked");
+
+                gtag("event", "view_item", {
+                    event_category: "menu-item",
+                    event_label: "button is viewed",
+                    value: 1,
+                });
+            });
+        });
+    }
+});
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const currentOrigin = window.location.origin;
+
+    if (currentOrigin === "https://www.fooyes.co.uk") {
+        const searchInput = document.getElementById("address-sc");
+        const searchButton = document.getElementById("searchsc");
+        const searchNowButton = document.getElementById("searchwc");
+
+        function trackSearchEvent() {
+            const searchTerm = searchInput.value.trim();
+
+            if (searchTerm !== "") {
+                // Send event to GA4
+                gtag("event", "search_button", {
+                    event_category: "search",
+                    event_label: "user_search",
+                    searching: searchTerm
+                });
+                console.log("GA4 event sent: search_button", searchTerm);
+            }
+        }
+
+        if (searchButton) {
+            searchButton.addEventListener("click", function () {
+                trackSearchEvent();
+            });
+        }
+
+        if (searchNowButton) {
+            searchNowButton.addEventListener("click", function () {
+                trackSearchEvent();
+            });
+        }
+    }
+});
+</script>
