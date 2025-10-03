@@ -165,7 +165,7 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
                 console.log("SVG Clicked");
 
                 // Send a custom event to Google Analytics 4
-                gtag("event", "product_view", {
+                gtag("event", "add_to_cart", {
                     event_category: "menu-item",
                     event_label: "SVG Button Clicked",
                     value: 1, 

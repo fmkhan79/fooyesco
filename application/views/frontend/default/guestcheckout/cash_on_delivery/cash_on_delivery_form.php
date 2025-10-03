@@ -47,7 +47,7 @@
         console.log("order_completed_button");
 
         // Send custom GA4 event
-        gtag("event", "order_completed_via_cash", {
+        gtag("event", "purchase", {
           event_category: "order_completed_button",
           event_label: "order_completed_button",
           value: 1,

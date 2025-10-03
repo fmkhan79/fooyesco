@@ -937,3 +937,28 @@ function goToPaymentTable(){
 
 
 
+<script>
+       // Wait until the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+         const currentOrigin = window.location.origin;
+
+    if (currentOrigin === "https://www.fooyes.co.uk") {
+       
+        const trackSvg = document.getElementById("checking");
+
+        if (trackSvg) {
+            trackSvg.addEventListener("click", function () {
+                console.log("address info added");
+
+                // Send a custom event to Google Analytics 4
+                gtag("event", "add_shipping_info", {
+                    event_category: "menu-item",
+                    event_label: "Shipping info added",
+                    value: 1, 
+                });
+            });
+        }
+    }
+    });
+
+</script>

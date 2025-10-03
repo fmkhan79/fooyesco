@@ -640,7 +640,9 @@
                     ?>
                     <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5 <?php echo implode(' ', $cuisine_classes); ?>">
                         <div class="order-img-box main-img">
-                            <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
+                            <a
+                            class="view_item"
+                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
                                 <img src="<?php echo base_url('Uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>" alt="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250" fill="none">
                                     <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)" stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
@@ -1024,4 +1026,34 @@ function continueTerms() {
     // Enable scroll again
     document.body.style.overflow = "auto";
 }
+
+       // Wait until the DOM is fully loaded
+  
+</script>
+
+
+<script>
+       // Wait until the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+         const currentOrigin = window.location.origin;
+
+    if (currentOrigin === "https://www.fooyes.co.uk") {
+       
+        const trackSvg = document.getElementById("view_item");
+
+        if (trackSvg) {
+            trackSvg.addEventListener("click", function () {
+                console.log("view_item clicked");
+
+                // Send a custom event to Google Analytics 4
+                gtag("event", "view_item", {
+                    event_category: "menu-item",
+                    event_label: "button is viewed",
+                    value: 1, 
+                });
+            });
+        }
+    }
+    });
+
 </script>

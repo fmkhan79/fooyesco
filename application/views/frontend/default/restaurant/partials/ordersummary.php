@@ -29,7 +29,7 @@
                 console.log("gcheckout");
 
                 // Send a custom event to Google Analytics 4
-                gtag("event", "checkout_click", {
+                gtag("event", "begin_checkout", {
                     event_category: "item-checkout",
                     event_label: "gcheckout",
                     value: 1, 
@@ -284,6 +284,7 @@
 
 
                             <a onclick="red(this)"
+                            
                                     data-href="<?php echo site_url('GuestCheckout?guest=1'); ?>" 
                                     id="gcheckout"
                                     class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 color-white cursor">
