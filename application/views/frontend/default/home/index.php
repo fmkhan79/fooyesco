@@ -1039,7 +1039,7 @@ function continueTerms() {
 
     if (currentOrigin === "https://www.fooyes.co.uk") {
        
-        const trackSvg = document.getElementById("view_item");
+        const trackSvg = document.getElementByClassName("view_item");
 
         if (trackSvg) {
             trackSvg.addEventListener("click", function () {
