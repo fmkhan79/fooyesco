@@ -17,7 +17,7 @@ if($host != 'fooyes' && $host != 'staging'){
 </section>
 
 <?php }else{ ?>
-<section class="detail-wbox mt-4 mb-2 " >
+<section class="detail-wbox mt-5 mb-2 " >
     <div class="container bg-white text-dark border border-light">
 
         <h1 style="font-size:40px; font-weight:600;" class="  text-dark"><span class="text-privacy">Terms &</span>  <span class="text-policy">Conditions</span></h1>

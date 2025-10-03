@@ -104,7 +104,7 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
   display: none;
   position: fixed; /* Fix button to the screen */
     bottom: 20px; /* Position from the bottom */
-    right: 30px;
+    right: 45%;
     /* Ensure it's centered */
     z-index: 99; /* Ensure it's on top of other content */
     background-color: #ff4d4d; /* Button background color */
@@ -182,7 +182,7 @@ $this->session->set_userdata('restaurant_id', $restaurant_details['id']);
 
 ?>
 
-<section class="detail-wbox mt-4 d-none d-md-block">
+<section class="detail-wbox mt-5 d-none d-md-block">
 
     <div class="container bg-white text-dark border border-light">
         <div class="row">
@@ -467,7 +467,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 <!-- ./Category tabs with scrool nav -->
 
-<div class="container mt-5">
+<div class="container mt-5 mt-md-0">
     <!-- Accordion Wrapper -->
     <div class="accordion" id="accordionExample">
         <div class="accordion-item d-md-none">
@@ -494,10 +494,10 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 <!-- Menu section -->
 
 
-<section class="order-detail-listing mt-4 mb-2">
-    <div class="container p-md-4 text-dark p-0">
+<section class="order-detail-listing mt-0 mb-2">
+    <div class="container px-4 pb-4 text-dark p-0 pt-md-0">
         <div class="d-md-flex align-items-start">
-            <div class="col-md-8  mr-md-4">
+            <div class="col-md-8  mr-md-5">
 
                 <?php
 
@@ -708,7 +708,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
             </div>
 <!-- for screens -->
-<div class="d-none d-md-flex">
+<div class="d-none d-md-flex mt-5">
     <?php include(__DIR__ . '/partials/ordersummary.php'); ?>
 </div>
 
