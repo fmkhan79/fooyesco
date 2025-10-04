@@ -145,27 +145,24 @@ class CustomersInfo extends Authorization
     $message
 );
 
-// $message = str_replace('{promo_code}', '<span style="color:#ff0000;">{promo_code}</span>', $message['message_body']);
-
-
-
-
-
 
             // Replace placeholders
-            $personalMessage = str_replace(
-                ['{customer_name}', '{promo_code}', '{discount}', '{valid_days}'],
-                [$cust['name'],$code, $discount, $daysText],
-                $message
-            );
+  $personalMessage = str_replace(
+    ['{customer_name}', '{discount}', '{valid_days}'],
+    [$cust['name'], $discount, $daysText],
+    $message
+);
             $formattedPhone = preg_replace('/^0/', '+44', $cust['phone']);
 
             // Send Email
             if ($send_email) {
-                $mailData = [   
-                    'message_body' => $personalMessage,
-                    'customer' => $cust
-                ];
+               $mailData = [
+    'message_body' => $personalMessage,
+    'promo_code'   => $code,
+    'customer'     => $cust,
+    'discount'     => $discount,
+    'valid_days'   => $daysText
+];
                 $subject = 'Your special offer from ' . $cust['restaurant'];
                 $to = $cust['email'];
                 $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, false, true);

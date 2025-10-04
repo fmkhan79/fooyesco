@@ -117,7 +117,7 @@
     
                                     <textarea class="form-control" name="message" id="message_input" rows="3" placeholder="<?php echo get_phrase('type_your_message'); ?>"></textarea>
                                     <small class="text-muted">
-                                        Note: Message must include <code>{customer_name}</code>, <code>{promo_code}</code>, <code>{valid_days}</code> and <code>{discount}</code> placeholders for a valid promotion.
+                                        Note: Message must include <code>{customer_name}</code>, <code>{promo_code}</code> and <code>{discount}</code> placeholders for a valid promotion.
                                     </small> <br>
                                          <small class="text-muted">
                                        Other parameter: <code>{valid_days}</code>
