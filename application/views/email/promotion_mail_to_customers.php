@@ -74,6 +74,13 @@
             color: #999;
         }
 
+        /* Style promo code span */
+        .promo-code {
+            color: #f54748;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
         @media only screen and (max-width: 600px) {
             .container { width: 90%; }
             .header h1 { font-size: 20px; }
@@ -97,8 +104,17 @@
         </div>
 
         <div class="info">
-            <!-- <p><//?= sanitize($subject) ?></strong></p> -->
-            <p><?= nl2br(sanitize($message['message_body'])) ?></p>
+            <?php
+                // Sanitize original message
+                $safeMessage = sanitize($message['message_body']);
+                // Replace {promo_code} placeholder with styled promo code
+                $styledMessage = str_replace(
+                    '{promo_code}',
+                    '<span class="promo-code">' . sanitize($message['promo_code']) . '</span>',
+                    $safeMessage
+                );
+            ?>
+            <p><?= nl2br($styledMessage) ?></p>
             <p>Visit us today: <a href="https://fooyes.co.uk/">fooyes.co.uk</a></p>
         </div>
 
