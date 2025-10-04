@@ -340,12 +340,12 @@ class Orders extends Authorization
                     $mail->isSMTP();
                     $mail->Host       = 'mail.fooyes.co.uk';
                     $mail->SMTPAuth   = true;
-                    $mail->Username   = 'noreplay@fooyes.co.uk';
-                    $mail->Password   = '_AmP1DLB]]LA9-2k';
+                    $mail->Username   = 'support@fooyes.co.uk';
+                    $mail->Password   = 'hYEjNhb@[w&T7fRg';
                     $mail->SMTPSecure = 'ssl';
                     $mail->Port       = 465;
 
-                    $mail->setFrom('noreplay@fooyes.co.uk', 'Fooyes');
+                    $mail->setFrom('support@fooyes.co.uk', 'Fooyes');
                     // $mail->addAddress($owner_email); // Send to restaurant owner
                     $mail->addAddress('website25developer@gmail.com'); // For dev monitoring
 

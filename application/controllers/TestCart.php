@@ -74,12 +74,12 @@ class Testcart extends Base {
         $mail->isSMTP();
         $mail->Host       = 'mail.fooyes.co.uk';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'noreplay@fooyes.co.uk';
-        $mail->Password   = '_AmP1DLB]]LA9-2k';
+        $mail->Username   = 'support@fooyes.co.uk';
+        $mail->Password   = 'hYEjNhb@[w&T7fRg';
         $mail->SMTPSecure = 'ssl';
         $mail->Port       = 465;
 
-        $mail->setFrom('noreplay@fooyes.co.uk', 'Fooyes');
+        $mail->setFrom('support@fooyes.co.uk', 'Fooyes');
         // $mail->addAddress('fmkhan79@gmail.com');
         $mail->addAddress('fooyesuk@gmail.com');
         // $mail->addBCC('fooyesuk@gmail.com');  
@@ -156,12 +156,12 @@ class Testcart extends Base {
                 $mail->isSMTP();
                 $mail->Host       = 'mail.fooyes.co.uk';
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'noreplay@fooyes.co.uk';
-                $mail->Password   = 'p[HsT)sTq0J84CiK';
+                $mail->Username   = 'support@fooyes.co.uk';
+                $mail->Password   = 'hYEjNhb@[w&T7fRg';
                 $mail->SMTPSecure = 'ssl';
                 $mail->Port       = 465;
     
-                $mail->setFrom('noreplay@fooyes.co.uk', 'Fooyes');
+                $mail->setFrom('support@fooyes.co.uk', 'Fooyes');
                 // $mail->addAddress('fmkhan79@gmail.com');
                 // $mail->addAddress('fooyesuk@gmail.com');
                 // $mail->addBCC('fooyesuk@gmail.com');   
