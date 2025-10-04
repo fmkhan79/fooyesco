@@ -43,7 +43,7 @@
       orderCompletedBtn.addEventListener("click", function () {
         const currentOrigin = window.location.origin;
 
-    if (currentOrigin === "https://www.fooyes.co.uk") {
+    if (currentOrigin === "https://www.fooyes.co.uk" || currentOrigin === "https://www.chilli-hut-march.co.uk") {
         console.log("order_completed_button");
 
         // Send custom GA4 event

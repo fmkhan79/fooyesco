@@ -20,7 +20,7 @@
     document.addEventListener('DOMContentLoaded', function () {
              const currentOrigin = window.location.origin;
 
-    if (currentOrigin === "https://www.fooyes.co.uk") {
+    if (currentOrigin === "https://www.fooyes.co.uk" || currentOrigin === "https://www.chilli-hut-march.co.uk") {
         console.log("order_completed_button");
        
         const gcheckout = document.getElementById("gcheckout")[1];
@@ -32,7 +32,7 @@
                 // Send a custom event to Google Analytics 4
                 gtag("event", "begin_checkout", {
                     event_category: "item-checkout",
-                    event_label: "gcheckout",
+                    event_label: "gcheckout", 
                     value: 1, 
                 });
             });
