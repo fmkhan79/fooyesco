@@ -156,7 +156,7 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
     document.addEventListener('DOMContentLoaded', function () {
          const currentOrigin = window.location.origin;
 
-    if (currentOrigin === "https://www.fooyes.co.uk") {
+    if (currentOrigin === "https://www.fooyes.co.uk" || currentOrigin === "https://www.chilli-hut-march.co.uk") {
        
         const trackSvg = document.getElementById("track-svg-click");
 

@@ -942,7 +942,7 @@ function goToPaymentTable(){
     document.addEventListener('DOMContentLoaded', function () {
          const currentOrigin = window.location.origin;
 
-    if (currentOrigin === "https://www.fooyes.co.uk") {
+    if (currentOrigin === "https://www.fooyes.co.uk" || currentOrigin === "https://www.chilli-hut-march.co.uk") {
        
         const trackSvg = document.getElementById("checking");
 
@@ -967,7 +967,7 @@ function goToPaymentTable(){
 document.addEventListener("DOMContentLoaded", function () {
     const currentOrigin = window.location.origin;
 
-    if (currentOrigin === "https://www.fooyes.co.uk") {
+    if (currentOrigin === "https://www.fooyes.co.uk" || currentOrigin === "https://www.chilli-hut-march.co.uk") {
         const submitButton = document.querySelector('#billing-form button[type="submit"]');
 
         if (submitButton) {
