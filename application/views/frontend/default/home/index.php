@@ -640,9 +640,7 @@
                     ?>
                     <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5 <?php echo implode(' ', $cuisine_classes); ?>">
                         <div class="order-img-box main-img">
-                            <a
-                            class="view_item"
-                             href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
+                            <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
                                 <img src="<?php echo base_url('Uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>" alt="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250" fill="none">
                                     <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)" stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
@@ -1026,9 +1024,6 @@ function continueTerms() {
     // Enable scroll again
     document.body.style.overflow = "auto";
 }
-
-       // Wait until the DOM is fully loaded
-  
 </script>
 
 
@@ -1036,7 +1031,7 @@ function continueTerms() {
     document.addEventListener('DOMContentLoaded', function () {
     const currentOrigin = window.location.origin;
 
-    if (currentOrigin === "https://www.fooyes.co.uk") {
+    if (currentOrigin === "https://www.fooyes.co.uk" || currentOrigin === "https://www.chilli-hut-march.co.uk") {
         const trackSvgElements = document.querySelectorAll(".view_item");
 
         trackSvgElements.forEach(function (element) {
@@ -1059,7 +1054,7 @@ function continueTerms() {
 document.addEventListener("DOMContentLoaded", function () {
     const currentOrigin = window.location.origin;
 
-    if (currentOrigin === "https://www.fooyes.co.uk") {
+    if (currentOrigin === "https://www.fooyes.co.uk" || currentOrigin === "https://www.chilli-hut-march.co.uk") {
         const searchInput = document.getElementById("address-sc");
         const searchButton = document.getElementById("searchsc");
         const searchNowButton = document.getElementById("searchwc");

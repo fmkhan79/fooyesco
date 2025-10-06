@@ -16,31 +16,40 @@
 </style>
 
 <script>
-       // Wait until the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function () {
-             const currentOrigin = window.location.origin;
+        const currentOrigin = window.location.origin;
+            if (currentOrigin === "https://www.fooyes.co.uk" || currentOrigin === "https://www.chilli-hut-march.co.uk") {
 
-    if (currentOrigin === "https://www.fooyes.co.uk" || currentOrigin === "https://www.chilli-hut-march.co.uk") {
-        console.log("order_completed_button");
-       
-        const gcheckout = document.getElementById("gcheckout")[1];
-       
-        if (gcheckout) {
-            gcheckout.addEventListener("click", function () {
-                console.log("gcheckout");
 
-                // Send a custom event to Google Analytics 4
-                gtag("event", "begin_checkout", {
-                    event_category: "item-checkout",
-                    event_label: "gcheckout", 
-                    value: 1, 
-                });
+        const guestCheckoutBtns = document.querySelectorAll(".guestCheckoutBtn");
+        // Check if at least one exists
+        if (guestCheckoutBtns.length >= 0) {
+
+            // Add click listeners to index 0 and 1 if they exist
+            [0, 1].forEach(function(index) {
+                const btn = guestCheckoutBtns[index];
+                if (btn) {
+                    btn.addEventListener("click", function (event) {
+                        console.log(`guestCheckoutBtn[${index}] clicked`);
+
+                        // Send GA4 event
+                        gtag("event", "begin_checkout", {
+                            event_category: "item-checkout",
+                            event_label: `gcheckout-${index}`,  // Optional: label per button
+                            value: 1,
+                        });
+
+                        // Delay redirect to ensure GA event fires before navigating
+                          // Adjust delay as needed (500ms is an example)
+                    });
+                }
             });
         }
-        }
+            }
     });
-
 </script>
+
+
 
 
 <div class="col-12 order-summery-box" id="order-summary">
@@ -287,7 +296,7 @@
                             <a onclick="red(this)"
                             
                                     data-href="<?php echo site_url('GuestCheckout?guest=1'); ?>" 
-                                    id="gcheckout"
+                                   
                                     class="guestCheckoutBtn d-block order-red-btn-main text-center mt-4 color-white cursor">
                                     Guest Checkout
                                     </a>
