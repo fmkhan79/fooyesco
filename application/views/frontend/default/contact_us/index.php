@@ -181,18 +181,26 @@ foreach ($reCaptcha as $row) {
 
 
 <?php 
+
+$host = get_subdomain();
+$checkSlugInDb = $this->restaurant_model->find_slug($host);
+
+if($checkSlugInDb){
+    $restaurant = $this->restaurant_model->get_by_slug($checkSlugInDb);
+}
+
 $restaurant_ids = $this->cart_model->get_restaurant_ids();
 
 if (count($restaurant_ids) > 0) {
     $restaurant = $this->restaurant_model->get_by_id($restaurant_ids[0]);
 
 }
+
 $isFooyes = false;
 $host = get_subdomain();
-
 if($host === 'fooyes' || $host === 'staging')
     $isFooyes=true;
-?>
+
 ?>
 
 
