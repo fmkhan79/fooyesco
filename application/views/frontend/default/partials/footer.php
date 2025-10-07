@@ -18,9 +18,18 @@ if($host === 'fooyes' || $host === 'staging')
                     $host = get_subdomain();
                     if($host != 'fooyes' && $host != 'staging'){
                 ?>
-                <h3 style="font-weight: 800; color: #343a40;;">Powered By</h3>
+                <h5 style="font-weight: 800; color: #343a40; font-size:16px;">Powered By</h5>
                 <?php }?>
-                <h3>FooYes</h3>
+                <!-- <h3>FooYes</h3> -->
+                 <?php if($isFooyes): ?>
+                       <img width="80px"  src="<?php echo base_url('uploads/system/restaurant.png'); ?>"
+                                class="system-icon mb-3">
+                                <?php else: ?>
+                                    <img width="80px" src="<?php echo base_url('uploads/system/restaurant.png'); ?>"
+                                class="system-icon mb-3">
+                                <?php endif; ?>
+
+
                 <p>Bringing you the best flavors with fresh ingredients and passion. </p>
                 <ul class="footer-social-links">
                     <li><a href="<?php echo sanitize($social_links['facebook']); ?>"><span
@@ -44,12 +53,14 @@ if($host === 'fooyes' || $host === 'staging')
                             <?php echo site_phrase('about_us'); ?>
                         </a></li>
                     <?php }?>
+                      <?php if($isFooyes): ?>
                     <li><a href="<?php echo site_url('privacy-policy'); ?>">
                             <?php echo site_phrase('privacy_policy'); ?>
                         </a></li>
                     <li><a href="<?php echo site_url('terms-and-conditions'); ?>">
                             <?php echo site_phrase('terms_and_conditions'); ?>
                         </a></li>
+                          <?php endif; ?>
                 </ul>
             </div>
             <div class="col-md-2 company-box">
@@ -66,11 +77,20 @@ if($host === 'fooyes' || $host === 'staging')
                 <li><a href="<?php echo site_url('terms-of-use'); ?>">
                             <?php echo site_phrase('terms_of_use'); ?>
                         </a></li>
-                        <?php if(!$isFooyes): ?>
+                        <?php if($isFooyes): ?>
                 <li><a href="<?php echo site_url('solutions'); ?>">
                             <?php echo site_phrase('solutions'); ?>
                         </a></li>
                         <?php endif; ?>
+                            <?php if(!$isFooyes): ?>
+                <li><a href="<?php echo site_url('privacy-policy'); ?>">
+                            <?php echo site_phrase('privacy_policy'); ?>
+                        </a></li>
+                    <li><a href="<?php echo site_url('terms-and-conditions'); ?>">
+                            <?php echo site_phrase('terms_and_conditions'); ?>
+                        </a></li>
+                        <?php endif; ?> 
+
 
                 </ul>
             </div>

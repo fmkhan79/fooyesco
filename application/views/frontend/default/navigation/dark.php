@@ -102,9 +102,15 @@ if($host === 'fooyes' || $host === 'staging')
                                         </a>
                                     </li>
                                     <li class="nav-item login-btn">
-                                        <a class="nav-link"  href="<?php echo site_url('become-a-partner'); ?>">
+                                         <?php if($isFooyes): ?>
+                         <a class="nav-link"  href="<?php echo site_url('become-a-partner'); ?>">
                                               <?php echo site_phrase(ucwords('book_a_demo', true)); ?>
                                         </a>
+                                <?php else: ?>
+                                     <a class="nav-link d-none"  href="<?php echo site_url('become-a-partner'); ?>">
+                                              <?php echo site_phrase(ucwords('book_a_demo', true)); ?>
+                                <?php endif; ?>
+                                     
                                     </li>
                                 </div>
                             </ul>
