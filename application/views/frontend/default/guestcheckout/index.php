@@ -617,7 +617,11 @@ $stripe_settings = json_decode($stripe_settings);
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="text-dark"><span class="order_type">Address</span> Finder</h4>
-      </div>
+               <button type="button" class="close" onclick="history.back();" style="font-size: 1.5rem; cursor: pointer; color: #000; background: none; border: none;">
+                        <span>&times;</span>
+                        </button>
+                  </div>
+  
 
       <div class="modal-body">
         <div id="address-option">
@@ -938,29 +942,35 @@ function goToPaymentTable(){
 
 
 <script>
-       // Wait until the DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', function () {
-         const currentOrigin = window.location.origin;
+document.addEventListener('DOMContentLoaded', function () {
+    const currentOrigin = window.location.origin;
 
     if (currentOrigin === "https://www.fooyes.co.uk" || currentOrigin === "https://www.chilli-hut-march.co.uk") {
-       
-        const trackSvg = document.getElementById("checking");
+        const confirmButton = document.getElementById("checking");
 
-        if (trackSvg) {
-            trackSvg.addEventListener("click", function () {
-                console.log("address info added");
+        if (confirmButton) {
+            confirmButton.addEventListener("click", function () {
+                const addressField = document.getElementById("to");
 
-                // Send a custom event to Google Analytics 4
-                gtag("event", "add_shipping_info", {
-                    event_category: "menu-item",
-                    event_label: "Shipping info added",
-                    value: 1, 
-                });
+                if (addressField) {
+                    const enteredAddress = addressField.value.trim();
+
+                    if (enteredAddress !== "") {
+                        console.log("Address info added: " + enteredAddress);
+
+                        // Send event to GA4
+                        gtag("event", "add_shipping_info", {
+                            event_category: "menu-item",
+                            event_label: "Shipping address entered",
+                            value: 1,
+                            address: enteredAddress  
+                        });
+                    }
+                }
             });
         }
     }
-    });
-
+});
 </script>
 
 <script>

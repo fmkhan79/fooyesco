@@ -1,4 +1,13 @@
 <!--============================= FOOTER =============================-->
+<?php 
+
+$isFooyes = false;
+$host = get_subdomain();
+
+if($host === 'fooyes' || $host === 'staging')
+    $isFooyes=true;
+?>
+
 <?php $social_links = json_decode(get_website_settings('social_links'), true); ?>
 <footer>
 
@@ -57,9 +66,12 @@
                 <li><a href="<?php echo site_url('terms-of-use'); ?>">
                             <?php echo site_phrase('terms_of_use'); ?>
                         </a></li>
+                        <?php if(!$isFooyes): ?>
                 <li><a href="<?php echo site_url('solutions'); ?>">
                             <?php echo site_phrase('solutions'); ?>
                         </a></li>
+                        <?php endif; ?>
+
                 </ul>
             </div>
             <div class="col-md-4">
@@ -115,5 +127,7 @@ function backToTop() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
+
 </script>
+
 <!--============================= FOOTER =============================-->
