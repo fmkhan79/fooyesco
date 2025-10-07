@@ -180,6 +180,22 @@ foreach ($reCaptcha as $row) {
 ?>
 
 
+<?php 
+$restaurant_ids = $this->cart_model->get_restaurant_ids();
+
+if (count($restaurant_ids) > 0) {
+    $restaurant = $this->restaurant_model->get_by_id($restaurant_ids[0]);
+
+}
+$isFooyes = false;
+$host = get_subdomain();
+
+if($host === 'fooyes' || $host === 'staging')
+    $isFooyes=true;
+?>
+?>
+
+
 <section class="detail-wbox mt-5 mb-2">
     <div class="container bg-white text-dark border border-light">
         
@@ -304,7 +320,7 @@ foreach ($reCaptcha as $row) {
     </div>
     <?php } ?>
 
-
+<!-- 
     <?php if (!empty($restaurant)) { ?>
                         <h5 class="map-heading">Opening Hours</h5>
                 <table cellpadding="5" border="1">
@@ -334,9 +350,8 @@ foreach ($reCaptcha as $row) {
                         ?>
                     </tbody>
                 </table>
-            <?php } ?>
+            <?php } ?> -->
     <!-- General Information and Contact Form -->
-     <?php if (empty($restaurant) || !is_array($restaurant)) { ?>
     <div class="row general-info-section">
         <div class="col-md-6 general-info-left">
             <h5 class="general-info-heading">General Information</h5>
@@ -370,7 +385,6 @@ foreach ($reCaptcha as $row) {
             </form>
         </div>
     </div>
-     <?php } ?>
 
         <!-- <h4 class="mt-5 mb-5 text-dark"><?php echo site_phrase('contact_us', true) ?></h4>
         <div class="about-txt my-4 py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right">
@@ -447,6 +461,7 @@ foreach ($reCaptcha as $row) {
 <section class="before-footer mt-4">
     <div class="container" style="max-width: 1000px!important">
         <div class="d-md-flex ">
+             <?php if ($isFooyes): ?>
             <div class="col-md-6">
                 <h3>Join the <span class="red">Fooyes</span> Community </span></h3>
                 <p>Follow us on social media and sign up for exclusive offers, new menu launches, and foodie events.</p>
@@ -455,6 +470,8 @@ foreach ($reCaptcha as $row) {
     <p><i class="fas fa-envelope fooyes-icon"></i> <strong>Email:</strong> <a href="mailto:support@fooyes.co.uk" style="color:#191919">support@fooyes.co.uk</a></p>
     <p style="font-size:18px"> <b>Delicious moments start here. Welcome to Fooyes UK!</b></p>
             </div>
+ <?php endif; ?>
+
             <div class="col-md-6 mob-hide"><img class="img-fluid"
                     src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" /></div>
         </div>
