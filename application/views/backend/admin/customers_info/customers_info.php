@@ -124,7 +124,15 @@
                                     </small>
                                 </div>
                             </div>
-
+             <div class="form-row">
+                                <div class="col-md-12 mb-3">
+        <label class="form-check-label mb-2" for="add_on_by_default">
+                                                <?php echo get_phrase('order_now_redirect_link'); ?>
+                                            </label>
+                 <input class="form-control" name="url" rows="3" placeholder="<?php echo get_phrase('order_now_redirect_link'); ?>"/>
+                                    
+                                </div>
+                            </div>
                             <div class="form-row mt-2">
                                 <div class="col-md-12 text-right">
                                     <button type="submit" class="btn btn-primary">

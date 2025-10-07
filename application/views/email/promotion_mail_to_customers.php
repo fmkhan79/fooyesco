@@ -115,7 +115,16 @@
                 );
             ?>
             <p><?= nl2br($styledMessage) ?></p>
-            <p>Visit us today: <a href="https://fooyes.co.uk/">fooyes.co.uk</a></p>
+            <!-- <p>Visit us today:     
+<a href="https://fooyes.co.uk/"><pre><//?php print_r($url); ?></pre>
+ fooyes.co.uk</a></p> -->
+<p>
+  Order Here:
+  <a href="<?= sanitize($message['url']); ?>" target="_blank" rel="noopener noreferrer">
+    <?= sanitize($message['url']); ?>
+  </a>
+</p>
+
         </div>
 
         <div class="footer">

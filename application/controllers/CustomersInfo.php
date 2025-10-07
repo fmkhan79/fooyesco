@@ -92,7 +92,7 @@ class CustomersInfo extends Authorization
         $selectedDays     = json_decode($selectedDaysJson, true);
 
         $customers = json_decode($customerDataJson, true);
-
+        $url = $this->input->post('url');
         if (!$customers || empty($message)) {
             $this->session->set_flashdata('error', 'No customer selected or message is empty.');
             redirect('customers-info/index');
@@ -124,7 +124,8 @@ class CustomersInfo extends Authorization
                 'saturday'   => in_array('saturday', $selectedDays) ? 1 : 0,
                 'sunday'     => in_array('sunday', $selectedDays) ? 1 : 0,
                 'add_on_by_default' => $selected_discount == 'default' ? 1 : 0,
-                'only_promo' => $selected_discount == 'promo' ? 1 : 0
+                'only_promo' => $selected_discount == 'promo' ? 1 : 0,
+                'url' =>  $url
             ];
 
             $this->db->insert('promo_codes', $promoData);
@@ -161,8 +162,10 @@ class CustomersInfo extends Authorization
     'promo_code'   => $code,
     'customer'     => $cust,
     'discount'     => $discount,
-    'valid_days'   => $daysText
+    'valid_days'   => $daysText,
+    'url' => $url
 ];
+
                 $subject = 'Your special offer from ' . $cust['restaurant'];
                 $to = $cust['email'];
                 $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, false, true);
