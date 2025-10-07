@@ -22,10 +22,10 @@ if($host === 'fooyes' || $host === 'staging')
                 <?php }?>
                 <!-- <h3>FooYes</h3> -->
                  <?php if($isFooyes): ?>
-                       <img width="80px"  src="<?php echo base_url('uploads/system/restaurant.png'); ?>"
+                       <img width="80px"  src="<?php echo base_url('uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png'); ?>"
                                 class="system-icon mb-3">
                                 <?php else: ?>
-                                    <img width="80px" src="<?php echo base_url('uploads/system/restaurant.png'); ?>"
+                                    <img width="80px" src="<?php echo base_url('uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png'); ?>"
                                 class="system-icon mb-3">
                                 <?php endif; ?>
 
