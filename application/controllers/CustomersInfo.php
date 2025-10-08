@@ -149,8 +149,8 @@ class CustomersInfo extends Authorization
 
             // Replace placeholders
   $personalMessage = str_replace(
-    ['{customer_name}', '{discount}', '{valid_days}'],
-    [$cust['name'], $discount, $daysText],
+    ['{customer_name}', '{discount}', '{valid_days}', '{promo_code}'],
+    [$cust['name'], $discount, $daysText, $code],
     $message
 );
             $formattedPhone = preg_replace('/^0/', '+44', $cust['phone']);
@@ -170,7 +170,8 @@ class CustomersInfo extends Authorization
                 $to = $cust['email'];
                 $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, false, true);
             }
-
+// print_r($personalMessage);
+// die();
                         // Send SMS using Twilio via cURL
                          // Send SMS using Twilio via cURL
                         if ($send_sms && !empty($cust['phone'])) {
@@ -179,9 +180,10 @@ class CustomersInfo extends Authorization
                             $data = http_build_query([
                                 'From' => "Fooyes",
                                 'To'   => $formattedPhone, 
-                                'Body' => $personalMessage
+                                'Body' => $personalMessage,
+                                
                             ]);
-
+                            
                             $ch = curl_init();
 
                             curl_setopt($ch, CURLOPT_URL, $url);
@@ -192,6 +194,7 @@ class CustomersInfo extends Authorization
 
                             $response = curl_exec($ch);
 
+                
                             if (curl_errno($ch)) {
                                 log_message('error', 'Twilio SMS CURL Error: ' . curl_error($ch));
                             } else {
