@@ -147,7 +147,7 @@ class CustomersInfo extends Authorization
 );
 
 if ($send_sms) {
-     $personalMessage = str_replace(
+     $smspersonalMessage = str_replace(
     ['{customer_name}', '{discount}', '{valid_days}', '{promo_code}'],
     [$cust['name'], $discount, $daysText, $code],
     $message
@@ -161,6 +161,9 @@ if ($send_email) {
     $message
 );
 }
+
+// print_r($personalMessage);
+
 //             // Replace placeholders
 //   $personalMessage = str_replace(
 //     ['{customer_name}', '{discount}', '{valid_days}', '{promo_code}'],
@@ -194,7 +197,7 @@ if ($send_email) {
                             $data = http_build_query([
                                 'From' => "Fooyes",
                                 'To'   => $formattedPhone, 
-                                'Body' => $personalMessage,
+                                'Body' => $smspersonalMessage,
                                 
                             ]);
                             
