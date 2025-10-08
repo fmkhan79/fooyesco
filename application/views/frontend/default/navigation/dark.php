@@ -1,9 +1,4 @@
 <?php 
-$restaurant_ids = $this->cart_model->get_restaurant_ids();
-
-if (count($restaurant_ids) > 0) {
-    $restaurant_details = $this->restaurant_model->get_by_id($restaurant_ids[0]);
-}
 
 $isFooyes = false;
 $host = get_subdomain();
@@ -109,6 +104,7 @@ if($host === 'fooyes' || $host === 'staging')
                                 <?php else: ?>
                                      <a class="nav-link d-none"  href="<?php echo site_url('become-a-partner'); ?>">
                                               <?php echo site_phrase(ucwords('book_a_demo', true)); ?>
+                                </a>
                                 <?php endif; ?>
                                      
                                     </li>

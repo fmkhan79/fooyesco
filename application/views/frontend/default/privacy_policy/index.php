@@ -1,7 +1,6 @@
 <!-- NAVIGATION BAR -->
 <?php include APPPATH . 'views/frontend/default/navigation/dark.php'; ?>
 
-
 <?php 
 $host = get_subdomain();
 if($host != 'fooyes' && $host != 'staging'){
@@ -17,7 +16,6 @@ if($host != 'fooyes' && $host != 'staging'){
 </section>
 
 <?php }else{ ?>
-
     <section class="detail-wbox mt-5 mb-2">
     <div class="container bg-white text-dark border border-light">
 
@@ -112,7 +110,6 @@ if($host != 'fooyes' && $host != 'staging'){
 </section>
 
 <?php } ?>
-
 <section class="dt-hide">
     <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>"/>
 </section>
