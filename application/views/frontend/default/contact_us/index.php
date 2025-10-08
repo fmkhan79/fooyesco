@@ -227,7 +227,10 @@ if($host === 'fooyes' || $host === 'staging')
             <h4 class="contact-heading">Contact Us</h4>
             <?php if (!empty($restaurant)) { ?>
                 <p class="contact-timing">
-                    <?= $restaurant['restaurant_about'] ?>
+                     Monday to Friday: 9AM to 5PM<br>
+                    Saturday: 11AM to 5PM<br>
+                    Sunday: 12AM to 5PM
+                    <!-- <//?= $restaurant['restaurant_about'] ?> -->
                 </p>
             <?php } else{ ?>            
                 <p class="contact-timing">
@@ -247,18 +250,18 @@ if($host === 'fooyes' || $host === 'staging')
                                 <i class="fas fa-phone contact-icon"></i> 
                                 <div class="">
                                     <a href="https://wa.me/+44<?= $restaurant['phone'] ?>" target="_blank" class="contact-detail-text text-dark">Tel: <?= $restaurant['phone'] ?></a><br>
-                                    <a href="mailto:<?= $restaurant['owner_email'] ?>" class="contact-detail-text text-dark">Email: <?= $restaurant['owner_email'] ?></a>
+                                    
                                 </div>
                             </li>
                         </div>
                         <div class="col-md-6 my-2">
-                            <li><i class="fas fa-file-alt contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Support Forum <br> For 24hr</a></li>
+                            <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:<?= $restaurant['owner_email'] ?>" class="contact-detail-text text-dark">Email: <?= $restaurant['owner_email'] ?></a></li>
                         </div>
                         <div class="col-md-6 my-2">
                             <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant['address'] ?></span></li>
                         </div>
                         <div class="col-md-6 my-2">
-                            <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li>
+                            <!-- <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li> -->
                         </div>
                     </div>
                     <!-- <li><i class="fab fa-phone contact-icon"></i> <a href="https://wa.me/+44<?= $restaurant['phone'] ?>" target="_blank" class="contact-detail-text text-dark"> <?= $restaurant['phone'] ?></a></li>
@@ -271,18 +274,18 @@ if($host === 'fooyes' || $host === 'staging')
                                 <i class="fas fa-phone contact-icon"></i> 
                                 <div class="">
                                     <a href="https://wa.me/+447438797814" target="_blank" class="contact-detail-text text-dark">Tel: 07438797814</a><br>
-                                    <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Email: support@fooyes.co.uk</a>
+                                   
                                 </div>
                             </li>
                         </div>
                         <div class="col-md-6 my-2">
-                            <li><i class="fas fa-file-alt contact-icon"></i> <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Support Forum <br> For 24hr</a></li>
+                            <li><i class="fas fa-envelope contact-icon"></i>  <a href="mailto:support@fooyes.co.uk" class="contact-detail-text text-dark">Email: support@fooyes.co.uk</a></li>
                         </div>
                         <div class="col-md-6 my-2">
                             <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text">110 Eastern Ave, Peterborough PE1 4PW, UK</span></li>
                         </div>
                         <div class="col-md-6 my-2">
-                            <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li>
+                            <!-- <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li> -->
                         </div>
                     </div>
                 <!-- <li><i class="fas fa-shipping-fast contact-icon"></i> <span class="contact-detail-text">Free standard shipping on all orders.</span></li> -->
