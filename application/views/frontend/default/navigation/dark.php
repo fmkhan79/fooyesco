@@ -52,10 +52,17 @@ if($host === 'fooyes' || $host === 'staging')
                                 <!-- <li class="nav-item">
                                     <a class="btn btn-outline-light top-btn" href="<?php echo site_url('auth/registration/driver'); ?>"><?php echo site_phrase('become_a_delivery_man', true); ?></a>
                                 </li> -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="<?php echo site_url(); ?>">
+                                  <li class="nav-item ">
+                                         <?php if($isFooyes): ?>
+                        <a class="nav-link" href="<?php echo site_url(); ?>">
                                         <?php echo site_phrase('home'); ?>
                                     </a>
+                                <?php else: ?>
+                                    
+                                 
+                                <?php endif; ?>
+                                <li class="nav-item">
+                                   
                                 </li>
                                 <?php
                                     $host = get_subdomain();
@@ -102,9 +109,8 @@ if($host === 'fooyes' || $host === 'staging')
                                               <?php echo site_phrase(ucwords('book_a_demo', true)); ?>
                                         </a>
                                 <?php else: ?>
-                                     <a class="nav-link d-none"  href="<?php echo site_url('become-a-partner'); ?>">
-                                              <?php echo site_phrase(ucwords('book_a_demo', true)); ?>
-                                </a>
+
+                            
                                 <?php endif; ?>
                                      
                                     </li>
