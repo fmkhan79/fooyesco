@@ -240,7 +240,7 @@ public function contact_us() {
             $checkSlugInDb = $this->restaurant_model->find_slug($host);
 
             if ($checkSlugInDb) {
-                $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($checkSlugInDb)["privacy_policy"];
+                $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($checkSlugInDb);
             }
         }
 
