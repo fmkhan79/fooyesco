@@ -671,11 +671,7 @@
                                 <?php } ?>
                             </div>
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
-                            <?php if (!empty($cuisine_names)): ?>
-                                <p><strong>Cuisines:</strong> <?php echo implode(', ', $cuisine_names); ?></p>
-                            <?php else: ?>
-                                <p>No Cuisines</p>
-                            <?php endif; ?>
+                                <p><?php echo sanitize($restaurant['restaurant_about']); ?></p>
                         </div>
                         <a class="btn btn-danger" href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order Now</a>
                     </div>
