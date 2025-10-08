@@ -62,6 +62,6 @@ if($host === 'fooyes' || $host === 'staging')
 <?php if($isFooyes): ?>
 <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
 <?php else: ?>
-<title><?php echo htmlspecialchars($page_title); ?> | <?php echo $restaurant_details['name']; ?></title>
+<title>Chilli Hut Fast Food Takeaway in March</title>
 <?php endif; ?>
 <link rel="shortcut icon" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>">
