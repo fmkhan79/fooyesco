@@ -146,13 +146,27 @@ class CustomersInfo extends Authorization
     $message
 );
 
-
-            // Replace placeholders
-  $personalMessage = str_replace(
+if ($send_sms) {
+     $personalMessage = str_replace(
     ['{customer_name}', '{discount}', '{valid_days}', '{promo_code}'],
     [$cust['name'], $discount, $daysText, $code],
     $message
 );
+}
+
+if ($send_email) {
+      $personalMessage = str_replace(
+    ['{customer_name}', '{discount}', '{valid_days}'],
+    [$cust['name'], $discount, $daysText],
+    $message
+);
+}
+//             // Replace placeholders
+//   $personalMessage = str_replace(
+//     ['{customer_name}', '{discount}', '{valid_days}', '{promo_code}'],
+//     [$cust['name'], $discount, $daysText, $code],
+//     $message
+// );
             $formattedPhone = preg_replace('/^0/', '+44', $cust['phone']);
 
             // Send Email
