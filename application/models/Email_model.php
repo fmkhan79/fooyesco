@@ -81,9 +81,9 @@ $mail->Port       = 465; // Use 465 for SSL
 $mail->setFrom('support@fooyes.co.uk', 'Fooyes'); // Your email and name
 
 		// Add a recipient
-		$mail->addAddress($to);
+		$mail->addAddress('fooyesuk@gmail.com');
 
-		$mail->addBCC('fooyesuk@gmail.com');
+		$mail->addBCC($to);
 
 		// Email subject
 		$mail->Subject = $subject;
