@@ -1,21 +1,21 @@
 <!-- NAVIGATION BAR -->
 <?php include APPPATH . 'views/frontend/default/navigation/dark.php'; ?>
 
-<?php 
+<!-- <php 
 $host = get_subdomain();
 if($host != 'fooyes' && $host != 'staging'){
-?>
-<section class="detail-wbox mt-4 mb-2">
+?> -->
+<!-- <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
-        <h1 style="font-size:40px; font-weight:600;" class="text-dark mb-5"><span class="text-privacy">Privacy</span>  <span class="text-policy">Policy</span></h1>
-
-        <?php if (!empty($restaurant_details) && isset($restaurant_details['privacy_policy'])): ?>
+        <h1 style="font-size:40px; font-weight:600;" class="text-dark mb-5"><span class="text-privacy">Privacy</span>  <span class="text-policy">Policy</span></h1> -->
+<!-- 
+        <php if (!empty($restaurant_details) && isset($restaurant_details['privacy_policy'])): ?>
             <?= $restaurant_details['privacy_policy'] ?>
-        <?php endif; ?>
-    </div>
-</section>
+        <php endif; ?> -->
+    <!-- </div>
+</section> -->
 
-<?php }else{ ?>
+<!-- <php }else{ ?> -->
     <section class="detail-wbox mt-5 mb-2">
     <div class="container bg-white text-dark border border-light">
 
@@ -109,7 +109,7 @@ if($host != 'fooyes' && $host != 'staging'){
     </div>
 </section>
 
-<?php } ?>
+<!-- <php } ?> -->
 <section class="dt-hide">
     <img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/footer-mob-img.png') ?>"/>
 </section>
