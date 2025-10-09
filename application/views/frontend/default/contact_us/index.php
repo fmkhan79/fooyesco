@@ -483,9 +483,9 @@ if($host === 'fooyes' || $host === 'staging')
             </div>
  <?php endif; ?>
 
-            <div class="col-md-6 mob-hide"><img class="img-fluid"
+            <!-- <div class="col-md-6 mob-hide"><img class="img-fluid"
                     src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" /></div>
-        </div>
+        </div> -->
     </div>
 </section>
 
