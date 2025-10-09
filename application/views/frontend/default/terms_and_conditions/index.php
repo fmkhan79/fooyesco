@@ -10,8 +10,8 @@ if($host != 'fooyes' && $host != 'staging'){
     <div class="container bg-white text-dark border border-light">
         <h1 style="font-size:40px; font-weight:600;" class="text-dark mb-5"><span class="text-privacy">Privacy</span>  <span class="text-policy">Policy</span></h1>
 
-        <?php if (!empty($restaurant_details) && isset($restaurant_details['privacy_policy'])): ?>
-            <?= $restaurant_details['privacy_policy'] ?>
+        <?php if (!empty($restaurant_details) && isset($restaurant_details['terms_conditions'])): ?>
+            <?= $restaurant_details['terms_conditions'] ?>
         <?php endif; ?>
     </div>
 </section>
