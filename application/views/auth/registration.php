@@ -114,11 +114,11 @@ Continue with Google
 								<?php echo get_phrase('login_page'); ?>?
 							</a>
 						</span>
-						<span class="txt1">
+						<!-- <span class="txt1">
 							<a href="<?php echo site_url('cart'); ?>" class="txt2 hov1">
 								<?php echo get_phrase('Go to the cart page'); ?>
 							</a>
-						</span>
+						</span> -->
 					</div>
 				</form>
 			<?php else : ?>
@@ -132,11 +132,11 @@ Continue with Google
 							<?php echo get_phrase('valid_user_roles'); ?>?
 						</a>
 					</span>
-					<span class="txt1">
+					<!-- <span class="txt1">
 						<a href="<?php echo site_url(); ?>" class="txt2 hov1">
 							<?php echo get_phrase('Go to cart page'); ?>
 						</a>
-					</span>
+					</span> -->
 				</div>
 			<?php endif; ?>
 		</div>
