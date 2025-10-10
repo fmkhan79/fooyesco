@@ -59,9 +59,40 @@ if($host === 'fooyes' || $host === 'staging')
     $isFooyes=true;
 ?>
 
-<?php if($isFooyes): ?>
-<title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
-<?php else: ?>
-<title>Chilli Hut Fast Food Takeaway in March</title>
+<?php 
+if ($isFooyes): ?>
+    <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
+<?php else: 
+    $uri = $_SERVER['REQUEST_URI'];
+
+    // Default meta values
+    $title = 'Chilli Hut Fast Food Takeaway in March';
+    $description = 'Order delicious fast food in March, Cambridgeshire.';
+
+    // Match URLs to titles and meta descriptions
+    if (strpos($uri, '/privacy-policy') !== false) {
+        $title = 'Chilli Hut March - Our Privacy Policy';
+        $description = 'Read our Privacy Policy to understand how we collect, use, and protect your personal information.';
+    } elseif (strpos($uri, '/terms-and-conditions') !== false) {
+        $title = 'Chilli Hut March - Our Terms & Conditions';
+        $description = 'Read our Terms & Conditions outlining our policies on orders, payments, deliveries, and refunds.';
+    } elseif (strpos($uri, '/terms-of-use') !== false) {
+        $title = 'Chilli Hut March - Our Terms of Use';
+        $description = 'Review our Terms of Use to understand your rights and responsibilities while using our website and services.';
+    } elseif (strpos($uri, '/login') !== false) {
+        $title = 'Chilli Hut March Login Page';
+        $description = 'Login to Chilli Hut March account to view and manage your orders.';
+    } elseif (strpos($uri, '/contact-us') !== false) {
+        $title = 'Contacts for Chilli Hut March - Cambridgeshire';
+        $description = 'Get in touch with our customer support team. We\'re here to assist you with orders, deliveries, and account inquiries.';
+    } elseif (strpos($uri, '/auth') !== false) {
+        $title = 'Chilli Hut March - Authentication';
+        $description = 'Secure login and account authentication page for Chilli Hut March users.';
+    }
+?>
+    <title><?php echo $title; ?></title>
+    <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
 <?php endif; ?>
+
 <link rel="shortcut icon" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>">
