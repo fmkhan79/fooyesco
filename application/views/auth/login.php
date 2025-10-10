@@ -2,55 +2,41 @@
 <html lang="en">
 
 <head>
-	<?php 
-$restaurant_ids = $this->cart_model->get_restaurant_ids();
-
-if (count($restaurant_ids) > 0) {
-    $restaurant_details = $this->restaurant_model->get_by_id($restaurant_ids[0]);
-}
-
-$isFooyes = false;
-$host = get_subdomain();
-
-if ($host === 'fooyes' || $host === 'staging') {
-    $isFooyes = true;
-}
-?>
-
-<?php if ($isFooyes): ?>
-    <!-- Fooyes / Staging -->
-    <title>Fooyes</title>
-    <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
-    <meta name="description" content="Welcome to Fooyes — your online food ordering platform." />
-<?php else: ?>
     <?php 
-    $uri = $_SERVER['REQUEST_URI'];
-    $title = 'Chilli Hut March';
-    $description = 'Welcome to Chilli Hut March — order delicious food online.';
-
-    if (strpos($uri, '/login') !== false) {
-        $title = 'Chilli Hut March - Login Page';
-        $description = 'Login to your Chilli Hut March account to view and manage your orders.';
+    $isFooyes = false;
+    $host = get_subdomain();
+    if ($host === 'fooyes' || $host === 'staging') {
+        $isFooyes = true;
     }
     ?>
-    <title><?php echo htmlspecialchars($title); ?></title>
-    <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
-    <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
-<?php endif; ?>
 
+    <?php if ($isFooyes): ?>
+        <!-- Fooyes Meta -->
+        <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
+        <meta name="description" content="Welcome to Fooyes — your online food ordering platform." />
+        <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <?php else: ?>
+        <!-- Chilli Hut March Meta -->
+        <title>Chilli Hut March - Login Page</title>
+        <meta name="description" content="Login to Chilli Hut March account to view and manage your orders." />
+        <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <?php endif; ?>
 
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" type="image/png" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>" />
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/vendor/bootstrap/css/bootstrap.min.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/iconic/css/material-design-iconic-font.min.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/toastr/toastr.css') ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/util.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/main.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/custom.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/css/font.css'); ?>">
+    <!-- Common Meta & Styles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/png" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/vendor/bootstrap/css/bootstrap.min.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/iconic/css/material-design-iconic-font.min.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/toastr/toastr.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/util.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/main.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/custom.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/css/font.css'); ?>">
 </head>
+
 
 <body>
 	<div class="container-login100">
