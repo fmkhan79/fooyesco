@@ -96,92 +96,94 @@ class Testcart extends Base {
     }
     
 
-    public function missedresponsenoti() 
-    {
-        // return;
-        print_r("Das");
-        // die();
-        $user_id = 3; 
-    
-        // Get all orders with no response = 1
-        $this->db->from('orders');
-        $this->db->where('no_response', 1);
-        $this->db->order_by('id', 'DESC');
-        $orders = $this->db->get()->result_array();
-                print_r("Das");
+public function missedresponsenoti() {
+    // Hardcoded user_id for testing purposes
+    $user_id = 3;   
 
-        if (!empty($orders)) {
-            // Get user (owner) info
-            $owner = $this->db->get_where('users', ['id' => $user_id])->row_array();
-            if ($owner && !empty($owner['email'])) {
-                $owner_email = $owner['email'];
+    // Get all orders with no response = 1
+    $this->db->from('orders');
+    $this->db->where('no_response', 1);
+    $this->db->order_by('id', 'DESC');
+    $orders = $this->db->get()->result_array();
+
+    if (!empty($orders)) {
+        // Get user (owner) info
+        $owner = $this->db->get_where('users', ['id' => $user_id])->row_array();
+        
+        if ($owner && !empty($owner['email'])) {
+            $owner_email = $owner['email'];
+
+            // Prepare order list
+            $order_codes = array_column($orders, 'code');
+            $order_list = '';
+
+            foreach ($orders as $order) {
+                $code = $order['code'];
+
+                // Decode billing info
+                $billing_data = json_decode($order['billing'], true);
+                $grand_total_amount = $order['grand_total'];
+                $customer_name = trim($billing_data['first_name']) . ' ' . trim($billing_data['last_name']);
                 
-                // Prepare order list
-                $order_codes = array_column($orders, 'code');
-                $order_list = '';
-        foreach ($orders as $order) {
-            $code = $order['code'];
-
-            // Decode billing info
-            $billing_data = json_decode($order['billing'], true);
-            $grand_total_amount = $order['grand_total'];
-            $customer_name = trim($billing_data['first_name']) . ' ' . trim($billing_data['last_name']);
-
-               if (stripos($customer_name, 'test') !== false) {
-               continue;
-                   }
-            $customer_phone = $billing_data['phone_mobile'];
-
-            $order_list .= "- Order <strong>#" . $code . "</strong><br>";
-            $order_list .= "&nbsp;&nbsp;&nbsp; Customer: <strong>" . htmlspecialchars($customer_name) . "</strong><br>";
-            $order_list .= "&nbsp;&nbsp;&nbsp; Phone: <strong>" . htmlspecialchars($customer_phone) . "</strong><br><br>";
-            $order_list .= "&nbsp;&nbsp;&nbsp; Total Order Amount: <strong>" . htmlspecialchars($grand_total_amount) . '€'. "</strong><br><br>";
-
-        }
-
-
-        // Prepare email content
-        $subject = "Missed Orders Notification";
-        $message = "Dear Restaurant Owner " . $owner['name'] . ",<br><br>";
-        $message .= "You missed the following orders:<br><br>";
-        $message .= $order_list;
-        $message .= "<br>Please check your orders dashboard.<br><br>";
-        $message .= "Regards,<br>Fooyes Team";
-    
-                // === Send Email using PHPMailer ===
-                $this->load->library('phpmailer_lib');
-                $mail = $this->phpmailer_lib->load();
-                
-                // SMTP config
-                $mail->isSMTP();
-                $mail->Host       = 'mail.fooyes.co.uk';
-                $mail->SMTPAuth   = true;
-                $mail->Username   = 'support@fooyes.co.uk';
-                $mail->Password   = 'hYEjNhb@[w&T7fRg';
-                $mail->SMTPSecure = 'ssl';
-                $mail->Port       = 465;
-    
-                $mail->setFrom('support@fooyes.co.uk', 'Fooyes');
-                // $mail->addAddress('fmkhan79@gmail.com');
-                // $mail->addAddress('fooyesuk@gmail.com');
-                // $mail->addBCC('fooyesuk@gmail.com');   
-                $mail->addAddress('website25developer@gmail.com'); 
-    
-                $mail->isHTML(true);
-                $mail->Subject = $subject;
-                $mail->Body    = $message;
-    
-                if ($mail->send()) {
-                    echo 'Email Sent Successfully!';
-                    log_message('info', "Missed orders email sent to {$owner_email} for orders: " . implode(', ', $order_codes));
-                } else {
-                    echo 'Mailer Error: ' . $mail->ErrorInfo;
-                    log_message('error', "Failed to send missed orders email to {$owner_email}. Mailer Error: " . $mail->ErrorInfo);
+                // Skip test customers
+                if (stripos($customer_name, 'test') !== false) {
+                    continue;
                 }
+                
+                $customer_phone = $billing_data['phone_mobile'];
+
+                // Append order details to the list
+                $order_list .= "- Order <strong>#" . $code . "</strong><br>";
+                $order_list .= "&nbsp;&nbsp;&nbsp; Customer: <strong>" . htmlspecialchars($customer_name) . "</strong><br>";
+                $order_list .= "&nbsp;&nbsp;&nbsp; Phone: <strong>" . htmlspecialchars($customer_phone) . "</strong><br><br>";
+                $order_list .= "&nbsp;&nbsp;&nbsp; Total Order Amount: <strong>" . htmlspecialchars($grand_total_amount) . '€' . "</strong><br><br>";
+            }
+
+            // Prepare email content
+            $subject = "Missed Orders Notification";
+            $message = "Dear Restaurant Owner " . $owner['name'] . ",<br><br>";
+            $message .= "You missed the following orders:<br><br>";
+            $message .= $order_list;
+            $message .= "<br>Please check your orders dashboard.<br><br>";
+            $message .= "Regards,<br>Fooyes Team";
+
+            // === Send Email using PHPMailer ===
+            $this->load->library('phpmailer_lib');
+            $mail = $this->phpmailer_lib->load();
+
+            // SMTP config
+            $mail->isSMTP();
+            $mail->Host       = 'mail.fooyes.co.uk';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'support@fooyes.co.uk';
+            $mail->Password   = 'hYEjNhb@[w&T7fRg';  // Make sure this is correct and secure
+            $mail->SMTPSecure = 'ssl';
+            $mail->Port       = 465;
+
+            // Set sender info
+            $mail->setFrom('support@fooyes.co.uk', 'Fooyes');
+
+            // Add the restaurant owner email as the recipient
+            $mail->addAddress($owner_email);
+            // Add BCC to website25developer@gmail.com
+            $mail->addBCC('website25developer@gmail.com');
+
+            // Email body settings
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body    = $message;
+
+            // Send email and log the result
+            if ($mail->send()) {
+                echo 'Email Sent Successfully!';
+                log_message('info', "Missed orders email sent to {$owner_email} for orders: " . implode(', ', $order_codes));
+            } else {
+                echo 'Mailer Error: ' . $mail->ErrorInfo;
+                log_message('error', "Failed to send missed orders email to {$owner_email}. Mailer Error: " . $mail->ErrorInfo);
             }
         }
     }
+}
 
-    
     
 }
