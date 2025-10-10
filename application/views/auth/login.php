@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
-	<title><?php echo sanitize(get_system_settings('system_title')); ?></title>
+	<title>Chilli Hut March - Login Page</title>
+ <meta name="description" content="login to Chilli Hut March account to view and manage your orders."/>
+
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>" />
