@@ -65,11 +65,9 @@ if ($isFooyes): ?>
 <?php else: 
     $uri = $_SERVER['REQUEST_URI'];
 
-    // Default meta values
     $title = 'Chilli Hut Fast Food Takeaway in March';
     $description = 'Order delicious fast food in March, Cambridgeshire.';
 
-    // Match URLs to titles and meta descriptions
     if (strpos($uri, '/privacy-policy') !== false) {
         $title = 'Chilli Hut March - Our Privacy Policy';
         $description = 'Read our Privacy Policy to understand how we collect, use, and protect your personal information.';
@@ -88,6 +86,10 @@ if ($isFooyes): ?>
     } elseif (strpos($uri, '/auth') !== false) {
         $title = 'Chilli Hut March - Authentication';
         $description = 'Secure login and account authentication page for Chilli Hut March users.';
+    }
+    elseif (strpos($uri, '/login') !== false) {
+        $title = 'Chilli Hut March - Login Page';
+        $description = 'login to Chilli Hut March account to view and manage your orders.';
     }
 ?>
     <title><?php echo $title; ?></title>
