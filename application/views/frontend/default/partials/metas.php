@@ -59,9 +59,27 @@ if($host === 'fooyes' || $host === 'staging')
     $isFooyes=true;
 ?>
 
-<?php if($isFooyes): ?>
-<title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
-<?php else: ?>
-<title>Chilli Hut Fast Food Takeaway in March</title>
+<?php 
+if ($isFooyes): ?>
+    <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
+<?php else: 
+    $uri = $_SERVER['REQUEST_URI'];
+
+    if (strpos($uri, '/privacy-policy') !== false) {
+        $title = 'Chilli Hut March - Our Privacy Policy';
+    } elseif (strpos($uri, '/terms-and-conditions') !== false) {
+        $title = 'Chilli Hut March - Our Terms & Conditions';
+    } elseif (strpos($uri, '/terms-of-use') !== false) {
+        $title = 'Chilli Hut March - Our Terms of Use';
+    } elseif (strpos($uri, '/login') !== false) {
+        $title = 'Chilli Hut March Login Page';
+    } elseif (strpos($uri, '/contact-us') !== false) {
+        $title = 'Contacts for Chilli Hut March - Cambridgeshire';
+    } else {
+        $title = 'Chilli Hut Fast Food Takeaway in March';
+    }
+?>
+    <title><?php echo $title; ?></title>
 <?php endif; ?>
+
 <link rel="shortcut icon" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>">
