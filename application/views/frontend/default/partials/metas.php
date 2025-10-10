@@ -3,13 +3,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="<?php echo sanitize(get_system_settings('author')); ?>">
+
 <?php
 if ($page_name == "restaurant/index") : ?>
-    <meta name="keywords" content="<?php echo sanitize($restaurant_details['seo_tags']); ?>" />
-    <meta name="description" content="<?php echo sanitize($restaurant_details['seo_description']); ?>" />
+    <!-- <meta name="keywordss" content="<?php echo sanitize($restaurant_details['seo_tags']); ?>" />
+    <meta name="description" content="<?php echo sanitize($restaurant_details['seo_description']); ?>" /> -->
 
 <?php elseif ($page_name == "contact_us/index") : ?>
-    <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <meta name="keywordss" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <meta name="description" content="Get in touch with our customer support team. We're here to assist you with orders, deliveries, and account inquiries." />
 
 <?php elseif ($page_name == "about_us/index") : ?>
