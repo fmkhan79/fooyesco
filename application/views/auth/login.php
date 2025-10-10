@@ -2,21 +2,41 @@
 <html lang="en">
 
 <head>
-	<title>Chilli Hut March - Login Page</title>
- <meta name="description" content="login to Chilli Hut March account to view and manage your orders."/>
+    <?php 
+    $isFooyes = false;
+    $host = get_subdomain();
+    if ($host === 'fooyes' || $host === 'staging') {
+        $isFooyes = true;
+    }
+    ?>
 
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" type="image/png" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>" />
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/vendor/bootstrap/css/bootstrap.min.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/iconic/css/material-design-iconic-font.min.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/toastr/toastr.css') ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/util.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/main.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/custom.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/css/font.css'); ?>">
+    <?php if ($isFooyes): ?>
+        <!-- Fooyes Meta -->
+        <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
+        <meta name="description" content="Welcome to Fooyes — your online food ordering platform." />
+        <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <?php else: ?>
+        <!-- Chilli Hut March Meta -->
+        <title>Chilli Hut March - Login Page</title>
+        <meta name="description" content="Login to Chilli Hut March account to view and manage your orders." />
+        <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <?php endif; ?>
+
+    <!-- Common Meta & Styles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/png" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/vendor/bootstrap/css/bootstrap.min.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/iconic/css/material-design-iconic-font.min.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/toastr/toastr.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/util.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/main.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/custom.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/css/font.css'); ?>">
 </head>
+
 
 <body>
 	<div class="container-login100">
