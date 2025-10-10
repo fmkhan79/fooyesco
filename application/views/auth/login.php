@@ -12,7 +12,7 @@
 
     <?php if ($isFooyes): ?>
         <!-- Fooyes Meta -->
-        <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
+        <title><?php echo htmlspecialchars($page_title); ?>  <?php echo sanitize(get_system_settings('system_title')); ?></title>
         <meta name="description" content="Welcome to Fooyes — your online food ordering platform." />
         <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <?php else: ?>

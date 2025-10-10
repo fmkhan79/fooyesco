@@ -64,6 +64,10 @@ if ($isFooyes): ?>
     <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
 <?php else: 
     $uri = $_SERVER['REQUEST_URI'];
+    $host = $_SERVER['HTTP_HOST'];
+    $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    $canonical_url = $scheme . '://' . $host . $uri;
+    $canonical_url = strtok($canonical_url, '?'); // Remove query strings
 
     $title = 'Chilli Hut Fast Food Takeaway in March';
     $description = 'Order delicious fast food in March, Cambridgeshire.';
@@ -80,6 +84,7 @@ if ($isFooyes): ?>
     } elseif (strpos($uri, '/login') !== false) {
         $title = 'Chilli Hut March Login Page';
         $description = 'Login to Chilli Hut March account to view and manage your orders.';
+        $canonical_url = 'https://www.chilli-hut-march.co.uk/login';
     } elseif (strpos($uri, '/contact-us') !== false) {
         $title = 'Contacts for Chilli Hut March - Cambridgeshire';
         $description = 'Get in touch with our customer support team. We\'re here to assist you with orders, deliveries, and account inquiries.';
@@ -87,14 +92,13 @@ if ($isFooyes): ?>
         $title = 'Chilli Hut March - Authentication';
         $description = 'Secure login and account authentication page for Chilli Hut March users.';
     }
-    elseif (strpos($uri, '/login') !== false) {
-        $title = 'Chilli Hut March - Login Page';
-        $description = 'login to Chilli Hut March account to view and manage your orders.';
-    }
+
 ?>
     <title><?php echo $title; ?></title>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
 <?php endif; ?>
+
 
 <link rel="shortcut icon" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>">
