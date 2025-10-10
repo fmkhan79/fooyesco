@@ -30,7 +30,7 @@ $route['customers-info/(:any)'] = 'CustomersInfo/$1';
 $route['customers-info/(:any)/(:any)'] = 'CustomersInfo/$1/$2';
 
 $route['promo-code'] = 'PromoCode';
-$route['cart'] = 'errors/page_missing'; 
+// $route['cart'] = 'errors/page_missing'; 
 
 
 // $route['check'] = 'orders/check_new_orders';
