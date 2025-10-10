@@ -15,14 +15,41 @@ if($host != 'fooyes' && $host != 'staging'){
     <!-- </div>
 </section> -->
 
+
+
 <!-- <php }else{ ?> -->
-    <section class="detail-wbox mt-5 mb-2">
+
+<?php
+$checkSlugInDb = $this->restaurant_model->find_slug($host);
+$restaurant_name = 'Fooyes UK'; // Default name
+
+if ($checkSlugInDb) {
+    $restaurant = $this->restaurant_model->get_by_slug($checkSlugInDb);
+    if (!empty($restaurant['name'])) {
+        $restaurant_name = $restaurant['name'];
+    }
+}
+?>
+
+<section class="detail-wbox mt-5 mb-2">
     <div class="container bg-white text-dark border border-light">
+        <h1 style="font-size:40px; font-weight:600;" class="text-dark">
+            <span class="text-privacy">Privacy</span> 
+            <span class="text-policy">Policy</span>
+        </h1>
 
-        <h1 style="font-size:40px; font-weight:600;" class="text-dark"><span class="text-privacy">Privacy</span>  <span class="text-policy">Policy</span></h1>
+        <div class="about-bot-txt my-4" style="width: 80%;">
+            <p>
+                <span class="txt-fo" style="font-weight:500;">
+                    At <?php echo htmlspecialchars($restaurant_name); ?>,
+                </span>
+            </p>
+            <p style="color: #666; font-weight:500; font-size:15px;">
+                we value your privacy and are committed to protecting your personal data. 
+                This Privacy Policy outlines how we collect, use, store, and safeguard your information 
+                when you visit our website or interact with our services.
+            </p>
 
-        <div class="about-bot-txt my-4" style=" width: 80%;">
-            <p><span class="txt-fo" style="font-weight:500;">At Fooyes UK,</span><p style="color: #666;font-weight:500;font-size:15px; " > we value your privacy and are committed to protecting your personal data. ThisPrivacy Policy outlines how we collect, use, store, and safeguard your information when you visit our website or interact with our services.</p>
             <div class="txt-up-fo pb-3" >Information We Collect </div>
             <div class="text-fo pb-2"style="font-size:15px;" >We may collect and process the following types of personal data:</div>
             <div class="about-bot-txt">
