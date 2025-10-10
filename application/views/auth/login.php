@@ -2,8 +2,42 @@
 <html lang="en">
 
 <head>
-	<title>Chilli Hut March - Login Page</title>
- <meta name="description" content="login to Chilli Hut March account to view and manage your orders."/>
+	<?php 
+$restaurant_ids = $this->cart_model->get_restaurant_ids();
+
+if (count($restaurant_ids) > 0) {
+    $restaurant_details = $this->restaurant_model->get_by_id($restaurant_ids[0]);
+}
+
+$isFooyes = false;
+$host = get_subdomain();
+
+if ($host === 'fooyes' || $host === 'staging') {
+    $isFooyes = true;
+}
+?>
+
+<?php if ($isFooyes): ?>
+    <!-- Fooyes / Staging -->
+    <title>Fooyes</title>
+    <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <meta name="description" content="Welcome to Fooyes — your online food ordering platform." />
+<?php else: ?>
+    <?php 
+    $uri = $_SERVER['REQUEST_URI'];
+    $title = 'Chilli Hut March';
+    $description = 'Welcome to Chilli Hut March — order delicious food online.';
+
+    if (strpos($uri, '/login') !== false) {
+        $title = 'Chilli Hut March - Login Page';
+        $description = 'Login to your Chilli Hut March account to view and manage your orders.';
+    }
+    ?>
+    <title><?php echo htmlspecialchars($title); ?></title>
+    <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
+<?php endif; ?>
+
 
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
