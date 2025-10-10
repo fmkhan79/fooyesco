@@ -3,15 +3,33 @@
 
 
 
-<section class="detail-wbox mt-5 mb-2">
-<div class="container bg-white text-dark border border-light">
+<?php
+$checkSlugInDb = $this->restaurant_model->find_slug($host);
+$restaurant_name = 'Fooyes UK'; // Default fallback
 
-<h1 style="font-size:40px; font-weight:600;" class=" text-dark"><span class="text-privacy">Terms</span>  <span class="text-policy">Of Use</span></h1>
-<div class="about-bot-txt my-4"style="width:80%;">
-    <p class="text-new">Welcome to Fooyes UK! We value your privacy and are committed to protecting your personal
-data. By using our website, you agree to comply with the following Terms of Privacy Use. Please
-read them carefully before using our services.
-    </p>
+if ($checkSlugInDb) {
+    $restaurant = $this->restaurant_model->get_by_slug($checkSlugInDb);
+    if (!empty($restaurant['name'])) {
+        $restaurant_name = $restaurant['name'];
+    }
+}
+?>
+
+<section class="detail-wbox mt-5 mb-2">
+    <div class="container bg-white text-dark border border-light">
+
+        <h1 style="font-size:40px; font-weight:600;" class="text-dark">
+            <span class="text-privacy">Terms</span>  
+            <span class="text-policy">Of Use</span>
+        </h1>
+
+        <div class="about-bot-txt my-4" style="width:80%;">
+            <p class="text-new">
+                Welcome to <?php echo htmlspecialchars($restaurant_name); ?>! 
+                We value your privacy and are committed to protecting your personal data. 
+                By using our website, you agree to comply with the following Terms of Privacy Use. 
+                Please read them carefully before using our services.
+            </p>
 
     <span><h3 class="head-1">General Information</h3></span>
 

@@ -3,13 +3,31 @@
 <!--============================= RESERVE A SEAT =============================-->
 
 
-<section class="detail-wbox mt-5 mb-2 " >
+<?php
+$checkSlugInDb = $this->restaurant_model->find_slug($host);
+$restaurant_name = 'Fooyes UK'; // Default fallback
+
+if ($checkSlugInDb) {
+    $restaurant = $this->restaurant_model->get_by_slug($checkSlugInDb);
+    if (!empty($restaurant['name'])) {
+        $restaurant_name = $restaurant['name'];
+    }
+}
+?>
+
+<section class="detail-wbox mt-5 mb-2">
     <div class="container bg-white text-dark border border-light">
 
-        <h1 style="font-size:40px; font-weight:600;" class="  text-dark"><span class="text-privacy">Terms &</span>  <span class="text-policy">Conditions</span></h1>
+        <h1 style="font-size:40px; font-weight:600;" class="text-dark">
+            <span class="text-privacy">Terms &</span>  
+            <span class="text-policy">Conditions</span>
+        </h1>
 
-        <div class="about-bot-txt my-4"style="font-weight:500;width: 80%;">
-            <p style="font-weight:500;color:#666;">Welcome to Fooyes UK! By accessing and using our website, you agree to comply with the following Terms and Conditions. Please read them carefully before using our services.
+        <div class="about-bot-txt my-4" style="font-weight:500; width: 80%;">
+            <p style="font-weight:500; color:#666;">
+                Welcome to <?php echo htmlspecialchars($restaurant_name); ?>! 
+                By accessing and using our website, you agree to comply with the following Terms and Conditions. 
+                Please read them carefully before using our services.
             </p>
 
             <span><h3 style=" font-size:20px!important;color: #343a40;">General Information</h3></span>
