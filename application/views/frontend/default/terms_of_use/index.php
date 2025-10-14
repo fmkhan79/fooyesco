@@ -108,7 +108,7 @@ protection authorities.
     <div class="about-bot-txt">
 <ul  class="p-0">
 <span class="text-new"> If the order received does not meet your expectations you can provide feedback to
-the Takeaway via the feedback page Fooyes's website or the mobile app.
+the Takeaway via the feedback page <?php echo htmlspecialchars($restaurant_name); ?> website or the mobile app.
 </span>
     <span class="text-new"> Feedback submitted will be reviewed and displayed on the respective Takeaway's
 profile page, subject to Customer Support team's discretion.
@@ -118,7 +118,7 @@ profile page, subject to Customer Support team's discretion.
 
     <div class="about-bot-txt">
 <ul  class="p-0">
-<span class="text-new">Fooyes UK is not responsible for indirect, incidental, or consequential damages arising
+<span class="text-new"><?php echo htmlspecialchars($restaurant_name); ?> is not responsible for indirect, incidental, or consequential damages arising
 from the use of our services.
 </span>
 <span class="text-new">We do not guarantee uninterrupted or error-free access to our website.</span>

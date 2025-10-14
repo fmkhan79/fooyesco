@@ -9,6 +9,7 @@ $restaurant_name = 'Fooyes UK'; // Default fallback
 
 if ($checkSlugInDb) {
     $restaurant = $this->restaurant_model->get_by_slug($checkSlugInDb);
+
     if (!empty($restaurant['name'])) {
         $restaurant_name = $restaurant['name'];
     }
@@ -34,7 +35,7 @@ if ($checkSlugInDb) {
 
             <div class="about-bot-txt">
         <ul class="p-0">
-            <p style="font-weight:500;color:#666;">These Terms and Conditions govern your use of the Fooyes website and services. By using our platform, you acknowledge and accept these terms in full.</p>
+            <p style="font-weight:500;color:#666;">These Terms and Conditions govern your use of the <?php echo htmlspecialchars($restaurant_name); ?> website and services. By using our platform, you acknowledge and accept these terms in full.</p>
         </ul>
             <span><h3 style="display: inline;font-size:20px;color: #343a40;">Ordering and Payments</h3></span>
 
@@ -52,15 +53,15 @@ if ($checkSlugInDb) {
         <ul class="p-0">
         <p  style="font-weight:500;color:#666;">Delivery times are estimated and may vary due to unforeseen circumstances.
         </p>
-        <p  style="font-weight:500;color:#666;">Customers must provide accurate delivery information. Fooyes UK is not responsible for orders lost due to incorrect details.</p>
+        <p  style="font-weight:500;color:#666;">Customers must provide accurate delivery information. <?php echo htmlspecialchars($restaurant_name); ?> is not responsible for orders lost due to incorrect details.</p>
         </ul>
         <span><h3 style="display: inline;font-size:20px;color: #343a40;">Order Cancellation and Amendments</h3></span>
 
             <div class="about-bot-txt">
         <ul class="p-0">
         <p style="font-weight:500;color:#666;">Once the order has been confirmed and payment taken from your account, you will be unable to cancel your order and will not be eligible for a refund.</p>
-        <p style="font-weight:500;color:#666;">To change or cancel your order please contact the Fooyes Customer Support team who will attempt to resolve your request.</p>
-        <p style="font-weight:500;color:#666;"> Fooyes will contact the Takeaway on your behalf but cannot guarantee your request will be accepted as food processing may already be underway.</p>
+        <p style="font-weight:500;color:#666;">To change or cancel your order please contact the <?php echo htmlspecialchars($restaurant_name); ?> Customer Support team who will attempt to resolve your request.</p>
+        <p style="font-weight:500;color:#666;"> <?php echo htmlspecialchars($restaurant_name); ?> will contact the Takeaway on your behalf but cannot guarantee your request will be accepted as food processing may already be underway.</p>
         </ul>
         <span><h3 style="display: inline;font-size:20px;color: #343a40;">Compensation</h3></span>
 
@@ -86,14 +87,14 @@ if ($checkSlugInDb) {
         <span><h3 style="display: inline;font-size:20px;color: #343a40;">Intellectual Property</h3></span>
             <div class="about-bot-txt">
         <ul class="p-0">
-        <p style="font-weight:500;color:#666;">All content on the Fooyes UK website, including images, text, and logos, is our property and protected by copyright laws.</p>
+        <p style="font-weight:500;color:#666;">All content on the <?php echo htmlspecialchars($restaurant_name); ?> website, including images, text, and logos, is our property and protected by copyright laws.</p>
         <p style="font-weight:500;color:#666;"> You may not reproduce, distribute, or use any content without prior written consent.</p>
         </ul>
         <span><h3 style="display: inline;font-size:20px;color: #343a40;">Limitation of Liability </h3></span>
 
             <div class="about-bot-txt">
         <ul class="p-0">
-        <p style="font-weight:500;color:#666;">Fooyes UK is not responsible for indirect, incidental, or consequential damages arising
+        <p style="font-weight:500;color:#666;"><?php echo htmlspecialchars($restaurant_name); ?> is not responsible for indirect, incidental, or consequential damages arising
         from the use of our services.
         </p>
         <p style="font-weight:500;color:#666;">We do not guarantee uninterrupted or error-free access to our website.</p>
@@ -112,12 +113,21 @@ if ($checkSlugInDb) {
 
             <div class="about-bot-txt">
         <ul class="p-0">
-        <p style="font-weight:500;color:#666;">For any questions regarding these Terms and Conditions, please contact us at (877-67-88-99)</p>
+        <p style="font-weight:500;color:#666;">For any questions regarding these Terms and Conditions, please contact us at 
+         <?php 
+            if($restaurant_name == "Chilli Hut March"){
+                echo "+44 1354 654992";
+            }else{ 
+                echo "(877-67-88-99)";
+            }
+            ?>
+           </p>
         </ul>
         </div>
         </div>
     </div>
 </section>
+ 
 
 
 
