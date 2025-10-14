@@ -123,13 +123,15 @@ public function missedresponsenoti() {
                 // Decode billing info
                 $billing_data = json_decode($order['billing'], true);
                 $grand_total_amount = $order['grand_total'];
-                $customer_name = trim($billing_data['first_name']) . ' ' . trim($billing_data['last_name']);
-                
-                // Skip test customers
-                if (stripos($customer_name, 'test') !== false) {
+                $customer_first_name = trim($billing_data['first_name']);
+                $customer_last_name = trim($billing_data['last_name']);
+                $customer_name = $customer_first_name . ' ' . $customer_last_name;
+
+                // Skip orders where the first name is "test"
+                if (strtolower($customer_first_name) === 'test') {
                     continue;
                 }
-                
+
                 $customer_phone = $billing_data['phone_mobile'];
 
                 // Append order details to the list
@@ -184,6 +186,7 @@ public function missedresponsenoti() {
         }
     }
 }
+
 
     
 }
