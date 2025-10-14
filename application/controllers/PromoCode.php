@@ -8,13 +8,22 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Cart Controller controlls the task for a Cart
  */
 
-include 'Authorization.php';
-class PromoCode extends Authorization
+// include 'Authorization.php';
+// class PromoCode extends Authorization
+// {
+//     public function __construct()
+//     {
+//         parent::__construct();
+//         authorization(['admin', 'owner'], true);
+//     }
+
+include 'Base.php';
+class PromoCode extends Base
 {
     public function __construct()
     {
         parent::__construct();
-        authorization(['admin', 'owner'], true);
+        // authorization(['admin', 'owner'], true);
     }
 
     // public function index()
