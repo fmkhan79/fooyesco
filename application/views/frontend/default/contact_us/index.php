@@ -163,7 +163,7 @@
 }
 
 </style>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
 
 <?php
 $siteKey = '';
@@ -252,16 +252,14 @@ if($host === 'fooyes' || $host === 'staging')
                                     <a href="https://wa.me/+44<?= $restaurant['phone'] ?>" target="_blank" class="contact-detail-text text-dark">Tel: <?= $restaurant['phone'] ?></a><br>
                                     
                                 </div>
-                                                            <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant['address'] ?></span></li>
-
                             </li>
                         </div>
-                        <!-- <div class="col-md-6 my-2">
+                        <div class="col-md-6 my-2">
                             <li><i class="fas fa-envelope contact-icon"></i> <a href="mailto:<?= $restaurant['owner_email'] ?>" class="contact-detail-text text-dark">Email: <?= $restaurant['owner_email'] ?></a></li>
-                        </div> -->
-                        <!-- <div class="col-md-6 my-2">
+                        </div>
+                        <div class="col-md-6 my-2">
                             <li><i class="fas fa-map-marker-alt contact-icon"></i> <span class="contact-detail-text"><?= $restaurant['address'] ?></span></li>
-                        </div> -->
+                        </div>
                         <div class="col-md-6 my-2">
                             <!-- <li><i class="fas fa-box contact-icon"></i> <span class="contact-detail-text">Free standard shipping <br> on all orders.</span></li> -->
                         </div>
@@ -393,7 +391,8 @@ if($host === 'fooyes' || $host === 'staging')
                     <textarea name="message" class="form-control contact-form-textarea" rows="4" placeholder="Type Your Message" required></textarea>
                 </div>
                 <!-- Google reCAPTCHA -->
-                <div class="g-recaptcha mb-3" data-sitekey="<?= $siteKey ?>"></div>
+
+                <div class="g-recaptcha mb-3" data-sitekey="6LehQMwrAAAAAKg_qFgcIdwKamctT4jQtwxvF9rd"></div>
                 <button type="submit" class="btn contact-form-submit-btn">Submit</button>
             </form>
         </div>
@@ -485,9 +484,9 @@ if($host === 'fooyes' || $host === 'staging')
             </div>
  <?php endif; ?>
 
-            <!-- <div class="col-md-6 mob-hide"><img class="img-fluid"
+            <div class="col-md-6 mob-hide"><img class="img-fluid"
                     src="<?php echo base_url('assets/frontend/default/images/footer-top.png') ?>" /></div>
-        </div> -->
+        </div>
     </div>
 </section>
 
