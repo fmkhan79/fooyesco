@@ -2,9 +2,20 @@
 <html lang="en">
 
 <head>
-    <title><?php echo get_system_settings('system_title'); ?></title>
+    <title>Sign In to Fooyes | Order Takeaways Online</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Log in to Fooyes and order your favourite dishes from top local takeaways across the UK." />
+        <?php
+   $uri = $_SERVER['REQUEST_URI'];
+    $host = $_SERVER['HTTP_HOST'];
+    $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    $canonical_url = $scheme . '://' . $host . $uri;
+    $canonical_url = strtok($canonical_url, '?'); // Remove query strings
+
+    ?>
+    
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
     <link rel="icon" type="image/png" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>" />
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/vendor/bootstrap/css/bootstrap.min.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css'); ?>">
@@ -22,9 +33,11 @@
             <div class="text-center">
                 <img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>" class="auth-logo" alt="">
             </div>
-            <span class="login100-form-title p-b-37">
-                <?php echo site_phrase('what_are_you', true); ?>
-            </span>
+            <h1 class="login100-form-title p-b-37">
+                <?//php echo site_phrase('what_are_you', true); ?>
+                Sign In to Fooyes
+            </h1>
+            
           
 
             <div class="row">
