@@ -50,7 +50,17 @@ if ($page_name == "restaurant/index") : ?>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<?php
+   $uri = $_SERVER['REQUEST_URI'];
+    $host = $_SERVER['HTTP_HOST'];
+    $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    $canonical_url = $scheme . '://' . $host . $uri;
+    $canonical_url = strtok($canonical_url, '?'); // Remove query strings
 
+    ?>
+    
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
+    
 <?php 
 $restaurant_ids = $this->cart_model->get_restaurant_ids();
 
