@@ -2,9 +2,11 @@
 <html lang="en">
 
 <head>
-	<title><?php echo sanitize(get_system_settings('system_title')); ?></title>
+	<title>Reset Password | Fooyes UK</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Forgot your password? Reset it easily and get back to ordering tasty food from Fooyes UK." />
+
 	<link rel="icon" type="image/png" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/vendor/bootstrap/css/bootstrap.min.css'); ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css'); ?>">
@@ -23,9 +25,9 @@
 				<img src="<?php echo base_url('uploads/system/' . get_website_settings('website_logo')); ?>" class="auth-logo" alt="">
 			</div>
 			<form action="<?php echo site_url('auth/resetpassword'); ?>" method="POST" class="login100-form">
-				<span class="login100-form-title p-b-37">
+				<h1 class="login100-form-title p-b-37">
 					<?php echo get_phrase('forget_password'); ?>
-				</span>
+				</h1>
 
 				<div class="wrap-input100 m-b-20">
 					<input class="input100" type="text" name="email" placeholder="<?php echo get_phrase('enter_your_email'); ?>">

@@ -120,7 +120,8 @@
     <section class="detail-wbox mt-5 mb-2">
         <div class="container bg-white text-dark border border-light">
             <h1 class="contact-heading">
-                <span class="text-privacy pr-2">Become</span> A Partner
+                <!-- <span class="text-privacy pr-2">Become</span> A Partner  -->
+                <span class="text-privacy pr-2">Order</span>Food Online
             </h1>
             <div class="row mt-5">
                 <!-- Left Side: Partnership Details -->

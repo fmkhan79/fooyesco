@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
-	<title><?php echo get_system_settings('system_title'); ?></title>
+	<title>Sign In to Fooyes | Order Takeaways Online</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Log in to Fooyes and order your favourite dishes from top local takeaways across the UK." />
 	<link rel="icon" type="image/png" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/vendor/bootstrap/css/bootstrap.min.css'); ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css'); ?>">
@@ -34,9 +35,10 @@
 			<?php if ($role == "customer" || $role == "owner" || $role == "driver") : ?>
 				<form action="<?php echo site_url('auth/register'); ?>" method="POST" class="login100-form">
 					
-					<span class="login100-form-title p-b-37">
-						<?php echo get_phrase('register_as') . ' ' . ucfirst(sanitize($role)); ?>
-					</span>
+					<h1 class="login100-form-title p-b-37">
+						<?//php echo get_phrase('sign_up') . ' ' . ucfirst(sanitize($role)); ?>
+Signup into Fooyes
+					</h1>
 
 	
 					<input type="hidden" name="role" value="<?php echo sanitize($role); ?>">

@@ -76,7 +76,7 @@ NAVIGATION BAR
 
 <section class="detail-wbox mt-4 mb-2">
     <div class="container bg-white text-dark border border-light">
-        <h1 style="font-size:40px; font-weight:600;" class="text-dark"><span class="text-privacy pr-2">About</span><span class="text-policy">Us</span></h1>
+        <h1 style="font-size:40px; font-weight:600;" class="text-dark"><span class="text-privacy pr-2">About</span><span class="text-policy">Fooyes</span></h1>
         <div class="about-txt  py-md-4" style="background: url(<?php echo base_url("assets/frontend/default/images/about-img.png"); ?>) no-repeat right">
 
             <div class="row" style="margin-left: 0px;">

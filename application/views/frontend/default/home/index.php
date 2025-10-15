@@ -352,10 +352,16 @@
                             <div>
 
                       
-                            <h1>We're
+                            <!-- <h1>We're
                                 <span class="text-danger">Serious</span> For
                                 <span class="text-danger">Food</span> &amp;
                                 <span class="text-warning">Delivery</span>.
+                            </h1> -->
+
+                             <h1>We're
+                                <span class="text-danger">Deliver</span> 
+                                <span class="text-danger">Good </span> 
+                                <span class="text-warning">Food Fast</span>.
                             </h1>
                          
                             </div>

@@ -13,9 +13,13 @@ if ($page_name == "restaurant/index") : ?>
     <meta name="keywordss" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <meta name="description" content="Get in touch with our customer support team. We're here to assist you with orders, deliveries, and account inquiries." />
 
+<?php elseif ($page_name == "home/index") : ?>
+    <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <meta name="description" content="Order food online from your favourite local takeaways across the UK with Fooyes — easy, fast, and delicious." />
+
 <?php elseif ($page_name == "about_us/index") : ?>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
-    <meta name="description" content="Learn more about us — our mission, values, and commitment to bringing delicious food from your favorite restaurants straight to your door." />
+    <meta name="description" content="Learn about Fooyes — the UK platform that connects you with the best local takeaways and restaurants." />
 
 <?php elseif ($page_name == "privacy_policy/index") : ?>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
@@ -27,7 +31,7 @@ if ($page_name == "restaurant/index") : ?>
 
 <?php elseif ($page_name == "become_a_partner/index") : ?>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
-    <meta name="description" content="Join us as a restaurant or delivery partner. Expand your reach and grow your business with our platform." />
+    <meta name="description" content="Enjoy fast, easy online food delivery from your favourite UK restaurants using Fooyes." />
 
 <?php elseif ($page_name == "terms_of_use/index") : ?>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
@@ -60,6 +64,7 @@ if($host === 'fooyes' || $host === 'staging')
     $isFooyes=true;
 ?>
 
+<<<<<<< Updated upstream
 <?php 
 if ($isFooyes): ?>
     <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
@@ -99,6 +104,17 @@ if ($isFooyes): ?>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
     <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
+=======
+
+<?php if ($page_name == "home/index") : ?>
+<title>Order Food Online Across the UK | <?php echo sanitize(get_system_settings('system_title')); ?></title>
+<?php elseif ($page_name == "about_us/index") : ?>
+<title>About Fooyes | Your UK Food Delivery Partner</title>
+<?php elseif ($page_name == "become_a_partner/index") : ?>
+<title>Order Food Online with Fooyes UK</title>
+<?php else: ?>
+<title>Chilli Hut Fast Food Takeaway in March</title>
+>>>>>>> Stashed changes
 <?php endif; ?>
 
 
