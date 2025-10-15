@@ -111,10 +111,10 @@ if ($page_name == "home/index"): ?>
     $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
     $canonical_url = $scheme . '://' . $host . $uri;
     $canonical_url = strtok($canonical_url, '?'); // Remove query strings
-
+    
     $title = 'Chilli Hut Fast Food Takeaway in March';
     $description = 'Order delicious fast food in March, Cambridgeshire.';
-    
+
     if (strpos($uri, '/privacy-policy') !== false) {
         $title = 'Chilli Hut March - Our Privacy Policy';
         $description = 'Read our Privacy Policy to understand how we collect, use, and protect your personal information.';
@@ -143,7 +143,17 @@ if ($page_name == "home/index"): ?>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
     <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Chilli Hut March",
+  "alternateName": "chillihut",
+  "url": "https://www.chilli-hut-march.co.uk/",
+  "logo": "https://www.chilli-hut-march.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png",
+  "sameAs": "https://www.facebook.com/profile.php?id=61577144177609&_rdc=1&_rdr"
+}
+</script>
 <?php endif; ?>
 
 
