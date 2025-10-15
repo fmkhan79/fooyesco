@@ -77,6 +77,17 @@ if($host === 'fooyes' || $host === 'staging')
 <?php 
 if ($page_name == "home/index"): ?>
    <title>Order Food Online Across the UK | Fooyes</title>
+ <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Fooyes",
+  "alternateName": "fooyesuk",
+  "url": "https://www.fooyes.co.uk/",
+  "logo": "https://www.fooyes.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png"
+}
+</script>
+
 <?php elseif ($page_name == "about_us/index") : ?>
     <title>About Fooyes | Your UK Food Delivery Partner</title>
 <?php elseif ($page_name == "contact_us/index") : ?>
@@ -103,7 +114,7 @@ if ($page_name == "home/index"): ?>
 
     $title = 'Chilli Hut Fast Food Takeaway in March';
     $description = 'Order delicious fast food in March, Cambridgeshire.';
-
+    
     if (strpos($uri, '/privacy-policy') !== false) {
         $title = 'Chilli Hut March - Our Privacy Policy';
         $description = 'Read our Privacy Policy to understand how we collect, use, and protect your personal information.';
@@ -137,3 +148,5 @@ if ($page_name == "home/index"): ?>
 
 
 <link rel="shortcut icon" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>">
+
+
