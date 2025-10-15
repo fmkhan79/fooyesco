@@ -64,7 +64,6 @@ if($host === 'fooyes' || $host === 'staging')
     $isFooyes=true;
 ?>
 
-<<<<<<< Updated upstream
 <?php 
 if ($isFooyes): ?>
     <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
