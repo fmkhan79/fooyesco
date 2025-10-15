@@ -104,17 +104,7 @@ if ($isFooyes): ?>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
     <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
-=======
 
-<?php if ($page_name == "home/index") : ?>
-<title>Order Food Online Across the UK | <?php echo sanitize(get_system_settings('system_title')); ?></title>
-<?php elseif ($page_name == "about_us/index") : ?>
-<title>About Fooyes | Your UK Food Delivery Partner</title>
-<?php elseif ($page_name == "become_a_partner/index") : ?>
-<title>Order Food Online with Fooyes UK</title>
-<?php else: ?>
-<title>Chilli Hut Fast Food Takeaway in March</title>
->>>>>>> Stashed changes
 <?php endif; ?>
 
 
