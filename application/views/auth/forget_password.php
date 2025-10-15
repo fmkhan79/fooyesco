@@ -26,7 +26,8 @@
 			</div>
 			<form action="<?php echo site_url('auth/resetpassword'); ?>" method="POST" class="login100-form">
 				<h1 class="login100-form-title p-b-37">
-					<?php echo get_phrase('forget_password'); ?>
+					<?//php echo get_phrase('forget_password'); ?>
+					Reset Your Password
 				</h1>
 
 				<div class="wrap-input100 m-b-20">

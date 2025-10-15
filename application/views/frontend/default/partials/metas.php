@@ -50,7 +50,17 @@ if ($page_name == "restaurant/index") : ?>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<?php
+   $uri = $_SERVER['REQUEST_URI'];
+    $host = $_SERVER['HTTP_HOST'];
+    $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    $canonical_url = $scheme . '://' . $host . $uri;
+    $canonical_url = strtok($canonical_url, '?'); // Remove query strings
 
+    ?>
+    
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
+    
 <?php 
 $restaurant_ids = $this->cart_model->get_restaurant_ids();
 
@@ -65,8 +75,25 @@ if($host === 'fooyes' || $host === 'staging')
 ?>
 
 <?php 
-if ($isFooyes): ?>
+if ($page_name == "home/index"): ?>
+   <title>Order Food Online Across the UK | Fooyes</title>
+<?php elseif ($page_name == "about_us/index") : ?>
+    <title>About Fooyes | Your UK Food Delivery Partner</title>
+<?php elseif ($page_name == "contact_us/index") : ?>
+    <title>Contact Fooyes | Your UK Food Delivery Partner</title>
+<?php elseif ($page_name == "privacy_policy/index") : ?>
+    <title>Privacy Policy Fooyes | Your UK Food Delivery Partner</title>
+<?php elseif ($page_name == "terms_and_conditions/index") : ?>
+    <title>Terms and Conditions Fooyes | Your UK Food Delivery Partner</title>
+<?php elseif ($page_name == "become_a_partner/index") : ?>
+    <title>Become A Partner Fooyes | Your UK Food Delivery Partner</title>
+<?php elseif ($page_name == "terms_of_use/index") : ?>
+    <title>Terms Of Use Fooyes | Your UK Food Delivery Partner</title>
+<?php elseif ($page_name == "solutions/index") : ?>
+    <title>Solutions Fooyes | Your UK Food Delivery Partner</title>
+<?php elseif ($isFooyes) : ?>
     <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
+
 <?php else: 
     $uri = $_SERVER['REQUEST_URI'];
     $host = $_SERVER['HTTP_HOST'];
@@ -99,7 +126,9 @@ if ($isFooyes): ?>
     }
 
 ?>
-    <title><?php echo $title; ?></title>
+
+
+    <title><?php echo htmlspecialchars($title); ?></title>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
     <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />

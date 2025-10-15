@@ -12,8 +12,8 @@
 
     <?php if ($isFooyes): ?>
         <!-- Fooyes Meta -->
-        <title><?php echo htmlspecialchars($page_title); ?>  <?php echo sanitize(get_system_settings('system_title')); ?></title>
-        <meta name="description" content="Welcome to Fooyes — your online food ordering platform." />
+        <title>Sign In to Fooyes | Order Takeaways Online</title>
+        <meta name="description" content="Log in to Fooyes and order your favourite dishes from top local takeaways across the UK." />
         <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <?php else: ?>
         <!-- Chilli Hut March Meta -->
