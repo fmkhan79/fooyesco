@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<<<<<<< Updated upstream
 <head>
     <?php 
     $isFooyes = false;
@@ -35,6 +36,22 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/main.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/custom.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/css/font.css'); ?>">
+=======
+<head>	
+	<title>Sign In to Fooyes | Order Takeaways Online</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Log in to Fooyes and order your favourite dishes from top local takeaways across the UK." />
+	<link rel="icon" type="image/png" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>" />
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/vendor/bootstrap/css/bootstrap.min.css'); ?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css'); ?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/fonts/iconic/css/material-design-iconic-font.min.css'); ?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/toastr/toastr.css') ?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/util.css'); ?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/main.css'); ?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/auth/css/custom.css'); ?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/css/font.css'); ?>">
+>>>>>>> Stashed changes
 </head>
 
 
@@ -50,9 +67,9 @@
     </div>
 <?php endif; ?>
 			<form action="<?php echo site_url('auth/validate'); ?>" method="POST" class="login100-form">
-				<span class="login100-form-title p-b-37">
-					<?php echo get_phrase('sign_in'); ?>
-				</span>
+				<h1 class="login100-form-title p-b-37">
+					<?//php echo get_phrase('sign_in'); ?>Sign In to Fooyes
+				</h1>
 
 				<div class="wrap-input100 m-b-20">
 					<input class="input100" type="text" name="email" placeholder="<?php echo get_phrase('enter_your_email'); ?>" id="login-email">
