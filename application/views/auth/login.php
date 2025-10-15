@@ -15,11 +15,33 @@
         <title>Sign In to Fooyes | Order Takeaways Online</title>
         <meta name="description" content="Log in to Fooyes and order your favourite dishes from top local takeaways across the UK." />
         <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+		<?php
+   $uri = $_SERVER['REQUEST_URI'];
+    $host = $_SERVER['HTTP_HOST'];
+    $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    $canonical_url = $scheme . '://' . $host . $uri;
+    $canonical_url = strtok($canonical_url, '?'); // Remove query strings
+
+    ?>
+    
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
+    
     <?php else: ?>
         <!-- Chilli Hut March Meta -->
         <title>Chilli Hut March - Login Page</title>
         <meta name="description" content="Login to Chilli Hut March account to view and manage your orders." />
         <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+		<?php
+   $uri = $_SERVER['REQUEST_URI'];
+    $host = $_SERVER['HTTP_HOST'];
+    $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    $canonical_url = $scheme . '://' . $host . $uri;
+    $canonical_url = strtok($canonical_url, '?'); // Remove query strings
+
+    ?>
+    
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
+    
     <?php endif; ?>
 
     <!-- Common Meta & Styles -->
