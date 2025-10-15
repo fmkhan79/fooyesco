@@ -358,7 +358,7 @@
                                 <span class="text-warning">Delivery</span>.
                             </h1> -->
 
-                             <h1>We're
+                             <h1>We
                                 <span class="text-danger">Deliver</span> 
                                 <span class="text-danger">Good </span> 
                                 <span class="text-warning">Food Fast</span>.
