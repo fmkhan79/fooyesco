@@ -92,16 +92,44 @@ $canonical_url = strtok($canonical_url, '?');
 
     <?php if ($page_name == "home/index"): ?>
         <title>Order Food Online Across the UK | Fooyes</title>
-        <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "Fooyes",
-          "alternateName": "fooyesuk",
-          "url": "https://www.fooyes.co.uk/",
-          "logo": "https://www.fooyes.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png"
-        }
-        </script>
+ <script type="application/ld+json" id="takeaway_schema">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "@id": "https://www.fooyes.co.uk",
+  "url": "https://www.fooyes.co.uk",
+  "name": "Fooyes",
+  "logo": "https://www.fooyes.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png",
+  "address": {
+  "@type": "PostalAddress",
+  "streetAddress": "110 Eastern Ave",
+  "addressLocality": "Peterborough",
+  "addressRegion": "Cambridgeshire",
+  "postalCode": "PE1 4PW",
+  "addressCountry": "GB"
+},
+  "servesCuisine": "Pizza, Burgers, Kebab",
+  "priceRange": "Â£",
+  "telephone": "07438797814",
+  "potentialAction": {
+    "@type": "OrderAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://www.fooyes.co.uk",
+      "inLanguage": "en-GB",
+      "actionPlatform": [
+        "https://schema.org/DesktopWebPlatform",
+        "https://schema.org/MobileWebPlatform"
+      ],
+      "url": "https://www.fooyes.co.uk?utm_source=google&utm_medium=organic&utm_campaign=orderaction"
+    },
+    "deliveryMethod": [
+      "http://purl.org/goodrelations/v1#DeliveryModeOwnFleet",
+      "http://purl.org/goodrelations/v1#DeliveryModePickUp"
+    ]
+  }
+}
+</script>
 
     <?php elseif ($page_name == "about_us/index") : ?>
         <title>About Fooyes | Your UK Food Delivery Partner</title>
@@ -167,7 +195,7 @@ $canonical_url = strtok($canonical_url, '?');
   "@id": "https://www.chilli-hut-march.co.uk",
   "url": "https://www.chilli-hut-march.co.uk",
   "name": "Chilli Hut",
-  "logo": "https://www.fooyes.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png",
+  "logo": "https://www.chilli-hut-march.co.uk/uploads/system/restaurant.png",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "40 High Street, March",
