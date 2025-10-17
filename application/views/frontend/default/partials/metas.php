@@ -160,18 +160,72 @@ $canonical_url = strtok($canonical_url, '?');
     <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
     <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Chilli Hut March",
-      "alternateName": "chillihut",
-      "url": "https://www.chilli-hut-march.co.uk/",
-      "logo": "https://www.chilli-hut-march.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png",
-      "sameAs": "https://www.facebook.com/profile.php?id=61577144177609&_rdc=1&_rdr"
-    }
-    </script>
+ <script type="application/ld+json" id="takeaway_schema">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "@id": "https://www.chilli-hut-march.co.uk",
+  "url": "https://www.chilli-hut-march.co.uk",
+  "name": "Chilli Hut",
+  "logo": "https://www.fooyes.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "40 High Street, March",
+    "addressLocality": "March",
+    "addressRegion": "March",
+    "postalCode": "PE15 9JR",
+    "addressCountry": "GB"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "3.5",
+    "reviewCount": "1641"
+  },
+  "servesCuisine": "Pizza, Burgers, Kebab",
+  "openingHours": [
+    "Mo 16:00-01:45",
+    "Tu 16:00-01:45",
+    "We 16:00-01:45",
+    "Th 16:00-01:45",
+    "Fr 16:00-01:45",
+    "Sa 16:00-01:45",
+    "Su 16:00-01:45"
+  ],
+  "priceRange": "Â£",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "52.54827129465811",
+    "longitude": "0.087961667129548"
+  },
+  "telephone": "+44 1354 654992",
+  "potentialAction": {
+    "@type": "OrderAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://www.chilli-hut-march.co.uk",
+      "inLanguage": "en-GB",
+      "actionPlatform": [
+        "https://schema.org/DesktopWebPlatform",
+        "https://schema.org/MobileWebPlatform"
+      ],
+      "url": "https://www.chilli-hut-march.co.uk?utm_source=google&utm_medium=organic&utm_campaign=orderaction"
+    },
+    "deliveryMethod": [
+      "http://purl.org/goodrelations/v1#DeliveryModeOwnFleet",
+      "http://purl.org/goodrelations/v1#DeliveryModePickUp"
+    ]
+  }
+}
+</script>
 
+<script type="application/ld+json" id="website_schema">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Chilli Hut",
+  "url": "https://www.chilli-hut-march.co.uk"
+}
+</script>
 <?php endif; ?>
 
 <link rel="shortcut icon" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>">
