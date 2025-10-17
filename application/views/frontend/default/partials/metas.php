@@ -207,7 +207,7 @@ $canonical_url = strtok($canonical_url, '?');
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "3.5",
-    "reviewCount": "1641"
+    "reviewCount": "109"
   },
   "servesCuisine": "Pizza, Burgers, Kebab",
   "openingHours": [
