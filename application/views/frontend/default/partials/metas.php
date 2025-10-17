@@ -75,43 +75,89 @@ if($host === 'fooyes' || $host === 'staging')
 ?>
 
 <?php 
-if ($page_name == "home/index"): ?>
-   <title>Order Food Online Across the UK | Fooyes</title>
- <script type="application/ld+json">
+// Detect which domain we are on
+$host = $_SERVER['HTTP_HOST'];
+$scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+$uri = $_SERVER['REQUEST_URI'];
+
+// Automatically detect Fooyes environment
+$isFooyes = (strpos($host, 'fooyes') !== false || strpos($host, 'staging') !== false);
+
+// Build canonical URL (without query strings)
+$canonical_url = $scheme . '://' . $host . $uri;
+$canonical_url = strtok($canonical_url, '?'); 
+?>
+
+<?php if ($isFooyes): ?>
+
+    <?php if ($page_name == "home/index"): ?>
+        <title>Order Food Online Across the UK | Fooyes</title>
+ <script type="application/ld+json" id="takeaway_schema">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "Restaurant",
+  "@id": "https://www.fooyes.co.uk",
+  "url": "https://www.fooyes.co.uk",
   "name": "Fooyes",
-  "alternateName": "fooyesuk",
-  "url": "https://www.fooyes.co.uk/",
-  "logo": "https://www.fooyes.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png"
+  "logo": "https://www.fooyes.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png",
+  "address": {
+  "@type": "PostalAddress",
+  "streetAddress": "110 Eastern Ave",
+  "addressLocality": "Peterborough",
+  "addressRegion": "Cambridgeshire",
+  "postalCode": "PE1 4PW",
+  "addressCountry": "GB"
+},
+  "servesCuisine": "Pizza, Burgers, Kebab",
+  "priceRange": "Â£",
+  "telephone": "07438797814",
+  "potentialAction": {
+    "@type": "OrderAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://www.fooyes.co.uk",
+      "inLanguage": "en-GB",
+      "actionPlatform": [
+        "https://schema.org/DesktopWebPlatform",
+        "https://schema.org/MobileWebPlatform"
+      ],
+      "url": "https://www.fooyes.co.uk?utm_source=google&utm_medium=organic&utm_campaign=orderaction"
+    },
+    "deliveryMethod": [
+      "http://purl.org/goodrelations/v1#DeliveryModeOwnFleet",
+      "http://purl.org/goodrelations/v1#DeliveryModePickUp"
+    ]
+  }
 }
 </script>
 
-<?php elseif ($page_name == "about_us/index") : ?>
-    <title>About Fooyes | Your UK Food Delivery Partner</title>
-<?php elseif ($page_name == "contact_us/index") : ?>
-    <title>Contact Fooyes | Your UK Food Delivery Partner</title>
-<?php elseif ($page_name == "privacy_policy/index") : ?>
-    <title>Privacy Policy Fooyes | Your UK Food Delivery Partner</title>
-<?php elseif ($page_name == "terms_and_conditions/index") : ?>
-    <title>Terms and Conditions Fooyes | Your UK Food Delivery Partner</title>
-<?php elseif ($page_name == "become_a_partner/index") : ?>
-    <title>Become A Partner Fooyes | Your UK Food Delivery Partner</title>
-<?php elseif ($page_name == "terms_of_use/index") : ?>
-    <title>Terms Of Use Fooyes | Your UK Food Delivery Partner</title>
-<?php elseif ($page_name == "solutions/index") : ?>
-    <title>Solutions Fooyes | Your UK Food Delivery Partner</title>
-<?php elseif ($isFooyes) : ?>
-    <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
+    <?php elseif ($page_name == "about_us/index") : ?>
+        <title>About Fooyes | Your UK Food Delivery Partner</title>
+
+    <?php elseif ($page_name == "contact_us/index") : ?>
+        <title>Contact Fooyes | Your UK Food Delivery Partner</title>
+
+    <?php elseif ($page_name == "privacy_policy/index") : ?>
+        <title>Privacy Policy Fooyes | Your UK Food Delivery Partner</title>
+
+    <?php elseif ($page_name == "terms_and_conditions/index") : ?>
+        <title>Terms and Conditions Fooyes | Your UK Food Delivery Partner</title>
+
+    <?php elseif ($page_name == "become_a_partner/index") : ?>
+        <title>Become A Partner Fooyes | Your UK Food Delivery Partner</title>
+
+    <?php elseif ($page_name == "terms_of_use/index") : ?>
+        <title>Terms Of Use Fooyes | Your UK Food Delivery Partner</title>
+
+    <?php elseif ($page_name == "solutions/index") : ?>
+        <title>Solutions Fooyes | Your UK Food Delivery Partner</title>
+
+    <?php else: ?>
+        <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
+    <?php endif; ?>
 
 <?php else: 
-    $uri = $_SERVER['REQUEST_URI'];
-    $host = $_SERVER['HTTP_HOST'];
-    $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
-    $canonical_url = $scheme . '://' . $host . $uri;
-    $canonical_url = strtok($canonical_url, '?'); // Remove query strings
-    
+    // Default for Chilli Hut
     $title = 'Chilli Hut Fast Food Takeaway in March';
     $description = 'Order delicious fast food in March, Cambridgeshire.';
 
@@ -135,27 +181,80 @@ if ($page_name == "home/index"): ?>
         $title = 'Chilli Hut March - Authentication';
         $description = 'Secure login and account authentication page for Chilli Hut March users.';
     }
-
 ?>
-
 
     <title><?php echo htmlspecialchars($title); ?></title>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
     <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>" />
-<script type="application/ld+json">
+
+ <script type="application/ld+json" id="takeaway_schema">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Chilli Hut March",
-  "alternateName": "chillihut",
-  "url": "https://www.chilli-hut-march.co.uk/",
-  "logo": "https://www.chilli-hut-march.co.uk/uploads/system/VJMkY4SgTdEnL35HtR9GUPD.png",
-  "sameAs": "https://www.facebook.com/profile.php?id=61577144177609&_rdc=1&_rdr"
+  "@type": "Restaurant",
+  "@id": "https://www.chilli-hut-march.co.uk",
+  "url": "https://www.chilli-hut-march.co.uk",
+  "name": "Chilli Hut",
+  "logo": "https://www.chilli-hut-march.co.uk/uploads/system/restaurant.png",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "40 High Street, March",
+    "addressLocality": "March",
+    "addressRegion": "March",
+    "postalCode": "PE15 9JR",
+    "addressCountry": "GB"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "3.5",
+    "reviewCount": "1641"
+  },
+  "servesCuisine": "Pizza, Burgers, Kebab",
+  "openingHours": [
+    "Mo 16:00-01:45",
+    "Tu 16:00-01:45",
+    "We 16:00-01:45",
+    "Th 16:00-01:45",
+    "Fr 16:00-01:45",
+    "Sa 16:00-01:45",
+    "Su 16:00-01:45"
+  ],
+  "priceRange": "Â£",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "52.54827129465811",
+    "longitude": "0.087961667129548"
+  },
+  "telephone": "+44 1354 654992",
+  "potentialAction": {
+    "@type": "OrderAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://www.chilli-hut-march.co.uk",
+      "inLanguage": "en-GB",
+      "actionPlatform": [
+        "https://schema.org/DesktopWebPlatform",
+        "https://schema.org/MobileWebPlatform"
+      ],
+      "url": "https://www.chilli-hut-march.co.uk?utm_source=google&utm_medium=organic&utm_campaign=orderaction"
+    },
+    "deliveryMethod": [
+      "http://purl.org/goodrelations/v1#DeliveryModeOwnFleet",
+      "http://purl.org/goodrelations/v1#DeliveryModePickUp"
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json" id="website_schema">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Chilli Hut",
+  "url": "https://www.chilli-hut-march.co.uk"
 }
 </script>
 <?php endif; ?>
-
 
 <link rel="shortcut icon" href="<?php echo base_url('uploads/system/' . get_website_settings('favicon')); ?>">
 
