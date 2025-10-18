@@ -1,5 +1,9 @@
 <!-- NAVIGATION BAR -->
-
+<?php
+function is_mobile_device() {
+    return preg_match('/(android|iphone|ipad|ipod|blackberry|mini|windows\sce|palm)/i', $_SERVER['HTTP_USER_AGENT']);
+}
+?>
 <?php 
 $cartView = true;
 
@@ -434,7 +438,12 @@ $stripe_settings = json_decode($stripe_settings);
     </div>
     </div>
 
+
+<!-- for desktop -->
+ <?php if (!is_mobile_device()) { ?>
+
     <div class="order-summery-box d-none d-md-block" id="order-summary">
+
         <div>
             <h3>Order Summary</h3>
             <p class="green">You're all set</p>
@@ -504,6 +513,7 @@ $stripe_settings = json_decode($stripe_settings);
                 </label>
             </div>
 
+
 <script>
     $(document).ready(function () {
     // Jab bhi delivery price calculate ho jaye
@@ -522,6 +532,8 @@ $stripe_settings = json_decode($stripe_settings);
 });
 </script>
 <div class="total-price-box d-flex justify-content-between align-items-center">
+
+
                         <div class="" id="">Subtotal</div>
 
                         <div id="ttprice" class="subtotal-price"></div>
@@ -604,13 +616,112 @@ $stripe_settings = json_decode($stripe_settings);
                         Now!</a> -->
         </div>
     </div>
+
+    <?php } ?>
 </section>
+
+
 
 <head>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
+
+<!-- for mobile screen  -->
+   <div class="container order-summery-box d-block d-md-none" id="mobileOrderSummary">
+   
+<div class="total-price-box d-flex justify-content-between align-items-center">
+
+
+                        <div class="" id="">Subtotal</div>
+
+                        <div id="ttprice" class="subtotal-price"></div>
+                    </div>
+                    <hr>
+
+
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center" id="delivery-charge">
+                        <div class="">Delivery Charges <sub id="cal"></sub></div>
+                        <div class="total-delivery-price"></div>
+                    </div>
+
+                    <!-- <div class="total-price-box d-none justify-content-between align-items-center">
+                        <div class="subtotal">VAT Charges</div>
+                        <div class="total-vat-price"></div>
+                    </div> -->
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="">Service Charges</div>
+                        <div class="total-service-price">-</div>
+                    </div>
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="">Bag Charges</div>
+                        <div class="bag-charges">-</div>
+                    </div>
+
+                    <div class="total-price-box d-flex justify-content-between align-items-center">
+                        <div class="discount-label">Discount (20%)</div>
+                        <div class="total-discount-applied">-</div>
+                    </div>
+
+                    <div class="row mt-2 d-none online-disc">
+                        <div class="col-md-12 d-flex total-price-box">
+                        <input type="checkbox" name="online_discount" id="online_discount">
+                        <span class="mx-2"> Online Discount</span>
+                    </div>
+                </div>
+                    
+            <?php
+            $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
+            ?>
+
+            <hr />
+            <?php if (sizeof($cart_items) > 0) { ?>
+                <div class="row justify-content-md-end">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="promo_code">Promo Code</label>
+                            <div class="d-flex gap-2 justify-content-center">
+                                <div class="grand-product-price d-none"></div> <!-- Total Amount in this like £8.6 -->
+                                <input type="text" class="form-control" id="promo_code" name="promo_code" required>
+                                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo" onclick="remove_promo()">
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <small id="promo_code_message" class="d-block mt-1"></small>
+                            <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo" onclick="apply_promo_action()">
+                                APPLY COUPON CODE
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+
+            <!-- <div class="offer-spend my-3">Offer Spend £28.05 more to get 10% off</div> -->
+
+            <div class="total-price-box d-flex justify-content-between align-items-center">
+                <div class="">Total</div>
+                <div class="grand-product-price"></div>
+            </div>
+
+            <?php $restaurant_ids = $this->cart_model->get_restaurant_ids(); ?>
+            <?php $customer_details = $this->customer_model->get_by_id($this->session->userdata('user_id')); ?>
+
+
+
+            <!-- <a href="<?php echo base_url('cart'); ?>" class="d-block order-red-btn text-center mt-4">Order
+                        Now!</a> -->
+        </div>
+    </div>
+
+            
+<!-- //END MOBIKE SCREEN -->
+
 
 <div class="modal fade" id="guestAddressModal" tabindex="-1" aria-labelledby="guestAddressModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -1009,3 +1120,5 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 </script>
+
+
