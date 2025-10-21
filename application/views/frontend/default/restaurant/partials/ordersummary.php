@@ -178,42 +178,38 @@
                     </div>
                     
 
-                    <?php
-                    $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
-                    ?>
+               <div class="row mt-2 d-none online-disc">
+                        <div class="col-md-12 d-flex total-price-box">
+                        <input type="checkbox" name="online_discount" id="online_discount">
+                        <span class="mx-2"> Online Discount</span>
+                    </div>
+                </div>
+                    
+            <?php
+            $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
+            ?>
 
-                    <hr />
-                    <?php if (sizeof($cart_items) > 0 && false) { ?>
-                        <div class="row justify-content-md-end">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="promo_code">Promo Code</label>
-                                    <div class="d-flex gap-2 justify-content-center">
-                                        <input type="text" class="form-control" id="promo_code" name="promo_code"
-                                            value="<?php echo $cart_items[0]['offer_code']; ?>" required>
-                                        <?php if (isset($cart_items[0]['offer_code'])) { ?>
-                                            <div class="btn btn-sm btn-danger m-2" onclick="remove_promo()">
-                                                <i class="fa fa-times"></i>
-                                            </div>
-                                        <?php } ?>
-                                        <div class="btn btn-sm btn-danger m-2" id="remove_promo" style="display:none"
-                                            onclick="remove_promo()">
-                                            <i class="fa fa-times"></i>
-                                        </div>
-                                    </div>
-                                    <small id="promo_code_message"></small> <!-- Container for messages -->
-                                    <?php if (isset($cart_items[0]['offer_code'])) { ?>
-                                        <small class="text-success">Promo is already applied.</small>
-                                        <!-- Container for messages -->
-                                    <?php } else { ?>
-                                        <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo"
-                                            onclick="apply_promo_action()">APPLY COUPON CODE
-                                        </div>
-                                    <?php } ?>
+            <hr />
+            <?php if (sizeof($cart_items) > 0) { ?>
+                <div class="row justify-content-md-end">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="promo_code">Promo Code</label>
+                            <div class="d-flex gap-2 justify-content-center">
+                                <div class="grand-product-price d-none"></div> <!-- Total Amount in this like £8.6 -->
+                                <input type="text" class="form-control" id="promo_code" name="promo_code" required>
+                                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo" onclick="remove_promo()">
+                                    <i class="fa fa-times"></i>
                                 </div>
                             </div>
+                            <small id="promo_code_message" class="d-block mt-1"></small>
+                            <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo" onclick="apply_promo_action()">
+                                APPLY COUPON CODE
+                            </div>
                         </div>
-                    <?php } ?>
+                    </div>
+                </div>
+            <?php } ?>
 
                     <!-- <div class="offer-spend my-3">Offer Spend £28.05 more to get 10% off</div> -->
 

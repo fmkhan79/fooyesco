@@ -13,6 +13,9 @@
     .pac-container div:not(.pac-item) {
         display: none;
     }
+    #promo_code_message {
+    display: none;
+}
 </style>
 <script>
     "use strict";
@@ -532,8 +535,9 @@
                 promo_code: promoCode,
                 restaurant_id: restaurantId
             },
+            
             dataType: "json",
-            success: function(data) {
+            success: function(data) {   
                 if (data.success && data.data) {
                     const discount = data.data.discount;
 
@@ -976,6 +980,44 @@
         });
 
     });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const savedPromo = localStorage.getItem("appliedPromo");
+    console.log("Checking localStorage for promo...");
+
+    const promoCodeInput = document.getElementById("promo_code");
+    const messageEl = document.getElementById("promo_code_message");
+    const applyBtn = document.getElementById("apply_promo");
+    const removeBtn = document.getElementById("remove_promo");
+
+    console.log("promoCodeInput:", promoCodeInput);
+    console.log("messageEl:", messageEl);
+    // console.log("applyBtn:", applyBtn);
+    // console.log("removeBtn:", removeBtn);
+
+    if (savedPromo) {
+        const promo = JSON.parse(savedPromo);
+        console.log("Promo found in localStorage:", promo);
+
+        if (promoCodeInput && messageEl) {
+            promoCodeInput.value = promo.promo_code;
+            promoCodeInput.readOnly = true;
+
+            if (applyBtn) applyBtn.classList.add("d-none");
+            if (removeBtn) removeBtn.classList.remove("d-none");
+
+            messageEl.innerText = `Promo applied successfully! ${promo.discount}% off.`;
+            messageEl.className = "text-success";
+            console.log("Updated message:", messageEl.innerText);
+        }
+    } else {
+        console.log("No promo found in localStorage.");
+    }
+});
+
+
+
+
 
 
     document.getElementById("checking").onclick = function() {
