@@ -684,29 +684,112 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
         // calculateTotalPrice();
     });
 
+function apply_promo_action() {
+    const promoCode = document.getElementById("promo_code").value.trim();
+    const messageEl = document.getElementById("promo_code_message");
+    const restaurantId = "<?php echo $this->session->userdata('restaurant_id'); ?>";
+    const savedPromoData = localStorage.getItem("appliedPromo"); // get from localStorage
+    let savedPromo = "";
 
-    function apply_promo_action() {
-        var promoCode = $('#promo_code').val();
-        var amount = $('#grand_total_code').val(); /* Get the order amount */ ;
+    if (savedPromoData) {
+        try {
+            const parsed = JSON.parse(savedPromoData);
+            savedPromo = parsed.promo_code || "";
+        } catch (e) {
+            savedPromo = "";
+        }
+    }
+
+    if (promoCode === "") {
+        messageEl.innerText = "Please enter a promo code.";
+        messageEl.className = "text-danger";
+        return;
+    }
+
+    $.ajax({
+        url: "<?= site_url('PromoCode/check_promo') ?>",
+        type: "POST",
+        data: {
+            promo_code: promoCode,
+            restaurant_id: restaurantId,
+            saved_promo: savedPromo // ✅ send localStorage promo to PHP
+        },
+        dataType: "json",
+        success: function (data) {
+            if (data.success && data.data) {
+                const discount = data.data.discount;
+
+                messageEl.innerText = data.message || `Promo applied successfully! ${discount}% off.`;
+                messageEl.className = "text-success";
+
+                document.getElementById("promo_code").readOnly = true;
+                document.getElementById("apply_promo").classList.add("d-none");
+                document.getElementById("remove_promo").classList.remove("d-none");
+
+                localStorage.setItem("appliedPromo", JSON.stringify({
+                    promo_code: promoCode,
+                    discount: discount
+                }));
+
+                viewselected_cat_items_summary_total();
+            } else {
+                messageEl.innerText = data.message || "Invalid promo code.";
+                messageEl.className = "text-danger";
+
+                // If invalid, clear localStorage
+                localStorage.removeItem("appliedPromo");
+            }
+        },
+        error: function () {
+            messageEl.innerText = "Something went wrong. Try again.";
+            messageEl.className = "text-danger";
+        }
+    });
+}
+
+
+
+    function remove_promo() {
+        const messageEl = document.getElementById("promo_code_message");
+
         $.ajax({
-            url: '<?php echo site_url('cart/checkPromoCode'); ?>',
-            type: 'POST',
-            data: {
-                promo_code: promoCode,
-                amount: amount
-            },
-            success: function(response) {
-                if (!isNaN(response)) { // Check if response is a number
-                    $('#promo_code_message').text(response + '% discount applied.').addClass(
-                        'text-success').removeClass('text-danger');
-                    updateDiscountCodeToCart(promoCode, response); // Call the function with user_id
+            url: "<?= base_url('PromoCode/remove_promo') ?>",
+            type: "POST",
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    // Reset promo input
+                    document.getElementById("promo_code").value = "";
+                    document.getElementById("promo_code").readOnly = false;
+
+                    messageEl.innerText = data.message;
+                    messageEl.className = "text-warning";
+                    // $('.online-disc').addClass('d-none');
+                    document.getElementById("remove_promo").classList.add("d-none");
+                    document.getElementById("apply_promo").classList.remove("d-none");
+                    viewselected_cat_items_summary_total();
                 } else {
-                    $('#promo_code_message').text('Invalid promo code').addClass('text-danger')
-                        .removeClass('text-success');
+                    messageEl.innerText = "Failed to remove promo.";
+                    messageEl.className = "text-danger";
                 }
+            },
+            error: function() {
+                messageEl.innerText = "Something went wrong while removing promo.";
+                messageEl.className = "text-danger";
             }
         });
     }
+
+
+    // function remove_promo() {
+    //     const messageEl = document.getElementById("promo_code_message");
+    //     document.getElementById("promo_code").value = "";
+    //     document.getElementById("promo_code").readOnly = false;
+    //     messageEl.innerText = "Promo code removed.";
+    //     messageEl.className = "text-warning";
+    //     document.getElementById("remove_promo").classList.add("d-none");
+    //     document.getElementById("apply_promo").classList.remove("d-none");
+    // }
 
     // isPromoApplied
 
@@ -719,7 +802,7 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
                     var responseData = JSON.parse(response);
                     if (responseData.discount) {
                         var discountPercentage = parseInt(responseData.discount);
-                        var amount = parseFloat($('#grand_total_code').val());
+                        var amount = parseFloat($('.grand_total_code').val());
                         var discountAmount = (amount * discountPercentage) / 100;
 
                         $('#discount_amount').val(discountAmount.toFixed(2));
@@ -741,25 +824,29 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
 
 
 
-    function remove_promo() {
-        var userId = $('#user_id').val();
+    // function remove_promo() {
+    //     var userId = $('#user_id').val();
 
-        $.ajax({
-            url: '<?php echo site_url('cart/updateDiscountCodeCart'); ?>',
-            type: 'POST',
-            data: {
-                userId: userId,
-                promo_code: '',
-                discount: -1
-            },
-            success: function(response) {
-                window.location.reload();
-            }
-        });
-    }
+    //     $.ajax({
+    //         url: '<?php echo site_url('cart/updateDiscountCodeCart'); ?>',
+    //         type: 'POST',
+    //         data: {
+    //             userId: userId,
+    //             promo_code: '',
+    //             discount: -1
+    //         },
+    //         success: function(response) {
+    //             console.log(response);
+    //             window.location.reload();
+    //         }
+    //     });
+    // }
 
     function updateDiscountCodeToCart(promoCode, discount) {
         var userId = $('#user_id').val();
+        console.log('User Id : ', userId);
+        console.log('promoCode : ', promoCode);
+        console.log('discount : ', discount);
         var amount = $('#grand_total_code').val();
 
         $.ajax({
@@ -771,9 +858,11 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
                 discount: discount
             },
             success: function(response) {
+                console.log(response);
                 // Calculate discount amount
                 var discountPercentage = discount;
                 var discountAmount = (amount * discount) / 100;
+                console.log(discountPercentage, 'cart')
 
                 // Update discount amount in the <td> element
                 // $('#discount_amount').val(discountAmount.toFixed(2)); // Set hidden input value
@@ -812,36 +901,21 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
                 quantity: currentQuantity,
             },
             success: function(updatedPrice) {
-        // Log the updated price to the console for debugging
-
-        // Update the price shown in the cart
-        $('#sub-total-' + cartId).text(updatedPrice);
-                // $('#sub-total').text(updatedPrice);
-                // $('#sub-total-' + cartId).text(updatedPrice);
-                viewselected_cat_items_summary_total(); 
-                viewselected_cat_items_summary();
+                $('#sub-total-' + cartId).text(updatedPrice);
                 $.ajax({
-    url: '<?php echo site_url('cart/reload_cart_summary'); ?>',
-    success: function(response) {
-
-        $('#cart-summary').html(response); // Update the HTML content
-        $('.cart-actions').prop('disabled', false);
-        $(".summary-loader").addClass('d-none');
-        // Extract the total menu price using split
-        let firstSplit = response.split('<td class="bill-value font-weight-bold">')[1];
-
-
-        let result = firstSplit.split("</td>")[0];
-
-        document.getElementById("ttprice").innerHTML = result;
-       
-    }
-
-});
-
+                    url: '<?php echo site_url('cart/reload_cart_summary'); ?>',
+                    success: function(response) {
+                        $('#cart-summary').html(response);
+                        $('.cart-actions').prop('disabled', false);
+                        $(".summary-loader").addClass('d-none');
+                    }
+                });
             }
         });
     }
+
+
+   
 
     function viewselected_cat_items_summary_total() {
         
@@ -857,6 +931,7 @@ $.ajax({
     var totalVatValue = data.vat_charges;
     var grandSubTotalValue = data.grand_total;
     var totalServicePrice = data.total_service_price;
+    var totalDiscountPrice = data.total_discount_applied;
     var discountP = data.discounted_amount;
     var bagCharges = data.bag_price;
 
@@ -865,6 +940,7 @@ $.ajax({
     $(".total-vat-price").text(totalVatValue);
     $(".grand-product-price").text(grandSubTotalValue);
     $(".total-service-price").text(totalServicePrice);
+    $(".discount-label").text("Discount ("+ totalDiscountPrice +")");
     $(".total-discount-applied").text("-" + discountP);
 
     if (subTotalValue == "£0") {
