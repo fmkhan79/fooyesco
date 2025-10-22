@@ -684,11 +684,31 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
         // calculateTotalPrice();
     });
 
-function apply_promo_action() {
-    const promoCode = document.getElementById("promo_code").value.trim();
-    const messageEl = document.getElementById("promo_code_message");
+document.addEventListener("DOMContentLoaded", function () {
+    const applyPromoButtons = document.querySelectorAll("#apply_promo");
+
+    applyPromoButtons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            apply_promo_action(button);
+        });
+    });
+});
+
+function apply_promo_action(button) {
+    // Find the closest container for this button to scope selectors
+    const container = button.closest(".form-group");
+
+    if (!container) {
+        alert("Promo container not found!");
+        return;
+    }
+
+    const promoCodeInput = container.querySelector("#promo_code");
+    const messageEl = container.querySelector("#promo_code_message");
+    const removeBtn = container.querySelector("#remove_promo");
+
     const restaurantId = "<?php echo $this->session->userdata('restaurant_id'); ?>";
-    const savedPromoData = localStorage.getItem("appliedPromo"); // get from localStorage
+    const savedPromoData = localStorage.getItem("appliedPromo");
     let savedPromo = "";
 
     if (savedPromoData) {
@@ -700,7 +720,7 @@ function apply_promo_action() {
         }
     }
 
-    if (promoCode === "") {
+    if (!promoCodeInput || promoCodeInput.value.trim() === "") {
         messageEl.innerText = "Please enter a promo code.";
         messageEl.className = "text-danger";
         return;
@@ -710,9 +730,9 @@ function apply_promo_action() {
         url: "<?= site_url('PromoCode/check_promo') ?>",
         type: "POST",
         data: {
-            promo_code: promoCode,
+            promo_code: promoCodeInput.value.trim(),
             restaurant_id: restaurantId,
-            saved_promo: savedPromo // ✅ send localStorage promo to PHP
+            saved_promo: savedPromo
         },
         dataType: "json",
         success: function (data) {
@@ -722,12 +742,15 @@ function apply_promo_action() {
                 messageEl.innerText = data.message || `Promo applied successfully! ${discount}% off.`;
                 messageEl.className = "text-success";
 
-                document.getElementById("promo_code").readOnly = true;
-                document.getElementById("apply_promo").classList.add("d-none");
-                document.getElementById("remove_promo").classList.remove("d-none");
+                promoCodeInput.readOnly = true;
+
+                // Hide both apply promo buttons on the page to avoid confusion
+                document.querySelectorAll("#apply_promo").forEach(btn => btn.classList.add("d-none"));
+
+                if (removeBtn) removeBtn.classList.remove("d-none");
 
                 localStorage.setItem("appliedPromo", JSON.stringify({
-                    promo_code: promoCode,
+                    promo_code: promoCodeInput.value.trim(),
                     discount: discount
                 }));
 
@@ -735,8 +758,6 @@ function apply_promo_action() {
             } else {
                 messageEl.innerText = data.message || "Invalid promo code.";
                 messageEl.className = "text-danger";
-
-                // If invalid, clear localStorage
                 localStorage.removeItem("appliedPromo");
             }
         },
@@ -746,6 +767,7 @@ function apply_promo_action() {
         }
     });
 }
+
 
 
 
