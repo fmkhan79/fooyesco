@@ -47,7 +47,7 @@ a:hover{
         <?php include $role . '/navigation/index.php'; ?>
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        <div class="content-wrapper  <?php if ($page_name == 'pos/index') echo 'm-0'; ?>" >
             <?php include $role . '/' . $page_name . '.php'; ?>
         </div>
         <!-- /.content-wrapper -->
