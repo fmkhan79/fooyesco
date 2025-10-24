@@ -1,4 +1,4 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light <?php if ($page_name == 'pos/index') echo 'd-none'; ?>">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
     <li class="nav-item">

@@ -455,7 +455,9 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 <section class="order-detail-btns container d-lg-block " style="border-radius: 20px;">
     <div class="container">
         <div class="order-detail-slider owl-carousel owl-theme my-5 ">
-            <?php foreach ($restaurant_categories as $restaurant_category) { ?>
+            <?php foreach ($restaurant_categories as $restaurant_category) {
+                
+                ?>
                 <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
                     <?php echo $restaurant_category['name']; ?>
                 </a>
@@ -550,7 +552,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                         <!-- Your other content here -->
                                         <div class="d-flex order-detail-box-txt align-items-center justify-content-between flex-row-reverse flex-md-row">
                                             <div class="col-md-8 d-flex align-items-center p-0 m-0 flex-md-row flex-row-reverse
-">
+                                                          ">
                                                 <div class="item-img-box mr-3"><a><img class="rounded-circle"
                                                             src="<?php echo base_url('uploads/menu/') . $menu['thumbnail']; ?>" height="80  px" width="80px" /></a></div>
                                                 <div class="order col-md-2 d-md-none" id="order-add">
@@ -575,8 +577,8 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                                         ?>
                                                         <?php if ($isOwner): ?>
                                                             <button class="btn" disabled style="width: 114px; height: 70px; padding: 0; word-wrap: break-word;
- font-size: 14px; color:red; display: flex; align-items: center; justify-content: center; padding-right: 65px;
-" disabled>
+                                                             font-size: 14px; color:red; display: flex; align-items: center; justify-content: center; padding-right: 65px;
+                                                              " disabled>
                                                                 Owner <br> can't <br> order
                                                             </button>
                                                         <?php else: ?>

@@ -3,7 +3,7 @@
 
 </style>
 
-<aside class="main-sidebar sidebar-dark-danger elevation-4 hold-transition layout-fixed">
+<aside class="main-sidebar sidebar-dark-danger elevation-4 hold-transition layout-fixed <?php if ($page_name == 'pos/index') echo 'd-none'; ?>">
     <!-- Brand Logo -->
     <a href="<?php echo site_url('dashboard'); ?>" class="brand-link">
         <img src="<?php echo base_url('uploads/system/' . get_website_settings('backend_logo')); ?>" alt="" class="brand-image">
@@ -192,6 +192,7 @@
                     </a>
                 </li>
 
+             
                 <li class="nav-item has-treeview <?php if ($page_name == "category/index" || $page_name == "category/create" || $page_name == "category/edit" || $page_name == "menu/index" || $page_name == "menu/create" || $page_name == "menu/edit" || $page_name == "menu/report") echo 'menu-open'; ?>">
                     <a href="#" class="nav-link <?php if ($page_name == "category/index" || $page_name == "category/create" || $page_name == "category/edit" || $page_name == "menu/index" || $page_name == "menu/create" || $page_name == "menu/edit" || $page_name == "menu/report") echo 'active'; ?>">
                         <i class="nav-icon fas fa-utensils"></i>
