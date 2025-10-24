@@ -142,7 +142,7 @@ class Menu_model extends Base_model
     // Update to placeholder
     $this->db->where('id', $menu_id);
  
-    return $this->db->update('food_menus', ['thumbnail' => 'placeholder.png']);
+return $this->db->update('food_menus', ['thumbnail' => NULL]);
 }
 
 

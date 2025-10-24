@@ -160,6 +160,7 @@
 <img src="<?php echo base_url('uploads/menu/' . $menu['thumbnail']); ?>" 
      class="card-img-top" 
      alt="<?php echo htmlspecialchars($menu['name']); ?>">
+     
                     <h6 class="mt-2 text-dark"><?php echo htmlspecialchars($menu['name']); ?></h6>
                     <p class="text-muted small mb-2"><?php echo htmlspecialchars($menu['description']); ?></p>
                     <?php 
