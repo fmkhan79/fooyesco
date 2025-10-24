@@ -157,7 +157,9 @@
               <?php foreach ($menus as $menu) { ?>
                 <div class="col-md-6 col-lg-4 mb-4">
                   <div class="menu-card text-center p-3 shadow-sm" style="border-radius: 10px; transition: 0.3s;">
-                  <img src="<?php echo !empty($menu['thumbnail']) ? base_url('uploads/menu/' . $menu['thumbnail']) : 'https://via.placeholder.com/300?text=No+Image'; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($menu['name']); ?>">
+<img src="<?php echo base_url('uploads/menu/' . $menu['thumbnail']); ?>" 
+     class="card-img-top" 
+     alt="<?php echo htmlspecialchars($menu['name']); ?>">
                     <h6 class="mt-2 text-dark"><?php echo htmlspecialchars($menu['name']); ?></h6>
                     <p class="text-muted small mb-2"><?php echo htmlspecialchars($menu['description']); ?></p>
                     <?php 
