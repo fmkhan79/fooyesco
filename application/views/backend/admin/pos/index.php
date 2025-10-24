@@ -4,7 +4,7 @@
 
 <section class="content">
     <div class="container-fluid">
-        <?php include 'list.php'; ?>
+        <?php include "$pos_type.php"; ?>
     </div>
 </section>
 <!-- /.content -->

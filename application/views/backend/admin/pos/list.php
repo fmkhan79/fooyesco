@@ -47,6 +47,8 @@
     .menu-card img {
       width: 100%;
       border-radius: 12px;
+      height: 130px;
+      object-fit: cover;
     }
 
     .menu-card h6 {
@@ -75,8 +77,7 @@
       border-radius: 20px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
       padding: 25px;
-     height: 95VH; /* full screen height minus some margin */
-
+      height: 95vh;
     }
 
     .order-header {
@@ -150,161 +151,86 @@
 </head>
 <body>
 
-  <div class="container-fluid mt-4">
-    <div class="row">
-      <!-- Left Section -->
-      <div class="col-lg-8">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4>Category</h4>
-          <input type="text" class="search-bar" placeholder="Search menu" />
-        </div>
+<?php 
+// Fetch dynamic categories
+$restaurant_categories = $this->category_model->get_categories_by_restaurant_id(3);
+?>
 
-        <div class="d-flex flex-wrap mb-4">
-          <button class="category-btn active"><i class="fas fa-utensils mr-1"></i> Food</button>
-          <button class="category-btn"><i class="fas fa-cocktail mr-1"></i> Bar</button>
-          <button class="category-btn"><i class="fas fa-mug-hot mr-1"></i> Soup</button>
-          <button class="category-btn"><i class="fas fa-pizza-slice mr-1"></i> Pizzas</button>
-          <button class="category-btn"><i class="fas fa-fish mr-1"></i> Fish</button>
-        </div>
-
-        <h5 class="mb-3 font-weight-600">Special Menu for You</h5>
-        <div class="row">
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/vLwzZkP.png" alt="Pizza">
-              <h6>Super Delicious Pizza</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/gG1fDgN.png" alt="Burger">
-              <h6>Super Delicious Burger</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/obEQD3N.png" alt="Chicken">
-              <h6>Super Delicious Chicken</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="menu-card">
-              <img src="https://i.imgur.com/nL64lNK.png" alt="Chips">
-              <h6>Super Delicious Chips</h6>
-              <button>ADD</button>
-            </div>
-          </div>
-        </div>
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Left Section -->
+    <div class="col-lg-8">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Categories</h4>
+        <input type="text" class="search-bar" placeholder="Search category" />
       </div>
 
-      <!-- Right Section -->
-     <div class="col-lg-4">
-  <div class="order-card sticky-top" style="top: 20px;">
-    <div class="order-header mb-3">
-      <h5>Order Details</h5>
-      <small>#4587</small>
+      <!-- Dynamic Category Buttons -->
+      <!-- <div class="d-flex flex-wrap mb-4">
+        <?php
+        $isFirst = true;
+        foreach ($restaurant_categories as $restaurant_category) {
+          $slug = strtolower(str_replace(' ', '-', $restaurant_category['name']));
+        ?>
+          <button class="category-btn <?php echo $isFirst ? 'active' : ''; ?>" data-category="<?php echo $slug; ?>">
+            <?php echo htmlspecialchars($restaurant_category['name']); ?>
+          </button>
+        <?php
+          $isFirst = false;
+        }
+        ?>
+      </div> -->
+
+    <h5 class="mb-3 font-weight-600">All Categories</h5>
+<div class="row">
+  <?php foreach ($restaurant_categories as $restaurant_category) { ?>
+    <div class="col-md-3 mb-4">
+      <a href="<?php echo site_url('pos/category/' . $restaurant_category['id']); ?>" class="text-decoration-none">
+        <div class="menu-card text-center p-3 shadow-sm" style="border-radius: 10px; transition: 0.3s;">
+          <img 
+            src="<?php echo !empty($restaurant_category['thumbnail']) ? base_url('uploads/category/' . $restaurant_category['thumbnail']) : 'https://via.placeholder.com/150?text=Category'; ?>" 
+            alt="<?php echo htmlspecialchars($restaurant_category['name']); ?>" 
+            class="img-fluid mb-2" 
+            style="border-radius: 10px; height: 150px; object-fit: cover;"
+          >
+          <h6 class="mt-2 text-dark"><?php echo htmlspecialchars($restaurant_category['name']); ?></h6>
+        </div>
+      </a>
     </div>
-    <div class="order-details mb-3">
-      <p><strong>Customer:</strong> Johnson Mitchell</p>
-      <p><i class="far fa-clock"></i> Tue, Aug 2024 - 12:00 PM</p>
+  <?php } ?>
+</div>
     </div>
-    <hr>
-    <div class="order-summary">
-      <div><span>Cheese Selection</span><span>$12.00</span></div>
-      <div><span>Beef Burger</span><span>$12.00</span></div>
-      <div><span>Almond Crusted Salmon</span><span>$17.00</span></div>
-      <hr>
-      <div><strong>Sub Total</strong><span>$42.00</span></div>
-      <div><span>Discount</span><span>$0.00</span></div>
-      <div><span>Service Charge</span><span>$5.50</span></div>
-      <hr>
-      <div class="total-line d-flex justify-content-between">
-        <span>Total</span><span>$68.50</span>
+
+    <!-- Right Section -->
+    <div class="col-lg-4">
+      <div class="order-card sticky-top" style="top: 20px;">
+        <div class="order-header mb-3">
+          <h5>Order Details</h5>
+          <small>#4587</small>
+        </div>
+        <div class="order-details mb-3">
+          <p><strong>Customer:</strong> Johnson Mitchell</p>
+          <p><i class="far fa-clock"></i> Tue, Aug 2024 - 12:00 PM</p>
+        </div>
+        <hr>
+        <div class="order-summary">
+          <div><span>Cheese Selection</span><span>$12.00</span></div>
+          <div><span>Beef Burger</span><span>$12.00</span></div>
+          <div><span>Almond Crusted Salmon</span><span>$17.00</span></div>
+          <hr>
+          <div><strong>Sub Total</strong><span>$42.00</span></div>
+          <div><span>Discount</span><span>$0.00</span></div>
+          <div><span>Service Charge</span><span>$5.50</span></div>
+          <hr>
+          <div class="total-line d-flex justify-content-between">
+            <span>Total</span><span>$68.50</span>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <button class="btn-print">Print</button>
+          <button class="btn-fire">Fire</button>
+        </div>
       </div>
-    </div>
-    <div class="text-center mt-4">
-      <button class="btn-print">Print</button>
-      <button class="btn-fire">Fire</button>
     </div>
   </div>
 </div>

@@ -25,6 +25,7 @@ class Pos extends Authorization
     function index()
     {
         /** CHECK IF THE USER HAS ACCESS TO SEE THIS **/
+
         if (isset($_GET['restaurant_id']) && $_GET['restaurant_id'] != "all") {
             if (!has_access('restaurants', $_GET['restaurant_id'])) {
                 error(get_phrase('you_are_not_authorized_for_this_action'), site_url('menu'));
@@ -39,9 +40,11 @@ class Pos extends Authorization
         $page_data['categories']  = $this->category_model->get_all();
 
         if ($this->logged_in_user_role == "admin") {
+
             $conditions = array(
                 'restaurant_id' => $page_data['restaurant_id'] == "all" ? null : $page_data['restaurant_id'],
                 'category_id' => $page_data['category_id'] == "all" ? null : $page_data['category_id']
+                
             );
         } else {
             $approved_restaurant_ids = $this->restaurant_model->get_approved_restaurant_ids_by_owner_id($this->logged_in_user_id);
@@ -50,6 +53,7 @@ class Pos extends Authorization
                 'restaurant_id' => $page_data['restaurant_id'] == "all" ? $approved_restaurant_ids : $page_data['restaurant_id'],
                 'category_id' => $page_data['category_id'] == "all" ? null : $page_data['category_id']
             );
+
         }
 
 
@@ -61,6 +65,7 @@ class Pos extends Authorization
         $current_page = sanitize($this->input->get('page', 0));
         $this->pagination->initialize($config);
         /**PAGINATION ENDS**/
+        $page_data['pos_type'] = 'list';
 
         $page_data['menus'] =  $this->menu_model->merger($this->menu_model->paginate($page_size, $current_page, $conditions));
         $this->load->view('backend/index', $page_data);
@@ -186,4 +191,20 @@ class Pos extends Authorization
         $page_data['reports'] = $this->menu_model->report();
         $this->load->view('backend/index', $page_data);
     }
+    public function category($category_id)
+{
+    $this->load->model('Pos_model');
+    $this->load->model('Category_model');
+
+    // Get category info
+    $page_data['category'] = $this->Category_model->get_by_id($category_id);
+
+    // Get menus under this category
+    $page_data['menus'] = $this->Pos_model->get_menus_by_category($category_id);
+    $page_data['page_name'] = 'pos/index';
+    $page_data['pos_type'] = 'category_view';
+      $this->load->view('backend/index', $page_data);
+}
+
+
 }
