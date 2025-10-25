@@ -130,6 +130,12 @@ $host = $_SERVER['HTTP_HOST'];
                             <li class="list-group-item border-bottom-0 text-center">
                                 <a href="javascript:void(0)" onclick="openHiddenWindow('<?php echo site_url('orders/print_recipt/' . sanitize($order_data['code'])); ?>'); return false;" class="btn btn-primary btn-block" "><b> <i class="fas fa-times-rectangle"></i> Print</b></a>
                                     </li>
+                                    <a href="javascript:void(0)" 
+                                                    onclick="window.open('<?php echo site_url('orders/print_recipt/' . sanitize($order_data['code'])); ?>', '_blank', 'width=800,height=800'); return false;" 
+                                                    class="btn btn-primary btn-block">
+                                                    <b><i class="fas fa-eye"></i> See Order</b>
+                                                    </a>
+
                             <?php if (can_process_order()) : ?>
                                 <?php if ($order_data['order_status'] == "pending" || $order_data['order_status'] == "approved") : ?>
                                     <li class="list-group-item border-bottom-0">
