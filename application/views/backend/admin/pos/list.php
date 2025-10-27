@@ -187,12 +187,12 @@ $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(
     <div class="col-md-3 mb-4">
       <a href="<?php echo site_url('pos/category/' . $restaurant_category['id']); ?>" class="text-decoration-none">
         <div class="menu-card text-center p-3 shadow-sm" style="border-radius: 10px; transition: 0.3s;">
-          <img 
+          <!-- <img 
             src="<?php echo !empty($restaurant_category['thumbnail']) ? base_url('uploads/category/' . $restaurant_category['thumbnail']) : 'https://via.placeholder.com/150?text=Category'; ?>" 
             alt="<?php echo htmlspecialchars($restaurant_category['name']); ?>" 
             class="img-fluid mb-2" 
             style="border-radius: 10px; height: 150px; object-fit: cover;"
-          >
+          > -->
           <h6 class="mt-2 text-dark"><?php echo htmlspecialchars($restaurant_category['name']); ?></h6>
         </div>
       </a>
