@@ -168,9 +168,10 @@
                         alt="<?php echo htmlspecialchars($menu['name']); ?>" 
                         class="img-fluid mb-2"
                         style="border-radius: 10px; height: 150px; object-fit: cover;">
+
                       <h6 class="mt-2 text-dark"><?php echo htmlspecialchars($menu['name']); ?></h6>
                       <p class="text-muted small mb-2"><?php echo htmlspecialchars($menu['description']); ?></p>
-                      <p class="text-primary font-weight-bold mb-0">Rs. <?php echo htmlspecialchars(number_format((float)$price, 2)); ?></p>
+                      <p class="text-primary font-weight-bold mb-0">€: <?php echo htmlspecialchars(number_format((float)$price, 2)); ?></p>
 
                       <!-- Add Button -->
                       <div class="order-icon position-absolute" style="bottom: 10px; right: 10px;">
@@ -222,12 +223,12 @@
 
         <!-- Totals -->
         <div id="orderTotals" style="display: none;">
-          <div class="d-flex justify-content-between"><strong>Sub Total</strong><span id="subtotal">Rs. 0.00</span></div>
-          <div class="d-flex justify-content-between"><span>Discount</span><span>Rs. 0.00</span></div>
-          <div class="d-flex justify-content-between"><span>Service Charge</span><span>Rs. 50.00</span></div>
+          <div class="d-flex justify-content-between"><strong>Sub Total</strong><span id="subtotal">€. 0.00</span></div>
+          <div class="d-flex justify-content-between"><span>Discount</span><span>€. 0.00</span></div>
+          <div class="d-flex justify-content-between"><span>Service Charge</span><span>€. 50.00</span></div>
           <hr>
           <div class="total-line d-flex justify-content-between">
-            <span>Total</span><span id="total">Rs. 50.00</span>
+            <span>Total</span><span id="total">€. 50.00</span>
           </div>
         </div>
 
@@ -252,7 +253,7 @@
       </div>
       <div class="modal-body">
         <h6 id="modalItemName" class="font-weight-bold"></h6>
-        <p class="text-muted small mb-2">Price: Rs. <span id="modalItemPrice"></span></p>
+        <p class="text-muted small mb-2">Price: €. <span id="modalItemPrice"></span></p>
 
         <div id="variantOptions" class="mb-3"></div>
 
@@ -276,6 +277,7 @@
   // Open modal on card click
   document.querySelectorAll('.menu-card').forEach(card => {
     card.addEventListener('click', function() {
+    console.log('this', this.dataset);
       const name = this.dataset.name;
       const price = parseFloat(this.dataset.price);
       const id = this.dataset.id;
@@ -291,9 +293,9 @@
         variantContainer.innerHTML = `
           <label>Select Variant:</label>
           <select id="variantSelect" class="form-control">
-            <option value="Small">Small - Rs. ${price.toFixed(2)}</option>
-            <option value="Medium">Medium - Rs. ${(price + 50).toFixed(2)}</option>
-            <option value="Large">Large - Rs. ${(price + 100).toFixed(2)}</option>
+            <option value="Small">Small - €. ${price.toFixed(2)}</option>
+            <option value="Medium">Medium - €. ${(price + 50).toFixed(2)}</option>
+            <option value="Large">Large - €. ${(price + 100).toFixed(2)}</option>
           </select>
         `;
       } else {
@@ -304,7 +306,7 @@
         const qty = parseInt(document.getElementById('quantity').value);
         const variant = hasVariant == 1 ? document.getElementById('variantSelect').value : 'Default';
         const variantPrice = hasVariant == 1 
-          ? parseFloat(document.getElementById('variantSelect').selectedOptions[0].text.split('Rs. ')[1]) 
+          ? parseFloat(document.getElementById('variantSelect').selectedOptions[0].text.split('€. ')[1]) 
           : price;
 
         const item = { id, name, variant, qty, price: variantPrice };
@@ -344,7 +346,7 @@
           <small>${item.variant} × ${item.qty}</small>
         </div>
         <div>
-          <span>Rs. ${lineTotal.toFixed(2)}</span>
+          <span>€. ${lineTotal.toFixed(2)}</span>
           <button class="btn btn-sm btn-link text-danger p-0 ml-2 remove-item" data-index="${index}">
             <i class="fas fa-times"></i>
           </button>
@@ -353,9 +355,9 @@
       container.appendChild(div);
     });
 
-    document.getElementById('subtotal').innerText = 'Rs. ' + subtotal.toFixed(2);
+    document.getElementById('subtotal').innerText = '€. ' + subtotal.toFixed(2);
     const serviceCharge = 50;
-    document.getElementById('total').innerText = 'Rs. ' + (subtotal + serviceCharge).toFixed(2);
+    document.getElementById('total').innerText = '€. ' + (subtotal + serviceCharge).toFixed(2);
 
     document.querySelectorAll('.remove-item').forEach(btn => {
       btn.addEventListener('click', function() {
