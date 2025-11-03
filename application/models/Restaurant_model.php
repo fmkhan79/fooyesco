@@ -184,12 +184,16 @@ class Restaurant_model extends Base_model
     {
         $id = $this->input->post('id');
         $commission = sanitize($this->input->post('commission_res'));
+        $res_discount = sanitize($this->input->post('res_discount'));
+        $pick_discount = sanitize($this->input->post('pick_discount'));
         $data['address']    = sanitize($this->input->post('restaurant_address'));
         $data['latitude']   = sanitize($this->input->post('restaurant_latitude'));
         $data['longitude']  = sanitize($this->input->post('restaurant_longitude'));
         $data['phone']      = sanitize($this->input->post('restaurant_phone'));
         $data['website']    = sanitize($this->input->post('restaurant_website_link'));
         $data['commission_res'] = $commission;
+        $data['res_discount'] = $res_discount;
+        $data['pick_discount'] = $pick_discount;
         $data['updated_at'] = strtotime(date('D, d-M-Y'));
      
         $this->db->where('id', $id);
@@ -204,7 +208,10 @@ class Restaurant_model extends Base_model
             $this->db->where('id', $order->id);
             $this->db->update('orders', [
                 'commission_res'  => $commission, 
-                'commission_paid' => $commission_paid    
+                'commission_paid' => $commission_paid  ,
+                'pick_discount' => $pick_discount,
+
+               
             ]);
         }
         return true;
