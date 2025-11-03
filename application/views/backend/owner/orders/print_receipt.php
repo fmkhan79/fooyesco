@@ -253,10 +253,10 @@
 
                         <?php
                         $res_discount = $restaurant_details['res_discount'];
-
+                        
                         // Check if the order type is 'pickup' and adjust the discount accordingly
                         if ($order_details["order_type"] == "pickup") {
-                            $res_discount = 25;  // Set discount to 25% if order type is pickup
+                            $res_discount = $restaurant_details['pick_discount'];  // Set discount to 25% if order type is pickup
                         }
 
                         
