@@ -7,7 +7,7 @@ $payment_data = $this->payment_model->get_payment_data_by_order_code($order_code
 $restaurant_details = $this->restaurant_model->get_by_id($order_data['restaurant_id']);
 $res_discount = $restaurant_details['res_discount'];
 if ($order_data["order_type"] == "pickup") {
-    $res_discount = 25;
+    $res_discount = $restaurant_details['pick_discount']; 
 }
 
 $host = $_SERVER['HTTP_HOST'];
