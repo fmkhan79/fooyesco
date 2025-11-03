@@ -149,17 +149,21 @@
     }
   </style>
 </head>
-<body>
-
+<body class="hold-transition sidebar-mini layout-fixed">
+  <div class="wrapper">
+      <?php include 'partials/navbar.php'; ?>
+    <?php include 'partials/sidebar.php'; ?>
 <?php 
 // Fetch dynamic categories
 $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(3);
 ?>
-
-<div class="container-fluid mt-4">
+ <!-- Content Wrapper -->
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="container-fluid mt-4">
   <div class="row">
     <!-- Left Section -->
-    <div class="col-lg-8">
+    <div class="col-lg-12">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Categories</h4>
         <input type="text" class="search-bar" placeholder="Search category" />
@@ -184,7 +188,7 @@ $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(
     <h5 class="mb-3 font-weight-600">All Categories</h5>
 <div class="row">
   <?php foreach ($restaurant_categories as $restaurant_category) { ?>
-    <div class="col-md-3 mb-4">
+    <div class="col-md-6 mb-4">
       <a href="<?php echo site_url('pos/category/' . $restaurant_category['id']); ?>" class="text-decoration-none">
         <div class="menu-card text-center p-3 shadow-sm" style="border-radius: 10px; transition: 0.3s;">
           <!-- <img 
@@ -202,7 +206,7 @@ $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(
     </div>
 
     <!-- Right Section -->
-    <div class="col-lg-4">
+    <!-- <div class="col-lg-4">
       <div class="order-card sticky-top" style="top: 20px;">
         <div class="order-header mb-3">
           <h5>Order Details</h5>
@@ -233,7 +237,10 @@ $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(
       </div>
     </div>
   </div>
+</div> -->
 </div>
-
+</div>
+    </div>
+  </div>
 </body>
 </html>

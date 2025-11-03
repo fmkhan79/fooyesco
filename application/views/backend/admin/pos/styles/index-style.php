@@ -1,32 +1,8 @@
-<!-- IMAGE UPLOAD WITH PREVIEW -->
-<link rel="stylesheet" href="<?php echo base_url('assets/backend/'); ?>css/file-upload-preview.css">
-
  <style>
     body {
       background-color: #f4f6f8;
       font-family: 'Poppins', sans-serif;
       color: #2f2f2f;
-    }
-
-    .category-btn {
-      background: #fff;
-      border: 1.5px solid #e1e1e1;
-      border-radius: 12px;
-      padding: 12px 20px;
-      margin: 5px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #333;
-      transition: 0.3s ease;
-      text-align: center;
-      width: 110px;
-    }
-
-    .category-btn.active,
-    .category-btn:hover {
-      border-color: #00c58e;
-      background-color: #eafff7;
-      color: #00c58e;
     }
 
     .menu-card {
@@ -36,6 +12,11 @@
       padding: 15px;
       text-align: center;
       transition: 0.3s ease;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .menu-card img {
@@ -49,21 +30,20 @@
       margin-top: 10px;
       font-weight: 600;
       font-size: 15px;
+      padding: 10px;
+
     }
 
-    .menu-card button {
-      background-color: #00c58e;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
+    .menu-card p {
       font-size: 13px;
-      padding: 5px 18px;
-      margin-top: 6px;
-      transition: 0.3s ease;
+      margin-bottom: 6px;
+      color: #777;
     }
 
-    .menu-card button:hover {
-      background-color: #00ac7b;
+    .menu-card .price {
+      color: #00c58e;
+      font-weight: 600;
+      font-size: 15px;
     }
 
     .order-card {
@@ -135,10 +115,13 @@
       padding: 7px 10px;
       width: 220px;
     }
+    .text-danger{
+      font-size:20px !important;
+    }
 
     @media (max-width: 992px) {
       .order-card {
         margin-top: 30px;
       }
     }
-</style>
+  </style>
