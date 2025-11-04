@@ -49,7 +49,7 @@ class Base_model extends CI_Model
             return move_uploaded_file($new_file['tmp_name'], $uploaded_image) ? $file_name : "placeholder.png";
         }
 
-        return "placeholder.png";
+        return "placeholder1.png";
     }
 
 

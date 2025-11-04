@@ -496,29 +496,47 @@ class Cart_model extends Base_model
         return $total_price;
     }
 
-    public function get_total_discount_applied_percentage($order_type)
-    {
+public function get_total_discount_applied_percentage($order_type, $restaurant_id = null)
+{
+    $total_discount = 0.00;
 
-        $total_discount = 0.00;
-        if ($this->get_sub_total() > 0) {
-            if ($order_type == "collection" || $order_type == "pickup") {
-                $total_discount = 25;
+    if (!empty($restaurant_id)) {
+        $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
+
+        if (!empty($restaurant_details) && $this->get_sub_total() > 0) {
+            if (in_array($order_type, ['collection', 'pickup'])) {
+                $discount_value = $restaurant_details['pick_discount'] ?? '0%';
             } else {
-                $total_discount = 20;
+                $discount_value = $restaurant_details['res_discount'] ?? '0%';
             }
-        }
 
-        return $total_discount;
+            // ✅ Remove % and cast to float
+            $total_discount = (float)str_replace('%', '', $discount_value);
+        }
+    } else {
+        log_message('debug', 'No restaurant_id provided in get_total_discount_applied_percentage()');
     }
+
+    return $total_discount;
+}
+
 
     /**
      * GET SMALLER DATA FOR CART PAGE : GRAND TOTAL
      */
 
-    public function get_discounted_amount($order_type)
-    {
-        return $this->get_sub_total($order_type) * ($this->get_total_discount_applied_percentage($order_type) / 100);
+public function get_discounted_amount($order_type, $restaurant_id = null)
+{
+    if (empty($restaurant_id)) {
+        $restaurant_id = $this->session->userdata('restaurant_id');
     }
+
+    $sub_total = $this->get_sub_total($order_type);
+    $discount_percentage = $this->get_total_discount_applied_percentage($order_type, $restaurant_id);
+
+    return $sub_total * ($discount_percentage / 100);
+}
+
 
     /**
      * CLEARING A CART

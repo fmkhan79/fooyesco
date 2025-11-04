@@ -73,6 +73,18 @@
                              <input type="text" class="form-control" id="comission_res" name="commission_res" placeholder="<?php echo get_phrase("Enter commission in percentage"); ?>" value="<?php echo sanitize($restaurant_data['commission_res']); ?>" required>
                             </div>
                           <?php endif; ?>
+                                             <?php if ($current_user['role_id'] == 1): ?>
+                         <div class="form-group">
+                             <label for="restaurant_discount"><?php echo get_phrase("Restaurant Discount"); ?></label>
+                             <input type="text" class="form-control" id="res_discount" name="res_discount" placeholder="<?php echo get_phrase("Enter Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['res_discount']); ?>" required>
+                            </div>
+                          <?php endif; ?>
+                                             <?php if ($current_user['role_id'] == 1): ?>
+                         <div class="form-group">
+                             <label for="restaurant_discount"><?php echo get_phrase("Pickup Discount"); ?></label>
+                             <input type="text" class="form-control" id="pick_discount" name="pick_discount" placeholder="<?php echo get_phrase("Enter Pickup Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pick_discount']); ?>" required>
+                            </div>
+                          <?php endif; ?>
 
                                     <div class="form-group">
                                         <label for="restaurant_website_link"><?php echo get_phrase("restaurant_website_link"); ?></label>
