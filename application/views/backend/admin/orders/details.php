@@ -66,18 +66,20 @@ $host = $_SERVER['HTTP_HOST'];
                                 <?php
                                 } else {
                                     // Promo code nahi hai to pickup ya online discount show karo
-                                    if ($order_data["order_type"] == "pickup") {
+                                   if ($order_data["order_type"] == "pickup") {
                                 ?>
                                         <li class="list-group-item">
                                             <b><?php echo get_phrase('online_discount'); ?>: </b>
-                                            <a class="float-right">25%</a>
+                                            <a class="float-right"><?php     $res_discount = $restaurant_details['pick_discount']; 
+?></a>
                                         </li>
                                 <?php
                                     } else {
                                 ?>
                                         <li class="list-group-item">
                                             <b><?php echo get_phrase('online_discount'); ?>: </b>
-                                            <a class="float-right">20%</a>
+                                            <a class="float-right"><?php $res_discount = $restaurant_details['res_discount'];
+?></a>
                                         </li>
                                 <?php
                                     }
