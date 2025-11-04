@@ -70,14 +70,16 @@ $host = $_SERVER['HTTP_HOST'];
                                 ?>
                                         <li class="list-group-item">
                                             <b><?php echo get_phrase('online_discount'); ?>: </b>
-                                            <a class="float-right">25%</a>
+                                            <a class="float-right"><?php     $res_discount = $restaurant_details['pick_discount']; 
+?></a>
                                         </li>
                                 <?php
                                     } else {
                                 ?>
                                         <li class="list-group-item">
                                             <b><?php echo get_phrase('online_discount'); ?>: </b>
-                                            <a class="float-right">20%</a>
+                                            <a class="float-right"><?php $res_discount = $restaurant_details['res_discount'];
+?></a>
                                         </li>
                                 <?php
                                     }
