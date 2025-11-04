@@ -232,20 +232,27 @@
             <?php endforeach; ?>
         </div>
         <hr>
+     
         <div class="did mt-3 font-weight-bold text-uppercase">
             <span>Subtotal</span>
             <span><?php echo currency(number_format(sanitize($order_details['total_menu_price']), 2)); ?></span>
         </div>
-         <?php if ($order_details['promo_code'] != null) { ?>
+         <?php 
+
+          $res_discount = $restaurant_details['res_discount'];
+          $pick_discount = $restaurant_details['pick_discount'];
+    
+         
+         if ($order_details['promo_code'] != null) { ?>
         <div class="did mt-3">
             <span><?= $order_details['promo_discount'] ?>% PROMO DISCOUNT</span>
         <?php } elseif ($order_details["order_type"] == "pickup") { ?>
             <div class="did mt-3">
-                <span>25% ONLINE DISCOUNT</span>
+                <span><?= $pick_discount ?> ONLINE DISCOUNT</span>
                 <span>
                 <?php } else { ?>
                     <div class="did mt-3">
-                        <span>20% ONLINE DISCOUNT</span>
+                        <span><?= $res_discount ?> ONLINE DISCOUNT</span>
                         <span>
 
                         <?php } ?>
