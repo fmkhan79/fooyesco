@@ -183,7 +183,7 @@ if ($send_email) {
     'url' => $url
 ];
 
-                $subject = 'Your special offer from ' . $cust['restaurant'];
+                $subject = 'Bonfire Night Special! 30% OFF on all Orders';
                 $to = $cust['email'];
                 $this->email_model->send_mail_using_php_mailer($mailData, $subject, $to, false, false, false, true);
             }
