@@ -272,25 +272,25 @@ $(document).ready(function () {
         }
 
         // ✅ Discount option validation
+         // ✅ Discount option validation
         const selectedDiscountOption = $('input[name="discount_option"]:checked').val();
         const selectAllDays = localStorage.getItem('selectAllDays') === "true";
 
-
         const message = $('#message_input').val().trim();
 
-        if (!message.includes('{promo_code}')) {
-            // alert("Your message must include the {promo_code} placeholder.");
-            // e.preventDefault();
-            return;
-        }
- 
-        // if (!selectAllDays) {
-        //     if (!message.includes('{valid_days}')) {
-        //         alert("Your message must include the {valid_days} placeholder.");
-        //         e.preventDefault();
-        //         return;
-        //     }
+        // if (!message.includes('{promo_code}')) {
+        //     alert("Your message must include the {promo_code} placeholder.");
+        //     e.preventDefault();
+        //     return;
         // }
+ 
+        if (!selectAllDays) {
+            if (!message.includes('{valid_days}')) {
+                alert("Your message must include the {valid_days} placeholder.");
+                e.preventDefault();
+                return;
+            }
+        }
 
         if (!message.includes('{discount}')) {
             alert("Your message must include the {discount} placeholder.");
