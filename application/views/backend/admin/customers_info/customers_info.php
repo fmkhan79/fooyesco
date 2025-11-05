@@ -298,11 +298,11 @@ $(document).ready(function () {
             return;
         }
 
-        if (!message.includes('{customer_name}')) {
-            alert("Your message must include the {customer_name} placeholder.");
-            e.preventDefault();
-            return;
-        }
+        // if (!message.includes('{customer_name}')) {
+        //     alert("Your message must include the {customer_name} placeholder.");
+        //     e.preventDefault();
+        //     return;
+        // }
 
         $('#selected_customers_data').val(JSON.stringify(selectedData));
         $('#selected_days').val(JSON.stringify(selectedDays));
