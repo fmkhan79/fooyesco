@@ -14,6 +14,8 @@
                     <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/schedule'); ?>" class="nav-link <?php if ($active_tab == 'schedule') echo 'active' ?>"><?php echo get_phrase('schedule') ?></a></li>
                     <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/seo'); ?>" class="nav-link <?php if ($active_tab == 'seo') echo 'active' ?>"><?php echo "SEO"; ?></a></li>
                     <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/gallery'); ?>" class="nav-link <?php if ($active_tab == 'gallery') echo 'active' ?>"><?php echo get_phrase("gallery"); ?></a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/offers'); ?>" class="nav-link <?php if ($active_tab == 'offers') echo 'active' ?>"><?php echo get_phrase("Offers"); ?></a></li>
+
                 </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
@@ -73,18 +75,7 @@
                              <input type="text" class="form-control" id="comission_res" name="commission_res" placeholder="<?php echo get_phrase("Enter commission in percentage"); ?>" value="<?php echo sanitize($restaurant_data['commission_res']); ?>" required>
                             </div>
                           <?php endif; ?>
-                                             <?php if ($current_user['role_id'] == 1): ?>
-                         <div class="form-group">
-                             <label for="restaurant_discount"><?php echo get_phrase("Restaurant Discount"); ?></label>
-                             <input type="text" class="form-control" id="res_discount" name="res_discount" placeholder="<?php echo get_phrase("Enter Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['res_discount']); ?>" required>
-                            </div>
-                          <?php endif; ?>
-                                             <?php if ($current_user['role_id'] == 1): ?>
-                         <div class="form-group">
-                             <label for="restaurant_discount"><?php echo get_phrase("Pickup Discount"); ?></label>
-                             <input type="text" class="form-control" id="pick_discount" name="pick_discount" placeholder="<?php echo get_phrase("Enter Pickup Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pick_discount']); ?>" required>
-                            </div>
-                          <?php endif; ?>
+                                        
 
                                     <div class="form-group">
                                         <label for="restaurant_website_link"><?php echo get_phrase("restaurant_website_link"); ?></label>
@@ -223,6 +214,28 @@
                         </form>
                     </div>
                     <!-- /.tab-pane -->
+
+                      <div class="tab-pane <?php if ($active_tab == 'offers') echo 'active' ?>" id="offers">
+                     <form action="<?php echo site_url('restaurant/update/address'); ?>" method="post">
+                            <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
+                     <?php if ($current_user['role_id'] == 1): ?>
+                         <div class="form-group">
+                             <label for="restaurant_discount"><?php echo get_phrase("Restaurant Discount"); ?></label>
+                             <input type="text" class="form-control" id="res_discount" name="res_discount" placeholder="<?php echo get_phrase("Enter Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['res_discount']); ?>" required>
+                            </div>
+                          <?php endif; ?>
+                                             <?php if ($current_user['role_id'] == 1): ?>
+                         <div class="form-group">
+                             <label for="restaurant_discount"><?php echo get_phrase("Pickup Discount"); ?></label>
+                             <input type="text" class="form-control" id="pick_discount" name="pick_discount" placeholder="<?php echo get_phrase("Enter Pickup Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pick_discount']); ?>" required>
+                            </div>
+                          <?php endif; ?>
+                         <button class="btn btn-primary"><?php echo get_phrase('update_address_data'); ?></button>
+
+                        </form>
+                    </div>
+
+
                     <div class="tab-pane <?php if ($active_tab == 'gallery') echo 'active' ?>" id="gallery">
                         <form action="<?php echo site_url('restaurant/update/gallery'); ?>" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">

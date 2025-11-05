@@ -140,6 +140,36 @@ class Menu extends Authorization
     }
 }
 
+
+    public function update_prices()
+{
+    $percentage = $this->input->post('percentage');
+    
+    if (!is_numeric($percentage)) {
+        $this->session->set_flashdata('error', 'Invalid percentage value.');
+        redirect('menu');
+    }
+
+    // Convert to multiplier. e.g. 10 => 1.10, -5 => 0.95
+    $multiplier = 1 + ($percentage / 100);
+
+    $query = "
+        UPDATE food_menus
+        SET price = JSON_OBJECT(
+            'menu',
+            ROUND(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(price, '$.menu')) AS DECIMAL(10,2)) * {$multiplier},
+                2
+            )
+        );
+    ";
+
+    $this->db->query($query);
+
+    $this->session->set_flashdata('success', 'Menu prices updated successfully!');
+    redirect('menu');
+}
+
   
 
     // Delete function is responsible for deleting the menu data.
