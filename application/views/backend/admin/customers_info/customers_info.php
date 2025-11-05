@@ -279,8 +279,8 @@ $(document).ready(function () {
         const message = $('#message_input').val().trim();
 
         if (!message.includes('{promo_code}')) {
-            alert("Your message must include the {promo_code} placeholder.");
-            e.preventDefault();
+            // alert("Your message must include the {promo_code} placeholder.");
+            // e.preventDefault();
             return;
         }
  
