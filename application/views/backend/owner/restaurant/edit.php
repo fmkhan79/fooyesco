@@ -30,6 +30,8 @@
                             href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/gallery'); ?>"
                             class="nav-link <?php if ($active_tab == 'gallery') echo 'active' ?>"><?php echo get_phrase("gallery"); ?></a>
                     </li>
+                                        <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/offers'); ?>" class="nav-link <?php if ($active_tab == 'offers') echo 'active' ?>"><?php echo get_phrase("Offers"); ?></a></li>
+
                 </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
@@ -250,6 +252,23 @@
                                 class="btn btn-primary"><?php echo get_phrase('update') . ' SEO ' . get_phrase('data'); ?></button>
                         </form>
                     </div>
+
+                       <div class="tab-pane <?php if ($active_tab == 'offers') echo 'active' ?>" id="offers">
+                     <form action="<?php echo site_url('restaurant/update/address'); ?>" method="post">
+                            <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
+                         <div class="form-group">
+                             <label for="restaurant_discount"><?php echo get_phrase("Restaurant Discount"); ?></label>
+                             <input type="text" class="form-control" id="res_discount" name="res_discount" placeholder="<?php echo get_phrase("Enter Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['res_discount']); ?>" required>
+                            </div>
+                         <div class="form-group">
+                             <label for="restaurant_discount"><?php echo get_phrase("Pickup Discount"); ?></label>
+                             <input type="text" class="form-control" id="pick_discount" name="pick_discount" placeholder="<?php echo get_phrase("Enter Pickup Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pick_discount']); ?>" required>
+                            </div>
+                         <button class="btn btn-primary"><?php echo get_phrase('update_address_data'); ?></button>
+
+                        </form>
+                    </div>
+
                     <!-- /.tab-pane -->
                     <div class="tab-pane <?php if ($active_tab == 'gallery') echo 'active' ?>" id="gallery">
                         <form action="<?php echo site_url('restaurant/update/gallery'); ?>" method="post"
