@@ -118,32 +118,40 @@ public function missedresponsenoti() {
             $order_list = '';
 
             foreach ($orders as $order) {
-                $code = $order['code'];
-
-                // Decode billing info
                 $billing_data = json_decode($order['billing'], true);
-                $grand_total_amount = $order['grand_total'];
-                $customer_first_name = trim($billing_data['first_name']);
-                $customer_last_name = trim($billing_data['last_name']);
-                $customer_name = $customer_first_name . ' ' . $customer_last_name;
 
-                // Skip orders where the first name is "test"
-                if (strtolower($customer_first_name) === 'test') {
+                if (!$billing_data || empty($billing_data['first_name'])) {
                     continue;
                 }
 
+                $customer_first_name = trim(strtolower($billing_data['first_name']));
+
+                if ($customer_first_name === 'test') {
+                    continue;
+                }
+
+                $code = $order['code'];
+                $grand_total_amount = $order['grand_total'];
+                $customer_last_name = trim($billing_data['last_name']);
+                $customer_name = ucfirst($billing_data['first_name']) . ' ' . ucfirst($customer_last_name);
                 $customer_phone = $billing_data['phone_mobile'];
 
                 // Append order details to the list
-                $order_list .= "- Order <strong>#" . $code . "</strong><br>";
+                $order_list .= "- Order <strong>#" . htmlspecialchars($code) . "</strong><br>";
                 $order_list .= "&nbsp;&nbsp;&nbsp; Customer: <strong>" . htmlspecialchars($customer_name) . "</strong><br>";
-                $order_list .= "&nbsp;&nbsp;&nbsp; Phone: <strong>" . htmlspecialchars($customer_phone) . "</strong><br><br>";
-                $order_list .= "&nbsp;&nbsp;&nbsp; Total Order Amount: <strong>" . htmlspecialchars($grand_total_amount) . '€' . "</strong><br><br>";
+                $order_list .= "&nbsp;&nbsp;&nbsp; Phone: <strong>" . htmlspecialchars($customer_phone) . "</strong><br>";
+                $order_list .= "&nbsp;&nbsp;&nbsp; Total Order Amount: <strong>" . htmlspecialchars($grand_total_amount) . "€</strong><br><br>";
+            }
+
+            if (empty(trim($order_list))) {
+                log_message('info', 'No missed orders to notify (only test customers). Email not sent.');
+                echo 'No real missed orders found. Email not sent.';
+                return; // exit before sending any email
             }
 
             // Prepare email content
             $subject = "Missed Orders Notification";
-            $message = "Dear Restaurant Owner " . $owner['name'] . ",<br><br>";
+            $message = "Dear Restaurant Owner " . htmlspecialchars($owner['name']) . ",<br><br>";
             $message .= "You missed the following orders:<br><br>";
             $message .= $order_list;
             $message .= "<br>Please check your orders dashboard.<br><br>";
@@ -158,7 +166,7 @@ public function missedresponsenoti() {
             $mail->Host       = 'mail.fooyes.co.uk';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'support@fooyes.co.uk';
-            $mail->Password   = 'hYEjNhb@[w&T7fRg';  // Make sure this is correct and secure
+            $mail->Password   = 'hYEjNhb@[w&T7fRg';  
             $mail->SMTPSecure = 'ssl';
             $mail->Port       = 465;
 
@@ -167,7 +175,7 @@ public function missedresponsenoti() {
 
             // Add the restaurant owner email as the recipient
             $mail->addAddress($owner_email);
-            // Add BCC to website25developer@gmail.com
+            // Add BCC to developer
             $mail->addBCC('website25developer@gmail.com');
 
             // Email body settings
