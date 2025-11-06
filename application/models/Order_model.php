@@ -562,8 +562,11 @@ class Order_model extends Base_model
         if (!empty($cart_items)) {
             $data['restaurant_id'] = $cart_items[0]['restaurant_id'];
         }
-        $data['commission_res'] = $this->restaurant_model->commision_check($data['restaurant_id']);
-        $data['commission_paid'] =  $data['grand_total'] * ($data['commission_res'] / 100);
+        
+      $data['commission_res'] = $this->restaurant_model->commision_check($data['restaurant_id']);
+    $commission_value = floatval(preg_replace('/[^0-9.]/', '', $data['commission_res']));
+    $data['commission_paid'] = $data['grand_total'] * ($commission_value / 100);
+
 
         // log_message('error',  $data['commission_res'] ."lol");
         // print_r($data);
