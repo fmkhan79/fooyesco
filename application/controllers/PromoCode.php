@@ -49,24 +49,35 @@ class PromoCode extends Base
     $restaurant_id = $this->input->get('restaurant_id');
     $restaurant_id = sanitize($restaurant_id ?? 'all');
 
-    $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
+    $this->load->model('Promo_model');
+    $this->load->model('Order_model');
+    $this->load->model('restaurant_model');
 
+    // Fetch restaurants
+    $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
     $page_data['restaurant_id'] = $restaurant_id;
     $page_data['page_title'] = site_phrase("promo_code", true);
     $page_data['page_name'] = 'promo_code/index';
 
-    $this->load->model('Promo_model');
-    
+    // Get promo codes
     if ($restaurant_id === 'all') {
-        // get all promos for this owner’s restaurants only
+        // Get all promos for this owner’s restaurants
         $restaurant_ids = array_column($page_data['restaurants'], 'id');
-        $page_data['promo_codes'] = $this->Promo_model->get_promo_data_for_multiple($restaurant_ids);
+        $promo_codes = $this->Promo_model->get_promo_data_for_multiple($restaurant_ids);
     } else {
-        $page_data['promo_codes'] = $this->Promo_model->get_promo_data($restaurant_id);
+        $promo_codes = $this->Promo_model->get_promo_data($restaurant_id);
     }
+
+    // Attach related orders to each promo
+    foreach ($promo_codes as &$promo) {
+        $promo->orders = $this->Order_model->get_orders_by_promo_code($promo->offer_code);
+    }
+
+    $page_data['promo_codes'] = $promo_codes;
 
     $this->load->view('backend/index', $page_data);
 }
+
 
 
     // public function check_promo() {
@@ -89,6 +100,7 @@ class PromoCode extends Base
     //         ]);
     //     }
     // }
+
     public function check_promo() {
         $promo_code = $this->input->post('promo_code');
         $restaurant_id = $this->input->post('restaurant_id');
