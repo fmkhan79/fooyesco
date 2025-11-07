@@ -1784,4 +1784,17 @@ class Order_model extends Base_model
         return $query->result_array();
     }
 
+    public function get_orders_by_promo_code($promo_code)
+    {
+        if (empty($promo_code)) return [];
+
+        $this->db->select('id, code, grand_total, address, created_at');
+        $this->db->from('orders');
+        $this->db->where('promo_code', $promo_code);
+        $this->db->order_by('id', 'DESC');
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
 }

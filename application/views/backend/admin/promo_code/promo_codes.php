@@ -11,7 +11,7 @@ code{
 <section class="content">
     <div class="container-fluid">
 
-            <div class="row justify-content-center">
+        <div class="row justify-content-center">
             <!-- Filter Orders -->
             <div class="col-lg-6">
                 <div class="card h-100">
@@ -60,54 +60,69 @@ code{
                                     <th>Discount (%)</th>
                                     <th>Is Valid</th>
                                     <th>Valid Days</th>
+                                    <th>Orders</th>
                                 </tr>
+
                             </thead>
-                            <tbody>
-                                <?php if (!empty($promo_codes)): ?>
-                                    <?php $i = 1;
-                                    foreach ($promo_codes as $promo): ?>
-                                        <tr>
-                                            <td><?= $i++ ?></td>
-                                            <td><code><?= $promo->offer_code ?></code></td>
-                                            <td><?= $promo->discount ?>%</td>
-                                            <td>
-                                                <?php
-                                                
-                                                if($promo->is_used){
-                                                    echo '<div class="badge bg-danger">Not Valid</div>';
-                                                }else{
-                                                    echo '<div class="badge bg-success">Valid</div>';
-                                                }
+                        <tbody>
+    <?php if (!empty($promo_codes)): ?>
+        <?php $i = 1;
+        foreach ($promo_codes as $promo): ?>
+            <tr>
+                <td><?= $i++ ?></td>
+                <td><code><?= $promo->offer_code ?></code></td>
+                <td><?= $promo->discount ?>%</td>
+                <td>
+                    <?php if ($promo->is_used): ?>
+                        <div class="badge bg-danger">Not Valid</div>
+                    <?php else: ?>
+                        <div class="badge bg-success">Valid</div>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php
+                    $this->load->model('Promo_model');
+                    $validDays = $this->Promo_model->get_valid_days($promo->id);
+                    if (count($validDays) == 7) {
+                        echo '<span>All Days</span>';
+                    } else {
+                        foreach ($validDays as $day) {
+                            echo '<span class="badge bg-light text-dark me-1">' . $day . '</span>';
+                        }
+                    }
+                    ?>
+                </td>
 
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <?php
-                                                
-                                                $this->load->model('Promo_model');
-                                                $validDays = $this->Promo_model->get_valid_days($promo->id);
-                                                // print_r($validDays);
-                                                if (count($validDays) == 7) {
-                                                    if($promo->is_used){
-                                                        echo'<span>-</span>';
-                                                    }else{
-                                                        echo'<span>All Days</span>';
-                                                    }
-                                                }else{
-                                                foreach ($validDays as $key => $day): ?>
-                                                    <span><?= $day ?></span>
-                                                <?php endforeach;
-                                                } ?>
+            <td>
+                        <?php if (!empty($promo->orders)): ?>
+                            <ul class="list-unstyled mb-0">
+                                <?php foreach ($promo->orders as $order): ?>
+                                    <li>
+                                        <a href="<?php echo site_url('orders/details/' . $order->code); ?>" 
+                                        target="_blank" 
+                                        class="text-primary fw-bold">
+                                            <?= sanitize($order->code) ?>
+                                        </a>
+                                        <small class="text-muted">
+                                            <?= ucfirst($order->order_type) ?>
+                                        </small>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <span class="text-muted">No orders used this promo</span>
+                        <?php endif; ?>
+                    </td>
 
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="4" class="text-center">No promo codes found.</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" class="text-center">No promo codes found.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+
                             </table>
 
                     </div>
