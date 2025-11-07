@@ -220,13 +220,13 @@
                             <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
                      <?php if ($current_user['role_id'] == 1): ?>
                          <div class="form-group">
-                             <label for="restaurant_discount"><?php echo get_phrase("Restaurant Discount"); ?></label>
+                             <label for="restaurant_discount"><?php echo get_phrase("Delivery Discount"); ?></label>
                              <input type="text" class="form-control" id="res_discount" name="res_discount" placeholder="<?php echo get_phrase("Enter Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['res_discount']); ?>" required>
                             </div>
                           <?php endif; ?>
                                              <?php if ($current_user['role_id'] == 1): ?>
                          <div class="form-group">
-                             <label for="restaurant_discount"><?php echo get_phrase("Pickup Discount"); ?></label>
+                             <label for="restaurant_discount"><?php echo get_phrase("Collection Discount"); ?></label>
                              <input type="text" class="form-control" id="pick_discount" name="pick_discount" placeholder="<?php echo get_phrase("Enter Pickup Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pick_discount']); ?>" required>
                             </div>
                           <?php endif; ?>
