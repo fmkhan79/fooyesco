@@ -150,7 +150,6 @@ class Menu extends Authorization
         redirect('menu');
     }
 
-    // Convert to multiplier. e.g. 10 => 1.10, -5 => 0.95
     $multiplier = 1 + ($percentage / 100);
 
     $query = "
@@ -158,7 +157,7 @@ class Menu extends Authorization
         SET price = JSON_OBJECT(
             'menu',
             ROUND(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(price, '$.menu')) AS DECIMAL(10,2)) * {$multiplier},
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(real_price, '$.menu')) AS DECIMAL(10,2)) * {$multiplier},
                 2
             )
         );
