@@ -51,8 +51,15 @@
             <small class="form-text text-muted">
               Enter a positive value to increase or a negative value to decrease prices.
             </small>
+
+              <!-- <?php if ($this->session->userdata('last_percentage')): ?> -->
+              <small class="text-danger">
+                  Last applied: <?= ($this->session->userdata('last_percentage') ?? 20) ?>%
+              </small>
+
+          <!-- <?php endif; ?> -->
+            </div>
           </div>
-        </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
