@@ -144,7 +144,7 @@ class Menu extends Authorization
     public function update_prices()
 {
     $percentage = $this->input->post('percentage');
-    
+   
     if (!is_numeric($percentage)) {
         $this->session->set_flashdata('error', 'Invalid percentage value.');
         redirect('menu');
@@ -164,6 +164,8 @@ class Menu extends Authorization
     ";
 
     $this->db->query($query);
+
+    $this->session->set_userdata('last_percentage', $percentage);
 
     $this->session->set_flashdata('success', 'Menu prices updated successfully!');
     redirect('menu');
