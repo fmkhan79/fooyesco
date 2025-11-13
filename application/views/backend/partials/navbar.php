@@ -148,10 +148,11 @@
       if(name == "test" && ShowTest == false){
         return;
       }
-    let total = parseFloat(obj.grand_total) + parseFloat(obj.total_delivery_charge);
-
+  const grandTotal = parseFloat(obj.grand_total) || 0;
+  const deliveryCharge = parseFloat(obj.total_delivery_charge) || 0;
+  const total = (grandTotal + deliveryCharge).toFixed(2);
     // console.log(total); // Output: 6.35        
-    const add = JSON.parse(obj.address);
+    const add = JSON.parse(obj.address);  
     console.log(obj.address);
 
     const notificationSound = new Audio('<?php echo base_url('assets/auth/audio/foodpanda.mp3'); ?>');
@@ -162,6 +163,7 @@
 
     let text;
     if (obj.order_type == "delivery") {
+
         text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + total +
             " | Addresss: " + add.address;
     } else if (obj.order_type == "pickup") {
