@@ -27,44 +27,43 @@ class GuestCheckout extends Base
         
     }
     public function send_distance() {
-        
-        $lat_to = $_POST['lat_to'];
-        $long_to = $_POST['long_to'];
-        
 
-        $restaurant_ids = $this->cart_model->get_restaurant_ids();
+    $lat_to = floatval($_POST['lat_to']);
+    $long_to = floatval($_POST['long_to']);
 
-        // die();   
-        // print_r($restaurant_ids);
-        $restaurant_details = $this->cart_model->get_restaurants_by_ids($restaurant_ids);
-       
+    $restaurant_ids = $this->cart_model->get_restaurant_ids();
+    $restaurant_details = $this->cart_model->get_restaurants_by_ids($restaurant_ids);
+
+    $maximum_range = floatval($restaurant_details[0]->maximum_range);
+    $free_range = floatval($restaurant_details[0]->free_range);
+    $rate_per_mile = floatval($restaurant_details[0]->rate_per_mile);
     
-        $maximum_range = $restaurant_details[0]->maximum_range;
-        $free_range = $restaurant_details[0]->free_range;
-        $rate_per_mile = $restaurant_details[0]->rate_per_mile;
-        
-        $latitude = $restaurant_details[0]->latitude;    
-        $longitude = $restaurant_details[0]->longitude;
-       
-        $theta = $long_to - $longitude;
-        $miles = (sin(deg2rad($lat_to)) * sin(deg2rad($latitude))) + 
-                 (cos(deg2rad($lat_to)) * cos(deg2rad($latitude)) * cos(deg2rad($theta)));
-        $miles = acos($miles);
-        $miles = rad2deg($miles);
-        
-        $result['miles'] = $miles * 60 * 1.1515;
-   
+    $latitude = floatval($restaurant_details[0]->latitude);
+    $longitude = floatval($restaurant_details[0]->longitude);
+
+    // Fix: Convert to float before subtracting
+    $theta = $long_to - $longitude;
+
+    $miles = (sin(deg2rad($lat_to)) * sin(deg2rad($latitude))) + 
+             (cos(deg2rad($lat_to)) * cos(deg2rad($latitude)) * cos(deg2rad($theta)));
+    $miles = acos($miles);
+    $miles = rad2deg($miles);
     
-        if($result['miles'] > $maximum_range)
-        {
-            $response = [
-                'message' => 'Not delivery at this location',
-                'miles' => $result['miles']
-            ];
-        
-            echo json_encode($response);
-            return;
-        }
+    $result['miles'] = $miles * 60 * 1.1515;
+
+    if($result['miles'] > $maximum_range)
+    {
+        $response = [
+            'message' => 'Not delivery at this location',
+            'miles' => $result['miles']
+        ];
+    
+        echo json_encode($response);
+        return;
+    }
+
+    // Continue..
+
 
         // if($result['miles'] <= $free_range){
         //     $response = [
