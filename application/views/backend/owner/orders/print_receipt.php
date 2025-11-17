@@ -107,97 +107,112 @@
 </head>
 
 <body>
+<?php
+// --- SAFETY / NORMALIZATION ---
+if (!is_array($order_details)) {
+    if (is_string($order_details)) {
+        $order_details = json_decode($order_details, true) ?: [];
+    } else {
+        $order_details = (array) $order_details;
+    }
+}
+
+// Decode address safely
+$address = [];
+if (!empty($order_details['address'])) {
+    $address = json_decode($order_details['address'], true);
+    if (!is_array($address)) $address = [];
+}
+
+// Decode billing safely
+$billing = [];
+if (!empty($order_details['billing'])) {
+    $billing = json_decode($order_details['billing'], true);
+    if (!is_array($billing)) $billing = [];
+}
+
+// Ensure ordered_items exists
+$ordered_items = $ordered_items ?? [];
+if (!is_array($ordered_items)) $ordered_items = [];
+
+// Ensure payment exists
+$payment = $payment ?? [];
+
+// Initialize counters
+$total_items  = 0;
+$total_amount = 0.0;
+
+// Prepare formatted address
+$formattedAddress = '';
+if (!empty($address['flat'])) {
+    $formattedAddress .= sanitize($address['flat']) . ', ';
+}
+if (!empty($address['address'])) {
+    $cleanAddress = str_replace(', UK', '', $address['address']);
+    $formattedAddress .= sanitize($cleanAddress) . ', ';
+}
+if (!empty($address['postcode'])) {
+    $formattedAddress .= sanitize($address['postcode']);
+}
+$finalAddress = rtrim($formattedAddress, ', ');
+
+// Safe short variables
+$daily_no      = $order_details['daily_order_number'] ?? '';
+$customer_name = $order_details['customer_name'] ?? '';
+$order_type    = $order_details['order_type'] ?? '';
+$billing_phone = $billing['phone_mobile'] ?? '';
+
+// Ensure restaurant_details is available after loop (fallback)
+$restaurant_details = [];
+
+// --- HTML output ---
+?>
+<div class="receipt">
+
+    <center>
+        <h3 style="margin:0px;"><?php echo sanitize($daily_no); ?></h3>
+    </center>
+
+    <img class="img-qr" width="100px" height="100px" style="float: right;"
+         src="<?php echo base_url('assets/frontend/default/images/ilove.png'); ?>" />
+
     <?php
-    // print_r($order_details); 
-    $address = json_decode($order_details["address"], true);
-    // print_r($address['instructions']);
-    // Format address properly
-    $formattedAddress = '';
-
-    // Add flat
-    if (!empty($address['flat'])) {
-        $formattedAddress .= $address['flat'] . ', ';
+    if ($order_type === "delivery") {
+        echo "<h3>DELIVERY</h3>";
+        echo "<h3 style='margin:0px;'>" . sanitize($customer_name) . "</h3>";
+        echo "<h3 style='margin:0px;'>" . sanitize($billing_phone) . "</h3>";
+        echo "<h4 style='margin:0px;'>" . sanitize($finalAddress) . "</h4>";
+    } elseif ($order_type === "pickup") {
+        echo "<h3>Collection</h3>";
+        echo "<h3 style='margin:0px;'>" . sanitize($customer_name) . "</h3>";
+        echo "<h3 style='margin:0px;'>" . sanitize($billing_phone) . "</h3>";
     }
-
-    // Add address (after removing "UK" if present)
-    if (!empty($address['address'])) {
-        $cleanAddress = str_replace(', UK', '', $address['address']);
-        $formattedAddress .= $cleanAddress . ', ';
-    }
-
-    // Add postcode
-    if (!empty($address['postcode'])) {
-        $formattedAddress .= $address['postcode'];
-    }
-
-    // Final output with trimmed commas
-    $finalAddress = rtrim($formattedAddress, ', ');
-
-    $billing = json_decode($order_details["billing"], associative: true);
-    // print_r($billing);
-    // print_r($ordered_items);
     ?>
 
-    <div class="receipt">
-
-        <center>
-            <h2><?php echo "<h3 style='margin:0px;'>" . $order_details["daily_order_number"] . "</h3>"; ?></h2>
-        </center>
-
-        <img class="img-qr" width="100px" height="100px"
-            style="float: right;"
-            src="<?php echo base_url('assets/frontend/default/images/ilove.png') ?>" />
-
-
-
-
+    <div id="ordered_items">
         <?php
-        if ($order_details['order_type'] == "delivery") {
-            echo "<h3>DELIVERY</h3>";
-            echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
-            echo "<h3 style='margin:0px;'>" . $billing["phone_mobile"] . "</h3>";
-            echo "<h4 style='margin:0px;'>" . $finalAddress . "</h4>";
-        }
-        if ($order_details['order_type'] == "pickup") {
-            echo "<h3>Collection</h3>";
-            echo "<h3 style='margin:0px;'>" . $order_details["customer_name"] . "</h3>";
-            echo "<h3 style='margin:0px;'>" . $billing["phone_mobile"] . "</h3>";
-        }
-        ?>
+        foreach ($ordered_items as $ordered_item) :
+            // defensive checks
+            $ordered_item = is_array($ordered_item) ? $ordered_item : (array) $ordered_item;
+            $restaurant_details = $this->restaurant_model->get_by_id($ordered_item['restaurant_id'] ?? 0);
+            $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id'] ?? 0);
 
+            $qty = floatval($ordered_item['quantity'] ?? 0);
+            $item_total = floatval($ordered_item['total'] ?? 0.0);
 
+            $total_items += $qty;
+            $total_amount += $item_total;
 
+            $addonHTML = "";
 
-
-        <!-- <p style="margin:0px;"><?php echo date("Y-m-d H:i:s", $order_details['order_placed_at']); ?></p> -->
-        <!-- <div class="did">
-            <h4>Ordered Items:</h4>
-            <h4 class="">Price Items:</h4>
-        </div>
-        <hr> -->
-        <div id="ordered_items">
-            <?php
-            $total_items = 0; // Variable to count total ordered items
-            $total_amount = 0; // Variable to sum total amount
-            foreach ($ordered_items as $ordered_item) :
-                $restaurant_details = $this->restaurant_model->get_by_id($ordered_item['restaurant_id']);
-                // print_r($restaurant_details);
-                $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
-                $total_items += $ordered_item['quantity']; // Count ordered items
-                $total_amount += $ordered_item['total']; // Sum total amount
-                $addonHTML = "";
-
-                if ($ordered_item["addons"] != "[]") {
-
-                    $groupedAddons = [];
-                    $addons = json_decode($ordered_item["addons"], true);
-
+            if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
+                $groupedAddons = [];
+                $addons = json_decode($ordered_item["addons"], true);
+                if (is_array($addons)) {
                     foreach ($addons as $addon) {
-
-                        $subVariantId = $addon['subVariantId'];
-                        $itemId = $addon['itemId'];
-
-
+                        $subVariantId = $addon['subVariantId'] ?? null;
+                        $itemId = $addon['itemId'] ?? null;
+                        if ($subVariantId === null) continue;
                         if (!isset($groupedAddons[$subVariantId])) {
                             $groupedAddons[$subVariantId] = [];
                         }
@@ -205,200 +220,162 @@
                     }
                     $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
                 }
-            ?>
-                <hr style="margin-top: 20px;">
-                <ul class="line-item font-weight-bold">
-                    <li><?php echo $ordered_item['quantity'] . "x " . html_entity_decode(sanitize($menu_details['name'])); ?></li>
-                    <li><?php echo currency(number_format(sanitize($ordered_item['total']), 2)); ?></li>
-                </ul>
+            }
+        ?>
+            <hr style="margin-top: 20px;">
+            <ul class="line-item font-weight-bold">
+                <li><?php echo intval($qty) . "x " . html_entity_decode(sanitize($menu_details['name'] ?? '')); ?></li>
+                <li><?php echo currency(number_format(floatval($item_total), 2)); ?></li>
+            </ul>
 
-                <?php
-                if ($ordered_item["variant_id"] != null && $ordered_item["variant_id"] != 0) { ?>
-                    <ul class="line-item">
-                        <li>
-                            <?php
-                            echo "Selected: " . $this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"];
-                            ?>
-                        </li>
-                    </ul>
-                <?php }
-                if ($addonHTML != "") {
-                    echo $addonHTML;
-                }
-                ?>
-                </li>
-
-                </ul>
-            <?php endforeach; ?>
-        </div>
-        <hr>
-     
-        <div class="did mt-3 font-weight-bold text-uppercase">
-            <span>Subtotal</span>
-            <span><?php echo currency(number_format(sanitize($order_details['total_menu_price']), 2)); ?></span>
-        </div>
-         <?php 
-
-          $res_discount = $restaurant_details['res_discount'];
-          $pick_discount = $restaurant_details['pick_discount'];
-    
-         
-         if ($order_details['promo_code'] != null) { ?>
-        <div class="did mt-3">
-            <span><?= $order_details['promo_discount'] ?>% PROMO DISCOUNT</span>
-        <?php } elseif ($order_details["order_type"] == "pickup") { ?>
-            <div class="did mt-3">
-                <span><?= $pick_discount ?> ONLINE DISCOUNT</span>
-                <span>
-                <?php } else { ?>
-                    <div class="did mt-3">
-                        <span><?= $res_discount ?> ONLINE DISCOUNT</span>
-                        <span>
-
-                        <?php } ?>
-
-
+            <?php if (!empty($ordered_item["variant_id"]) && $ordered_item["variant_id"] != 0) { ?>
+                <ul class="line-item">
+                    <li>
                         <?php
-                        $res_discount = $restaurant_details['res_discount'];
-                        
-                        // Check if the order type is 'pickup' and adjust the discount accordingly
-                        if ($order_details["order_type"] == "pickup") {
-                            $res_discount = $restaurant_details['pick_discount'];  // Set discount to 25% if order type is pickup
-                        }
-
-                        
-                        if($order_details['promo_code'] != null) {
-                            $res_discount = $order_details['promo_discount'];
-                        }
-                        // Calculate the discount amount to show
-                        // print_r($order_details['total_menu_price']);
-                        $discount_amount_show =  $order_details['total_menu_price'] * ($res_discount / 100);
-                        // print_r($order_details['grand_total']);
-                        // Sanitize the grand total and delivery charge
-                        $grand_total = sanitize($order_details['grand_total']);
-                        $total_delivery_charge = sanitize($order_details['total_delivery_charge']);
-
-                        // Calculate the discount amount
-                        $discount_amount = ($grand_total * $res_discount) / 100;
-
-                        // Output the discount amount formatted with currency symbol
-                        // print_r($res_discount);
-                        echo "-" . currency(number_format($discount_amount_show, 2));
-
+                        $variant = $this->menu_model->get_variant_detail($ordered_item["variant_id"]);
+                        echo "Selected: " . sanitize($variant[0]["name"] ?? '');
                         ?>
+                    </li>
+                </ul>
+            <?php } ?>
 
-                        </span>
-                    </div>
+            <?php
+            if (!empty($addonHTML)) {
+                echo $addonHTML;
+            }
+            ?>
+        <?php endforeach; ?>
+    </div>
 
-                    <?php if ($order_details['is_online_discount'] != null) { ?>
-                        <div class="did mt-3">
-                            <span><?= $order_details['is_online_discount'] ?>% ONLINE DISCOUNT</span>
-                            <span>
-                                <?php
-                                    $is_online_discount = $order_details['is_online_discount'];
-                                    $online_discount_amount_show =  $order_details['total_menu_price'] * ($is_online_discount / 100);
-                                    echo "-" . currency(number_format($online_discount_amount_show, 2));
-                                ?>
-                            </span>
-                        </div>
-                    <?php }?>
+    <hr>
 
-                    <div class="did mt-3">
-                        <span>1X CARRY BAG</span>
-                        <span><?= currency(number_format(0.10,2))?></span>
-                    </div>
+    <div class="did mt-3 font-weight-bold text-uppercase">
+        <span>Subtotal</span>
+        <span><?php echo currency(number_format(floatval($order_details['total_menu_price'] ?? $total_amount), 2)); ?></span>
+    </div>
 
-                    <!-- <?php if ($order_details['total_vat_amount'] != "") { ?>
-            <div class="did mt-3">
-                <span>VAT Charges</span> 
-                <span><?php echo currency(number_format(sanitize($order_details['total_vat_amount']), 2)); ?></span>
+    <?php
+    // Ensure we have restaurant discounts available
+    $res_discount = floatval($restaurant_details['res_discount'] ?? 0);
+    $pick_discount = floatval($restaurant_details['pick_discount'] ?? 0);
 
+    // Determine which discount to show
+    if (!empty($order_details['promo_code'])) { ?>
+        <div class="did mt-3">
+            <span><?php echo sanitize($order_details['promo_discount'] ?? 0); ?>% PROMO DISCOUNT</span>
+    <?php } elseif ($order_type === "pickup") { ?>
+        <div class="did mt-3">
+            <span><?php echo sanitize($pick_discount); ?> ONLINE DISCOUNT</span>
+            <span>
+    <?php } else { ?>
+        <div class="did mt-3">
+            <span><?php echo sanitize($res_discount); ?> ONLINE DISCOUNT</span>
+            <span>
+    <?php } ?>
+
+    <?php
+    // calculate discount percentages and amounts
+    $res_discount = floatval($restaurant_details['res_discount'] ?? 0);
+    if ($order_type === "pickup") {
+        $res_discount = floatval($restaurant_details['pick_discount'] ?? $res_discount);
+    }
+    if (!empty($order_details['promo_code'])) {
+        $res_discount = floatval($order_details['promo_discount'] ?? $res_discount);
+    }
+
+    $total_menu_price = floatval($order_details['total_menu_price'] ?? $total_amount);
+    $discount_amount_show = $total_menu_price * ($res_discount / 100.0);
+
+    // sanitize grand total and delivery charge
+    $grand_total = floatval($order_details['grand_total'] ?? ($total_menu_price - $discount_amount_show));
+    $total_delivery_charge = floatval($order_details['total_delivery_charge'] ?? 0.0);
+
+    echo "-" . currency(number_format($discount_amount_show, 2));
+    ?>
+            </span>
+        </div>
+
+    <?php if (!empty($order_details['is_online_discount'])) { 
+        $is_online_discount = floatval($order_details['is_online_discount']);
+        $online_discount_amount_show = $total_menu_price * ($is_online_discount / 100.0);
+    ?>
+        <div class="did mt-3">
+            <span><?php echo sanitize($order_details['is_online_discount']); ?>% ONLINE DISCOUNT</span>
+            <span><?php echo "-" . currency(number_format($online_discount_amount_show, 2)); ?></span>
+        </div>
+    <?php } ?>
+
+    <div class="did mt-3">
+        <span>1X CARRY BAG</span>
+        <span><?php echo currency(number_format(0.10, 2)); ?></span>
+    </div>
+
+    <div class="did mt-3 text-uppercase">
+        <span>Service Charge</span>
+        <span><?php echo currency(number_format($this->cart_model->get_service_amount(), 2)); ?></span>
+    </div>
+
+    <?php if ($order_type === "delivery") { 
+        if ($total_delivery_charge > 0) { ?>
+            <div class="did mt-3 text-uppercase">
+                <span>Delivery Charge</span>
+                <span><?php echo currency(number_format($total_delivery_charge, 2)); ?></span>
             </div>
-        <?php } ?> -->
-                    <div class="did mt-3 text-uppercase">
-                        <span>Service Charge</span>
-                        <span>
-                            <?php echo currency($this->cart_model->get_service_amount()); ?></span>
-                    </div>
-                    <?php if ($order_details["order_type"] == "delivery") { ?>
-                        <?php if ($order_details['total_delivery_charge'] != "") { ?>
-                            <div class="did mt-3 text-uppercase">
-                                <span>Delivery Charge</span>
-                                <span><?php echo currency(sanitize($order_details['total_delivery_charge']), 2); ?></span>
+        <?php } else { ?>
+            <div class="did mt-3">
+                <span style="font-size:20px">Delivery Charges</span>
+                <span style="font-size:17px">Free Delivery</span>
+            </div>
+        <?php }
+    } ?>
 
-                            </div>
-                        <?php }
-                    } else { ?>
-                        <?php if ($order_details["order_type"] == "delivery") { ?>
-                            <div class="did mt-3">
-                                <span style="font-size:20px">Delivery Charges</span>
-                                <span style="font-size:17px">Free Delivery</span>
+    <div class="did mt-3 font-weight-bold">
+        <span>TOTAL (<?php echo intval($total_items); ?> Items)</span>
+        <span><?php echo currency(number_format($grand_total, 2)); ?></span>
+    </div>
 
-                            </div>
-                        <?php } ?>
+    <hr>
 
-                    <?php } ?>
-                    <div class="did mt-3 font-weight-bold">
-                        <span>TOTAL (<?php echo $total_items; ?> Items)</span>
-                        <span>
-                            <?php
-                            echo currency(number_format($grand_total, 2));
-                            ?>
-                        </span>
+    <div class="order-details-summary">
+        <h4>Order Time: <?php echo date("H:i:s", intval($order_details['order_placed_at'] ?? time())); ?></h4>
+    </div>
 
-                    </div>
-                    <hr>
-                    <div class="order-details-summary">
-                        <!-- <h4>Total Items: <?php echo $total_items; ?> </h4> Display total items -->
-                        <h4>Order Time: <?php echo date("H:i:s", $order_details['order_placed_at']); ?> </h4> <!-- Display order time -->
-                    </div>
-                    <hr>
+    <hr>
 
+    <div class="did mt-3">
+        <div class="order-detail-restaurant-name">
+            <?php echo get_phrase('restaurant') . ': ' . sanitize($restaurant_details['name'] ?? ''); ?>
+        </div>
+    </div>
 
+    <?php
+    echo "<hr>";
+    echo "<left>";
+    $payment_method = $payment['payment_method'] ?? '';
+    if ($order_type === "delivery") {
+        if ($payment_method === "cash_on_delivery") {
+            echo "<h3><b>CASH ON DELIVERY</b></h3>";
+        } elseif ($payment_method === "stripe") {
+            echo "<h3><b>PAID VIA CARD</b></h3>";
+        }
+    } else {
+        if ($payment_method === "cash_on_collection") {
+            echo "<h3><b>CASH ON COLLECTION</b></h3>";
+        } elseif ($payment_method === "stripe") {
+            echo "<h3><b>PAID VIA CARD (COLLECTION)</b></h3>";
+        }
+    }
+    echo "</left>";
+    ?>
 
-                    <div class="did mt-3">
-                        <div class="order-detail-restaurant-name">
-                            <?php echo get_phrase('restaurant') . ': ' . sanitize($restaurant_details['name']); ?>
-                        </div>
-                    </div>
-
-
-                    <?php
-                    echo "<hr>";
-                    echo "<left>";
-                    if ($order_details["order_type"] == "delivery") {
-                        if ($payment["payment_method"] == "cash_on_delivery") {
-                            echo "<h3><b>CASH ON DELIVERY</b></h3>";
-                        }
-                        if ($payment["payment_method"] == "stripe") {
-                            echo "<h3><b>PAID VIA CARD</b></h3>";
-                        }
-                    } else {
-                        if ($payment["payment_method"] == "cash_on_collection") {
-                            echo "<h3><b>CASH ON COLLECTION</b></h3>";
-                        } else if ($payment["payment_method"] == "stripe") {
-                            echo "<h3><b>PAID VIA CARD (COLLECTION)</b></h3>";
-                        }
-                    }
-                    echo "</left>";
-                    // echo "<hr>";
-                    ?>
-                    <?php if (!empty($address['instructions'])) : ?>
-                        <hr>
-                        <div class="row mt-2">
-                            <div class="col note" style="font-size: 18px;">
-                                <h3>Note: <?php echo sanitize($address['instructions']); ?>
-                            </div></h3>
-                        </div>
-                    <?php endif; ?>
-                    <!-- <?php if ($order_details['order_url'] != null) : ?>
-                        <hr>
-                        <div class="row mt-2">
-                            <div class="col order-url">
-                                <p><strong>Order Placed from:</strong> <br> <small><?php echo sanitize($order_details['order_url']); ?></small> </p> 
-                            </div>
-                        </div>
-                    <?php endif; ?> -->
+    <?php if (!empty($address['instructions'])) : ?>
+        <hr>
+        <div class="row mt-2">
+            <div class="col note" style="font-size: 18px;">
+                <h3>Note: <?php echo sanitize($address['instructions']); ?></h3>
+            </div>
+        </div>
+    <?php endif; ?>
 
                     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
                     <script>
