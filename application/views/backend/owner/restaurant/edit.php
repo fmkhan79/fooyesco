@@ -254,7 +254,7 @@
                     </div>
 
                        <div class="tab-pane <?php if ($active_tab == 'offers') echo 'active' ?>" id="offers">
-                     <form action="<?php echo site_url('restaurant/update/address'); ?>" method="post">
+                     <form action="<?php echo site_url('restaurant/update/offers'); ?>" method="post">
                             <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
                          <div class="form-group">
                              <label for="restaurant_discount"><?php echo get_phrase("Delivery Discount"); ?></label>
@@ -264,7 +264,7 @@
                              <label for="restaurant_discount"><?php echo get_phrase("Collection Discount"); ?></label>
                              <input type="text" class="form-control" id="pick_discount" name="pick_discount" placeholder="<?php echo get_phrase("Enter Pickup Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pick_discount']); ?>" required>
                             </div>
-                         <button class="btn btn-primary"><?php echo get_phrase('update_address_data'); ?></button>
+                         <button class="btn btn-primary"><?php echo get_phrase('Update Restaurant Discounts'); ?></button>
 
                         </form>
                     </div>
