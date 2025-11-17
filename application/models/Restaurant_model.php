@@ -179,43 +179,78 @@ class Restaurant_model extends Base_model
             return false;
         }
     }
-    // UPDATE ADDRESS AND PHONE INFOS FOR A RESTAURANT
-    public function update_address()
-    {
-        $id = $this->input->post('id');
-        $commission = sanitize($this->input->post('commission_res'));
-        $res_discount = sanitize($this->input->post('res_discount'));
-        $pick_discount = sanitize($this->input->post('pick_discount'));
-        $data['address']    = sanitize($this->input->post('restaurant_address'));
-        $data['latitude']   = sanitize($this->input->post('restaurant_latitude'));
-        $data['longitude']  = sanitize($this->input->post('restaurant_longitude'));
-        $data['phone']      = sanitize($this->input->post('restaurant_phone'));
-        $data['website']    = sanitize($this->input->post('restaurant_website_link'));
-        $data['commission_res'] = $commission;
-        $data['res_discount'] = $res_discount;
-        $data['pick_discount'] = $pick_discount;
-        $data['updated_at'] = strtotime(date('D, d-M-Y'));
-     
-        $this->db->where('id', $id);
-        $this->db->update($this->table, $data);
+    // UPDATE DISCOUNTS (RES DISCOUNT & PICKUP DISCOUNT)
+public function update_offers()
+{
+    $id = $this->input->post('id');
 
-        $orders = $this->db->get_where('orders', ['restaurant_id' => $id, 'is_paid' => 0])->result();
+    $res_discount  = sanitize($this->input->post('res_discount'));
+    $pick_discount = sanitize($this->input->post('pick_discount'));
 
-        foreach ($orders as $order) {
-            $commission_amount = ($order->grand_total * $commission) / 100;
-            $commission_paid   = $order->grand_total - $commission_amount;
+    $data = [
+        'res_discount'  => $res_discount,
+        'pick_discount' => $pick_discount,
+        'updated_at'    => strtotime(date('D, d-M-Y'))
+    ];
 
-            $this->db->where('id', $order->id);
-            $this->db->update('orders', [
-                'commission_res'  => $commission, 
-                'commission_paid' => $commission_paid  ,
-                'pick_discount' => $pick_discount,
+    // Update restaurant table
+    $this->db->where('id', $id);
+    $this->db->update($this->table, $data);
 
-               
-            ]);
-        }
-        return true;
+    // Update pending unpaid orders (so discounts affect them)
+    $orders = $this->db->get_where('orders', [
+        'restaurant_id' => $id,
+        'is_paid'       => 0
+    ])->result();
+
+    foreach ($orders as $order) {
+        $this->db->where('id', $order->id);
+        $this->db->update('orders', [
+            'res_discount'  => $res_discount,
+            'pick_discount' => $pick_discount
+        ]);
     }
+
+    return true;
+}
+
+    // UPDATE ADDRESS AND PHONE INFOS FOR A RESTAURANT
+    // UPDATE ADDRESS AND PHONE INFOS FOR A RESTAURANT
+public function update_address()
+{
+    $id = $this->input->post('id');
+    $commission = sanitize($this->input->post('commission_res'));
+
+    $data['address']    = sanitize($this->input->post('restaurant_address'));
+    $data['latitude']   = sanitize($this->input->post('restaurant_latitude'));
+    $data['longitude']  = sanitize($this->input->post('restaurant_longitude'));
+    $data['phone']      = sanitize($this->input->post('restaurant_phone'));
+    $data['website']    = sanitize($this->input->post('restaurant_website_link'));
+    $data['commission_res'] = $commission;
+    $data['updated_at'] = strtotime(date('D, d-M-Y'));
+
+    $this->db->where('id', $id);
+    $this->db->update($this->table, $data);
+
+    // Update commission on pending unpaid orders
+    $orders = $this->db->get_where('orders', [
+        'restaurant_id' => $id,
+        'is_paid'       => 0
+    ])->result();
+
+    foreach ($orders as $order) {
+        $commission_amount = ($order->grand_total * $commission) / 100;
+        $commission_paid   = $order->grand_total - $commission_amount;
+
+        $this->db->where('id', $order->id);
+        $this->db->update('orders', [
+            'commission_res'  => $commission,
+            'commission_paid' => $commission_paid
+        ]);
+    }
+
+    return true;
+}
 
     // UPDATE OWNER INFOS FOR A RESTAURANT
     public function update_owner()
