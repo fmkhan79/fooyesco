@@ -90,6 +90,7 @@ class Pos extends Authorization
             error(get_phrase('your_are_not_authorized'), site_url('menu'));
         }
 
+
         $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
         $page_data['categories']  = $this->category_model->get_all();
         $page_data['id'] = $id;
@@ -98,6 +99,7 @@ class Pos extends Authorization
         $page_data['page_name'] = 'menu/edit';
         $page_data['page_title'] = $page_data['menu_data']['name'];
         $this->load->view('backend/index', $page_data);
+    
     }
 
     // store function is responsible for storing the menu data.
@@ -125,6 +127,19 @@ class Pos extends Authorization
             success(get_phrase('menu_updated_successfully'), site_url('menu/edit/' . $menu_id . '/' . $active_tab));
         }
     }
+    public function selected_cat_items($maincatid, $option = null)
+{
+    $data["option"] = $option;
+    $data["maincatid"] = $maincatid;
+
+    $html = $this->load->view("frontend/default/menu/_sub_catagories_and_items.php", $data, TRUE);
+
+    echo json_encode([
+        "status" => true,
+        "html" => $html
+    ]);
+}
+
 
     public function image_remove()
 {

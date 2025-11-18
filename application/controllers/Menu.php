@@ -171,6 +171,15 @@ class Menu extends Authorization
     redirect('menu');
 }
 
+public function get_sub_options_ajax()
+{
+    $maincatid = $this->input->post('maincatid');
+    $data["option"] = $this->input->post("option");
+    $data["maincatid"] = $maincatid;
+
+    echo $this->load->view("frontend/default/menu/_sub_catagories_and_items.php", $data, TRUE);
+}
+
   
 
     // Delete function is responsible for deleting the menu data.
