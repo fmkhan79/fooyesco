@@ -15,15 +15,13 @@
 </head>
 <?php 
 $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
- print_r($menu_sub_catagory_items);
-        die();
+
 // Build mapping array: menu_id → sub_option_id
 $subOptionMap = [];
 if (!empty($menu_sub_catagory_items)) {
     foreach ($menu_sub_catagory_items as $opt) {
         $subOptionMap[$opt['menu_id']] = $opt['id'];
-        print_r($subOptionMap);
-        die();
+       
     }
 }
 ?>
