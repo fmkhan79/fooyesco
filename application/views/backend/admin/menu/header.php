@@ -52,12 +52,12 @@
               Enter a positive value to increase or a negative value to decrease prices.
             </small>
 
-              <!-- <?php if ($this->session->userdata('last_percentage')): ?> -->
-              <small class="text-danger">
-                  Last applied: <?= ($this->session->userdata('last_percentage') ?? 20) ?>%
-              </small>
+           <?php 
+$last = $this->session->userdata('last_percentage');
+$last = $last ? $last : 20;
+?>
+<small class="text-danger">Last applied: <?= $last ?>%</small>
 
-          <!-- <?php endif; ?> -->
             </div>
           </div>
 
