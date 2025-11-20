@@ -43,25 +43,25 @@
                                                         ? $priceData['menu'] 
                                                         : $menu['price']; 
 
-                                                // Get all main option groups for this menu item
                                                 $menu_main_categories = $this->menu_model->get_options($menu['id']);
-                                                // Choose first option category (if exists)
                                                 $maincatid = !empty($menu_main_categories) 
                                                             ? $menu_main_categories[0]['id'] 
                                                             : 0;
                                             ?>
 
-                                            <div class="col-md-3 mb-4 p-1">                                                     
-                                             <div class="menu-card text-center p-3 shadow-sm position-relative"
-                                        style="border-radius: 10px; transition: 0.3s; cursor: pointer;
+                                           <div class="col-md-3 mb-4 p-1">                                                     
+                                            <div class="menu-card text-center p-3 shadow-sm position-relative"
+                                                style="border-radius: 10px; transition: 0.3s; cursor: pointer;
                                                 padding: 0!important; padding-bottom: 20px!important; 
                                                 min-height: 278px !important;"
-                                        data-maincatid="<?php echo $maincatid; ?>"
-                                        data-id="<?php echo $menu['id']; ?>"
-                                        data-name="<?php echo htmlspecialchars($menu['name']); ?>"
-                                        data-price="<?php echo htmlspecialchars($price); ?>"
-                                        data-has-variant="<?php echo $menu['has_variant']; ?>"
-                                        data-variants='<?php echo htmlspecialchars(json_encode($menu_main_categories), ENT_QUOTES, 'UTF-8'); ?>'>
+                                                data-maincatid="<?php echo $maincatid; ?>"
+                                                data-id="<?php echo $menu['id']; ?>"
+                                                data-name="<?php echo htmlspecialchars($menu['name']); ?>"
+                                                data-price="<?php echo htmlspecialchars($price); ?>"
+                                                data-has-variant="<?php echo $menu['has_variant']; ?>"
+                                                data-variants='<?php echo htmlspecialchars(json_encode($menu_main_categories), ENT_QUOTES, "UTF-8"); ?>'>
+
+
 
 
                                                     <img src="<?php echo !empty($menu['thumbnail']) 
@@ -99,14 +99,12 @@
                         </div>
 
                         <div class="col-lg-4">
-   <div id="rightPanel" class="order-card sticky-top" style="top: 20px;">
-
-    <!-- Variant + Extras panel will load here -->
+                          <div id="rightPanel" class="order-card sticky-top" style="top: 20px;">
+    <!-- Product/Variant options will load here dynamically -->
     <div id="product-options-container"></div>
 
     <!-- ORDER SUMMARY -->
     <div id="orderSummary" class="p-3">
-
         <h5 class="mb-2">Order Summary</h5>
         <p class="text-success small">You're All Set</p>
 
@@ -117,61 +115,45 @@
 
         <hr>
 
-        <!-- TOTALS SECTION -->
+        <!-- TOTALS -->
         <div id="orderTotals" style="display: none;">
             <div class="d-flex justify-content-between mb-1">
                 <span>Subtotal</span>
                 <span id="subtotal">€0.00</span>
             </div>
-
-            <div class="d-flex justify-content-between mb-1">
-                <span>Delivery Charges</span>
-                <span id="delivery">€0.00</span>
-            </div>
-
             <div class="d-flex justify-content-between mb-1">
                 <span>Service Charges</span>
                 <span id="service">€1.00</span>
             </div>
-
             <div class="d-flex justify-content-between mb-1">
                 <span>Bag Charges</span>
                 <span id="bag">€0.10</span>
             </div>
-
             <div class="d-flex justify-content-between mb-1 text-danger">
                 <span>Discount (<span id="discountPercent">0</span>%)</span>
                 <span id="discountAmount">-€0.00</span>
             </div>
-
             <hr>
-
             <div class="d-flex justify-content-between fw-bold fs-5">
                 <span>Total</span>
                 <span id="grandTotal">€0.00</span>
             </div>
         </div>
 
-        <!-- PROMO CODE -->
-       
-
-       
-
-          <div class="mt-3">
-            <button class="btn btn-warning w-100" id="applyCoupon">Place Order</button>
+        <!-- PLACE ORDER BUTTON -->
+        <div class="mt-3">
+            <button id="placeOrderBtn" class="btn btn-warning w-100">Place Order</button>
         </div>
-
     </div>
-
 </div>
 
-                        </div>
+                                                            </div>
 
 
-                        </div>
+                                                            </div>
 
-                    <?php include 'scripts/index-script.php'; ?>
+                                                        <?php include 'scripts/index-script.php'; ?>
 
-</body>
+                                        </body>
 
-</html>
+                                    </html>
