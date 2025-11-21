@@ -610,6 +610,75 @@ class Order_model extends Base_model
         return $data['code'];
     }
 
+
+    // CONFIRM POS ORDER FUNCTION
+    public function confirm_pos_order($customer_id)
+{
+    $today = date('Y-m-d');
+
+    // Count POS orders for today
+    $this->db->where('DATE(created_at)', $today);
+    $count = $this->db->count_all_results('orders');
+    $daily_order_number = $count + 1;
+
+    $cart_items = $this->cart_model->get_all($customer_id);
+    if(empty($cart_items)) return false;
+
+    // Calculate totals
+    $total_menu_price = 0;
+    foreach($cart_items as $item){
+        $total_menu_price += $item['price'];
+    }
+
+    $grand_total = $total_menu_price
+        + $this->cart_model->get_total_delivery_charge($customer_id)
+        + $this->cart_model->get_vat_amount($customer_id);
+
+    $order_code = "OR-" . strtotime(date('D, d-M-Y H:i:s')) . "-POS";
+
+    $data = [
+        'code' => $order_code,
+        'customer_id' => $customer_id,
+        'customer_address_id' => null,
+        'daily_order_number' => $daily_order_number,
+        'order_placed_at' => strtotime(date('D, d-M-Y H:i:s')),
+        'order_status' => get_order_settings('auto_approve_order') ? "approved" : "pending",
+        'total_menu_price' => $total_menu_price,
+        'total_delivery_charge' => $this->cart_model->get_total_delivery_charge($customer_id),
+        'total_vat_amount' => $this->cart_model->get_vat_amount($customer_id),
+        'grand_total' => $grand_total,
+        'restaurant_id' => $cart_items[0]['restaurant_id'],
+    ];
+
+    // Commission
+    $data['commission_res'] = $this->restaurant_model->commision_check($data['restaurant_id']);
+    $commission_value = floatval(preg_replace('/[^0-9.]/', '', $data['commission_res']));
+    $data['commission_paid'] = $grand_total * ($commission_value / 100);
+
+    $this->db->insert('orders', $data);
+
+    // Insert order details
+    foreach($cart_items as $cart_item){
+        $order_details = [
+            'order_code' => $order_code,
+            'menu_id' => $cart_item['menu_id'],
+            'restaurant_id' => $cart_item['restaurant_id'],
+            'servings' => $cart_item['servings'],
+            'quantity' => $cart_item['quantity'],
+            'total' => $cart_item['price'],
+            'note' => $cart_item['note'],
+            'variant_id' => $cart_item['variant_id'],
+            'addons' => $cart_item['options_1']
+        ];
+        $this->db->insert('order_details', $order_details);
+    }
+
+    // Clear POS cart
+    $this->cart_model->clearing_cart($customer_id);
+
+    return $order_code;
+}
+
     // SENDING ORDER PLACING MAILS FROM THIS FUNCTION
     public function order_placing_mail($order_code)
     {

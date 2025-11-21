@@ -254,6 +254,51 @@ class Cart_model extends Base_model
     /**
      * RETURN ALL THE CART ITEMS
      */
+              public function get_all_by_pos($posId)
+{
+    if (!$posId) return [];
+
+    $this->db->where('customer_id', $posId);
+    $query = $this->db->get($this->table);
+
+    // Make sure result is always an array
+    $result = $query ? $query->result_array() : [];
+
+    return $this->merger_pos($result); // Use POS-specific merger
+}
+
+
+
+                // Cart_model.php
+
+/**
+ * POS-specific merger: process cart items for POS
+ * @param array|null $cart_items
+ * @return array
+ */
+public function merger_pos($cart_items)
+{
+    if (empty($cart_items) || !is_array($cart_items)) {
+        return []; // always return array
+    }
+
+    foreach ($cart_items as $key => $cart_item) {
+        // Safely get menu and restaurant data
+        $menu_data = $this->menu_model->get_by_id($cart_item['menu_id']) ?? [];
+        $restaurant_data = $this->restaurant_model->get_by_id($cart_item['restaurant_id']) ?? [];
+
+        $cart_items[$key]['menu_name']  = $menu_data['name'] ?? '';
+        $cart_items[$key]['menu_thumbnail']  = $menu_data['thumbnail'] ?? '';
+        $cart_items[$key]['restaurant_name']  = $restaurant_data['name'] ?? '';
+        $cart_items[$key]['delivery_charge']  = delivery_charge($restaurant_data['id'] ?? 0);
+        $cart_items[$key]['options_1_details'] = $this->get_options_details(json_decode($cart_item['options_1'], true));
+        $cart_items[$key]['options_2_details'] = $this->get_options_details(json_decode($cart_item['options_2'], true));
+    }
+
+    return $cart_items;
+}
+
+
     public function get_all()
     {
         $data['customer_id'] = $this->logged_in_user_id; // Assuming this is set in the mode
