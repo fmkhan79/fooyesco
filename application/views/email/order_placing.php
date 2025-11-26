@@ -215,7 +215,8 @@ $decoded_address = json_decode($message['address'], true);
         </div>
 
         <div class="info">
-            <p>Thank you for choosing Fooyes! Your <span class="highlight">order</span> has been successfully placed and forwarded to our kitchen team. If you need to make any changes to your <span class="highlight">order</span>, please contact us immediately at <a href="tel:<?= $restaurant_details['phone'] ?>"><?= $restaurant_details['phone'] ?></a>.</p>
+            <p>Thank you for choosing Fooyes! Your <span class="highlight">order</span> has been successfully placed and forwarded to our kitchen team. If you need to make any changes to your <span class="highlight">order</span>, please contact takeaway/restaurant directly at <a href="tel:<?= $restaurant_details['phone'] ?>"><?= $restaurant_details['phone'] ?></a>.</p>
+            <p>For non delivery issues please call or drop us a message as soon as you can on this number <a href="tel:07438797814">07438797814</a></p>
             <p>Kindly ensure that any modifications or cancellations are requested within 5 minutes of placing your <span class="highlight">order</span> to avoid delays.</p>
         </div>
 
