@@ -158,7 +158,7 @@ $canonical_url = strtok($canonical_url, '?');
 
 <?php else: 
     // Default for Chilli Hut
-    $title = 'Chilli Hut Fast Food Takeaway in March';
+    $title = 'Chilli Hut March | Get 20% Off | Fast Food Takeaway in March';
     $description = 'Order delicious fast food in March, Cambridgeshire.';
 
     if (strpos($uri, '/privacy-policy') !== false) {

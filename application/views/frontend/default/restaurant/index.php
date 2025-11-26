@@ -189,9 +189,9 @@ $this->session->set_userdata('restaurant_id', $restaurant_details['id']);
             <div class="col-md-8" style="padding-left: 20px;">
                 <div class="d-md-flex justify-content-between">
                     <div class="detail-wbox-title">
-                        <h3>
-                            <?php echo $restaurant_details['name']; ?>
-                        </h3>
+                        <h1>
+                            <?php echo $restaurant_details['name']; ?> - Menu | 20% Off On All Orders
+                        </h1>
 
                         <?php if ($restaurant_details["address"]) {
                             echo $restaurant_details["address"]; ?> - <span class="red">Get
