@@ -331,18 +331,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: "POST",
                 data: {
                     ...buildFullOrderData(),  
-                    pos_id: posCustomerId 
+                    pos_id: posCustomerId    
                 },
-                
                 dataType: "json",
                 success: function (res) {
-                    console.log("res" . res);
+                // console.log("Response:", res);
                     const printUrl = `${baseUrl}orders/print_recipt/${res.order_code}`;
                     window.open(printUrl, "_blank"); // opens in new tab or print window
-                    alert("Order placed successfully!" + res);
+
+                    alert("Order placed successfully!");
                     cartItems = [];
                     updateOrderSummary();
-  
                 },
                 error: function (xhr) {
                     console.error(xhr.responseText);

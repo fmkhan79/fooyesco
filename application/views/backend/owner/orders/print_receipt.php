@@ -187,6 +187,15 @@ $restaurant_details = [];
         echo "<h3 style='margin:0px;'>" . sanitize($customer_name) . "</h3>";
         echo "<h3 style='margin:0px;'>" . sanitize($billing_phone) . "</h3>";
     }
+    else{
+        // echo "<h3>POS ORDER</h3>";
+        echo "<br>";
+        echo "<h3 style='margin:0px;'>" . sanitize($customer_name) . "</h3>";
+        echo "<h3 style='margin:0px;'>" . sanitize($billing_phone) . "</h3>";
+        echo "<br>";
+        //   echo "<br>";
+
+    }
     ?>
 
     <div id="ordered_items">
