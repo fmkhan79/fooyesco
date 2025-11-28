@@ -76,8 +76,8 @@
       background: #fff;
       border-radius: 20px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      padding: 25px;
-      height: 95vh;
+
+    
     }
 
     .order-header {
@@ -188,7 +188,7 @@ $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(
     <h5 class="mb-3 font-weight-600">All Categories</h5>
 <div class="row">
   <?php foreach ($restaurant_categories as $restaurant_category) { ?>
-    <div class="col-md-6 mb-4">
+    <div class="col-md-2 mb-4">
       <a href="<?php echo site_url('pos/category/' . $restaurant_category['id']); ?>" class="text-decoration-none">
         <div class="menu-card text-center p-3 shadow-sm" style="border-radius: 10px; transition: 0.3s;">
           <!-- <img 

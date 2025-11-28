@@ -614,17 +614,19 @@ class Order_model extends Base_model
     // CONFIRM POS ORDER FUNCTION
     public function confirm_pos_order($customer_id)
 {
-    $today = date('Y-m-d');
 
+    $today = date('Y-m-d');
+    
     // Count POS orders for today
     $this->db->where('DATE(created_at)', $today);
     $count = $this->db->count_all_results('orders');
     $daily_order_number = $count + 1;
 
-    $cart_items = $this->cart_model->get_all($customer_id);
-    if(empty($cart_items)) return false;
+    $cart_items = $this->cart_model->get_all_by_pos($customer_id);
 
-    // Calculate totals
+        
+    if(empty($cart_items)) return false;
+    // Calculate totals 
     $total_menu_price = 0;
     foreach($cart_items as $item){
         $total_menu_price += $item['price'];
@@ -635,7 +637,7 @@ class Order_model extends Base_model
         + $this->cart_model->get_vat_amount($customer_id);
 
     $order_code = "OR-" . strtotime(date('D, d-M-Y H:i:s')) . "-POS";
-
+  
     $data = [
         'code' => $order_code,
         'customer_id' => $customer_id,
@@ -674,7 +676,7 @@ class Order_model extends Base_model
     }
 
     // Clear POS cart
-    $this->cart_model->clearing_cart($customer_id);
+    $this->cart_model->clearing_cart_pos($customer_id);
 
     return $order_code;
 }
@@ -685,8 +687,7 @@ class Order_model extends Base_model
         $order_details = $this->order_model->get_by_code($order_code);
         $payment       = $this->order_model->get_order_payment($order_code);
 
-        print_r($order_details);
-        die();
+        
         // Load necessary models
         $ordered_items = $this->order_model->details($order_code);
         // print_r($ordered_items . "Dass");

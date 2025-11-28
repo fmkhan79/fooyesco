@@ -50,8 +50,13 @@
       background: #fff;
       border-radius: 20px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      padding: 25px;
-      height: 95vh;
+      flex:1;
+    }
+    #product-options-container{
+      padding:15px;
+    }
+    #pos-add-to-cart{
+      padding:10px;
     }
 
     .order-header {

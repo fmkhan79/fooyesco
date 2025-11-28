@@ -49,7 +49,7 @@
                                                             : 0;
                                             ?>
 
-                                           <div class="col-md-3 mb-4 p-1">                                                     
+                                           <div class="col-md-2 mb-4 p-1">                                                     
                                             <div class="menu-card text-center p-3 shadow-sm position-relative"
                                                 style="border-radius: 10px; transition: 0.3s; cursor: pointer;
                                                 padding: 0!important; padding-bottom: 20px!important; 
@@ -63,13 +63,13 @@
 
 
 
-
-                                                    <img src="<?php echo !empty($menu['thumbnail']) 
+                                                    <!-- TODO: MAKE SURE TO REVERT BEFORE PUSH -->
+                                                     <img src="<?php echo !empty($menu['thumbnail']) 
                                                         ? base_url('uploads/menu/' . $menu['thumbnail']) 
                                                         : 'https://via.placeholder.com/150?text=No+Image'; ?>"
                                                         alt="<?php echo htmlspecialchars($menu['name']); ?>"
                                                         class="img-fluid mb-2"
-                                                        style="border-radius: 10px; height: 150px; object-fit: cover;">
+                                                        style="border-radius: 10px; height: 150px; object-fit: cover;"> 
 
                                                     <h6 class="mt-2 text-dark"><?php echo htmlspecialchars($menu['name']); ?></h6>
 
@@ -98,9 +98,24 @@
                             </section>
                         </div>
 
-                        <div class="col-lg-4">
-                          <div id="rightPanel" class="order-card sticky-top" style="top: 20px;">
+                        <div class="col-lg-4 d-flex flex-column" style="height: 88vh;gap:10px;">
+                          <div id="rightPanel" class="order-card " style="top: 20px;">
     <!-- Product/Variant options will load here dynamically -->
+     <style>
+        #tab-order button {
+            background: #f54748;
+            width: 100%;
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 10px;
+        }
+     </style>
+    <div id="tab-order" style="display:flex; justify-content:center; align-items:center; ">
+        <button id="orderSummaryBtn" style="border-right: 4px solid white;">Order Summary</button>
+        <!-- <button id="variantBtn">Variant Options</button> -->
+
+    </div>
     <div id="product-options-container"></div>
 
     <!-- ORDER SUMMARY -->
@@ -146,6 +161,10 @@
         </div>
     </div>
 </div>
+<button id="pos-add-to-cart" onclick="addtocart_updated()">
+    <p class="text-white text-small m-0">Price: € <small id="variantPrice" style="font-weight:bold" data-baseprice=""></small></p>
+                    
+    Add To Cart</button>
 
                                                             </div>
 
@@ -157,3 +176,8 @@
                                         </body>
 
                                     </html>
+<script>
+    function addtocart_updated(){
+        document.getElementById('addToCartBtn').click();
+    }
+</script>
