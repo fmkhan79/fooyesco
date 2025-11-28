@@ -111,21 +111,36 @@ class Pos extends Authorization
         }
     }
 
+    public function pos_cart_items()
+{
+    $pos_id = $this->input->get('pos_id') ?? 1001;
+
+    $items = $this->cart_model->get_all_by_pos($pos_id);
+
+    return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($items));
+}
+
+
 public function add_to_pos_cart()
 {
     // Assign POS terminal ID here, e.g., via POST or hardcoded per terminal
-    $pos_customer_id = $this->input->post('pos_id') ?? 1001;
+    $data['customer_id'] = 1001;
+        $data['servings'] = "menu";
+        $data['menu_id'] = (int) $this->input->post('menuId');
 
-    $data['customer_id'] = $pos_customer_id;
-    $data['servings'] = "menu";
-    $data['menu_id'] = $this->input->post('menuId');
-    $data['quantity'] = $this->input->post('quantity');
-    $data['price'] = $this->input->post('totalprice') * $data['quantity'];
-    $data['variant_id'] = $this->input->post('variantId');
-    $data['addons'] = $this->input->post('addons');
-    $data['options_1'] = $this->input->post('options_1');
-    $data['options_2'] = $this->input->post('options_2');
-    $data['note'] = "";
+        $quantity = (int) $this->input->post('quantity');
+        $totalprice = (float) $this->input->post('totalprice');
+
+        $data['quantity'] = $quantity;
+        $data['price'] = $totalprice * $quantity;
+
+        $data['variant_id'] = $this->input->post('variantId');
+        $data['addons'] = $this->input->post('addons');
+        $data['options_1'] = $this->input->post('options_1');
+        $data['options_2'] = $this->input->post('options_2');
+        $data['note'] = "";
 
     $menu_details = $this->menu_model->get_menu_by_condition(['id' => $data['menu_id'], 'availability' => 1]);
     $data['restaurant_id'] = $menu_details[0]['restaurant_id'];
@@ -138,20 +153,18 @@ public function add_to_pos_cart()
 
 public function cash_on_delivery()
 {
-        $pos_customer_id = $this->input->post('pos_id') ?? 1001;
+        $pos_customer_id = 1001;
         $cart_items = $this->cart_model->get_all_by_pos($pos_customer_id);
-
-if (empty($cart_items)) {
+      
+     if (empty($cart_items)) {
     return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(['success' => false, 'message' => 'Cart is empty']));
-}
-
+}   
 
     // Call a new POS-specific confirm
     $order_code = $this->order_model->confirm_pos_order($pos_customer_id);
-
-    return $this->output
+       return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(['success' => true, 'order_code' => $order_code]));
 }
@@ -180,12 +193,8 @@ if (empty($cart_items)) {
     $data["option"] = $option;
     $data["maincatid"] = $maincatid;
 
-    $html = $this->load->view("frontend/default/menu/_sub_catagories_and_items.php", $data, TRUE);
+    $this->load->view("frontend/default/menu/pos_sub_catagories_and_items.php", $data);
 
-    echo json_encode([
-        "status" => true,
-        "html" => $html
-    ]);
 }
 
 

@@ -28,7 +28,7 @@ $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
         <?php foreach ($items as $item): ?>
             <?php if (!$item["variant"]) continue; ?>
 
-            <label class="extras-item">
+            <label>
 
                 <div class="extras-left">
                     <?php if ($cat["isoptional"] == 1): ?>
@@ -49,12 +49,17 @@ $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
                             data-item-id="<?= $item["id"] ?>"
                         >
                     <?php endif; ?>
-                    <?= $item["variant"] ?>
-                </div>
-
+                    <span  class="extras-item">
+                        <?= $item["variant"] ?>
+                        
                 <?php if ($item["price"] > 0): ?>
-                    <span class="extras-price"><?= currency($item["price"]) ?></span>
+                    <small class="extras-price"><?= currency($item["price"]) ?></small>
+                <?php else: ?> 
+                        <!-- <small style="visibility:hidden">123</small>  -->
                 <?php endif; ?>
+
+                    </span>
+                </div>
 
             </label>
 
@@ -70,6 +75,41 @@ $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
    ----------------------------- */
 
 /* override bootstrap label */
+
+.extras-left span{
+    height: 100%;
+        justify-content: center;
+}
+.extras-left{
+        height: 100%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+.extras-left input[type="radio"]:checked + span {
+    background: #f54748;
+    color:white;
+}
+
+.extras-left input[type="checkbox"]:checked  + span {
+    background: #f54748;
+    color:white;
+}
+
+input[type="radio"],input[type="checkbox"]{
+    display:none;
+}
+
+.extras-header{
+        display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.extras-required{
+    color:#f54748;
+    font-weight: bold;
+}
 .extras-list {
     display: flex !important;
     flex-wrap: wrap !important; /* allow items to move to next line */
@@ -77,13 +117,16 @@ $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
 }
 
 .extras-list > * {
-    flex: 0 0 auto !important; /* forces each label to take only as much space as needed */
+    flex:1;
+    /* flex: 0 0 auto !important; forces each label to take only as much space as needed */
 }
 
 .extras-item {
-    display: inline-flex !important; /* horizontal alignment */
+    display: flex !important; /* horizontal alignment */
+    flex:1;
+    flex-direction:column;
     align-items: center;
-    padding: 6px 10px;
+    padding: 20px 10px;
     background: #f8f9fa;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -97,7 +140,7 @@ $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
 }
 
 .extras-left {
-    display: inline-flex !important;
+    /* display: inline-flex !important; */
     gap: 5px;
 }
 

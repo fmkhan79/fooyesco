@@ -6,8 +6,6 @@
 
 <?php
 if ($page_name == "restaurant/index") : ?>
-    <!-- <meta name="keywordss" content="<?php echo sanitize($restaurant_details['seo_tags']); ?>" />
-    <meta name="description" content="<?php echo sanitize($restaurant_details['seo_description']); ?>" /> -->
 
 <?php elseif ($page_name == "contact_us/index") : ?>
     <meta name="keywordss" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
@@ -46,8 +44,6 @@ if ($page_name == "restaurant/index") : ?>
     <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <meta name="description" content="<?php echo sanitize(get_system_settings('website_description')); ?>" />
 <?php endif; ?>
-
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <?php
@@ -73,7 +69,6 @@ $host = get_subdomain();
 if($host === 'fooyes' || $host === 'staging')
     $isFooyes=true;
 ?>
-
 <?php 
 // Detect which domain we are on
 $host = $_SERVER['HTTP_HOST'];
@@ -151,10 +146,84 @@ $canonical_url = strtok($canonical_url, '?');
 
     <?php elseif ($page_name == "solutions/index") : ?>
         <title>Solutions Fooyes | Your UK Food Delivery Partner</title>
-
-    <?php else: ?>
-        <title><?php echo htmlspecialchars($page_title); ?> | <?php echo sanitize(get_system_settings('system_title')); ?></title>
+ -->
     <?php endif; ?>
+
+    <?php if ($page_name == "restaurant/index"):
+          $title = 'Chilli Hut March | Get 20% Off | Fast Food Takeaway in March';
+    $description = 'Order delicious fast food in March, Cambridgeshire.'; ?>
+
+ <title><?php echo htmlspecialchars($title); ?></title>
+    <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
+ <script type="application/ld+json" id="takeaway_schema">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "@id": "https://www.chilli-hut-march.co.uk",
+  "url": "https://www.chilli-hut-march.co.uk",
+  "name": "Chilli Hut",
+  "logo": "https://www.chilli-hut-march.co.uk/uploads/system/restaurant.png",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "40 High Street, March",
+    "addressLocality": "March",
+    "addressRegion": "March",
+    "postalCode": "PE15 9JR",
+    "addressCountry": "GB"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "3.5",
+    "reviewCount": "109"
+  },
+  "servesCuisine": "Pizza, Burgers, Kebab",
+  "openingHours": [
+    "Mo 16:00-01:45",
+    "Tu 16:00-01:45",
+    "We 16:00-01:45",
+    "Th 16:00-01:45",
+    "Fr 16:00-01:45",
+    "Sa 16:00-01:45",
+    "Su 16:00-01:45"
+  ],
+  "priceRange": "Â£",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "52.54827129465811",
+    "longitude": "0.087961667129548"
+  },
+  "telephone": "+44 1354 654992",
+  "potentialAction": {
+    "@type": "OrderAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://www.chilli-hut-march.co.uk",
+      "inLanguage": "en-GB",
+      "actionPlatform": [
+        "https://schema.org/DesktopWebPlatform",
+        "https://schema.org/MobileWebPlatform"
+      ],
+      "url": "https://www.chilli-hut-march.co.uk?utm_source=google&utm_medium=organic&utm_campaign=orderaction"
+    },
+    "deliveryMethod": [
+      "http://purl.org/goodrelations/v1#DeliveryModeOwnFleet",
+      "http://purl.org/goodrelations/v1#DeliveryModePickUp"
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json" id="website_schema">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Chilli Hut",
+  "url": "https://www.chilli-hut-march.co.uk"
+}
+</script>
+    <?php endif; ?>
+
 
 <?php else: 
     // Default for Chilli Hut

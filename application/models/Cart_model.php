@@ -254,7 +254,7 @@ class Cart_model extends Base_model
     /**
      * RETURN ALL THE CART ITEMS
      */
-              public function get_all_by_pos($posId)
+public function get_all_by_pos($posId)
 {
     if (!$posId) return [];
 
@@ -269,6 +269,8 @@ class Cart_model extends Base_model
 
 
 
+
+
                 // Cart_model.php
 
 /**
@@ -279,24 +281,41 @@ class Cart_model extends Base_model
 public function merger_pos($cart_items)
 {
     if (empty($cart_items) || !is_array($cart_items)) {
-        return []; // always return array
+        return [];
     }
 
     foreach ($cart_items as $key => $cart_item) {
-        // Safely get menu and restaurant data
-        $menu_data = $this->menu_model->get_by_id($cart_item['menu_id']) ?? [];
-        $restaurant_data = $this->restaurant_model->get_by_id($cart_item['restaurant_id']) ?? [];
 
-        $cart_items[$key]['menu_name']  = $menu_data['name'] ?? '';
+        // Ensure always an array
+        if (!is_array($cart_item)) continue;
+
+        // Safe model data
+        $menu_data = $this->menu_model->get_by_id($cart_item['menu_id']) ?? [];
+        $menu_data = is_array($menu_data) ? $menu_data : [];
+
+        $restaurant_data = $this->restaurant_model->get_by_id($cart_item['restaurant_id']) ?? [];
+        $restaurant_data = is_array($restaurant_data) ? $restaurant_data : [];
+
+        // Safe assignments
+        $cart_items[$key]['menu_name']       = $menu_data['name'] ?? '';
         $cart_items[$key]['menu_thumbnail']  = $menu_data['thumbnail'] ?? '';
-        $cart_items[$key]['restaurant_name']  = $restaurant_data['name'] ?? '';
-        $cart_items[$key]['delivery_charge']  = delivery_charge($restaurant_data['id'] ?? 0);
-        $cart_items[$key]['options_1_details'] = $this->get_options_details(json_decode($cart_item['options_1'], true));
-        $cart_items[$key]['options_2_details'] = $this->get_options_details(json_decode($cart_item['options_2'], true));
+        $cart_items[$key]['restaurant_name'] = $restaurant_data['name'] ?? '';
+        $cart_items[$key]['delivery_charge'] = delivery_charge($restaurant_data['id'] ?? 0);
+
+        // Decode options safely
+        $opt1 = json_decode($cart_item['options_1'] ?? '[]', true);
+        $opt2 = json_decode($cart_item['options_2'] ?? '[]', true);
+
+        $opt1 = is_array($opt1) ? $opt1 : [];
+        $opt2 = is_array($opt2) ? $opt2 : [];
+
+        $cart_items[$key]['options_1_details'] = $this->get_options_details_pos($opt1);
+        $cart_items[$key]['options_2_details'] = $this->get_options_details_pos($opt2);
     }
 
     return $cart_items;
 }
+
 
 
     public function get_all()
@@ -367,10 +386,46 @@ public function merger_pos($cart_items)
         }
     }
 
+    private function get_options_details_pos($options)
+{
+    // If NULL, string, number → convert to empty array
+    if (!is_array($options)) {
+        return [];
+    }
+
+    $details = [];
+    
+    foreach ($options as $option) {
+
+        // Each option must be an array with specific keys
+        if (!is_array($option) || 
+            !isset($option['subVariantId']) || 
+            !isset($option['itemId'])) {
+            continue; // skip invalid entries
+        }
+
+        $subVariantId = $option['subVariantId'];
+        $itemId = $option['itemId'];
+
+        $variantSubOption = $this->variation_model->get_variant_sub_options_name_by_id($subVariantId);
+        $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId);
+
+        $details[] = [
+            'subVariantId' => $subVariantId,
+            'itemId' => $itemId,
+            'variantName' => $variantSubOption,
+            'subOptionName' => $subOptionItem
+        ];
+    }
+    return $details;
+}
+
+
     private function get_options_details($options)
     {
         $details = [];
         foreach ($options as $option) {
+            
             $subVariantId = $option['subVariantId'];
             $itemId = $option['itemId'];
 
@@ -590,6 +645,13 @@ public function get_discounted_amount($order_type, $restaurant_id = null)
     {
         $data['customer_id'] = $this->logged_in_user_id;
         $this->db->where($data);
+        return $this->db->delete($this->table);
+    }
+
+    public function clearing_cart_pos()
+    {
+        $data['customer_id'] = 1001;
+         $this->db->where($data);
         return $this->db->delete($this->table);
     }
 
