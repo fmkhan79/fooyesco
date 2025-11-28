@@ -53,7 +53,8 @@ class Site extends Base
     }
 
     // RESTAURANT FUNCTION IS RESPONSIBLE FOR SHOWING THE RESTAURANT DETAILS PAGE
-    function restaurant($slug = '', $id = '')
+    // Have to change for next stnadalone
+    function restaurant($slug = '', $id = '3')
     {
 
         $page_data['reviews_count'] = 0;
