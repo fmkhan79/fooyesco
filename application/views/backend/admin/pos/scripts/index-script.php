@@ -43,95 +43,102 @@ document.addEventListener("DOMContentLoaded", function () {
     // -------------------------
     // SHOW VARIANT PANEL
     // -------------------------
-    function showVariantPanel(name, basePrice, menuId, hasVariant, maincatid, variants) {
-        productOptionsContainer.innerHTML = ""; // clear previous variant panel
-        productOptionsContainer.style.display = "block";
+  function showVariantPanel(name, basePrice, menuId, hasVariant, maincatid, variants) {
+    debugger;
+    productOptionsContainer.innerHTML = ""; // clear previous variant panel
+    productOptionsContainer.style.display = "block";
 
-        let variantOptions = "";
-        let dynamicContainers = "";
+    let variantOptions = "";
+    let dynamicContainers = "";
 
-        if (hasVariant == 1 && variants.length > 0) {
-            variantOptions = `<option value="">Select...</option>`;
-            variants.forEach(v => {
-                const extraPrice = parseFloat(v.price) || 0;
-                variantOptions += `<option value="${v.id}" data-price="${extraPrice}">${v.name} (+€${extraPrice.toFixed(2)})</option>`;
-                dynamicContainers += `<div id="variant-box-${v.id}" class="dynamic-sub-option-container" style="display:none;"></div>`;
-            });
-        }
-
-        let variantOptionForButton = variantOptions.split("<option").slice(2);
-        let buttonHTML = "";
-        variantOptionForButton.forEach(function(element, index){
-            let name = element.split(">")[1].split("<")[0];
-            let [escaped_name] = name.split("("); 
-            let value = element.match(/value="([^"]+)"/)[1];
-            let price = name.split(")")[0].split("(")[1];
-            buttonHTML += `<button class="variant-select-btn" onclick="updateVariantSelect(${value},this)">
-                ${escaped_name}
-                <br><small>${price}</small>
-            </button>`;
+    // Check for variants and construct variant options
+    if (hasVariant == 1 && variants.length > 0) {
+        variantOptions = `<option value="">Select...</option>`;
+        variants.forEach(v => {
+            const extraPrice = parseFloat(v.price) || 0;
+            variantOptions += `<option value="${v.id}" data-price="${extraPrice}">${v.name} (+€${extraPrice.toFixed(2)})</option>`;
+            dynamicContainers += `<div id="variant-box-${v.id}" class="dynamic-sub-option-container" style="display:none;"></div>`;
         });
-        
-      
-        productOptionsContainer.innerHTML = `
-            <div class="">
-                <button class="btn btn-light btn-sm mb-3" id="backToSummary"><i class="fas fa-arrow-left"></i> Back</button>
-                <h5 class="font-weight-bold">${name}</h5>
-                ${hasVariant ? `<div id="variantArea" class="mb-3">
-                    
-                    <div style="display:flex; flex-wrap:wrap;gap:10px;">
-                    ${buttonHTML}
-                    </div>
-                    <select  id="variantSelect" class="form-control" style="display:none">${variantOptions}</select>
-                </div>` : ""}
-                <div id="dynamicSubOptionsArea">${dynamicContainers}</div>
-                <div class="mt-3">
-                    <button class="btn btn-primary w-100" style="display:none" id="addToCartBtn">
-                Add to Cart</button>
-                    
+    }
+
+    // Generate button HTML for variant options
+    let variantOptionForButton = variantOptions.split("<option").slice(2);
+    let buttonHTML = "";
+    variantOptionForButton.forEach(function(element, index){
+        let name = element.split(">")[1].split("<")[0];
+        let [escaped_name] = name.split("("); 
+        let value = element.match(/value="([^"]+)"/)[1];
+        let price = name.split(")")[0].split("(")[1];
+        buttonHTML += `<button class="variant-select-btn" onclick="updateVariantSelect(${value},this)">
+            ${escaped_name}
+            <br><small>${price}</small>
+        </button>`;
+    });
+
+    // Render the product options container
+    productOptionsContainer.innerHTML = `
+        <div class="">
+            <button class="btn btn-light btn-sm mb-3" id="backToSummary"><i class="fas fa-arrow-left"></i> Back</button>
+            <h5 class="font-weight-bold">${name}</h5>
+            ${hasVariant ? `<div id="variantArea" class="mb-3">
+                <div style="display:flex; flex-wrap:wrap;gap:10px;">
+                ${buttonHTML}
                 </div>
+                <select id="variantSelect" class="form-control" style="display:none">${variantOptions}</select>
+            </div>` : ""}
+            <div id="dynamicSubOptionsArea">${dynamicContainers}</div>
+            <div class="mt-3">
+                <button class="btn btn-primary w-100" style="display:none" id="addToCartBtn">Add to Cart</button>
             </div>
-        `;
-        
+        </div>
+    `;
 
-        // Hide order summary while variant panel is open
-        orderSummary.style.display = "none";
+    // Ensure base price is displayed even when no variants are present
+    const priceSpan = document.getElementById('variantPrice');
+    if (priceSpan) {
+        priceSpan.dataset.baseprice = basePrice.toFixed(2);
+        priceSpan.innerText = basePrice.toFixed(2);
+    }
 
-        // Back button
-        const backBtn = document.getElementById('backToSummary');
-        if (backBtn) {
-            backBtn.addEventListener('click', () => {
-                productOptionsContainer.innerHTML = "";
-                productOptionsContainer.style.display = "none";
-                orderSummary.style.display = "block";
-            });
-        }
+    // Hide order summary while variant panel is open
+    orderSummary.style.display = "none";
 
-        // Variant selection
-        const variantSelect = document.getElementById('variantSelect');
-        if (variantSelect) {
-            variantSelect.addEventListener('change', function () {
-                const selected = this.options[this.selectedIndex];
-                const addPrice = parseFloat(selected.dataset.price || 0);
-                const priceSpan = document.getElementById('variantPrice');
-                if (priceSpan) {
-                    const newPrice = basePrice + addPrice;
-                    priceSpan.dataset.baseprice = newPrice.toFixed(2);
-                    priceSpan.innerText = newPrice.toFixed(2);
+    // Back button functionality
+    const backBtn = document.getElementById('backToSummary');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            productOptionsContainer.innerHTML = "";
+            productOptionsContainer.style.display = "none";
+            orderSummary.style.display = "block";
+        });
+    }
+
+    // Variant selection handling
+    const variantSelect = document.getElementById('variantSelect');
+    if (variantSelect) {
+        variantSelect.addEventListener('change', function () {
+            const selected = this.options[this.selectedIndex];
+            const addPrice = parseFloat(selected.dataset.price || 0);
+            if (priceSpan) {
+                const newPrice = basePrice + addPrice;
+                priceSpan.dataset.baseprice = newPrice.toFixed(2);
+                priceSpan.innerText = newPrice.toFixed(2);
+            }
+
+            // Show selected variant extras
+            document.querySelectorAll('.dynamic-sub-option-container').forEach(box => box.style.display = "none");
+            if (this.value) {
+                const box = document.getElementById('variant-box-' + this.value);
+                if (box) {
+                    box.style.display = "block";
+                    loadSubOptions(maincatid, this.value, box.id);
                 }
-                
-                // Show selected variant extras
-                document.querySelectorAll('.dynamic-sub-option-container').forEach(box => box.style.display = "none");
-                if (this.value) {
-                    const box = document.getElementById('variant-box-' + this.value);
-                    if (box) {
-                        box.style.display = "block";
-                        loadSubOptions(maincatid, this.value, box.id);
-                    }
-                }
-                updateVariantPanelTotal();
-            });
-        }
+            }
+            updateVariantPanelTotal();
+        });
+    }
+
+
 
         // Add to cart
         const addBtn = document.getElementById('addToCartBtn');
