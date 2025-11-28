@@ -421,29 +421,38 @@ public function merger_pos($cart_items)
 }
 
 
-    private function get_options_details($options)
-    {
-        $details = [];
-        foreach ($options as $option) {
-            
-            $subVariantId = $option['subVariantId'];
-            $itemId = $option['itemId'];
-
-            // Get variant sub-option name
-            $variantSubOption = $this->variation_model->get_variant_sub_options_name_by_id($subVariantId);
-
-            // Get sub-option item name
-            $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId);
-
-            $details[] = [
-                'subVariantId' => $subVariantId,
-                'itemId' => $itemId,
-                'variantName' => $variantSubOption,
-                'subOptionName' => $subOptionItem
-            ];
-        }
-        return $details;
+   private function get_options_details($options)
+{
+    // If not array → convert to empty array
+    if (!is_array($options)) {
+        return [];
     }
+
+    $details = [];
+
+    foreach ($options as $option) {
+        // Prevent string inside array from breaking processing
+        if (!is_array($option)) continue;
+
+        $subVariantId = $option['subVariantId'] ?? null;
+        $itemId = $option['itemId'] ?? null;
+
+        // Get variant sub-option name
+        $variantSubOption = $this->variation_model->get_variant_sub_options_name_by_id($subVariantId);
+
+        // Get sub-option item name
+        $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId);
+
+        $details[] = [
+            'subVariantId' => $subVariantId,
+            'itemId' => $itemId,
+            'variantName' => $variantSubOption,
+            'subOptionName' => $subOptionItem
+        ];
+    }
+
+    return $details;
+}
 
 
     public function get_restaurants_by_ids($restaurant_ids)
