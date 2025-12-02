@@ -129,4 +129,18 @@
         margin-top: 30px;
       }
     }
+
+    #orderSummaryBtn:not(.active), #variantBtn:not(.active) {
+      opacity: 0.5;
+    }
+
+    .btn-warning.disabled{
+      pointer-events:none;
+    }
+
+    .sec-button{
+      border:none;
+      padding:5px 30px;
+    }
+
   </style>

@@ -49,7 +49,7 @@ $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
                             data-item-id="<?= $item["id"] ?>"
                         >
                     <?php endif; ?>
-                    <span  class="extras-item">
+                    <span  class="extras-item" data-name="<?= $item["variant"]?>">
                         <?= $item["variant"] ?>
                         
                 <?php if ($item["price"] > 0): ?>

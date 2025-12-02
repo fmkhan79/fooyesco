@@ -614,6 +614,9 @@ class Order_model extends Base_model
     // CONFIRM POS ORDER FUNCTION
     public function confirm_pos_order($customer_id)
 {
+    $payment_method = $this->input->post('pay_with'); 
+    // print_r($payment_method . "dada");
+    
 
     $today = date('Y-m-d');
     
@@ -662,20 +665,39 @@ class Order_model extends Base_model
     $this->db->insert('orders', $data);
 
     // Insert order details
-    foreach($cart_items as $cart_item){
-        $order_details = [
-            'order_code' => $order_code,
-            'menu_id' => $cart_item['menu_id'],
-            'restaurant_id' => $cart_item['restaurant_id'],
-            'servings' => $cart_item['servings'],
-            'quantity' => $cart_item['quantity'],
-            'total' => $cart_item['price'],
-            'note' => $cart_item['note'],
-            'variant_id' => $cart_item['variant_id'],
-            'addons' => $cart_item['options_1']
-        ];
-        $this->db->insert('order_details', $order_details);
-    }
+            foreach($cart_items as $cart_item){
+                $order_details = [
+                    'order_code' => $order_code,
+                    'menu_id' => $cart_item['menu_id'],
+                    'restaurant_id' => $cart_item['restaurant_id'],
+                    'servings' => $cart_item['servings'],
+                    'quantity' => $cart_item['quantity'],
+                    'total' => $cart_item['price'],
+                    'note' => $cart_item['note'],
+                    'variant_id' => $cart_item['variant_id'],
+                    'addons' => $cart_item['options_1']
+                ];
+                $this->db->insert('order_details', $order_details);
+            }
+
+            // Insert payment once
+            $payment_data = [
+                'order_code'     => $order_code,
+                'amount_to_pay'    => $grand_total,
+                'amount_paid'    => $grand_total,
+                'payment_method' => $payment_method,     
+                'data'           => json_encode([]),
+                'created_at'     => strtotime(date('Y-m-d'))
+            ];
+
+                    //             echo "<pre>";
+                    // print_r($payment_data);
+                    // echo "dada";
+                    // echo "</pre>";
+                    // die();
+
+            $this->db->insert('payment', $payment_data);
+    
 
     // Clear POS cart
     $this->cart_model->clearing_cart_pos($customer_id);

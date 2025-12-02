@@ -77,7 +77,7 @@
                                                         <?php echo htmlspecialchars($menu['description']); ?>
                                                     </p>
 
-                                                    <p class="text-danger font-weight-bold mb-0">€. 
+                                                    <p class="text-danger font-weight-bold mb-0">€
                                                         <?php echo htmlspecialchars(number_format((float)$price, 2)); ?>
                                                     </p>
 

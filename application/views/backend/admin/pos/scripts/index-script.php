@@ -24,11 +24,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const orderSummary = document.getElementById('orderSummary');
     const productOptionsContainer = document.getElementById('product-options-container');
     const placeOrderBtn = document.getElementById('placeOrderBtn');
- const orderSummaryBtn = document.getElementById("orderSummaryBtn");
-  const variantBtn = document.getElementById("variantBtn");
+    const orderSummaryBtn = document.getElementById("orderSummaryBtn");
+    const variantBtn = document.getElementById("variantBtn");
 
     if(orderSummaryBtn){
         orderSummaryBtn.addEventListener('click', () => {
+
+                orderSummaryBtn.classList.add('active');
+                variantBtn.classList.remove('active');
+
                 productOptionsContainer.innerHTML = "";
                 productOptionsContainer.style.display = "none";
                 orderSummary.style.display = "block";
@@ -44,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // SHOW VARIANT PANEL
     // -------------------------
   function showVariantPanel(name, basePrice, menuId, hasVariant, maincatid, variants) {
-    debugger;
+    // debugger;
     productOptionsContainer.innerHTML = ""; // clear previous variant panel
     productOptionsContainer.style.display = "block";
 
@@ -241,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Update order summary
     // -------------------------
    async function updateOrderSummary() {
-    debugger;
+    // debugger;
     const cartBox = document.getElementById('cartItemsContainer');
     const orderTotals = document.getElementById('orderTotals');
     if (!cartBox || !orderTotals) return;

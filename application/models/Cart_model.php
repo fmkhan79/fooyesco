@@ -242,6 +242,18 @@ class Cart_model extends Base_model
         return currency($data['price']);
     }
 
+    public function update_cart_pos($cart_id, $quantity, $price)
+{
+    $data = [
+        'quantity' => $quantity,
+        'price'    => $price
+    ];
+
+    $this->db->where('id', $cart_id);
+    return $this->db->update('cart', $data);
+}
+
+
     /**
      * RETURN THE TOTAL NUMBER OF CART ITEMS
      */
