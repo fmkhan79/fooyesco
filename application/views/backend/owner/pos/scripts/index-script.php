@@ -506,7 +506,7 @@ document.addEventListener('click', function(e) {
                     const printUrl = `${baseUrl}orders/print_recipt/${res.order_code}`;
                     window.open(printUrl, "_blank"); // opens in new tab or print window
 
-                    alert("Order placed successfully!");
+                    send_mail(res.order_code);
                     cartItems = [];
                     updateOrderSummary();
                 },
