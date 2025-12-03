@@ -25,10 +25,10 @@
                 <div class="mt-4">
                     <div class="row">
 
-                        <div class="col-lg-8">
+                        <div class="col-lg-7">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h4><?php echo htmlspecialchars($category['name']); ?> Items</h4>
-                                <input type="text" class="search-bar form-control w-50" placeholder="Search items" />
+                                <!-- <input type="text" class="search-bar form-control w-50" placeholder="Search items" /> -->
                             </div>
 
                             <section class="content">
@@ -98,7 +98,7 @@
                             </section>
                         </div>
 
-                        <div class="col-lg-4 d-flex flex-column" style="height: 88vh;gap:10px;">
+                        <div class="col-lg-5 d-flex flex-column" style="height: 88vh;gap:10px;">
                           <div id="rightPanel" class="order-card " style="top: 20px;">
     <!-- Product/Variant options will load here dynamically -->
      <style>
@@ -112,8 +112,8 @@
         }
      </style>
     <div id="tab-order" style="display:flex; justify-content:center; align-items:center; ">
-        <button id="orderSummaryBtn" style="border-right: 4px solid white;">Order Summary</button>
-        <!-- <button id="variantBtn">Variant Options</button> -->
+        <button id="orderSummaryBtn" style="border-right: 4px solid white;" class="active">Order Summary</button>
+        <button id="variantBtn">Variant Options</button>
 
     </div>
     <div id="product-options-container"></div>
@@ -128,7 +128,6 @@
             <p class="text-muted text-center" id="emptyCartMsg">No items added yet.</p>
         </div>
 
-        <hr>
 
         <!-- TOTALS -->
         <div id="orderTotals" style="display: none;">
@@ -156,12 +155,14 @@
         </div>
 
         <!-- PLACE ORDER BUTTON -->
-        <div class="mt-3">
-            <button id="placeOrderBtn" class="btn btn-warning w-100">Place Order</button>
+        <div class="mt-3" style="display: flex; gap: 10px; height:55px;">
+            <button id="placeOrderBtn" class="btn btn-warning w-50 h-20">Pay via Cash</button>
+            <button id="placeOrderBtnCard" class="btn btn-warning w-50 h-20">Pay via Card</button>
+
         </div>
     </div>
 </div>
-<button id="pos-add-to-cart" onclick="addtocart_updated()">
+<button id="pos-add-to-cart" onclick="addtocart_updated()" class="d-none">
     <p class="text-white text-small m-0">Price: € <small id="variantPrice" style="font-weight:bold" data-baseprice=""></small></p>
                     
     Add To Cart</button>

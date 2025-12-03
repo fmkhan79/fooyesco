@@ -169,6 +169,13 @@ public function update_cart()
     echo $result ? "success" : "error";
 }
 
+  public function order_placing_mail($order_code)
+    {
+
+        $this->cart_model->order_placing_mail_pos($order_code);
+        // $this->session->sess_destroy();
+    }
+
 
 
 public function item_delete($id)

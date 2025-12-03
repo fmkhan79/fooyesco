@@ -1,12 +1,52 @@
 
 
 <script>
+        
+    function editCartItem(e){
+        console.log(e.parentElement.parentElement);
+        e.parentElement.parentElement.classList.add("d-none");
+        e.parentElement.parentElement.parentElement.querySelector(".quan-edit").classList.remove("d-none");
+
+        
+    }
+
+    function close_quan(e){
+        e.parentElement.parentElement.classList.add("d-none");
+        e.parentElement.parentElement.parentElement.querySelector(".price-buttons").classList.remove("d-none");
+         let quantity = e.parentElement.parentElement.parentElement.querySelector(".quan");
+            quantity.innerHTML = "x1";
+    }
+
+    function updateQuantity(param, e){
+        // debugger;  
+        let price = e.parentElement.parentElement.querySelector("b");
+        let quantity = e.parentElement.parentElement.parentElement.querySelector(".quan");
+        
+        let priceValue = parseFloat(price.innerText.replace(/[^0-9.]/g, ""));
+        let quantityValue = parseInt(quantity.innerText.replace(/\D/g, ""));
+
+        let currentQuantity = quantityValue; 
+
+        if(param < 0 && currentQuantity == 1){
+            return;
+        }
+
+        let _price = (currentQuantity > 1 ? (priceValue / currentQuantity) : priceValue);
+        let updatedPrice = (currentQuantity + param) * _price; 
+
+        price.innerHTML = "€" + (Math.round(updatedPrice * 100) / 100).toFixed(2);
+        quantity.innerHTML = "x" + (currentQuantity + param);
+            
+        
+
+    }
+    
 const baseUrl = '<?php echo base_url(); ?>';
 let cartItems = []; // Global cart
 const posCustomerId = 1001; // POS terminal ID
 
 function updateVariantSelect(variant_id,elem) {
-    
+    // console.log("Selected variant ID:");
     document.querySelectorAll('.variant-select-btn').forEach(btn => btn.classList.remove('active'));
 
     elem.classList.add('active');
@@ -24,6 +64,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const orderSummary = document.getElementById('orderSummary');
     const productOptionsContainer = document.getElementById('product-options-container');
     const placeOrderBtn = document.getElementById('placeOrderBtn');
+    const placeOrderBtnCard = document.getElementById('placeOrderBtnCard');
+
     const orderSummaryBtn = document.getElementById("orderSummaryBtn");
     const variantBtn = document.getElementById("variantBtn");
 
@@ -32,23 +74,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 orderSummaryBtn.classList.add('active');
                 variantBtn.classList.remove('active');
+                document.getElementById('pos-add-to-cart').classList.add('d-none');
 
-                productOptionsContainer.innerHTML = "";
+                // productOptionsContainer.innerHTML = "";
                 productOptionsContainer.style.display = "none";
                 orderSummary.style.display = "block";
+            
             });
     }
-    // if(variantBtn){
-    //     variantBtn.addEventListener('click', () => {
-    //         show
-    //         });
-    // }
+    if(variantBtn){
+        variantBtn.addEventListener('click', () => {
+            
+            if(document.querySelector("#product-options-container").innerHTML == "")
+                return;
+
+
+            document.getElementById('product-options-container').style.display = "block";
+            
+            orderSummary.style.display = "none";
+            orderSummaryBtn.classList.remove('active');
+            variantBtn.classList.add('active');
+            
+            document.getElementById('pos-add-to-cart').classList.remove('d-none');
+
+
+        });
+    }
 
     // -------------------------
     // SHOW VARIANT PANEL
     // -------------------------
   function showVariantPanel(name, basePrice, menuId, hasVariant, maincatid, variants) {
-    // debugger;
     productOptionsContainer.innerHTML = ""; // clear previous variant panel
     productOptionsContainer.style.display = "block";
 
@@ -82,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Render the product options container
     productOptionsContainer.innerHTML = `
         <div class="">
-            <button class="btn btn-light btn-sm mb-3" id="backToSummary"><i class="fas fa-arrow-left"></i> Back</button>
             <h5 class="font-weight-bold">${name}</h5>
             ${hasVariant ? `<div id="variantArea" class="mb-3">
                 <div style="display:flex; flex-wrap:wrap;gap:10px;">
@@ -148,6 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const addBtn = document.getElementById('addToCartBtn');
         if (addBtn) {
             addBtn.addEventListener('click', () => {
+                debugger;
                 const selectedVariantId = variantSelect ? variantSelect.value : 0;
                 const priceSpan = document.getElementById('variantPrice');
                 const base = priceSpan ? parseFloat(priceSpan.dataset.baseprice) : 0;
@@ -156,7 +212,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const selectedExtras = [];
                 let extrasTotal = 0;
                 document.querySelectorAll('.optional-item:checked').forEach(cb => {
-                    selectedExtras.push(cb.closest('.choice-box')?.querySelector('label')?.innerText || "Extra");
+                    let a = cb.closest('.choice-box');
+
+                    selectedExtras.push(cb.parentElement.querySelector("span").dataset.name);
                     extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
                 });
 
@@ -172,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 updateOrderSummary();
 
-                document.getElementById('backToSummary').click();
+                document.getElementById('orderSummaryBtn').click();
 
                 // Save to backend
                 $.ajax({
@@ -244,7 +302,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // -------------------------
     // Update order summary
     // -------------------------
-   async function updateOrderSummary() {
+   function formatAddons(addons) {
+    if (!addons) return "";
+    try {
+        return JSON.parse(addons).join(", ");   // single line
+    } catch (e) {
+        return addons;
+    }
+}
+
+
+
+    async function updateOrderSummary() {
     // debugger;
     const cartBox = document.getElementById('cartItemsContainer');
     const orderTotals = document.getElementById('orderTotals');
@@ -254,13 +323,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const response = await fetch(`${baseUrl}pos/pos_cart_items?pos_id=${posId}`);
     const dbCartItems = await response.json();  // DB rows
-    console.log(dbCartItems);
-    console.log(cartItems); // JS cart
+    console.log(dbCartItems + "das");
+    // console.log(cartItems); // JS cart
     if (!dbCartItems || dbCartItems.length === 0) {
+        document.getElementById("placeOrderBtn").classList.add("disabled");
+        document.getElementById("placeOrderBtnCard").classList.add("disabled");
         cartBox.innerHTML = `<p class="text-muted text-center" id="emptyCartMsg">No items added yet.</p>`;
         orderTotals.style.display = 'none';
         return;
     }
+
+     document.getElementById("placeOrderBtn").classList.remove("disabled");
+        document.getElementById("placeOrderBtnCard").classList.remove("disabled");
 
     let html = '';
     let subtotal = 0;
@@ -270,10 +344,33 @@ document.addEventListener("DOMContentLoaded", function () {
         subtotal += total;
 
         html += `
-            <div class="d-flex justify-content-between mb-1">
-                <span>${item.menu_name} x${item.quantity}</span>
-                <span>€${total.toFixed(2)}</span>
+            <div class="d-flex justify-content-between mb-2 flex-wrap">
+                <div class="d-flex justify-content-between flex-wrap" style="width:50%">
+                    <span><b>${item.menu_name} <span class="quan">x${item.quantity}</span></b></span>
+                     <small>${formatAddons(item.addons)}</small>
+                </div>
+                <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="price-buttons">
+                    <span><b>€${total.toFixed(2)}</b></span>
+                   
+                    <div>
+                        <button class="sec-button" onclick="editCartItem(this)">Edit</button>
+                        <button class="sec-button" style="color:#f54748" data-cart-id="${item.id}">Delete</button>
+                    </div>
+                </div>
+                <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="quan-edit d-none">
+                    <div style="width:100%;text-align:right;" class="quan-price">
+                        <span><b>€${total.toFixed(2)}</b></span>
+                    </div>
+                   
+                    <div style="width:100%;display:flex;justify-content:flex-end;gap:5px;">
+                    <button class="sec-button" style="padding-left:20px;padding-right:20px"  data-item-id="${item.id}">&#x2714;</button>
+                        <button class="sec-button" onclick="updateQuantity(1,this)"><b>+</b></button>
+                        <button class="sec-button" onclick="updateQuantity(-1,this)"><b>-</b></button>
+                        <button class="sec-button" style="padding-left:20px;padding-right:20px" onclick="close_quan(this)">&#10006;</button>
+                    </div>
+                </div>
             </div>
+            <hr>
         `;
     });
 
@@ -289,7 +386,68 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('grandTotal').innerText = `€${(subtotal + service + bag - discountAmount).toFixed(2)}`;
 
     orderTotals.style.display = 'block';
+
+
+
+    
+
 }
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.matches('.sec-button[data-cart-id]')) {
+        const cartId = e.target.dataset.cartId;
+        if (!cartId) return;
+
+        if (!confirm('Are you sure you want to delete this item?')) return;
+
+        fetch(`${baseUrl}pos/item_delete/${cartId}`, {
+            method: 'GET', 
+        })
+        .then(res => res.text()) 
+        .then(() => {
+            location.reload();
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Failed to delete item.');
+        });
+    }
+});
+
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.matches('.sec-button[data-item-id]')) {
+        const cartId = e.target.dataset.itemId;
+        if (!cartId) return;
+
+        let parent = e.target.closest(".d-flex");
+        let quantityEl = parent.parentElement.querySelector(".quan");
+        let quantityValue = parseInt(quantityEl.innerText.replace(/\D/g, ""));
+        console.log(quantityValue);
+        let priceEl = parent.parentElement.querySelector(".quan-price b");
+        let priceValue = parseFloat(priceEl.innerText.replace(/[^0-9.]/g, "")); 
+        console.log(priceValue);
+        fetch(`${baseUrl}pos/update_cart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                cart_id: cartId,
+                quantity: quantityValue,
+                price: priceValue
+            })
+        })
+        .then(res => res.text())
+        .then(res => {
+            console.log("Updated:", res);
+            location.reload();
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Failed to update item.');
+        });
+    }
+});
+
 
 
     // -------------------------
@@ -313,6 +471,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // -------------------------
     document.querySelectorAll('.menu-card').forEach(card => {
         card.addEventListener('click', function () {
+            
+            
             showVariantPanel(
                 this.dataset.name,
                 parseFloat(this.dataset.price),
@@ -321,6 +481,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.dataset.maincatid,
                 JSON.parse(this.dataset.variants || '[]')
             );
+
+            document.getElementById('variantBtn').click();
+        
         });
     });
 
@@ -335,18 +498,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: "POST",
                 data: {
                     ...buildFullOrderData(),  
-                    pos_id: posCustomerId 
+                    pos_id: posCustomerId,
+                    pay_with: "cash"  
                 },
-                
                 dataType: "json",
                 success: function (res) {
-                    console.log("res" . res);
                     const printUrl = `${baseUrl}orders/print_recipt/${res.order_code}`;
                     window.open(printUrl, "_blank"); // opens in new tab or print window
-                    alert("Order placed successfully!" + res);
+
+                    alert("Order placed successfully!");
                     cartItems = [];
                     updateOrderSummary();
-  
                 },
                 error: function (xhr) {
                     console.error(xhr.responseText);
@@ -356,8 +518,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
     }
-        updateOrderSummary(); // ← runs after DOM loaded
 
+        if (placeOrderBtnCard) {
+        placeOrderBtnCard.addEventListener('click', () => {
+            
+           $.ajax({
+                url: `${baseUrl}pos/cash_on_delivery`,
+                method: "POST",
+                data: {
+                    ...buildFullOrderData(),  
+                    pos_id: posCustomerId,
+                    pay_with: "card"   
+                },
+                dataType: "json",
+                success: function (res) {
+                    const printUrl = `${baseUrl}orders/print_recipt/${res.order_code}`;
+                    window.open(printUrl, "_blank"); // opens in new tab or print window
+
+                    alert("Order placed successfully!");
+                    cartItems = [];
+                    updateOrderSummary();
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    alert("Failed to place order.");
+                }
+            });
+
+        });
+    }
+        updateOrderSummary();
          
 });
 

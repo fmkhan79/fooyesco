@@ -535,7 +535,8 @@ document.addEventListener('click', function(e) {
                     const printUrl = `${baseUrl}orders/print_recipt/${res.order_code}`;
                     window.open(printUrl, "_blank"); // opens in new tab or print window
 
-                    alert("Order placed successfully!");
+                    // alert("Order placed successfully!");
+                    send_mail(res.order_code);
                     cartItems = [];
                     updateOrderSummary();
                 },
@@ -548,7 +549,25 @@ document.addEventListener('click', function(e) {
         });
     }
         updateOrderSummary();
+
+    function send_mail(order_code){
+
+        $.ajax({
+    url: '<?php echo site_url('pos/order_placing_mail/'); ?>' + order_code,
+    method: 'POST', 
+    success: function(response) {
+    
+        console.log('sent');
          
+    },
+    error: function(xhr, status, error) {
+        // Handle error response here
+    }
+});
+
+
+    }
+
 });
 
 </script>
