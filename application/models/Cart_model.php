@@ -242,6 +242,18 @@ class Cart_model extends Base_model
         return currency($data['price']);
     }
 
+    public function update_cart_pos($cart_id, $quantity, $price)
+{
+    $data = [
+        'quantity' => $quantity,
+        'price'    => $price
+    ];
+
+    $this->db->where('id', $cart_id);
+    return $this->db->update('cart', $data);
+}
+
+
     /**
      * RETURN THE TOTAL NUMBER OF CART ITEMS
      */
@@ -520,6 +532,25 @@ public function merger_pos($cart_items)
             $this->email_model->order_pacing($restaurant_details['owner_email'], $message);
         }
     }
+
+     public function order_placing_mail_pos($order_code)
+    {
+        // SENDING MAIL TO CUSTOMER
+        $customer_details = $this->user_model->get_user_by_id(1001);
+        
+        $this->load->model('order_model');
+
+        $order_data = $this->order_model->get_order_by_code($order_code);
+        // print_r($order_data);
+        // die();
+        $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
+          $message .= get_phrase('your_order_has_been_placed_successfully') . '.<br/>';
+        $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
+        $message .= get_phrase('please_track_down_your_order_status_from_the_order_details_page') . '.';
+        $this->email_model->order_pacing($customer_details, $order_data);
+
+    }
+
 
     /**
      * GET SMALLER DATA FOR CART PAGE : DISCOUNT % FOR CURRENT CART

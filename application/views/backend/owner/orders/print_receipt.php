@@ -187,6 +187,15 @@ $restaurant_details = [];
         echo "<h3 style='margin:0px;'>" . sanitize($customer_name) . "</h3>";
         echo "<h3 style='margin:0px;'>" . sanitize($billing_phone) . "</h3>";
     }
+    else{
+        // echo "<h3>POS ORDER</h3>";
+        echo "<br>";
+        echo "<h3 style='margin:0px;'>" . sanitize($customer_name) . "</h3>";
+        echo "<h3 style='margin:0px;'>" . sanitize($billing_phone) . "</h3>";
+        echo "<br>";
+        //   echo "<br>";
+
+    }
     ?>
 
     <div id="ordered_items">
@@ -205,22 +214,28 @@ $restaurant_details = [];
 
             $addonHTML = "";
 
-            if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
-                $groupedAddons = [];
-                $addons = json_decode($ordered_item["addons"], true);
-                if (is_array($addons)) {
-                    foreach ($addons as $addon) {
-                        $subVariantId = $addon['subVariantId'] ?? null;
-                        $itemId = $addon['itemId'] ?? null;
-                        if ($subVariantId === null) continue;
-                        if (!isset($groupedAddons[$subVariantId])) {
-                            $groupedAddons[$subVariantId] = [];
-                        }
-                        $groupedAddons[$subVariantId][] = $itemId;
-                    }
-                    $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
+if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
+    $addons = json_decode($ordered_item["addons"], true);
+
+    if (is_array($addons) && count($addons) > 0) {
+        if (isset($addons[0]) && is_string($addons[0])) {
+            $addonHTML = '<ul class="line-item"><li> ' . implode(", ", $addons) . '</li></ul>';
+        } 
+        else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
+            $groupedAddons = [];
+            foreach ($addons as $addon) {
+                $subVariantId = $addon['subVariantId'] ?? null;
+                $itemId = $addon['itemId'] ?? null;
+                if ($subVariantId === null) continue;
+                if (!isset($groupedAddons[$subVariantId])) {
+                    $groupedAddons[$subVariantId] = [];
                 }
+                $groupedAddons[$subVariantId][] = $itemId;
             }
+            $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
+        }
+    }
+}
         ?>
             <hr style="margin-top: 20px;">
             <ul class="line-item font-weight-bold">
@@ -363,7 +378,12 @@ $restaurant_details = [];
             echo "<h3><b>CASH ON COLLECTION</b></h3>";
         } elseif ($payment_method === "stripe") {
             echo "<h3><b>PAID VIA CARD (COLLECTION)</b></h3>";
+        }elseif ($payment_method === "cash") {
+            echo "<h3><b>Payment Via Cash</b></h3>";
+        }elseif ($payment_method === "card") {
+            echo "<h3><b>Payment Via Card</b></h3>";
         }
+    
     }
     echo "</left>";
     ?>

@@ -150,9 +150,50 @@ public function add_to_pos_cart()
     echo "success";
 }
 
+public function update_cart()
+{
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    $cart_id  = $data["cart_id"] ?? null;
+    $quantity = $data["quantity"] ?? null;
+    $price    = $data["price"] ?? null;
+
+    if (!$cart_id || !$quantity) {
+        echo "Missing required data";
+        return;
+    }
+
+    // Update in model
+    $result = $this->cart_model->update_cart_pos($cart_id, $quantity, $price);
+
+    echo $result ? "success" : "error";
+}
+
+  public function order_placing_mail($order_code)
+    {
+
+        $this->cart_model->order_placing_mail_pos($order_code);
+        // $this->session->sess_destroy();
+    }
+
+
+
+public function item_delete($id)
+    {
+
+        $response = $this->cart_model->delete($id);
+        if ($response) {
+            success(get_phrase('item_deleted_successfully'), site_url('cart'));
+        } else {
+            error(get_phrase('an_error_occurred'), site_url('cart'));
+        }
+    }
 
 public function cash_on_delivery()
 {
+    // $payment_method = $this->input->post('pay_with'); // "cash"
+    // print_r($payment_method . "vada");
+    // die();
         $pos_customer_id = 1001;
         $cart_items = $this->cart_model->get_all_by_pos($pos_customer_id);
       
