@@ -271,8 +271,10 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
 
     <?php
     // Ensure we have restaurant discounts available
+
     $res_discount = floatval($restaurant_details['res_discount'] ?? 0);
     $pick_discount = floatval($restaurant_details['pick_discount'] ?? 0);
+    $pos_discount = floatval($restaurant_details['pos_discount'] ?? 0);
 
     // Determine which discount to show
     if (!empty($order_details['promo_code'])) { ?>
@@ -280,11 +282,15 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
             <span><?php echo sanitize($order_details['promo_discount'] ?? 0); ?>% PROMO DISCOUNT</span>
     <?php } elseif ($order_type === "pickup") { ?>
         <div class="did mt-3">
-            <span><?php echo sanitize($pick_discount); ?> ONLINE DISCOUNT</span>
+            <span><?php echo sanitize($pick_discount); ?>% ONLINE DISCOUNT</span>
+            <span>
+    <?php } elseif($order_type == "pos") { ?>
+        <div class="did mt-3">
+            <span><?php echo sanitize($pos_discount); ?>% POS DISCOUNT</span>
             <span>
     <?php } else { ?>
         <div class="did mt-3">
-            <span><?php echo sanitize($res_discount); ?> ONLINE DISCOUNT</span>
+            <span><?php echo sanitize($res_discount); ?>% ONLINE DISCOUNT</span>
             <span>
     <?php } ?>
 
@@ -298,10 +304,15 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
         $res_discount = floatval($order_details['promo_discount'] ?? $res_discount);
     }
 
+    if($order_type == "pos"){
+        $res_discount = floatval($pos_discount);
+    }
+    // if($order_T)
+
     $total_menu_price = floatval($order_details['total_menu_price'] ?? $total_amount);
     $discount_amount_show = $total_menu_price * ($res_discount / 100.0);
 
-    // sanitize grand total and delivery charge
+    // sanitize grand total and delivery charge;
     $grand_total = floatval($order_details['grand_total'] ?? ($total_menu_price - $discount_amount_show));
     $total_delivery_charge = floatval($order_details['total_delivery_charge'] ?? 0.0);
 
@@ -309,7 +320,6 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
     ?>
             </span>
         </div>
-
     <?php if (!empty($order_details['is_online_discount'])) { 
         $is_online_discount = floatval($order_details['is_online_discount']);
         $online_discount_amount_show = $total_menu_price * ($is_online_discount / 100.0);
@@ -346,7 +356,13 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
 
     <div class="did mt-3 font-weight-bold">
         <span>TOTAL (<?php echo intval($total_items); ?> Items)</span>
+        <?php if($order_type == "pos"){?>
+
         <span><?php echo currency(number_format($grand_total, 2)); ?></span>
+
+        <?php }else {?>
+                 <span><?php echo currency(number_format($grand_total, 2)); ?></span>
+        <?php }?>
     </div>
 
     <hr>

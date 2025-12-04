@@ -179,6 +179,19 @@ class Restaurant_model extends Base_model
             return false;
         }
     }
+
+    public function get_pos_discount($restaurant_id)
+    {
+        $this->db->select('pos_discount');
+        $this->db->where('id', $restaurant_id);
+        $query = $this->db->get($this->table);
+        if ($query->num_rows() > 0) {
+            return $query->row()->pos_discount;
+        } else {
+            return false;
+        }
+    }
+
     // UPDATE DISCOUNTS (RES DISCOUNT & PICKUP DISCOUNT)
 public function update_offers()
 {
@@ -186,10 +199,12 @@ public function update_offers()
 
     $res_discount  = sanitize($this->input->post('res_discount'));
     $pick_discount = sanitize($this->input->post('pick_discount'));
+    $pos_discount = sanitize($this->input->post('pos_discount'));
 
     $data = [
         'res_discount'  => $res_discount,
         'pick_discount' => $pick_discount,
+        'pos_discount'  => $pos_discount,
         'updated_at'    => strtotime(date('D, d-M-Y'))
     ];
 
@@ -198,18 +213,19 @@ public function update_offers()
     $this->db->update($this->table, $data);
 
     // Update pending unpaid orders (so discounts affect them)
-    $orders = $this->db->get_where('orders', [
-        'restaurant_id' => $id,
-        'is_paid'       => 0
-    ])->result();
+    // $orders = $this->db->get_where('orders', [
+    //     'restaurant_id' => $id,
+    //     'is_paid'       => 0
+    // ])->result();
 
-    foreach ($orders as $order) {
-        $this->db->where('id', $order->id);
-        $this->db->update('orders', [
-            'res_discount'  => $res_discount,
-            'pick_discount' => $pick_discount
-        ]);
-    }
+    // foreach ($orders as $order) {
+    //     $this->db->where('id', $order->id);
+    //     $this->db->update('orders', [
+    //         'res_discount'  => $res_discount,
+    //         'pick_discount' => $pick_discount,
+    //         'pos_discount'  => $pos_discount
+    //     ]);
+    // }
 
     return true;
 }

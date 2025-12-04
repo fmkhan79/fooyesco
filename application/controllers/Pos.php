@@ -56,7 +56,6 @@ class Pos extends Authorization
 
         }
 
-
         /**PAGINATION STARTS**/
         $menus = $this->menu_model->get_menu_by_condition($conditions);
         $total_rows = count($menus);
@@ -115,7 +114,9 @@ class Pos extends Authorization
 {
     $pos_id = $this->input->get('pos_id') ?? 1001;
 
-    $items = $this->cart_model->get_all_by_pos($pos_id);
+    $items["menu"] = $this->cart_model->get_all_by_pos($pos_id);
+
+    $items["discount"] = $this->restaurant_model->get_pos_discount($items["menu"][0]["restaurant_id"]);
 
     return $this->output
         ->set_content_type('application/json')
@@ -316,7 +317,8 @@ public function cash_on_delivery()
     $page_data['menus'] = $this->Pos_model->get_menus_by_category($category_id);
     $page_data['page_name'] = 'pos/index';
     $page_data['pos_type'] = 'category_view';
-      $this->load->view('backend/index', $page_data);
+
+    $this->load->view('backend/index', $page_data);
 }
 
 

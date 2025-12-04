@@ -120,6 +120,9 @@ public function missedresponsenoti() {
             foreach ($orders as $order) {
                 $billing_data = json_decode($order['billing'], true);
 
+                if($order["order_type"] == "pos"){
+                    continue;
+                }
                 if (!$billing_data || empty($billing_data['first_name'])) {
                     continue;
                 }
@@ -149,6 +152,7 @@ public function missedresponsenoti() {
                 return; // exit before sending any email
             }
 
+            
             // Prepare email content
             $subject = "Missed Orders Notification";
             $message = "Dear Restaurant Owner " . htmlspecialchars($owner['name']) . ",<br><br>";

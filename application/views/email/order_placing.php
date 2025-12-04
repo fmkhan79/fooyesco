@@ -1,49 +1,76 @@
 <?php
 $host = $_SERVER['HTTP_HOST'];
-// Get customer details
-$extCust = (int) $message['customer_id'];
+
+/* ===============================
+   GET CUSTOMER DETAILS
+================================ */
+$extCust = (int) ($message['customer_id'] ?? 0);
 $customer_details = $this->customer_model->get_by_id($extCust);
 
-// Load required models
+/* ===============================
+   LOAD REQUIRED MODELS
+================================ */
 $this->load->model('order_model');
 $this->load->model('restaurant_model');
 $this->load->model('menu_model');
 $this->load->model('cart_model');
 
-// Get ordered items
+/* ===============================
+   ORDERED ITEMS
+================================ */
 $ordered_items = $this->order_model->details($message['code']);
-
-// Get restaurant details (assume same for all items)
 $restaurant_details = $this->restaurant_model->get_by_id($ordered_items[0]['restaurant_id']);
 
+/* ===============================
+   PROMO / DISCOUNT
+================================ */
 $appliedPromo = $this->session->userdata('user_promo');
 
-// Determine discount percentage
-if (!empty($message['promo_discount']) && is_numeric($message['promo_discount'])) {
-    $res_discount = $message['promo_discount'];
+// promo discount safe
+if (!empty($message['promo_discount'])) {
+    // remove "%" or other chars
+    $cleanPromo = preg_replace('/[^0-9.]/', '', $message['promo_discount']);
+    $res_discount = ($cleanPromo !== "") ? floatval($cleanPromo) : 0;
 } else {
-    if ($message["order_type"] == "pickup") {
-        $res_discount = 25;
-    } else {
-        $res_discount = 20;
-    }
+    // default discount
+    $res_discount = ($message["order_type"] == "pickup") ? 25 : 20;
 }
 
-// Prepare calculations
-$subtotal = $message['total_menu_price']; // menu items total
-$service_charge = $this->cart_model->get_service_amount(); // static or percentage-based service charge
-$delivery_charge = ($message['order_type'] == 'pickup') ? 0 : sanitize($message['total_delivery_charge']);
-$bag_charge = 0.10; // fixed charge
+/* ===============================
+   SAFE CALCULATIONS
+================================ */
 
-$discount_amount = ($subtotal * $res_discount) / 100;
+// subtotal: remove currency symbols, commas, spaces
+$subtotal = floatval(preg_replace('/[^0-9.]/', '', ($message['total_menu_price'] ?? 0)));
 
-// print_r($subtotal + $service_charge + $delivery_charge + $bag_charge - $discount_amount);
-// Step 2: Calculate grand total
-$grand_total = ($subtotal + $service_charge + $delivery_charge + $bag_charge) - $discount_amount;
-// print_r(currency($grand_total));
+// service charge
+$service_charge = floatval($this->cart_model->get_service_amount() ?? 0);
 
-$decoded_address = json_decode($message['address'], true);
+// delivery charge (skip for pickup)
+$delivery_charge = ($message['order_type'] == 'pickup')
+    ? 0
+    : floatval(preg_replace('/[^0-9.]/', '', ($message['total_delivery_charge'] ?? 0)));
 
+// fixed bag charge
+$bag_charge = 0.10;
+
+// discount amount
+$discount_amount = floatval(($subtotal * $res_discount) / 100);
+
+/* ===============================
+   GRAND TOTAL (SAFE)
+================================ */
+$grand_total = (
+    floatval($subtotal) +
+    floatval($service_charge) +
+    floatval($delivery_charge) +
+    floatval($bag_charge)
+) - floatval($discount_amount);
+
+/* ===============================
+   CUSTOMER ADDRESS (SAFE)
+================================ */
+$decoded_address = json_decode($message['address'] ?? "", true) ?? [];
 
 ?>
 
@@ -242,18 +269,44 @@ $decoded_address = json_decode($message['address'], true);
             <?php } ?>
             <table class="order-items">
                 <?php foreach ($ordered_items as $ordered_item): ?>
-                    <?php
-                        $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
-                        $addonHTML = "";
-                        if ($ordered_item["addons"] != "[]") {
-                            $groupedAddons = [];
-                            $addons = json_decode($ordered_item["addons"], true);
-                            foreach ($addons as $addon) {
-                                $groupedAddons[$addon['subVariantId']][] = $addon['itemId'];
-                            }
-                            $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
-                        }
-                    ?>
+                 <?php
+$menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
+$addonHTML = "";
+
+// Only process if addons exist and not empty
+if (!empty($ordered_item["addons"]) && $ordered_item["addons"] != "[]") {
+
+    $groupedAddons = [];
+
+    // Decode addons safely
+    $addons = $ordered_item["addons"];
+    if (is_string($addons)) {
+        $addons = json_decode($addons, true);
+    }
+
+    // Ensure addons is an array
+    if (is_array($addons)) {
+        foreach ($addons as $addon) {
+
+            // Decode each addon if it is a string
+            if (is_string($addon)) {
+                $addon = json_decode($addon, true);
+            }
+
+            // Only process if addon is now an array and has the needed keys
+            if (is_array($addon) && isset($addon['subVariantId'], $addon['itemId'])) {
+                $groupedAddons[$addon['subVariantId']][] = $addon['itemId'];
+            }
+        }
+
+        // Generate HTML if grouped addons exist
+        if (!empty($groupedAddons)) {
+            $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
+        }
+    }
+}
+?>
+
                     <tr>
                         <td>
                             <?= $ordered_item['quantity'] ?> x <?= html_entity_decode(sanitize($menu_details['name'])) ?>

@@ -65,8 +65,9 @@ class Email_model extends Base_model
 	public function send_mail_using_php_mailer($message = NULL, $subject = NULL, $to = NULL, $is_password_restting_mail = false, $is_contact_submission_mail = false, $is_refund_request_mail = false, $is_promotion_mail_to_customers = false, $is_error_mail = false)
 	{
 		// Load PHPMailer library
+		// print_r('dsaas');
+		// die();
 		$this->load->library('phpmailer_lib');
-
 		// PHPMailer object
 		$mail = $this->phpmailer_lib->load();
 // SMTP configuration
@@ -83,21 +84,33 @@ $mail->setFrom('support@fooyes.co.uk', 'Fooyes'); // Your email and name
 		// Add a recipient
 		$mail->addAddress('fooyesuk@gmail.com');
 
-		$mail->addBCC($to);
+		// FIX: Handle array or string emails safely
+if (is_array($to)) {
+    foreach ($to as $email) {
+        if (!empty($email)) {
+            $mail->addBCC($email);
+        }
+    }
+} else {
+    if (!empty($to)) {
+        $mail->addBCC($to);
+    }
+}
+
 
 		// Email subject
 		$mail->Subject = $subject;
 
 		// Set email format to HTML
 		$mail->isHTML(true);
-
 		// Enabled debug
 		$mail->SMTPDebug = false;
 		if ($is_password_restting_mail) {
+			
 			$htmlContent = $this->load->view('email/template', array('message' => $message), TRUE);
 		} elseif($is_contact_submission_mail) {
 			$htmlContent = $this->load->view('email/contact_submission', array('subject' => $subject, 'message' => $message), TRUE);
-
+		
 			  // ========== SECOND EMAIL TO USER ==========
 				$mail2 = $this->phpmailer_lib->load();
 				$mail2->isSMTP();
@@ -117,7 +130,6 @@ $mail->setFrom('support@fooyes.co.uk', 'Fooyes'); // Your email and name
 				$mail2->Body = $htmlContent2;
 
 				$sentToUser = $mail2->send();
-
 				if (!$sentToUser) {
 					log_message('error', 'Thank You Mail to user failed: ' . $mail2->ErrorInfo);
 				} else {
@@ -131,6 +143,7 @@ $mail->setFrom('support@fooyes.co.uk', 'Fooyes'); // Your email and name
 		} elseif ($is_error_mail) {
 			$htmlContent = $this->load->view('email/error', array('subject' => $subject, 'message' => $message), TRUE);
 		} else {
+			
 			$htmlContent = $this->load->view('email/order_placing', array('subject' => $subject, 'message' => $message), TRUE);
 		}
 

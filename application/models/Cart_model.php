@@ -266,18 +266,17 @@ class Cart_model extends Base_model
     /**
      * RETURN ALL THE CART ITEMS
      */
-public function get_all_by_pos($posId)
-{
-    if (!$posId) return [];
+    public function get_all_by_pos($posId)
+    {
+        if (!$posId) return [];
 
-    $this->db->where('customer_id', $posId);
-    $query = $this->db->get($this->table);
+        $this->db->where('customer_id', $posId);
+        $query = $this->db->get($this->table);
 
-    // Make sure result is always an array
-    $result = $query ? $query->result_array() : [];
+        $result = $query ? $query->result_array() : [];
 
-    return $this->merger_pos($result); // Use POS-specific merger
-}
+        return $this->merger_pos($result); // Use POS-specific merger
+    }
 
 
 
@@ -541,13 +540,22 @@ public function merger_pos($cart_items)
         $this->load->model('order_model');
 
         $order_data = $this->order_model->get_order_by_code($order_code);
-        // print_r($order_data);
-        // die();
+        
         $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
           $message .= get_phrase('your_order_has_been_placed_successfully') . '.<br/>';
         $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
         $message .= get_phrase('please_track_down_your_order_status_from_the_order_details_page') . '.';
         $this->email_model->order_pacing($customer_details, $order_data);
+
+          $restaurant_ids = $this->get_restaurant_ids($order_code);
+        foreach ($restaurant_ids as $key => $restaurant_id) {
+            $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
+            $message  = get_phrase('hello') . ' ' . $restaurant_details['owner_name'] . ', <br/>';
+            $message .= get_phrase('a_new_order_has_been_placed_to_your_restaurant_from') . ' <b>' . $customer_details['name'] . '</b>.<br/>';
+            $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
+            $message .= get_phrase('please_check_the_order_as_soon_as_possible') . '.';
+            $this->email_model->order_pacing($restaurant_details['owner_email'], $message);
+        }
 
     }
 

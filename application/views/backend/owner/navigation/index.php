@@ -38,6 +38,16 @@
                         </p>
                     </a>
                 </li>
+
+                 <!-- <li class="nav-header"><?php echo get_phrase("navigation_section", true); ?></li> -->
+                <li class="nav-item">
+                    <a href="<?php echo site_url('pos'); ?>" class="nav-link <?php if ($page_name == "pos/index") echo 'active'; ?>">
+                        <i class="nav-icon fas fa-chess-king"></i>
+                        <p>
+                            <?php echo get_phrase('Enter POS'); ?>
+                        </p>
+                    </a>
+                </li>
                 <?php $order_type = isset($order_type) ? $order_type : ""; ?>
                 <li class="nav-item has-treeview <?php if ($page_name == "orders/index" && $order_type == "all"  || $order_type == "today" || $order_type == "live" || $page_name == "orders/details") echo 'menu-open'; ?>">
                     <a href="#" class="nav-link <?php if ($page_name == "orders/index" && $order_type == "all"  || $order_type == "today" || $order_type == "live" || $page_name == "orders/details") echo 'active'; ?>">

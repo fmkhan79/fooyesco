@@ -124,7 +124,7 @@
         <p class="text-success small">You're All Set</p>
 
         <!-- CART ITEMS -->
-        <div id="cartItemsContainer" style="max-height: 260px; overflow-y: auto;">
+        <div id="cartItemsContainer" style="max-height: 80%; overflow-y: auto;">
             <p class="text-muted text-center" id="emptyCartMsg">No items added yet.</p>
         </div>
 

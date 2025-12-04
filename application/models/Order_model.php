@@ -164,11 +164,15 @@ class Order_model extends Base_model
         /**
          * THIS LOOP CHECKS IF GIVEN CONDITION HAS ANY EMPTY ARRAY. IF IT DOES IT WILL RETURN EMPTY ARRAY.
          */
+       
         foreach ($conditions as $key => $value) {
+            // print_r($value);
             if (is_array($value) && count($value) == 0) {
                 return array();
             }
         }
+        
+        
 
         // Check if 'order_status' is set and has a valid value
         if (isset($conditions['order_status']) && in_array($conditions['order_status'], ['paid', 'unpaid', 'refund'])) {
@@ -190,8 +194,9 @@ class Order_model extends Base_model
                 }
             }
         } else {
+           
             foreach ($conditions as $key => $value) {
-                if (!is_null($value)) {
+                if (!is_null($value)) {     
                     if (is_array($value)) {
                         $this->db->where_in($key, $value);
                     } else {
@@ -200,15 +205,13 @@ class Order_model extends Base_model
                 }
             }
         }
+        // print_r($value);
         // Main where orders are getting fetched. 
 
         $this->db->order_by("orders.id", "desc");
 
         $this->db->join('refund_requests', 'refund_requests.order_code = orders.code', 'left');
         $obj = $this->db->get($this->table);
-
-        // print_r($obj);
-        // die();
 
         return $this->order_merger($obj);
     }
@@ -381,7 +384,8 @@ class Order_model extends Base_model
 
         // CHECK STATUS SELECTION
         $conditions['order_status']     = nuller(sanitize($this->input->get('status')));
-
+        $conditions['order_type']     = nuller(sanitize($this->input->get('pos')));
+        // print_r($condtion['order_pos']);
         return $this->get_by_condition($conditions);
     }
 
@@ -637,7 +641,10 @@ class Order_model extends Base_model
 
     $grand_total = $total_menu_price
         + $this->cart_model->get_total_delivery_charge($customer_id)
-        + $this->cart_model->get_vat_amount($customer_id);
+        + $this->cart_model->get_vat_amount($customer_id)
+        + 
+        (($total_menu_price * ($this->restaurant_model->get_pos_discount( $cart_items[0]['restaurant_id']) / 100)) * -1);
+
 
     $order_code = "OR-" . strtotime(date('D, d-M-Y H:i:s')) . "-POS";
   
@@ -891,51 +898,51 @@ class Order_model extends Base_model
      */
     public function filter_orders_as_owner()
     {
+        // die();
         // AT FIRST CHECK IF THE OWNER HAS ANY RESTAURANT
-        $restaurant_ids = $this->restaurant_model->get_approved_restaurant_ids_by_owner_id($this->logged_in_user_id);
-        if (count($restaurant_ids)) {
-            // CHECK RESTAURANT SELECTION
-            $restaurant_id = nuller(sanitize($this->input->get('restaurant_id')));
-            if ($restaurant_id && in_array($restaurant_id, $restaurant_ids)) {
-                $conditions['code'] = count($this->get_order_code_by_restaurant_id($restaurant_id)) > 0 ? $this->get_order_code_by_restaurant_id($restaurant_id) : array();
-            } else {
-                $order_codes = $this->get_order_code_by_restaurant_id($restaurant_ids);
-                if (count($order_codes)) {
-                    $conditions['code'] = $order_codes;
-                } else {
-                    $conditions['code'] = array();
-                }
-            }
-        } else {
-            return array();
-        }
-
-        // CHECK DATE RANGE
+       // CHECK DATE RANG
         if (isset($_GET['date_range']) && !empty($_GET['date_range'])) {
             $date_range                   = sanitize($this->input->get('date_range'));
             $date_range                   = explode(" - ", $date_range);
             $conditions['order_placed_at >='] = strtotime($date_range[0] . ' 00:00:01');
             $conditions['order_placed_at <=']   = strtotime($date_range[1] . ' 23:59:59');
         } else {
-            $first_day_of_month = "1 " . date("M") . " " . date("Y") . ' 00:00:01';
+            $first_day_of_month = "1 Jan " . date("Y") . ' 00:00:01';
+            // $first_day_of_month = "1 " . date("M") . " " . date("Y") . ' 00:00:01';
             $last_day_of_month = date("t") . " " . date("M") . " " . date("Y") . ' 23:59:59';
             $conditions['order_placed_at >=']   = strtotime($first_day_of_month);
             $conditions['order_placed_at <=']     = strtotime($last_day_of_month);
         }
 
+        // CHECK RESTAURANT SELECTION
+        $restaurant_id = nuller(sanitize($this->input->get('restaurant_id')));
+        // if ($restaurant_id) {
+        //     $conditions['code'] = count($this->get_order_code_by_restaurant_id($restaurant_id)) > 0 ? $this->get_order_code_by_restaurant_id($restaurant_id) :  array();
+        // }
+
+        if ($restaurant_id && $restaurant_id != "all") {
+            $order_codes = $this->get_order_code_by_restaurant_id($restaurant_id);
+            if (count($order_codes) > 0) {
+                $conditions['code'] = $order_codes;
+            } else {
+                $conditions['code'] = array();
+            }
+        }
+
         // CHECK CUSTOMER SELECTION
-        $conditions['customer_id'] = nuller(sanitize($this->input->get('customer_id')));
+        $conditions['customer_id']     = nuller(sanitize($this->input->get('customer_id')));
 
         // CHECK DRIVER SELECTION
-        $conditions['driver_id'] = nuller(sanitize($this->input->get('driver_id')));
+        $conditions['driver_id']     = nuller(sanitize($this->input->get('driver_id')));
 
         // CHECK STATUS SELECTION
-        $conditions['order_status'] = nuller(sanitize($this->input->get('status')));
-        
-        // CHECK ORDER PLACED FROM SELECTION
-        $host = $_SERVER['HTTP_HOST'];
-        $conditions['order_url'] = nuller(sanitize($this->input->get('order_url'))) ?? $host;
+        $conditions['order_status']     = nuller(sanitize($this->input->get('status')));
 
+         // CHECK ORDER PLACED FROM SELECTION
+        // $conditions['order_url'] = nuller(sanitize($this->input->get('order_url')));
+        $conditions['order_type'] = nuller(sanitize($this->input->get('pos')));
+        // print_r($conditions);
+        // die();
         return $this->get_by_condition($conditions);
     }
 

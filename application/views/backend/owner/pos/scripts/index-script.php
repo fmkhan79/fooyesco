@@ -3,19 +3,13 @@
 <script>
         
     function editCartItem(e){
-        console.log(e.parentElement.parentElement);
         e.parentElement.parentElement.classList.add("d-none");
         e.parentElement.parentElement.parentElement.querySelector(".quan-edit").classList.remove("d-none");
 
         
     }
 
-    function close_quan(e){
-        e.parentElement.parentElement.classList.add("d-none");
-        e.parentElement.parentElement.parentElement.querySelector(".price-buttons").classList.remove("d-none");
-         let quantity = e.parentElement.parentElement.parentElement.querySelector(".quan");
-            quantity.innerHTML = "x1";
-    }
+   
 
     function updateQuantity(param, e){
         // debugger;  
@@ -203,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const addBtn = document.getElementById('addToCartBtn');
         if (addBtn) {
             addBtn.addEventListener('click', () => {
-                debugger;
                 const selectedVariantId = variantSelect ? variantSelect.value : 0;
                 const priceSpan = document.getElementById('variantPrice');
                 const base = priceSpan ? parseFloat(priceSpan.dataset.baseprice) : 0;
@@ -247,7 +240,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         options_2: null
                     },
                     success: function (res) {
-                        console.log('Saved to DB:', res);
                                 updateOrderSummary();
 
                     },
@@ -271,7 +263,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(res => res.text())
             .then(html => {
                 container.innerHTML = html;
-                console.log(html);
                 container.querySelectorAll('.optional-item').forEach(cb => {
                     cb.addEventListener('change', updateVariantPanelTotal);
                 });
@@ -288,8 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateVariantPanelTotal() {
         const priceSpan = document.getElementById('variantPrice');
         const variant_name = document.getElementById('variantSelect');
-        console.log(variant_name);
-        console.log(priceSpan);
+
         if (!priceSpan) return;
         let base = parseFloat(priceSpan.dataset.baseprice) || 0;
         let extrasTotal = 0;
@@ -302,96 +292,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // -------------------------
     // Update order summary
     // -------------------------
-   function formatAddons(addons) {
-    if (!addons) return "";
-    try {
-        return JSON.parse(addons).join(", ");   // single line
-    } catch (e) {
-        return addons;
-    }
-}
+ 
 
-
-
-    async function updateOrderSummary() {
-    // debugger;
-    const cartBox = document.getElementById('cartItemsContainer');
-    const orderTotals = document.getElementById('orderTotals');
-    if (!cartBox || !orderTotals) return;
-
-    const posId = 1001;
-
-    const response = await fetch(`${baseUrl}pos/pos_cart_items?pos_id=${posId}`);
-    const dbCartItems = await response.json();  // DB rows
-    console.log(dbCartItems + "das");
-    // console.log(cartItems); // JS cart
-    if (!dbCartItems || dbCartItems.length === 0) {
-        document.getElementById("placeOrderBtn").classList.add("disabled");
-        document.getElementById("placeOrderBtnCard").classList.add("disabled");
-        cartBox.innerHTML = `<p class="text-muted text-center" id="emptyCartMsg">No items added yet.</p>`;
-        orderTotals.style.display = 'none';
-        return;
-    }
-
-     document.getElementById("placeOrderBtn").classList.remove("disabled");
-        document.getElementById("placeOrderBtnCard").classList.remove("disabled");
-
-    let html = '';
-    let subtotal = 0;
-
-    dbCartItems.forEach(item => {
-        const total = item.price * item.quantity;
-        subtotal += total;
-
-        html += `
-            <div class="d-flex justify-content-between mb-2 flex-wrap">
-                <div class="d-flex justify-content-between flex-wrap" style="width:50%">
-                    <span><b>${item.menu_name} <span class="quan">x${item.quantity}</span></b></span>
-                     <small>${formatAddons(item.addons)}</small>
-                </div>
-                <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="price-buttons">
-                    <span><b>€${total.toFixed(2)}</b></span>
-                   
-                    <div>
-                        <button class="sec-button" onclick="editCartItem(this)">Edit</button>
-                        <button class="sec-button" style="color:#f54748" data-cart-id="${item.id}">Delete</button>
-                    </div>
-                </div>
-                <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="quan-edit d-none">
-                    <div style="width:100%;text-align:right;" class="quan-price">
-                        <span><b>€${total.toFixed(2)}</b></span>
-                    </div>
-                   
-                    <div style="width:100%;display:flex;justify-content:flex-end;gap:5px;">
-                    <button class="sec-button" style="padding-left:20px;padding-right:20px"  data-item-id="${item.id}">&#x2714;</button>
-                        <button class="sec-button" onclick="updateQuantity(1,this)"><b>+</b></button>
-                        <button class="sec-button" onclick="updateQuantity(-1,this)"><b>-</b></button>
-                        <button class="sec-button" style="padding-left:20px;padding-right:20px" onclick="close_quan(this)">&#10006;</button>
-                    </div>
-                </div>
-            </div>
-            <hr>
-        `;
-    });
-
-    cartBox.innerHTML = html;
-
-    const service = parseFloat(document.getElementById('service')?.innerText.replace("€", "")) || 0;
-    const bag = parseFloat(document.getElementById('bag')?.innerText.replace("€", "")) || 0;
-    const discountPercent = parseFloat(document.getElementById('discountPercent')?.innerText) || 0;
-    const discountAmount = subtotal * discountPercent / 100;
-
-    document.getElementById('subtotal').innerText = `€${subtotal.toFixed(2)}`;
-    document.getElementById('discountAmount').innerText = `-€${discountAmount.toFixed(2)}`;
-    document.getElementById('grandTotal').innerText = `€${(subtotal + service + bag - discountAmount).toFixed(2)}`;
-
-    orderTotals.style.display = 'block';
-
-
-
-    
-
-}
 document.addEventListener('click', function(e) {
     if (e.target && e.target.matches('.sec-button[data-cart-id]')) {
         const cartId = e.target.dataset.cartId;
@@ -404,7 +306,8 @@ document.addEventListener('click', function(e) {
         })
         .then(res => res.text()) 
         .then(() => {
-            location.reload();
+            
+                    updateOrderSummary();
         })
         .catch(err => {
             console.error(err);
@@ -415,16 +318,16 @@ document.addEventListener('click', function(e) {
 
 document.addEventListener('click', function(e) {
     if (e.target && e.target.matches('.sec-button[data-item-id]')) {
+        debugger;
         const cartId = e.target.dataset.itemId;
         if (!cartId) return;
 
         let parent = e.target.closest(".d-flex");
-        let quantityEl = parent.parentElement.querySelector(".quan");
+        let quantityEl = parent.querySelector(".quan");
         let quantityValue = parseInt(quantityEl.innerText.replace(/\D/g, ""));
-        console.log(quantityValue);
-        let priceEl = parent.parentElement.querySelector(".quan-price b");
+        let priceEl = parent.querySelector(".quan-price b");
         let priceValue = parseFloat(priceEl.innerText.replace(/[^0-9.]/g, "")); 
-        console.log(priceValue);
+     
         fetch(`${baseUrl}pos/update_cart`, {
             method: 'POST',
             headers: {
@@ -438,8 +341,8 @@ document.addEventListener('click', function(e) {
         })
         .then(res => res.text())
         .then(res => {
-            console.log("Updated:", res);
-            location.reload();
+                    updateOrderSummary();
+
         })
         .catch(err => {
             console.error(err);
@@ -557,7 +460,6 @@ document.addEventListener('click', function(e) {
     method: 'POST', 
     success: function(response) {
     
-        console.log('sent');
          
     },
     error: function(xhr, status, error) {
@@ -570,6 +472,108 @@ document.addEventListener('click', function(e) {
 
 });
 
+
+
+
+    async function updateOrderSummary() {
+    // debugger;
+    const cartBox = document.getElementById('cartItemsContainer');
+    const orderTotals = document.getElementById('orderTotals');
+    if (!cartBox || !orderTotals) return;
+
+    const posId = 1001;
+
+    const response = await fetch(`${baseUrl}pos/pos_cart_items?pos_id=${posId}`);
+    var dbCartItems = await response.json();  // DB rows
+    document.getElementById('discountPercent').innerHTML = dbCartItems.discount;
+    dbCartItems = dbCartItems.menu;
+    
+    // console.log(cartItems); // JS cart
+    if (!dbCartItems || dbCartItems.length === 0) {
+        document.getElementById("placeOrderBtn").classList.add("disabled");
+        document.getElementById("placeOrderBtnCard").classList.add("disabled");
+        cartBox.innerHTML = `<p class="text-muted text-center" id="emptyCartMsg">No items added yet.</p>`;
+        orderTotals.style.display = 'none';
+        return;
+    }
+
+     document.getElementById("placeOrderBtn").classList.remove("disabled");
+        document.getElementById("placeOrderBtnCard").classList.remove("disabled");
+
+    let html = '';
+    let subtotal = 0;
+
+    dbCartItems.forEach(item => {
+        let total = parseFloat(item.price);
+        subtotal += total;
+
+        html += `
+            <div class="d-flex justify-content-between mb-2 flex-wrap">
+                <div class="d-flex justify-content-between flex-wrap" style="width:50%">
+                    <span><b>${item.menu_name} <span class="quan">x${item.quantity}</span></b></span>
+                     <small>${formatAddons(item.addons)}</small>
+                </div>
+                <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="price-buttons">
+                    <span><b>€${total.toFixed(2)}</b></span>
+                   
+                    <div>
+                        <button class="sec-button" onclick="editCartItem(this)">Edit</button>
+                        <button class="sec-button" style="color:#f54748" data-cart-id="${item.id}">Delete</button>
+                    </div>
+                </div>
+                <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="quan-edit d-none">
+                    <div style="width:100%;text-align:right;" class="quan-price">
+                        <span><b>€${total.toFixed(2)}</b></span>
+                    </div>
+                   
+                    <div style="width:100%;display:flex;justify-content:flex-end;gap:5px;">
+                    <button class="sec-button" style="padding-left:20px;padding-right:20px"  onclick="close_quan(this,false)" data-item-id="${item.id}">&#x2714;</button>
+                        <button class="sec-button" onclick="updateQuantity(1,this)"><b>+</b></button>
+                        <button class="sec-button" onclick="updateQuantity(-1,this)"><b>-</b></button>
+                        <button class="sec-button" style="padding-left:20px;padding-right:20px" onclick="close_quan(this)">&#10006;</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        `;
+    });
+
+    
+    cartBox.innerHTML = html;
+
+    const service = parseFloat(document.getElementById('service')?.innerText.replace("€", "")) || 0;
+    const bag = parseFloat(document.getElementById('bag')?.innerText.replace("€", "")) || 0;
+    const discountPercent = parseFloat(document.getElementById('discountPercent')?.innerText) || 0;
+    const discountAmount = subtotal * discountPercent / 100;
+
+    document.getElementById('subtotal').innerText = `€${subtotal.toFixed(2)}`;
+    document.getElementById('discountAmount').innerText = `-€${discountAmount.toFixed(2)}`;
+    document.getElementById('grandTotal').innerText = `€${(subtotal + service + bag - discountAmount).toFixed(2)}`;
+
+    orderTotals.style.display = 'block';
+
+
+
+    
+
+}
+  function formatAddons(addons) {
+    if (!addons) return "";
+    try {
+        return JSON.parse(addons).join(", ");   // single line
+    } catch (e) {
+        return addons;
+    }
+}
+ function close_quan(e,param){
+
+        e.parentElement.parentElement.classList.add("d-none");
+        e.parentElement.parentElement.parentElement.querySelector(".price-buttons").classList.remove("d-none");
+        let quantity = e.parentElement.parentElement.parentElement.querySelector(".quan");
+        if(param)
+            quantity.innerHTML = "x1";
+    }
+    
 </script>
 
 <style>

@@ -33,7 +33,8 @@ class Orders extends Authorization
         $page_data['driver_id'] = isset($_GET['driver_id']) ? sanitize($_GET['driver_id']) : "all";
         $page_data['status'] = isset($_GET['status']) ? sanitize($_GET['status']) : "all";
         $page_data['order_url'] = isset($_GET['order_url']) ? sanitize($_GET['order_url']) : "all";
-        
+                $page_data['pos'] = isset($_GET['pos']) ? sanitize($_GET['pos']) : "all";
+
         if ($page_data['order_url'] == "all" && $this->session->userdata('admin_login') != 1) {
             $host = $_SERVER['HTTP_HOST']; 
             $page_data['order_url'] = $host;
@@ -61,6 +62,8 @@ class Orders extends Authorization
         $page_data['order_type'] = 'all';
         $page_data['page_title'] = get_phrase("all_orders");
         $page_data['orders'] = $this->order_model->filter();
+       
+        // print_r($page_data['orders']);
         $this->load->view('backend/index', $page_data);
     }
 
@@ -71,6 +74,7 @@ class Orders extends Authorization
         $page_data['customer_id'] = isset($_GET['customer_id']) ? sanitize($_GET['customer_id']) : "all";
         $page_data['driver_id'] = isset($_GET['driver_id']) ? sanitize($_GET['driver_id']) : "all";
         $page_data['status'] = isset($_GET['status']) ? sanitize($_GET['status']) : "all";
+        $page_data['pos'] = isset($_GET['pos']) ? sanitize($_GET['pos']) : "all";
 
         $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
         $page_data['customers'] = $this->customer_model->get_approved_customers();
@@ -296,6 +300,7 @@ class Orders extends Authorization
     }
     public function missedresponsenoti()
     {
+     
         $user_id = $this->session->userdata("user_id");
         // Get restaurant owned by the user 
         $restaurant = $this->db->get_where('restaurants', ['owner_id' => $user_id])->row_array();
@@ -306,10 +311,11 @@ class Orders extends Authorization
             // Fetch all orders where no_response = 1
             $this->db->from('orders');
             $this->db->where('restaurant_id', $restaurant_id);
-            $this->db->where('no_response', 1);
+            $this->db->where('no_response','!+', 1);
+
             $this->db->order_by('id', 'DESC');
             $orders = $this->db->get()->result_array();
-
+           
             if (!empty($orders)) {
 
                 // === Fetch owner email ===
