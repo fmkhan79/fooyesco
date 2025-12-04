@@ -248,7 +248,7 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
                     <li>
                         <?php
                         $variant = $this->menu_model->get_variant_detail($ordered_item["variant_id"]);
-                        echo "Selected: " . sanitize($variant[0]["name"] ?? '');
+                        echo "Selected: " . html_entity_decode(sanitize($variant[0]["name"] ?? ''), ENT_QUOTES);
                         ?>
                     </li>
                 </ul>

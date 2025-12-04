@@ -44,7 +44,7 @@
                     <a href="<?php echo site_url('pos'); ?>" class="nav-link <?php if ($page_name == "pos/index") echo 'active'; ?>">
                         <i class="nav-icon fas fa-chess-king"></i>
                         <p>
-                            <?php echo get_phrase('Enter POS'); ?>
+                           Enter POS
                         </p>
                     </a>
                 </li>
