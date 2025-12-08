@@ -77,7 +77,7 @@
                                                         <?php echo htmlspecialchars($menu['description']); ?>
                                                     </p>
 
-                                                    <p class="text-danger font-weight-bold mb-0">€
+                                                    <p class="text-danger font-weight-bold mb-0">£
                                                         <?php echo htmlspecialchars(number_format((float)$price, 2)); ?>
                                                     </p>
 
@@ -137,11 +137,11 @@
             </div>
             <div class="d-flex justify-content-between mb-1">
                 <span>Service Charges</span>
-                <span id="service">€1.00</span>
+                <span id="service">£1.00</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
                 <span>Bag Charges</span>
-                <span id="bag">€0.10</span>
+                <span id="bag">£0.10</span>
             </div>
             <div class="d-flex justify-content-between mb-1 text-danger">
                 <span>Discount (<span id="discountPercent">0</span>%)</span>
@@ -163,7 +163,7 @@
     </div>
 </div>
 <button id="pos-add-to-cart" onclick="addtocart_updated()" class="d-none">
-    <p class="text-white text-small m-0">Price: € <small id="variantPrice" style="font-weight:bold" data-baseprice=""></small></p>
+    <p class="text-white text-small m-0">Price: £ <small id="variantPrice" style="font-weight:bold" data-baseprice=""></small></p>
                     
     Add To Cart</button>
 

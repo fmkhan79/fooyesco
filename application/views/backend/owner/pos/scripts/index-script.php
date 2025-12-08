@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
         variantOptions = `<option value="">Select...</option>`;
         variants.forEach(v => {
             const extraPrice = parseFloat(v.price) || 0;
-            variantOptions += `<option value="${v.id}" data-price="${extraPrice}">${v.name} (+€${extraPrice.toFixed(2)})</option>`;
+            variantOptions += `<option value="${v.id}" data-price="${extraPrice}">${v.name} (+£${extraPrice.toFixed(2)})</option>`;
             dynamicContainers += `<div id="variant-box-${v.id}" class="dynamic-sub-option-container" style="display:none;"></div>`;
         });
     }
@@ -360,12 +360,12 @@ document.addEventListener('click', function(e) {
         return {
             customer_id: posCustomerId,
             items: cartItems,
-            subtotal: parseFloat(document.getElementById("subtotal").innerText.replace("€", "")) || 0,
-            service_charges: parseFloat(document.getElementById("service").innerText.replace("€", "")) || 0,
-            bag_charges: parseFloat(document.getElementById("bag").innerText.replace("€", "")) || 0,
+            subtotal: parseFloat(document.getElementById("subtotal").innerText.replace("£", "")) || 0,
+            service_charges: parseFloat(document.getElementById("service").innerText.replace("£", "")) || 0,
+            bag_charges: parseFloat(document.getElementById("bag").innerText.replace("£", "")) || 0,
             discount_percent: parseFloat(document.getElementById("discountPercent").innerText) || 0,
-            discount_amount: Math.abs(parseFloat(document.getElementById("discountAmount").innerText.replace("-€", ""))) || 0,
-            grand_total: parseFloat(document.getElementById("grandTotal").innerText.replace("€", "")) || 0
+            discount_amount: Math.abs(parseFloat(document.getElementById("discountAmount").innerText.replace("-£", ""))) || 0,
+            grand_total: parseFloat(document.getElementById("grandTotal").innerText.replace("£", "")) || 0
         };
     }
 
@@ -514,7 +514,7 @@ document.addEventListener('click', function(e) {
                      <small>${formatAddons(item.addons)}</small>
                 </div>
                 <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="price-buttons">
-                    <span><b>€${total.toFixed(2)}</b></span>
+                    <span><b>£${total.toFixed(2)}</b></span>
                    
                     <div>
                         <button class="sec-button" onclick="editCartItem(this)">Edit</button>
@@ -523,7 +523,7 @@ document.addEventListener('click', function(e) {
                 </div>
                 <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="quan-edit d-none">
                     <div style="width:100%;text-align:right;" class="quan-price">
-                        <span><b>€${total.toFixed(2)}</b></span>
+                        <span><b>£${total.toFixed(2)}</b></span>
                     </div>
                    
                     <div style="width:100%;display:flex;justify-content:flex-end;gap:5px;">
@@ -541,14 +541,14 @@ document.addEventListener('click', function(e) {
     
     cartBox.innerHTML = html;
 
-    const service = parseFloat(document.getElementById('service')?.innerText.replace("€", "")) || 0;
-    const bag = parseFloat(document.getElementById('bag')?.innerText.replace("€", "")) || 0;
+    const service = parseFloat(document.getElementById('service')?.innerText.replace("£", "")) || 0;
+    const bag = parseFloat(document.getElementById('bag')?.innerText.replace("£", "")) || 0;
     const discountPercent = parseFloat(document.getElementById('discountPercent')?.innerText) || 0;
     const discountAmount = subtotal * discountPercent / 100;
 
-    document.getElementById('subtotal').innerText = `€${subtotal.toFixed(2)}`;
-    document.getElementById('discountAmount').innerText = `-€${discountAmount.toFixed(2)}`;
-    document.getElementById('grandTotal').innerText = `€${(subtotal + service + bag - discountAmount).toFixed(2)}`;
+    document.getElementById('subtotal').innerText = `£${subtotal.toFixed(2)}`;
+    document.getElementById('discountAmount').innerText = `-£${discountAmount.toFixed(2)}`;
+    document.getElementById('grandTotal').innerText = `£${(subtotal + service + bag - discountAmount).toFixed(2)}`;
 
     orderTotals.style.display = 'block';
 
