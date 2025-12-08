@@ -214,28 +214,29 @@ $restaurant_details = [];
 
             $addonHTML = "";
 
-if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
-    $addons = json_decode($ordered_item["addons"], true);
+            if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
+                $addons = json_decode($ordered_item["addons"], true);
 
-    if (is_array($addons) && count($addons) > 0) {
-        if (isset($addons[0]) && is_string($addons[0])) {
-            $addonHTML = '<ul class="line-item"><li> ' . implode(", ", $addons) . '</li></ul>';
-        } 
-        else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
-            $groupedAddons = [];
-            foreach ($addons as $addon) {
-                $subVariantId = $addon['subVariantId'] ?? null;
-                $itemId = $addon['itemId'] ?? null;
-                if ($subVariantId === null) continue;
-                if (!isset($groupedAddons[$subVariantId])) {
-                    $groupedAddons[$subVariantId] = [];
+                if (is_array($addons) && count($addons) > 0) {
+                    if (isset($addons[0]) && is_string($addons[0])) {
+                        $addonHTML = '<ul class="line-item"><li> ' . implode(", ", $addons) . '</li></ul>';
+                    } 
+                    else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
+                        $groupedAddons = [];
+                        foreach ($addons as $addon) {
+                            $subVariantId = $addon['subVariantId'] ?? null;
+                            
+                            $itemId = $addon['itemId'] ?? null;
+                            if ($subVariantId === null) continue;
+                            if (!isset($groupedAddons[$subVariantId])) {
+                                $groupedAddons[$subVariantId] = [];
+                            }
+                            $groupedAddons[$subVariantId][] = $itemId;
+                        }
+                        $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
+                    }
                 }
-                $groupedAddons[$subVariantId][] = $itemId;
             }
-            $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
-        }
-    }
-}
         ?>
             <hr style="margin-top: 20px;">
             <ul class="line-item font-weight-bold">

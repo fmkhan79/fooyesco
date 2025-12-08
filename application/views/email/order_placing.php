@@ -267,63 +267,64 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
                     <?= sanitize($decoded_address['city'] ?? '') ?><br>
                 </p>
             <?php } ?>
-            <table class="order-items">
-                <?php foreach ($ordered_items as $ordered_item): ?>
-                 <?php
-$menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
-$addonHTML = "";
+          <table class="order-items">
 
-// Only process if addons exist and not empty
-if (!empty($ordered_item["addons"]) && $ordered_item["addons"] != "[]") {
+              <?php foreach ($ordered_items as $ordered_item): ?>
+              <?php
+                  // Get menu details
+                  $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
 
-    $groupedAddons = [];
+                  // Handle addons
+                  $addons = $ordered_item["addons"];
 
-    // Decode addons safely
-    $addons = $ordered_item["addons"];
-    if (is_string($addons)) {
-        $addons = json_decode($addons, true);
-    }
+                  if (is_string($addons)) {
+                      $addons = json_decode($addons, true);
+                  }
 
-    // Ensure addons is an array
-    if (is_array($addons)) {
-        foreach ($addons as $addon) {
+                  $addonListHTML = "";
 
-            // Decode each addon if it is a string
-            if (is_string($addon)) {
-                $addon = json_decode($addon, true);
-            }
+                  
+                  if (is_array($addons) && count($addons) > 0) {
+                      $addonListHTML .= "<ul style='margin:5px 0 0 0; padding-left:15px;'>";
+                      foreach ($addons as $addon) {
+                          // sanitize string addon
+                          if (is_string($addon)) {
+                              $addonListHTML .= "<li>" . htmlspecialchars($addon) . "</li>";
+                          }
+                      }
+                      $addonListHTML .= "</ul>";
+                  }
+              ?>
 
-            // Only process if addon is now an array and has the needed keys
-            if (is_array($addon) && isset($addon['subVariantId'], $addon['itemId'])) {
-                $groupedAddons[$addon['subVariantId']][] = $addon['itemId'];
-            }
-        }
+                  <!-- MAIN ITEM ROW -->
+                  <tr>
+                      <td>
+                          <?= $ordered_item['quantity'] ?> x <?= html_entity_decode(sanitize($menu_details['name'])) ?>
 
-        // Generate HTML if grouped addons exist
-        if (!empty($groupedAddons)) {
-            $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
-        }
-    }
-}
-?>
+                          <?php if (!empty($addonListHTML)): ?>
+                              <br><small><strong>Addons:</strong></small>
+                              <?= $addonListHTML ?>
+                          <?php endif; ?>
+                      </td>
 
-                    <tr>
-                        <td>
-                            <?= $ordered_item['quantity'] ?> x <?= html_entity_decode(sanitize($menu_details['name'])) ?>
-                            <?php if ($addonHTML): ?>
-                                <br><small><?= $addonHTML ?></small>
-                            <?php endif; ?>
-                        </td>
-                        <td><?= currency(number_format(sanitize($ordered_item['total']), 2)) ?></td>
-                    </tr>
-                    <?php if (!empty($ordered_item["variant_id"])): ?>
-                        <tr>
-                            <td>Selected: <?= $this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"] ?></td>
-                            <td></td>
-                        </tr>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </table>
+                      <td><?= currency(number_format(sanitize($ordered_item['total']), 2)) ?></td>
+                  </tr>
+
+                  <!-- SELECTED VARIANT -->
+                  <?php if (!empty($ordered_item["variant_id"])): ?>
+                  <tr>
+                      <td>
+                          Selected:
+                          <?= $this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"] ?>
+                      </td>
+                      <td></td>
+                  </tr>
+                  <?php endif; ?>
+
+              <?php endforeach; ?>
+
+              </table>
+
 
             <table class="totals">
                 <tr>
@@ -345,13 +346,15 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] != "[]") {
                 </tr>
                 <?php } ?>
                 <tr>
-                    <td>
+                    <td>                                                                        
                         <?php if($message['promo_discount'] != null): ?>
                         <?= $message['promo_discount'] ?>% PROMO DISCOUNT
                         <?php elseif($message["order_type"] == "pickup"): ?>
                           25% ONLINE DISCOUNT                          
-                        <?php else: ?>
-                          20% ONLINE DISCOUNT                          
+                        <?php elseif($message['order_type'] == "delivery"): ?>
+                          20% ONLINE DISCOUNT      
+                         <?php else:?>
+                          90% ONLINE DISCOUNT
                         <?php endif; ?>
                     </td>
                     <td>- <?= currency(number_format($discount_amount, 2)) ?></td>
@@ -363,6 +366,7 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] != "[]") {
                     </td>
                     <td>- <?php
                         $getOnlineDisc = $message['is_online_discount'];
+                        // echo $getOnlineDisc;
                         $is_online_discount = ($subtotal * $getOnlineDisc) / 100;
                         echo currency(number_format($is_online_discount, 2)) ?>
                         </td>
