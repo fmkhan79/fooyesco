@@ -112,7 +112,7 @@ class Pos extends Authorization
 
     public function pos_cart_items()
 {
-    $pos_id = $this->input->get('pos_id') ?? 1001;
+    $pos_id = $this->input->get('pos_id');
 
     $items["menu"] = $this->cart_model->get_all_by_pos($pos_id);
 
@@ -127,7 +127,9 @@ class Pos extends Authorization
 public function add_to_pos_cart()
 {
     // Assign POS terminal ID here, e.g., via POST or hardcoded per terminal
-    $data['customer_id'] = 1001;
+        $data['customer_id'] = (int) $this->input->post('pos_id');
+        // print_r($data['customer_id']);
+        // die();
         $data['servings'] = "menu";
         $data['menu_id'] = (int) $this->input->post('menuId');
 
@@ -141,12 +143,21 @@ public function add_to_pos_cart()
         $data['addons'] = $this->input->post('addons');
         $data['options_1'] = $this->input->post('options_1');
         $data['options_2'] = $this->input->post('options_2');
+        $data['pos_data'] = $this->input->post('pos_data');
         $data['note'] = "";
 
     $menu_details = $this->menu_model->get_menu_by_condition(['id' => $data['menu_id'], 'availability' => 1]);
     $data['restaurant_id'] = $menu_details[0]['restaurant_id'];
 
     $this->db->insert("cart", $data);
+
+    $_id = $this->input->post('updated_cart_id');
+
+    // Delete old row
+    if (!empty($_id)) {
+        $this->db->where('id', $_id);
+        $this->db->delete('cart');
+    }
 
     echo "success";
 }
@@ -164,16 +175,17 @@ public function update_cart()
         return;
     }
 
-    // Update in model
     $result = $this->cart_model->update_cart_pos($cart_id, $quantity, $price);
 
     echo $result ? "success" : "error";
 }
 
+
   public function order_placing_mail($order_code)
     {
-
-        $this->cart_model->order_placing_mail_pos($order_code);
+        $pos_id = $this->input->post('pos_id');
+    
+        $this->cart_model->order_placing_mail_pos($order_code,$pos_id);
         // $this->session->sess_destroy();
     }
 
@@ -195,21 +207,21 @@ public function cash_on_delivery()
     // $payment_method = $this->input->post('pay_with'); // "cash"
     // print_r($payment_method . "vada");
     // die();
-        $pos_customer_id = 1001;
+        $pos_customer_id = (int) $this->input->post('pos_id');
+       
         $cart_items = $this->cart_model->get_all_by_pos($pos_customer_id);
       
      if (empty($cart_items)) {
     return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(['success' => false, 'message' => 'Cart is empty']));
-}   
+        }   
 
-    // Call a new POS-specific confirm
     $order_code = $this->order_model->confirm_pos_order($pos_customer_id);
        return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(['success' => true, 'order_code' => $order_code]));
-}
+            }
 
 
 

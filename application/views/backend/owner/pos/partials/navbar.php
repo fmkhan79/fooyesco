@@ -8,7 +8,7 @@
       <a href="<?php echo site_url(); ?>" class="btn btn-sm btn-primary" role="button"><i class="far fa-paper-plane"></i> <?php echo get_phrase('view_website'); ?></a>
     </li>
      <li class="nav-item mt-1 d-sm-inline-block ml-4">
-      <a href="<?php echo site_url(). '/pos'; ?>" class="btn btn-sm btn-warning" role="button"><i class="far fa-paper-plane"></i> <?php echo "Show Categories" ?></a>
+      <a href="<?php echo site_url(). '/pos'; ?>"  class="btn btn-sm btn-warning" role="button"><i class="far fa-paper-plane"></i> <?php echo "Show Categories" ?></a>
     </li>
     <?php if ($this->session->userdata('user_role') == "customer") : ?>
       <li class="nav-item mt-1 d-sm-inline-block ml-1">

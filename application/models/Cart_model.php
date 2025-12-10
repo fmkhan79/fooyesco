@@ -266,17 +266,22 @@ class Cart_model extends Base_model
     /**
      * RETURN ALL THE CART ITEMS
      */
-    public function get_all_by_pos($posId)
-    {
-        if (!$posId) return [];
+ public function get_all_by_pos($posId)
+{
+    if (!$posId) return [];
 
-        $this->db->where('customer_id', $posId);
-        $query = $this->db->get($this->table);
+    $this->db->where('customer_id', $posId);
+    
+    $query = $this->db->get($this->table);
 
-        $result = $query ? $query->result_array() : [];
 
-        return $this->merger_pos($result); // Use POS-specific merger
-    }
+
+    $result = $query ? $query->result_array() : [];
+
+   
+
+    return $this->merger_pos($result);
+}
 
 
 
@@ -322,6 +327,15 @@ public function merger_pos($cart_items)
 
         $cart_items[$key]['options_1_details'] = $this->get_options_details_pos($opt1);
         $cart_items[$key]['options_2_details'] = $this->get_options_details_pos($opt2);
+        
+        $variant_id = $cart_item['variant_id'];
+        $variant = $this->db->get_where('variant_options', ['id' => $variant_id])->row_array();
+     
+        if ($variant) {
+            $cart_items[$key]['variant_name'] = $variant['name']; // or your column name
+        } else {
+            $cart_items[$key]['variant_name'] = null;
+        }
     }
 
     return $cart_items;
@@ -532,17 +546,17 @@ public function merger_pos($cart_items)
         }
     }
 
-     public function order_placing_mail_pos($order_code)
+     public function order_placing_mail_pos($order_code,$pos_id)
     {
-        // SENDING MAIL TO CUSTOMER
-        $customer_details = $this->user_model->get_user_by_id(1001);
+       
+        $customer_details = $this->user_model->get_user_by_id($pos_id);
         
         $this->load->model('order_model');
 
         $order_data = $this->order_model->get_order_by_code($order_code);
         
         $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
-          $message .= get_phrase('your_order_has_been_placed_successfully') . '.<br/>';
+        $message .= get_phrase('your_order_has_been_placed_successfully') . '.<br/>';
         $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
         $message .= get_phrase('please_track_down_your_order_status_from_the_order_details_page') . '.';
         $this->email_model->order_pacing($customer_details, $order_data);
@@ -696,9 +710,9 @@ public function get_discounted_amount($order_type, $restaurant_id = null)
         return $this->db->delete($this->table);
     }
 
-    public function clearing_cart_pos()
+    public function clearing_cart_pos($customer_id)
     {
-        $data['customer_id'] = 1001;
+        $data['customer_id'] = $customer_id;
          $this->db->where($data);
         return $this->db->delete($this->table);
     }

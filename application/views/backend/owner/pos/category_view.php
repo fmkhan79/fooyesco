@@ -165,7 +165,8 @@
 <button id="pos-add-to-cart" onclick="addtocart_updated()" class="d-none">
     <p class="text-white text-small m-0">Price: £ <small id="variantPrice" style="font-weight:bold" data-baseprice=""></small></p>
                     
-    Add To Cart</button>
+    <span>Add To Cart</span>
+</button>
 
                                                             </div>
 

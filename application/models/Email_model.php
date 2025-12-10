@@ -70,32 +70,32 @@ class Email_model extends Base_model
 		$this->load->library('phpmailer_lib');
 		// PHPMailer object
 		$mail = $this->phpmailer_lib->load();
-// SMTP configuration
-$mail->isSMTP();
-$mail->Host       = 'mail.fooyes.co.uk'; // Your SMTP server
-$mail->SMTPAuth   = true;
-$mail->Username   = 'support@fooyes.co.uk'; // Your email username
-$mail->Password   = 'hYEjNhb@[w&T7fRg'; // Your email password
-$mail->SMTPSecure = 'ssl'; // Use 'ssl' for SSL
-$mail->Port       = 465; // Use 465 for SSL
+		// SMTP configuration
+		$mail->isSMTP();
+		$mail->Host       = 'mail.fooyes.co.uk'; // Your SMTP server
+		$mail->SMTPAuth   = true;
+		$mail->Username   = 'support@fooyes.co.uk'; // Your email username
+		$mail->Password   = 'hYEjNhb@[w&T7fRg'; // Your email password
+		$mail->SMTPSecure = 'ssl'; // Use 'ssl' for SSL
+		$mail->Port       = 465; // Use 465 for SSL
 
-$mail->setFrom('support@fooyes.co.uk', 'Fooyes'); // Your email and name
+		$mail->setFrom('support@fooyes.co.uk', 'Fooyes'); // Your email and name
 
 		// Add a recipient
 		$mail->addAddress('fooyesuk@gmail.com');
 
 		// FIX: Handle array or string emails safely
-if (is_array($to)) {
-    foreach ($to as $email) {
-        if (!empty($email)) {
-            $mail->addBCC($email);
-        }
-    }
-} else {
-    if (!empty($to)) {
-        $mail->addBCC($to);
-    }
-}
+			if (is_array($to)) {
+				foreach ($to as $email) {
+					if (!empty($email)) {
+						$mail->addBCC($email);
+					}
+				}
+			} else {
+				if (!empty($to)) {
+					$mail->addBCC($to);
+				}
+			}
 
 
 		// Email subject

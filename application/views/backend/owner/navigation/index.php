@@ -41,7 +41,7 @@
 
                  <!-- <li class="nav-header"><?php echo get_phrase("navigation_section", true); ?></li> -->
                 <li class="nav-item">
-                    <a href="<?php echo site_url('pos'); ?>" class="nav-link <?php if ($page_name == "pos/index") echo 'active'; ?>">
+                    <a href="<?php echo site_url('pos'); ?>" id="showCategoriesBtn" class="nav-link <?php if ($page_name == "pos/index") echo 'active'; ?>">
                         <i class="nav-icon fas fa-chess-king"></i>
                         <p>
                            Enter POS
@@ -294,4 +294,17 @@
         // Also remove saved state in localStorage if AdminLTE remembers collapse state
         localStorage.removeItem('adminlte_sidebar_state');
     });
+
+document.getElementById('showCategoriesBtn').addEventListener('click', function(e) {
+
+        if (!localStorage.getItem('customer_id')) {
+            let customerId = Math.floor(1000 + Math.random() * 9000);
+            localStorage.setItem('customer_id', customerId);
+        }
+
+
+    console.log("Customer ID saved:", customerId);
+
+});
+
 </script>

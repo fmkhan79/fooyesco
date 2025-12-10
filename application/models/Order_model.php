@@ -618,6 +618,30 @@ class Order_model extends Base_model
     // CONFIRM POS ORDER FUNCTION
     public function confirm_pos_order($customer_id)
 {
+    $this->db->where('id', $customer_id);
+    $user = $this->db->get('users')->row();
+
+    if (!$user) {
+
+        $guest_data = [
+            'id'          => $customer_id,
+            'name'        => 'Asad',
+            'email'       => 'website25developer@gmail.com',
+            'password'    => '123123123',
+            'phone'       => '213213213',
+            'role_id'     => '2',
+            'status'     => 1,                // active
+            'created_at'  => time(),
+            'updated_at'  => time(),
+            'thumbnail'   => 'placeholder.png',
+            'is_guest'    => 1,
+            'is_complete' => 0
+        ];
+
+        $this->db->insert('users', $guest_data);
+        $customer_id = $this->db->insert_id();   
+    }
+
     $payment_method = $this->input->post('pay_with'); 
     // print_r($payment_method . "dada");
     
@@ -631,9 +655,12 @@ class Order_model extends Base_model
 
     $cart_items = $this->cart_model->get_all_by_pos($customer_id);
 
+
         
     if(empty($cart_items)) return false;
     // Calculate totals 
+    // print_r($cart_items . "dada");
+    //     die();
     $total_menu_price = 0;
     foreach($cart_items as $item){
         $total_menu_price += $item['price'];
@@ -649,7 +676,7 @@ class Order_model extends Base_model
 
 
     $order_code = "OR-" . strtotime(date('D, d-M-Y H:i:s')) . "-POS";
-  
+
     $data = [
         'code' => $order_code,
         'customer_id' => $customer_id,

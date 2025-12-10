@@ -1,7 +1,7 @@
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-body">
+      <div class="content-header">
+          <div class="container-fluid">
+              <div class="card">
+                  <div class="card-body">
                 <div class="row">
                     <div class="col-6">
                         <h4 class="mt-1 text-dark"><?php echo ucwords($page_title); ?></h4>
@@ -10,8 +10,8 @@
                         <?php if ($page_name == 'menu/index') : ?>
                             <a href="<?php echo site_url('menu/create'); ?>" class="btn btn-outline-primary btn-rounded float-right" name="button"><?php echo get_phrase("add_new_menu", true); ?></a>
                             <a href="#" class="btn btn-outline-success btn-rounded float-right mr-1" data-toggle="modal" data-target="#priceIncreaseModal">
-    <i class="fas fa-percentage"></i> Increase Prices / Decrease Prices
-</a>
+                          <i class="fas fa-percentage"></i> Increase Prices / Decrease Prices
+                      </a>
 
                         <?php elseif ($page_name == 'menu/create') : ?>
                             <a href="<?php echo site_url('menu'); ?>" class="btn btn-outline-primary btn-rounded float-right" name="button"><?php echo get_phrase("back_to_menu", true); ?></a>
@@ -54,10 +54,10 @@
           </div>
         </div>
        <?php 
-$last = $this->session->userdata('last_percentage');
-$last = $last ? $last : 20;
-?>
-<small class="text-danger">Last applied: <?= $last ?>%</small>
+        $last = $this->session->userdata('last_percentage');
+        $last = $last ? $last : 20;
+        ?>
+        <small class="text-danger">Last applied: <?= $last ?>%</small>
 
 
         <div class="modal-footer">

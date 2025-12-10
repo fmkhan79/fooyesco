@@ -345,6 +345,8 @@ ${extraPrice.toFixed(2)})</option>`;
         const total = item.price * item.quantity;
         subtotal += total;
 
+        console.log(item);
+
         html += `
             <div class="d-flex justify-content-between mb-2 flex-wrap">
                 <div class="d-flex justify-content-between flex-wrap" style="width:50%">
@@ -466,17 +468,12 @@ document.addEventListener('click', function(e) {
         return {
             customer_id: posCustomerId,
             items: cartItems,
-            subtotal: parseFloat(document.getElementById("subtotal").innerText.replace("£
-", "")) || 0,
-            service_charges: parseFloat(document.getElementById("service").innerText.replace("£
-", "")) || 0,
-            bag_charges: parseFloat(document.getElementById("bag").innerText.replace("£
-", "")) || 0,
+            subtotal: parseFloat(document.getElementById("subtotal").innerText.replace("£", "")) || 0,
+            service_charges: parseFloat(document.getElementById("service").innerText.replace("£", "")) || 0,
+            bag_charges: parseFloat(document.getElementById("bag").innerText.replace("£", "")) || 0,
             discount_percent: parseFloat(document.getElementById("discountPercent").innerText) || 0,
-            discount_amount: Math.abs(parseFloat(document.getElementById("discountAmount").innerText.replace("-£
-", ""))) || 0,
-            grand_total: parseFloat(document.getElementById("grandTotal").innerText.replace("£
-", "")) || 0
+            discount_amount: Math.abs(parseFloat(document.getElementById("discountAmount").innerText.replace("-£", ""))) || 0,
+            grand_total: parseFloat(document.getElementById("grandTotal").innerText.replace("£", "")) || 0
         };
     }
 
