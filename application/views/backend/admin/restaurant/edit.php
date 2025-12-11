@@ -229,7 +229,13 @@
                              <label for="restaurant_discount"><?php echo get_phrase("Collection Discount"); ?></label>
                              <input type="text" class="form-control" id="pick_discount" name="pick_discount" placeholder="<?php echo get_phrase("Enter Pickup Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pick_discount']); ?>" required>
                             </div>
-                          <?php endif; ?>
+                            <div class="form-group">
+                             <label for="pos_discount">Point of Sale Discount</label>
+                             <input type="text" class="form-control" id="pos_discount" name="pos_discount" placeholder="<?php echo get_phrase("Enter POS Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pos_discount']); ?>" required>
+                            </div>
+                            <?php endif; ?>
+
+
                          <button class="btn btn-primary"><?php echo get_phrase('Restaurant Discounts'); ?></button>
 
                         </form>

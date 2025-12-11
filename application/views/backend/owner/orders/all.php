@@ -66,6 +66,22 @@ $host = $_SERVER['HTTP_HOST'];
                                 </select>
                             </div>
                         </div>
+
+                        <!-- from pos -->
+                          <!-- POS Filter -->
+                             <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label><?php echo get_phrase('From'); ?></label>
+                                        <select class="form-control select2 w-100" name="pos" id="pos">
+                                <option value="all" <?php if ($pos == "all") echo "selected"; ?>><?php echo get_phrase('all'); ?></option>
+                                <option value="pos" <?php if ($pos == "pos") echo "selected"; ?>><?php echo get_phrase('POS Orders'); ?></option>
+                                 <option value="delivery" <?php if ($pos == "delivery") echo "selected"; ?>><?php echo get_phrase('Delivery Orders'); ?></option>
+                                <option value="pickup" <?php if ($pos == "pickup") echo "selected"; ?>><?php echo get_phrase('Pick up'); ?></option>
+
+                            </select>
+
+                                    </div>
+                                </div>
                         <!-- <div class="col-lg-4">
                             <div class="form-group">
                                 <label><?php echo get_phrase('order_placed_from'); ?></label>
@@ -196,6 +212,7 @@ $host = $_SERVER['HTTP_HOST'];
                                             </small>
                                         <?php endif; ?>
                                     </td>
+                                    
                                     <td>
                                         <?php $payment_data = $this->payment_model->get_payment_data_by_order_code($order['code']); ?>
                                         <small class="d-block">
@@ -213,6 +230,7 @@ $host = $_SERVER['HTTP_HOST'];
                                             <strong><?php echo get_phrase('method'); ?> : </strong> <?php echo ucfirst(str_replace('_', ' ', sanitize($payment_data['payment_method']))); ?>
                                         </small>
                                     </td>
+                                    
                                     <td>
                                         <?php if ($order['order_status'] == 'pending') : ?>
                                             <span class="badge badge-warning lighten-warning"><?php echo get_phrase(sanitize($order['order_status'])); ?></span>
