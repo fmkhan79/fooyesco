@@ -241,6 +241,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     selectedExtras.push(cb.parentElement.querySelector("span").dataset.name);
                     extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
                 });
+                document.querySelectorAll('.required-item:checked').forEach(cb => {
+                    let a = cb.closest('.choice-box');
+                    
+                    selectedExtras.push(cb.parentElement.querySelector("span").dataset.name);
+                    // extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
+                });
+
 
                 // Add to JS cart
                 cartItems.push({
