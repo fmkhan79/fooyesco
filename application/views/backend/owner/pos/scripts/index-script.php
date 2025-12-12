@@ -241,15 +241,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     selectedExtras.push(cb.parentElement.querySelector("span").dataset.name);
                     extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
                 });
-                document.querySelectorAll('.required-item:checked').forEach(cb => {
-                    let a = cb.closest('.choice-box');
-                    
+                document.querySelectorAll('.required-item:checked').forEach(cb => {        
                     selectedExtras.push(cb.parentElement.querySelector("span").dataset.name);
-                    // extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
+
+                    extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
+                    // console.log(extrasTotal);
                 });
 
 
                 // Add to JS cart
+                
                 cartItems.push({
                     name: name + (selectedVariantId ? ` (Variant ${selectedVariantId})` : ""),
                     extras: selectedExtras,
@@ -313,6 +314,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 container.querySelectorAll('.optional-item').forEach(cb => {
                     cb.addEventListener('change', updateVariantPanelTotal);
                 });
+                container.querySelectorAll('.required-item').forEach(cb => {
+                    cb.addEventListener('change', updateVariantPanelTotal);
+                });
             })
             .catch(err => {
                 console.error(err);
@@ -324,6 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Update variant panel total
     // -------------------------
     function updateVariantPanelTotal() {
+        // debugger;
         const priceSpan = document.getElementById('variantPrice');
         const variant_name = document.getElementById('variantSelect');
 
@@ -333,6 +338,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.optional-item:checked').forEach(cb => {
             extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
         });
+         document.querySelectorAll('.required-item:checked').forEach(cb => {        
+                    extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
+                });
         priceSpan.innerText = (base + extrasTotal).toFixed(2);
     }
 
