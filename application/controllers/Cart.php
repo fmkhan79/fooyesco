@@ -65,7 +65,6 @@ class Cart extends Base
 
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            // echo print_r($row);
 
             $discountPercentage = $row->discount_percentage;
 
