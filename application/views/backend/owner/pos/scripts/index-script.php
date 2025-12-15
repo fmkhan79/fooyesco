@@ -224,9 +224,13 @@ document.addEventListener("DOMContentLoaded", function () {
         for (let groupName in requiredGroups) {
             let selected = document.querySelector(`input[name="${groupName}"]:checked`);
             if (!selected) {
-                alert("Please select all Required options before adding to cart.");
+                document.querySelector('.required-msg').classList.remove('d-none');
                 return; 
+            }else{
+            document.querySelector('.required-msg').classList.add('d-none');
+
             }
+
         }
                 const selectedVariantId = variantSelect ? variantSelect.value : 0;
                 const priceSpan = document.getElementById('variantPrice');
