@@ -1,4 +1,3 @@
-
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -131,8 +130,6 @@ class Cart_model extends Base_model
         }
 
 
-        // print_r($menu_details);
-        // die();
         // Calculate price based on whether the menu item has variants
         if ($menu_details['has_variant'] == 1) {
 
@@ -538,8 +535,6 @@ public function merger_pos($cart_items)
         $this->load->model('order_model');
 
         $order_data = $this->order_model->get_order_by_code($order_code);
-        // print_r($order_data);
-        // die();
         // $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
         //   $message .= get_phrase('your_order_has_been_placed_successfully') . '.<br/>';
         // $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
@@ -861,8 +856,6 @@ public function get_discounted_amount($order_type, $restaurant_id = null)
     //     $bagCharges = number_format((float) sanitize($this->get_bag_charges($order_type)), 2, '.', '');
     //     $discountedAmount = number_format((float) sanitize($this->get_discounted_amount($order_type)), 2, '.', '');
     //     $total_delivery_charges = number_format((float) sanitize($this->get_total_delivery_charge()),2, '.','');
-    //     // print_r($order_type);
-    //     // die();
     //    if($order_type == 'delivery'){
 
     //     return $subtotal + $total_delivery_charges + $serviceCharge + $bagCharges - $discountedAmount;
