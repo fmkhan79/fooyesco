@@ -408,46 +408,49 @@ document.addEventListener('click', function(e) {
     if (!btn) return;
 
     const cartId = btn.dataset.itemId;
-    if (!cartId) return;
-
     let parent = btn.closest(".d-flex");
+
     let quantityEl = parent.querySelector(".quan");
+    let priceEl = parent.querySelector(".quan-price b");
+    let minusBtn = parent.querySelector('.sec-button.minus');
+
     let quantityValue = parseInt(quantityEl.innerText.replace(/\D/g, ""));
 
-    let priceEl = parent.querySelector(".quan-price b");
-    let oldPrice = parseFloat(priceEl.innerText.replace(/[^0-9.]/g, ""));
-    let oldQuantity = quantityValue - (btn.textContent.trim() === '+' ? 1 : -1); // calculate old qty
-    if (oldQuantity < 1) oldQuantity = 1;
+    if (btn.classList.contains('plus')) {
+        quantityValue++;
+    } else if (btn.classList.contains('minus')) {
+        quantityValue--;
+    }
 
-    // calculate new price based on old price / old quantity * new quantity
-    let priceValue = (oldPrice / oldQuantity) * quantityValue;
+    // Disable minus at 1
+    if (quantityValue <= 1) {
+        quantityValue = 1;
+        minusBtn.disabled = true;
+        minusBtn.classList.add('disabled');
+    } else {
+        minusBtn.disabled = false;
+        minusBtn.classList.remove('disabled');
+    }
 
-    // optional: update price on UI
-    priceEl.innerText = priceValue.toFixed(2);
+    quantityEl.innerText = quantityValue;
 
-    // Send AJAX request
+    // Update price (assuming unit price is stored in data attribute)
+    let unitPrice = parseFloat(parent.dataset.unitPrice || 1);
+    let totalPrice = unitPrice * quantityValue;
+    priceEl.innerText = totalPrice.toFixed(2);
+
+    // Send AJAX
     fetch(`${baseUrl}pos/update_cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             cart_id: cartId,
             quantity: quantityValue,
-            price: priceValue
+            price: totalPrice
         })
-    })
-    .then(res => res.text())
-    .then(res => {
-        if (res.trim() === "success") {
-            updateOrderSummary();
-        } else {
-            alert("Item update failed");
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        alert('Failed to update item.');
     });
 });
+
 
 
 
