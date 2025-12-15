@@ -1,3 +1,4 @@
+
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -208,39 +209,58 @@ class Cart_model extends Base_model
     /**
      * UPDATE CART ITEM METHOD
      */
-    function update_cart()
-    {
-        $cart_id = required(sanitize($this->input->post('cartId')));
-        $data['quantity'] = sanitize($this->input->post('quantity')) > 0 ? sanitize($this->input->post('quantity')) : 1;
-        $cart_detail = $this->db->get_where('cart', ['id' => $cart_id])->row_array();
-        if ($cart_detail['variant_id'] > 0) {
-            $variant_details = $this->db->get_where('variant_options', ['id' => $cart_detail['variant_id']])->row_array();
+   function update_cart()
+{
+    $cart_id = required(sanitize($this->input->post('cartId')));
+    $data['quantity'] = sanitize($this->input->post('quantity'));
+
+    $cart_detail = $this->db->get_where('cart', ['id' => $cart_id])->row_array();
+
+    // Get base menu price first (fallback)
+    $menu_details = $this->db->get_where('food_menus', ['id' => $cart_detail['menu_id']])->row_array();
+    $base_price = get_menu_price($menu_details['id']);
+
+    // Variant logic
+    if ($cart_detail['variant_id'] > 0) {
+        $variant_details = $this->db->get_where(
+            'variant_options',
+            ['id' => $cart_detail['variant_id']]
+        )->row_array();
+
+        // If variant price is greater than 0 use it, else use base price
+        if (!empty($variant_details) && $variant_details['price'] > 0) {
             $unit_price = $variant_details['price'];
         } else {
-            $menu_details = $this->db->get_where('food_menus', ['id' => $cart_detail['menu_id']])->row_array();
-            $unit_price = get_menu_price($menu_details['id']);
+            $unit_price = $base_price;
         }
-
-        $price = $unit_price * $data['quantity'];
-
-        if (isset($cart_detail['addons']) && !empty($cart_detail['addons'])) {
-            $total_addon_price = 0;
-            $selected_addons = explode(',', $cart_detail['addons']);
-            foreach ($selected_addons as $selected_addon) {
-                $selected_addon_details = $this->db->get_where('addons', ['id' => $selected_addon])->row_array();
-                $total_addon_price += $selected_addon_details['price'];
-            }
-
-            $price = $price + $total_addon_price;
-        }
-
-        $data['price'] = $price;
-
-        $this->db->where('id', $cart_id);
-        $this->db->update('cart', $data);
-
-        return currency($data['price']);
+    } else {
+        $unit_price = $base_price;
     }
+
+    // Quantity price
+    $price = $unit_price * $data['quantity'];
+
+    // Addons price
+    if (!empty($cart_detail['addons'])) {
+        $total_addon_price = 0;
+        $selected_addons = explode(',', $cart_detail['addons']);
+
+        foreach ($selected_addons as $selected_addon) {
+            $addon = $this->db->get_where('addons', ['id' => $selected_addon])->row_array();
+            $total_addon_price += $addon['price'];
+        }
+
+        $price += $total_addon_price;
+    }
+
+    $data['price'] = $price;
+
+    $this->db->where('id', $cart_id);
+    $this->db->update('cart', $data);
+
+    return currency($data['price']);
+}
+
 
     public function update_cart_pos($cart_id, $quantity, $price)
 {

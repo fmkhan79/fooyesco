@@ -898,6 +898,7 @@ function apply_promo_action(button) {
 
     // Cart functionality management
     function updateCart(cartId, isIncreased) {
+        // debugger;
         var currentQuantity = $('#cart-quantity-' + cartId).text();
 
         // SHOWING PLACEHOLDERS
@@ -927,6 +928,8 @@ function apply_promo_action(button) {
                 $.ajax({
                     url: '<?php echo site_url('cart/reload_cart_summary'); ?>',
                     success: function(response) {
+                        viewselected_cat_items_summary();
+                        viewselected_cat_items_summary_total();
                         $('#cart-summary').html(response);
                         $('.cart-actions').prop('disabled', false);
                         $(".summary-loader").addClass('d-none');
