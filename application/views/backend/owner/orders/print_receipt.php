@@ -330,8 +330,13 @@ $restaurant_details = [];
             <span><?php echo "-" . currency(number_format($online_discount_amount_show, 2)); ?></span>
         </div>
     <?php } ?>
-
+ 
+    
+  
+        <?php if($order_type != "pos"){ 
+                    ?>
     <div class="did mt-3">
+        
         <span>1X CARRY BAG</span>
         <span><?php echo currency(number_format(0.10, 2)); ?></span>
     </div>
@@ -340,7 +345,8 @@ $restaurant_details = [];
         <span>Service Charge</span>
         <span><?php echo currency(number_format($this->cart_model->get_service_amount(), 2)); ?></span>
     </div>
-
+    <?php
+        } ?>
     <?php if ($order_type === "delivery") { 
         if ($total_delivery_charge > 0) { ?>
             <div class="did mt-3 text-uppercase">

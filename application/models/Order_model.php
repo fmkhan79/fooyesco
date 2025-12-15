@@ -671,7 +671,7 @@ class Order_model extends Base_model
         + $this->cart_model->get_vat_amount($customer_id)
         + 
         (($total_menu_price * ($this->restaurant_model->get_pos_discount( $cart_items[0]['restaurant_id']) / 100)) * -1)
-        +1.10 //later solve service and bag charges for pos only
+        // +1.10 //later solve service and bag charges for pos only
         ;
 
 
