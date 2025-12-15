@@ -459,8 +459,8 @@ document.addEventListener('click', function(e) {
             customer_id: posCustomerId,
             items: cartItems,
             subtotal: parseFloat(document.getElementById("subtotal").innerText.replace("£", "")) || 0,
-            service_charges: parseFloat(document.getElementById("service").innerText.replace("£", "")) || 0,
-            bag_charges: parseFloat(document.getElementById("bag").innerText.replace("£", "")) || 0,
+            // service_charges: parseFloat(document.getElementById("service").innerText.replace("£", "")) || 0,
+            // bag_charges: parseFloat(document.getElementById("bag").innerText.replace("£", "")) || 0,
             discount_percent: parseFloat(document.getElementById("discountPercent").innerText) || 0,
             discount_amount: Math.abs(parseFloat(document.getElementById("discountAmount").innerText.replace("-£", ""))) || 0,
             grand_total: parseFloat(document.getElementById("grandTotal").innerText.replace("£", "")) || 0
@@ -656,14 +656,14 @@ document.addEventListener('click', function(e) {
     
     cartBox.innerHTML = html;
 
-    const service = parseFloat(document.getElementById('service')?.innerText.replace("£", "")) || 0;
-    const bag = parseFloat(document.getElementById('bag')?.innerText.replace("£", "")) || 0;
+    // const service = parseFloat(document.getElementById('service')?.innerText.replace("£", "")) || 0;
+    // const bag = parseFloat(document.getElementById('bag')?.innerText.replace("£", "")) || 0;
     const discountPercent = parseFloat(document.getElementById('discountPercent')?.innerText) || 0;
     const discountAmount = subtotal * discountPercent / 100;
 
     document.getElementById('subtotal').innerText = `£${subtotal.toFixed(2)}`;
     document.getElementById('discountAmount').innerText = `-£${discountAmount.toFixed(2)}`;
-    document.getElementById('grandTotal').innerText = `£${(subtotal + service + bag - discountAmount).toFixed(2)}`;
+    document.getElementById('grandTotal').innerText = `£${(subtotal - discountAmount).toFixed(2)}`;
 
     orderTotals.style.display = 'block';
 

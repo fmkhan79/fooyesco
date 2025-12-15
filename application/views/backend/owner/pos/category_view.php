@@ -135,14 +135,14 @@
                 <span>Subtotal</span>
                 <span id="subtotal">€0.00</span>
             </div>
-            <div class="d-flex justify-content-between mb-1">
+            <!-- <div class="d-flex justify-content-between mb-1">
                 <span>Service Charges</span>
                 <span id="service">£1.00</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
                 <span>Bag Charges</span>
                 <span id="bag">£0.10</span>
-            </div>
+            </div> -->
             <div class="d-flex justify-content-between mb-1 text-danger">
                 <span>Discount (<span id="discountPercent">0</span>%)</span>
                 <span id="discountAmount">-€0.00</span>
