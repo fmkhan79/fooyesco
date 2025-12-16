@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
             requiredGroups[radio.name] = true;
         });
 
-        // Validate each required group
+        
         for (let groupName in requiredGroups) {
             let selected = document.querySelector(`input[name="${groupName}"]:checked`);
             if (!selected) {
@@ -232,6 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
         }
+        
                 const selectedVariantId = variantSelect ? variantSelect.value : 0;
                 const priceSpan = document.getElementById('variantPrice');
                 const base = priceSpan ? parseFloat(priceSpan.dataset.baseprice) : 0;

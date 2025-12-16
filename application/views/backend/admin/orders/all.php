@@ -64,6 +64,8 @@
                                 </select>
                             </div>
                         </div>
+                          
+                                
                          <div class="col-lg-4">
                             <div class="form-group">
                                 <label><?php echo get_phrase('order_placed_from'); ?></label>
@@ -90,6 +92,20 @@
                                 </select>
                             </div>
                         </div>
+                        <!-- POS Filter -->
+                           <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label><?php echo get_phrase('From'); ?></label>
+                                        <select class="form-control select2 w-100" name="pos" id="pos">
+                                <option value="all" <?php if ($pos == "all") echo "selected"; ?>><?php echo get_phrase('all'); ?></option>
+                                <option value="pos" <?php if ($pos == "pos") echo "selected"; ?>><?php echo get_phrase('POS Orders'); ?></option>
+                                 <option value="delivery" <?php if ($pos == "delivery") echo "selected"; ?>><?php echo get_phrase('Delivery Orders'); ?></option>
+                                <option value="pickup" <?php if ($pos == "pickup") echo "selected"; ?>><?php echo get_phrase('Pick up'); ?></option>
+
+                            </select>
+
+                                    </div>
+                                </div>
                         <div class="col-lg-2">
                             <label class="text-white">submit</label>
 

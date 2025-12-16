@@ -921,7 +921,11 @@ class Order_model extends Base_model
 
          // CHECK ORDER PLACED FROM SELECTION
         $conditions['order_url'] = nuller(sanitize($this->input->get('order_url')));
+            $pos = sanitize($this->input->get('pos'));
 
+            if ($pos && $pos !== 'all') {
+                $conditions['order_type'] = $pos;
+            }
         return $this->get_by_condition($conditions);
     }
 
@@ -973,7 +977,11 @@ class Order_model extends Base_model
 
          // CHECK ORDER PLACED FROM SELECTION
         // $conditions['order_url'] = nuller(sanitize($this->input->get('order_url')));
-        $conditions['order_type'] = nuller(sanitize($this->input->get('pos')));
+$pos = sanitize($this->input->get('pos'));
+
+if ($pos && $pos !== 'all') {
+    $conditions['order_type'] = $pos;
+}
         // print_r($conditions);
         // die();
         return $this->get_by_condition($conditions);
