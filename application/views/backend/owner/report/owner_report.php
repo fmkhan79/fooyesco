@@ -68,8 +68,6 @@
                                 </select>
                             </div>
                         </div> -->
-
-
                         <div class="col-lg-2">
                             <label class="text-white"><?php echo get_phrase('submit'); ?></label>
 

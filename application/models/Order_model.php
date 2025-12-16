@@ -8,6 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * Order model handles all the database queries of Cart
  */
 
+
 class Order_model extends Base_model
 {
     function __construct()
@@ -618,6 +619,8 @@ class Order_model extends Base_model
     // CONFIRM POS ORDER FUNCTION
     public function confirm_pos_order($customer_id)
 {
+     $get_url = $_SERVER['HTTP_HOST'];
+
     $this->db->where('id', $customer_id);
     $user = $this->db->get('users')->row();
 
@@ -690,6 +693,7 @@ class Order_model extends Base_model
         'total_delivery_charge' => $this->cart_model->get_total_delivery_charge($customer_id),
         'total_vat_amount' => $this->cart_model->get_vat_amount($customer_id),
         'grand_total' => $grand_total,
+        'order_url' => $get_url,
         'restaurant_id' => $cart_items[0]['restaurant_id'],
     ];
 
@@ -1627,10 +1631,10 @@ class Order_model extends Base_model
         }
 
         // Build query
-        $this->db->select_sum('payment.amount_to_pay', 'total_sum');
-        $this->db->from('payment');
-        $this->db->join('orders', 'payment.order_code = orders.code');
-        $this->db->where('payment.payment_method', 'cash_on_collection');
+    $this->db->select_sum('payment.amount_to_pay', 'total_sum');
+    $this->db->from('payment');
+    $this->db->join('orders', 'payment.order_code = orders.code');
+    $this->db->where_in('payment.payment_method', ['cash_on_collection', 'cash']);
 
         if (($restaurant_id) !== "all") {
             $this->db->where('orders.restaurant_id', $restaurant_id);

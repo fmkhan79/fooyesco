@@ -26,8 +26,10 @@
                     <div class="row">
 
                         <div class="col-lg-7">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="align-items-center mb-3" style="justify-content: flex-start;">
                                 <h4><?php echo htmlspecialchars($category['name']); ?> Items</h4>
+                                           <div class="required-msg text-danger d-none">Please select the required item</div>
+
                                 <!-- <input type="text" class="search-bar form-control w-50" placeholder="Search items" /> -->
                             </div>
 
