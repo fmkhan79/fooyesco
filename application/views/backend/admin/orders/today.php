@@ -38,6 +38,7 @@
                                 </select>
                             </div>
                         </div>
+                        
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label><?php echo get_phrase('status'); ?></label>
@@ -53,7 +54,6 @@
                         </div>
                         <div class="col-lg-2">
                             <label class="text-white">submit</label>
-
                             <div class="input-group">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-search"></i> <?php echo get_phrase('filter'); ?>

@@ -63,7 +63,6 @@ class Orders extends Authorization
         $page_data['page_title'] = get_phrase("all_orders");
         $page_data['orders'] = $this->order_model->filter();
        
-        // print_r($page_data['orders']);
         $this->load->view('backend/index', $page_data);
     }
 
