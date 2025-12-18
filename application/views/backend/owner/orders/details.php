@@ -315,125 +315,134 @@ $host = $_SERVER['HTTP_HOST'];
                                     </div>
                                 </div>
                             </div>
+                                    
                             <!-- /.tab-pane -->
-                            <div class="tab-pane" id="ordered_items">
-                                <?php
-                                foreach ($ordered_items as $key => $ordered_item) :
-                                    $restaurant_details = $this->restaurant_model->get_by_id($ordered_item['restaurant_id']);
-                                    $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']); ?>
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <img src="<?php echo base_url('uploads/menu/' . sanitize($menu_details['thumbnail'])); ?>" class="order-detail-menu-thumbnail" alt="">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="order-detail-menu-title">
-                                                <?php echo sanitize($menu_details['name']); ?>
-                                            </div>
-                                            <div class="order-detail-restaurant-name">
-                                                <?php echo get_phrase('restaurant') . ': ' . sanitize($restaurant_details['name']); ?>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 variant-and-addons-area">
-                                            <strong class="d-block"><?php echo get_phrase('variant_details'); ?></strong>
-                                            <?php if (!empty($ordered_item['variant_id'])) : ?>
+                          <div class="tab-pane fade" id="ordered_items">
+
+                                            <?php foreach ($ordered_items as $ordered_item): 
+                                                $ordered_item = (array)$ordered_item;
+
+                                                $restaurant = $this->restaurant_model->get_by_id($ordered_item['restaurant_id'] ?? 0);
+                                                $menu       = $this->menu_model->get_by_id($ordered_item['menu_id'] ?? 0);
+
+                                                $qty        = intval($ordered_item['quantity'] ?? 1);
+                                                $itemTotal  = floatval($ordered_item['total'] ?? 0);
+                                            ?>
+
+                                            <div class="card mb-3 shadow-sm">
+                                                <div class="card-body">
+
+                                                    <!-- ITEM HEADER -->
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-2">
+                                                            <img src="<?= base_url('uploads/menu/'.sanitize($menu['thumbnail'] ?? '')) ?>"
+                                                                class="img-fluid rounded">
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <h5 class="mb-1"><?= sanitize($menu['name'] ?? '') ?></h5>
+                                                            <small class="text-muted">
+                                                                <?= get_phrase('restaurant') ?>:
+                                                                <?= sanitize($restaurant['name'] ?? '') ?>
+                                                            </small>
+                                                        </div>
+
+                                                        <div class="col-md-4 text-end">
+                                                            <span class="badge bg-secondary">
+                                                                <?= get_phrase('qty') ?>: <?= $qty ?>
+                                                            </span>
+                                                            <h5 class="mt-2 text-success">
+                                                                <?= currency($itemTotal) ?>
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+
+                                                    <hr>
+
+                                                    <!-- VARIANT -->
+                                                    <?php if (!empty($ordered_item['variant_id'])): 
+                                                        $variant = $this->menu_model->get_variant_detail($ordered_item['variant_id']);
+                                                    ?>
+                                                        <div class="mb-2">
+                                                            <strong><?= get_phrase('variant') ?>:</strong>
+                                                            <span class="text-muted">
+                                                                <?= sanitize($variant[0]['name'] ?? '') ?>
+                                                            </span>
+                                                        </div>
+                                                    <?php endif; ?>
+
                                                 <?php
-                                                // print_r($ordered_item['variant_id']);
-                                                $menu_variant = $this->db->get_where('variants', ['id' => $ordered_item['variant_id']])->row_array();
-                                                // print_r($menu_variant);
-                                                $menu_variant_exploded = explode(',', $menu_variant['variant']);
-                                                foreach ($menu_variant_exploded as $menu_variant_with_option_id) {
-                                                    // print_r("ali jee1" . $menu_variant_with_option_id);
+                                            $addonHTML = "";
 
-                                                    $menu_variant_with_option_id_exploded = explode('-', $menu_variant_with_option_id);
-                                                    $menu_variant_option_id = $menu_variant_with_option_id_exploded[0];
-                                                    $menu_variant_option = $this->db->get_where('variant_options', ['id' => $menu_variant_option_id])->row_array();
-                                                    // print_r("ali jee" . $menu_variant_option);
-                                                    echo sanitize($menu_variant_option['name']) . ' : ' . ucfirst(sanitize($menu_variant_with_option_id_exploded[1])) . '<br/> ';
-                                                }
-                                                ?>
-                                            <?php else : ?>
-                                                <span><?php echo "None" ?></span>
-                                            <?php endif; ?>
-                                        </div>
-                                        <div class="col-md-5 variant-and-addons-area">
-                                            <strong class="d-block"><?php echo get_phrase('addons'); ?></strong>
-                                            <?php if ($ordered_item['addons'] != "[]") : ?>
-                                                <?php 
-                                                    $groupedAddons = [];
-                                                    $addons = json_decode($ordered_item["addons"], true);
-                                                    
-                                
-                                                    foreach ($addons as $addon) {
-                                                        $subVariantId = $addon['subVariantId'];
-                                                        $itemId = $addon['itemId'];
+                                            if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
 
-                                                    
-                                                        if (!isset($groupedAddons[$subVariantId])) {
-                                                            $groupedAddons[$subVariantId] = [];
+                                                $addons = json_decode($ordered_item["addons"], true);
+
+                                                if (is_array($addons) && count($addons) > 0) {
+
+                                                    // CASE 1: FLAT ARRAY (old format)
+                                                    if (isset($addons[0]) && is_string($addons[0])) {
+
+                                                        $addonHTML = '<ul class="list-unstyled ms-3">';
+                                                        foreach ($addons as $addonName) {
+                                                            $addonHTML .= '<li>+ ' . sanitize($addonName) . '</li>';
+                                                        }
+                                                        $addonHTML .= '</ul>';
+                                                    }
+
+                                                    // CASE 2: NEW FORMAT (subVariantId + itemId)
+                                                    else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
+
+                                                        $groupedAddons = [];
+
+                                                        foreach ($addons as $addon) {
+                                                            $subVariantId = $addon['subVariantId'] ?? null;
+                                                            $itemId       = $addon['itemId'] ?? null;
+
+                                                            if ($subVariantId === null || $itemId === null) {
+                                                                continue;
+                                                            }
+
+                                                            if (!isset($groupedAddons[$subVariantId])) {
+                                                                $groupedAddons[$subVariantId] = [];
+                                                            }
+
+                                                            $groupedAddons[$subVariantId][] = $itemId;
                                                         }
 
-                                                        $groupedAddons[$subVariantId][] = $itemId;
+                                                        if (!empty($groupedAddons)) {
+                                                            $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
+                                                        }
                                                     }
-                                                
-                                                    echo $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
-                                                    //  $check = $this->menu_model->get_flat_menu_price($groupedAddons);
-
-                                                   
-
-                                                ?>
-                                            <?php else : ?>
-                                                <span><?php echo "None" ?></span>
-                                            <?php endif; ?>
-                               
-                                        <div class="col-md-2">
-                                            <div class="order-detail-menu-unit-price mt-2">
-                                                <?php echo get_phrase('unit_price'); ?> :
-                                                <?php if (!empty($ordered_item['variant_id'])) :
-                                                    
-                                                    ?>
-                                                   
-                                                    <?php echo currency($menu_variant['price']); ?>
-                                                <?php else : ?>
-                                                    <?php echo currency(get_menu_price($ordered_item['menu_id'], $ordered_item['servings'])); ?>
-                                                <?php endif; ?>
-                                            </div>
-                                            <div class="order-detail-menu-quantity mt-0">
-                                                <?php echo get_phrase('quantity') . ': ' . sanitize($ordered_item['quantity']); ?>
-                                            </div>
-                                            <div class="order-detail-menu-quantity mt-0">
-                                                <?php
-                                                if (!empty($ordered_item['addons'])) {
-                                                    $total_addon_price = 0;
-
-                                                    $addons_exploded = explode(',', $ordered_item['addons']);
-
-                                                    foreach ($addons_exploded as $key => $addon) {
-                                                        $addon_details = $this->db->get_where('addons', ['id' => $addon])->row_array();
-                                                        $total_addon_price += $addon_details['price'];
-                                                        // print_r($total_addon_price);
-                                                    }
-                                                    echo get_phrase('addon_price') . ': ' . currency(sanitize($total_addon_price));
                                                 }
-                                                ?>
+                                            }
+                                            ?>
+
+
+
+                                                    <?php if (!empty($addonHTML)): ?>
+                                                <div class="mb-2">
+                                                    <strong><?= get_phrase('addons') ?>:</strong>
+                                                    <?= $addonHTML ?>
+                                                </div>
+                                            <?php endif; ?>
+
+
+                                                    <!-- NOTE -->
+                                                    <?php if (!empty($ordered_item['note'])): ?>
+                                                        <div class="alert alert-warning p-2 mt-2">
+                                                            <strong><?= get_phrase('note') ?>:</strong>
+                                                            <?= sanitize($ordered_item['note']) ?>
+                                                        </div>
+                                                    <?php endif; ?>
+
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <div class="order-detail-menu-sub-total float-sm-right">
-                                                <?php echo get_phrase('total') . ': ' . currency(sanitize($ordered_item['total'])); ?>
+
+                                            <?php endforeach; ?>
+
                                             </div>
-                                        </div>
-                                    </div>
-                                    <?php if ($ordered_item['note'] && !empty($ordered_item['note'])) : ?>
-                                        <div class="row mt-2">
-                                            <div class="col note">
-                                                <span class="text-danger"><?php echo get_phrase('note'); ?> :</span> <?php echo sanitize($ordered_item['note']); ?>
-                                            </div>
-                                        </div>
-                                    <?php endif; ?>
-                                    <hr>
-                                <?php endforeach; ?>
-                            </div>
-                            <!-- /.tab-pane -->
+        
 
                             <div class="tab-pane <?php if ($this->session->flashdata('review_tab')) echo 'active'; ?>" id="rating_and_review">
                                 <?php if ($order_data['order_status'] == "delivered") : ?>
