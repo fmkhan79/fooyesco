@@ -269,43 +269,48 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
             <?php } ?>
           <table class="order-items">
 
-              <?php foreach ($ordered_items as $ordered_item): ?>
-              <?php
-                  // Get menu details
-                  $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
+             <?php foreach ($ordered_items as $ordered_item): ?>
+    <?php
+        // Get menu details
+        $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
 
-                  // Handle addons
-                  $addons = $ordered_item["addons"];
+        // Handle addons
+        $addonHTML = "";
 
-                  if (is_string($addons)) {
-                      $addons = json_decode($addons, true);
-                  }
+        if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
+            $addons = json_decode($ordered_item["addons"], true);
 
-                  $addonListHTML = "";
+            if (is_array($addons) && count($addons) > 0) {
+                if (isset($addons[0]) && is_string($addons[0])) {
+                    $addonHTML = '<ul class="line-item"><li> ' . implode(", ", $addons) . '</li></ul>';
+                } 
+                else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
+                    $groupedAddons = [];
+                    foreach ($addons as $addon) {
+                        $subVariantId = $addon['subVariantId'] ?? null;
+                        $itemId = $addon['itemId'] ?? null;
+                        if ($subVariantId === null) continue;
+                        if (!isset($groupedAddons[$subVariantId])) {
+                            $groupedAddons[$subVariantId] = [];
+                        }
+                        $groupedAddons[$subVariantId][] = $itemId;
+                    }
+                    $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
+                }
+            }
+        }
+    ?>
 
-                  
-                  if (is_array($addons) && count($addons) > 0) {
-                      $addonListHTML .= "<ul style='margin:5px 0 0 0; padding-left:15px;'>";
-                      foreach ($addons as $addon) {
-                          // sanitize string addon
-                          if (is_string($addon)) {
-                              $addonListHTML .= "<li>" . htmlspecialchars($addon) . "</li>";
-                          }
-                      }
-                      $addonListHTML .= "</ul>";
-                  }
-              ?>
+    <!-- MAIN ITEM ROW -->
+    <tr>
+        <td>
+            <?= $ordered_item['quantity'] ?> x <?= html_entity_decode(sanitize($menu_details['name'])) ?>
 
-                  <!-- MAIN ITEM ROW -->
-                  <tr>
-                      <td>
-                          <?= $ordered_item['quantity'] ?> x <?= html_entity_decode(sanitize($menu_details['name'])) ?>
-
-                          <?php if (!empty($addonListHTML)): ?>
-                              <br><small><strong>Addons:</strong></small>
-                              <?= $addonListHTML ?>
-                          <?php endif; ?>
-                      </td>
+            <?php if (!empty($addonHTML)): ?>
+                <br><small><strong>Addons:</strong></small>
+                <?= $addonHTML ?>
+            <?php endif; ?>
+        </td>
 
                       <td><?= currency(number_format(sanitize($ordered_item['total']), 2)) ?></td>
                   </tr>
