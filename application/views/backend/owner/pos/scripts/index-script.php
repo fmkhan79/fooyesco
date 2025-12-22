@@ -171,12 +171,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (variantSelect) {
         variantSelect.addEventListener('change', function () {
             const selected = this.options[this.selectedIndex];
-            const addPrice = parseFloat(selected.dataset.price || 0);
+          const variantPrice = parseFloat(selected.dataset.price || basePrice);
             if (priceSpan) {
-                const newPrice = basePrice + addPrice;
-                priceSpan.dataset.baseprice = newPrice.toFixed(2);
-                priceSpan.innerText = newPrice.toFixed(2);
+                priceSpan.dataset.baseprice = variantPrice.toFixed(2);
+                priceSpan.innerText = variantPrice.toFixed(2);
             }
+
 
             // Show selected variant extras
             document.querySelectorAll('.dynamic-sub-option-container').forEach(box => box.style.display = "none");
