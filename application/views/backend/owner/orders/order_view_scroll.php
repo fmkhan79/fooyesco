@@ -123,6 +123,7 @@
 </head>
 
 <body>
+
 <?php
 // --- SAFETY / NORMALIZATION ---
 if (!is_array($order_details)) {
@@ -183,6 +184,33 @@ $restaurant_details = [];
 
 // --- HTML output ---
 ?>
+
+<?php
+// Get current URI
+$uri = $_SERVER['REQUEST_URI'];
+
+// Break URI into parts
+$segments = explode('/', trim($uri, '/'));
+
+// Last segment is order code
+$order_code = end($segments);
+
+// Build redirect URL (CHANGE IF NEEDED)
+$redirect_url = base_url('orders/details/' . $order_code);
+// Example alternatives:
+// $redirect_url = base_url('orders');
+// $redirect_url = base_url('orders/view/' . $order_code);
+?>
+<a href="<?php echo $redirect_url; ?>" style="    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: x-large;
+    font-weight: 700;"
+     class="btn btn-danger">
+    ✕
+</a>
+
+
 <div class="order-scroll-wrapper">
 
 <div class="receipt">
@@ -217,6 +245,7 @@ $restaurant_details = [];
     ?>
 
     <div id="ordered_items">
+        
         <?php
         foreach ($ordered_items as $ordered_item) :
             // defensive checks
@@ -443,3 +472,4 @@ $restaurant_details = [];
 </body>
 
 </html>
+
