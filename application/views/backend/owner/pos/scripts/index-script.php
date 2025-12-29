@@ -417,17 +417,22 @@ $(document).on('click', '.sec-button.edit', function () {
 
 });
 document.addEventListener('click', function(e) {
+    debugger;
     const btn = e.target.closest('.sec-button[data-item-id]');
     if (!btn) return;
 
     const cartId = btn.dataset.itemId;
+
     let parent = btn.closest(".d-flex");
+    if (!parent) return;
 
     let quantityEl = parent.querySelector(".quan");
     let priceEl = parent.querySelector(".quan-price b");
     let minusBtn = parent.querySelector('.sec-button.minus');
 
-    let quantityValue = parseInt(quantityEl.innerText.replace(/\D/g, ""));
+    if (!quantityEl || !priceEl) return;
+
+    let quantityValue = parseInt(quantityEl.innerText.replace(/\D/g, ""), 10) || 1;
 
     if (btn.classList.contains('plus')) {
         quantityValue++;
@@ -435,24 +440,27 @@ document.addEventListener('click', function(e) {
         quantityValue--;
     }
 
-    // Disable minus at 1
-    if (quantityValue <= 1) {
-        quantityValue = 1;
+   if (quantityValue <= 1) {
+    quantityValue = 1;
+    if (minusBtn) {
         minusBtn.disabled = true;
         minusBtn.classList.add('disabled');
-    } else {
+    }
+} else {
+    if (minusBtn) {
         minusBtn.disabled = false;
         minusBtn.classList.remove('disabled');
     }
+}
 
     quantityEl.innerText = quantityValue;
 
-    // Update price (assuming unit price is stored in data attribute)
-    let unitPrice = parseFloat(parent.dataset.unitPrice || 1);
+    let unitPrice = parseFloat(parent.dataset.unitPrice);
+    if (isNaN(unitPrice)) unitPrice = 1;
+
     let totalPrice = unitPrice * quantityValue;
     priceEl.innerText = totalPrice.toFixed(2);
 
-    // Send AJAX
     fetch(`${baseUrl}pos/update_cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -463,7 +471,6 @@ document.addEventListener('click', function(e) {
         })
     });
 });
-
 
 
 
