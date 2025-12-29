@@ -168,14 +168,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Variant selection handling
     const variantSelect = document.getElementById('variantSelect');
-    if (variantSelect) {
-        variantSelect.addEventListener('change', function () {
-            const selected = this.options[this.selectedIndex];
-          const variantPrice = parseFloat(selected.dataset.price || basePrice);
-            if (priceSpan) {
-                priceSpan.dataset.baseprice = variantPrice.toFixed(2);
-                priceSpan.innerText = variantPrice.toFixed(2);
-            }
+
+        if (variantSelect) {
+            variantSelect.addEventListener('change', function () {
+                const selected = this.options[this.selectedIndex];
+                const variantPrice = parseFloat(selected.dataset.price);
+
+                // Only update price if variant price exists AND is greater than 0
+                if (!isNaN(variantPrice) && variantPrice > 0) {
+                    if (priceSpan) {
+                        priceSpan.dataset.baseprice = variantPrice.toFixed(2);
+                        priceSpan.innerText = variantPrice.toFixed(2);
+                    }
+                }
+            });
+        }
+
 
 
             // Show selected variant extras
