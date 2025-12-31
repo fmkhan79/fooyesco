@@ -417,22 +417,17 @@ $(document).on('click', '.sec-button.edit', function () {
 
 });
 document.addEventListener('click', function(e) {
-    debugger;
     const btn = e.target.closest('.sec-button[data-item-id]');
     if (!btn) return;
 
     const cartId = btn.dataset.itemId;
-
     let parent = btn.closest(".d-flex");
-    if (!parent) return;
 
     let quantityEl = parent.querySelector(".quan");
     let priceEl = parent.querySelector(".quan-price b");
     let minusBtn = parent.querySelector('.sec-button.minus');
 
-    if (!quantityEl || !priceEl) return;
-
-    let quantityValue = parseInt(quantityEl.innerText.replace(/\D/g, ""), 10) || 1;
+    let quantityValue = parseInt(quantityEl.innerText.replace(/\D/g, ""));
 
     if (btn.classList.contains('plus')) {
         quantityValue++;
@@ -440,27 +435,24 @@ document.addEventListener('click', function(e) {
         quantityValue--;
     }
 
-   if (quantityValue <= 1) {
-    quantityValue = 1;
-    if (minusBtn) {
+    // Disable minus at 1
+    if (quantityValue <= 1) {
+        quantityValue = 1;
         minusBtn.disabled = true;
         minusBtn.classList.add('disabled');
-    }
-} else {
-    if (minusBtn) {
+    } else {
         minusBtn.disabled = false;
         minusBtn.classList.remove('disabled');
     }
-}
 
     quantityEl.innerText = quantityValue;
 
-    let unitPrice = parseFloat(parent.dataset.unitPrice);
-    if (isNaN(unitPrice)) unitPrice = 1;
-
+    // Update price (assuming unit price is stored in data attribute)
+    let unitPrice = parseFloat(parent.dataset.unitPrice || 1);
     let totalPrice = unitPrice * quantityValue;
     priceEl.innerText = totalPrice.toFixed(2);
 
+    // Send AJAX
     fetch(`${baseUrl}pos/update_cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -471,6 +463,7 @@ document.addEventListener('click', function(e) {
         })
     });
 });
+
 
 
 
@@ -639,14 +632,15 @@ document.addEventListener('click', function(e) {
 
         html += `
             <div class="d-flex justify-content-between mb-2 flex-wrap">
-                <div class="d-flex justify-content-between flex-wrap" style="width:50%">
+                <div class="d-flex justify-content-between flex-wrap" style="width:50%; align-items: flex-start;">
                     <span><b>${item.menu_name} ${item.variant_name == null ? '' : `(${item.variant_name})`} <span class="quan">x${item.quantity}</span></b></span>
                      <small>${formatAddons(item.addons)}</small>
+                     <div class="mt-5 d-flex" ></div>
                 </div>
                 <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="price-buttons">
                     <span><b>£${total.toFixed(2)}</b></span>
-                   
-                    <div>
+                    <div class="mt-5 d-flex" ></div>
+                    <div  class="d-flex" >
                         <button class="sec-button edit" data-item-id="${item.id}">Edit</button>
                     
                  <button class="sec-button" data-item-id="${item.id}" onclick="updateQuantity(1,this)">
@@ -659,7 +653,9 @@ document.addEventListener('click', function(e) {
 
                         <button class="sec-button" style="color:#f54748" data-cart-id="${item.id}">Delete</button>
                     </div>
+                  
                 </div>
+                 
                 <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="quan-edit d-none">
                     <div style="width:100%;text-align:right;" class="quan-price">
                         <span><b>£${total.toFixed(2)}</b></span>

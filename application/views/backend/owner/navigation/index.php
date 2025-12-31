@@ -44,7 +44,7 @@
                     <a href="<?php echo site_url('pos'); ?>" id="showCategoriesBtn" class="nav-link <?php if ($page_name == "pos/index") echo 'active'; ?>">
                         <i class="nav-icon fas fa-chess-king"></i>
                         <p>
-                           Enter POS
+                           Point of Sale
                         </p>
                     </a>
                 </li>
