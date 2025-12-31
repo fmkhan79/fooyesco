@@ -287,8 +287,8 @@ a.btn-danger:hover {
 
 .sidebar-dark-danger .nav-sidebar > .nav-item > .nav-link.active,
 .sidebar-light-danger .nav-sidebar > .nav-item > .nav-link.active {
-  color: #000;
-  background-color: #fdc55e !important;
+  color: #ffffff;
+  background-color: #343a40 !important;
 }
 
 [class*="sidebar-dark-"] .sidebar a {
