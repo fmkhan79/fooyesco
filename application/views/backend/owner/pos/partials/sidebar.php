@@ -64,7 +64,7 @@ $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(
         gap: 5px;
 ">
             <i class="nav-icon fas fa-hamburger"></i>
-                        <p><?php echo htmlspecialchars_decode($restaurant_category['name'], ENT_QUOTES); ?>
+                        <p><?php echo htmlspecialchars_decode($restaurant_category['name'], ENT_QUOTES); ?> </p>
 
         </a>
     </li>
