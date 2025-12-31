@@ -27,7 +27,8 @@
 
                         <div class="col-lg-7">
                             <div class="align-items-center mb-3" style="justify-content: flex-start;">
-                                <h4><?php echo htmlspecialchars($category['name']); ?> Items</h4>
+                                <h4><?php echo htmlspecialchars_decode($category['name'], ENT_QUOTES); ?>
+ Items</h4>
                                            <div class="required-msg text-danger d-none">Please select the required item</div>
 
                                 <!-- <input type="text" class="search-bar form-control w-50" placeholder="Search items" /> -->
