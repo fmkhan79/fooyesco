@@ -60,6 +60,12 @@
                     </a>
                 </li>
 
+                     <li class="nav-item">
+                    <a href="<?php echo site_url('/pos/restaurant'); ?>" class="nav-link <?php if ($page_name == "user/index") echo 'active'; ?>">
+                        <i class="fas fa-user nav-icon"></i>
+                        <p><?php echo "Enter Pos"?></p>
+                    </a>
+                </li>
 
                 <?php $order_type = isset($order_type) ? $order_type : ""; ?>
                 <li class="nav-item has-treeview <?php if ($page_name == "orders/index" && $order_type == "all"  || $order_type == "today" || $order_type == "live" || $page_name == "orders/details") echo 'menu-open'; ?>">

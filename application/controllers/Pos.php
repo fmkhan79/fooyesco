@@ -33,6 +33,7 @@ class Pos extends Authorization
         }
 
         $page_data['restaurant_id'] = isset($_GET['restaurant_id']) ? sanitize($_GET['restaurant_id']) : "all";
+        
         $page_data['category_id']   = isset($_GET['category_id']) ? sanitize($_GET['category_id']) : "all";
         $page_data['page_name'] = 'pos/index';
         $page_data['page_title'] = get_phrase('food_menu');
@@ -67,6 +68,15 @@ class Pos extends Authorization
         $page_data['pos_type'] = 'list';
 
         $page_data['menus'] =  $this->menu_model->merger($this->menu_model->paginate($page_size, $current_page, $conditions));
+        $this->load->view('backend/index', $page_data);
+    }
+
+    public function restaurant()
+    {
+        $page_data['page_name'] = 'pos/restaurant';
+        $page_data['page_title'] = get_phrase('pos_restaurant_selection');
+        $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
+    
         $this->load->view('backend/index', $page_data);
     }
 

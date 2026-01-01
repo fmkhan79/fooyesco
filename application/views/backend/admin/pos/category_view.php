@@ -26,8 +26,10 @@
                     <div class="row">
 
                         <div class="col-lg-7">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="align-items-center mb-3" style="justify-content: flex-start;">
                                 <h4><?php echo htmlspecialchars($category['name']); ?> Items</h4>
+                                           <div class="required-msg text-danger d-none">Please select the required item</div>
+
                                 <!-- <input type="text" class="search-bar form-control w-50" placeholder="Search items" /> -->
                             </div>
 
@@ -53,7 +55,7 @@
                                             <div class="menu-card text-center p-3 shadow-sm position-relative"
                                                 style="border-radius: 10px; transition: 0.3s; cursor: pointer;
                                                 padding: 0!important; padding-bottom: 20px!important; 
-                                                min-height: 278px !important;"
+                                                min-height: 390px !important;"
                                                 data-maincatid="<?php echo $maincatid; ?>"
                                                 data-id="<?php echo $menu['id']; ?>"
                                                 data-name="<?php echo htmlspecialchars($menu['name']); ?>"
@@ -77,7 +79,7 @@
                                                         <?php echo htmlspecialchars($menu['description']); ?>
                                                     </p>
 
-                                                    <p class="text-danger font-weight-bold mb-0">€
+                                                    <p class="text-danger font-weight-bold mb-0">£
                                                         <?php echo htmlspecialchars(number_format((float)$price, 2)); ?>
                                                     </p>
 
@@ -124,7 +126,7 @@
         <p class="text-success small">You're All Set</p>
 
         <!-- CART ITEMS -->
-        <div id="cartItemsContainer" style="max-height: 260px; overflow-y: auto;">
+        <div id="cartItemsContainer" style="max-height: 80%; overflow-y: auto;">
             <p class="text-muted text-center" id="emptyCartMsg">No items added yet.</p>
         </div>
 
@@ -135,14 +137,14 @@
                 <span>Subtotal</span>
                 <span id="subtotal">€0.00</span>
             </div>
-            <div class="d-flex justify-content-between mb-1">
+            <!-- <div class="d-flex justify-content-between mb-1">
                 <span>Service Charges</span>
-                <span id="service">€1.00</span>
+                <span id="service">£1.00</span>
             </div>
             <div class="d-flex justify-content-between mb-1">
                 <span>Bag Charges</span>
-                <span id="bag">€0.10</span>
-            </div>
+                <span id="bag">£0.10</span>
+            </div> -->
             <div class="d-flex justify-content-between mb-1 text-danger">
                 <span>Discount (<span id="discountPercent">0</span>%)</span>
                 <span id="discountAmount">-€0.00</span>
@@ -155,17 +157,18 @@
         </div>
 
         <!-- PLACE ORDER BUTTON -->
-        <div class="mt-3" style="display: flex; gap: 10px; height:55px;">
-            <button id="placeOrderBtn" class="btn btn-warning w-50 h-20">Pay via Cash</button>
-            <button id="placeOrderBtnCard" class="btn btn-warning w-50 h-20">Pay via Card</button>
+        <div class="mt-3" style="display: flex; gap: 10px; height:55px; flex-direction: column;">
+            <button id="placeOrderBtn" class="btn btn-warning w-100 h-20">Pay via Cash</button>
+            <button id="placeOrderBtnCard" class="btn btn-warning w-100 h-20">Pay via Card</button>
 
-        </div>
-    </div>
-</div>
-<button id="pos-add-to-cart" onclick="addtocart_updated()" class="d-none">
-    <p class="text-white text-small m-0">Price: € <small id="variantPrice" style="font-weight:bold" data-baseprice=""></small></p>
-                    
-    Add To Cart</button>
+                    </div>
+                </div>
+            </div>
+            <button id="pos-add-to-cart" onclick="addtocart_updated()" class="d-none">
+                <p class="text-white text-small m-0">Price: £ <small id="variantPrice" style="font-weight:bold" data-baseprice=""></small></p>
+                                
+                <span>Add To Cart</span>
+            </button>
 
                                                             </div>
 

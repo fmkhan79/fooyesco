@@ -2,20 +2,9 @@
 
 <script>
         
-    function editCartItem(e){
-        console.log(e.parentElement.parentElement);
-        e.parentElement.parentElement.classList.add("d-none");
-        e.parentElement.parentElement.parentElement.querySelector(".quan-edit").classList.remove("d-none");
-
-        
-    }
-
-    function close_quan(e){
-        e.parentElement.parentElement.classList.add("d-none");
-        e.parentElement.parentElement.parentElement.querySelector(".price-buttons").classList.remove("d-none");
-         let quantity = e.parentElement.parentElement.parentElement.querySelector(".quan");
-            quantity.innerHTML = "x1";
-    }
+    var currentItems;
+   
+   
 
     function updateQuantity(param, e){
         // debugger;  
@@ -34,8 +23,7 @@
         let _price = (currentQuantity > 1 ? (priceValue / currentQuantity) : priceValue);
         let updatedPrice = (currentQuantity + param) * _price; 
 
-        price.innerHTML = "£
-" + (Math.round(updatedPrice * 100) / 100).toFixed(2);
+        price.innerHTML = "£" + (Math.round(updatedPrice * 100) / 100).toFixed(2);
         quantity.innerHTML = "x" + (currentQuantity + param);
             
         
@@ -44,10 +32,9 @@
     
 const baseUrl = '<?php echo base_url(); ?>';
 let cartItems = []; // Global cart
-const posCustomerId = 1001; // POS terminal ID
+const posCustomerId = localStorage.getItem('customer_id'); 
 
 function updateVariantSelect(variant_id,elem) {
-    // console.log("Selected variant ID:");
     document.querySelectorAll('.variant-select-btn').forEach(btn => btn.classList.remove('active'));
 
     elem.classList.add('active');
@@ -85,6 +72,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     if(variantBtn){
         variantBtn.addEventListener('click', () => {
+
+             $("#pos-add-to-cart span").text("Add To Cart");
+              $("#pos-add-to-cart").removeAttr("current-update-cart-id");
+
+            console.log("clicked");
             
             if(document.querySelector("#product-options-container").innerHTML == "")
                 return;
@@ -106,7 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // SHOW VARIANT PANEL
     // -------------------------
   function showVariantPanel(name, basePrice, menuId, hasVariant, maincatid, variants) {
-    productOptionsContainer.innerHTML = ""; // clear previous variant panel
+   
+    productOptionsContainer.innerHTML = "";                     
     productOptionsContainer.style.display = "block";
 
     let variantOptions = "";
@@ -116,9 +109,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (hasVariant == 1 && variants.length > 0) {
         variantOptions = `<option value="">Select...</option>`;
         variants.forEach(v => {
-            const extraPrice = parseFloat(v.price) || 0;
-            variantOptions += `<option value="${v.id}" data-price="${extraPrice}">${v.name} (+£
-${extraPrice.toFixed(2)})</option>`;
+            const extraPrice = parseFloat(v.price) || 0;                                                                            
+            variantOptions += `<option value="${v.id}" data-price="${extraPrice}">${v.name} (+£${extraPrice.toFixed(2)})</option>`;
             dynamicContainers += `<div id="variant-box-${v.id}" class="dynamic-sub-option-container" style="display:none;"></div>`;
         });
     }
@@ -131,7 +123,7 @@ ${extraPrice.toFixed(2)})</option>`;
         let [escaped_name] = name.split("("); 
         let value = element.match(/value="([^"]+)"/)[1];
         let price = name.split(")")[0].split("(")[1];
-        buttonHTML += `<button class="variant-select-btn" onclick="updateVariantSelect(${value},this)">
+        buttonHTML += `<button class="variant-select-btn" data-id="${value}" onclick="updateVariantSelect(${value},this)">
             ${escaped_name}
             <br><small>${price}</small>
         </button>`;
@@ -149,7 +141,7 @@ ${extraPrice.toFixed(2)})</option>`;
             </div>` : ""}
             <div id="dynamicSubOptionsArea">${dynamicContainers}</div>
             <div class="mt-3">
-                <button class="btn btn-primary w-100" style="display:none" id="addToCartBtn">Add to Cart</button>
+                <button class="btn btn-primary w-100" style="display:none" id="addToCartBtn"><span>Add to Cart</span></button>
             </div>
         </div>
     `;
@@ -175,19 +167,29 @@ ${extraPrice.toFixed(2)})</option>`;
     }
 
     // Variant selection handling
-    const variantSelect = document.getElementById('variantSelect');
-    if (variantSelect) {
-        variantSelect.addEventListener('change', function () {
-            const selected = this.options[this.selectedIndex];
-            const addPrice = parseFloat(selected.dataset.price || 0);
+  const variantSelect = document.getElementById('variantSelect');
+
+if (variantSelect) {
+    variantSelect.addEventListener('change', function () {
+        const selected = this.options[this.selectedIndex];
+        const variantPrice = parseFloat(selected.dataset.price);
+
+        // Only update price if variant price exists AND is greater than 0
+        if (!isNaN(variantPrice) && variantPrice > 0) {
             if (priceSpan) {
-                const newPrice = basePrice + addPrice;
-                priceSpan.dataset.baseprice = newPrice.toFixed(2);
-                priceSpan.innerText = newPrice.toFixed(2);
+                priceSpan.dataset.baseprice = variantPrice.toFixed(2);
+                priceSpan.innerText = variantPrice.toFixed(2);
             }
+        }
+        // else: do nothing → original price remains
+   
+
+
 
             // Show selected variant extras
             document.querySelectorAll('.dynamic-sub-option-container').forEach(box => box.style.display = "none");
+
+            
             if (this.value) {
                 const box = document.getElementById('variant-box-' + this.value);
                 if (box) {
@@ -196,6 +198,20 @@ ${extraPrice.toFixed(2)})</option>`;
                 }
             }
             updateVariantPanelTotal();
+
+            document.querySelectorAll('.dynamic-sub-option-container').forEach(container => {
+    
+                // Uncheck all checkboxes inside this container
+                container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+
+                // Reset all select boxes inside this container
+                container.querySelectorAll('select').forEach(select => {
+                    select.selectedIndex = 0; // or use '' if you want no selection
+                });
+
+            });
         });
     }
 
@@ -205,7 +221,26 @@ ${extraPrice.toFixed(2)})</option>`;
         const addBtn = document.getElementById('addToCartBtn');
         if (addBtn) {
             addBtn.addEventListener('click', () => {
-                debugger;
+                 let requiredGroups = {};
+
+        // Find all required radio groups
+        document.querySelectorAll('.required-item').forEach(radio => {
+            requiredGroups[radio.name] = true;
+        });
+
+        
+        for (let groupName in requiredGroups) {
+            let selected = document.querySelector(`input[name="${groupName}"]:checked`);
+            if (!selected) {
+                document.querySelector('.required-msg').classList.remove('d-none');
+                return; 
+            }else{
+            document.querySelector('.required-msg').classList.add('d-none');
+
+            }
+
+        }
+        
                 const selectedVariantId = variantSelect ? variantSelect.value : 0;
                 const priceSpan = document.getElementById('variantPrice');
                 const base = priceSpan ? parseFloat(priceSpan.dataset.baseprice) : 0;
@@ -219,8 +254,16 @@ ${extraPrice.toFixed(2)})</option>`;
                     selectedExtras.push(cb.parentElement.querySelector("span").dataset.name);
                     extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
                 });
+                document.querySelectorAll('.required-item:checked').forEach(cb => {        
+                    selectedExtras.push(cb.parentElement.querySelector("span").dataset.name);
+
+                    extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
+                    // console.log(extrasTotal);
+                });
+
 
                 // Add to JS cart
+                
                 cartItems.push({
                     name: name + (selectedVariantId ? ` (Variant ${selectedVariantId})` : ""),
                     extras: selectedExtras,
@@ -233,8 +276,7 @@ ${extraPrice.toFixed(2)})</option>`;
                 updateOrderSummary();
 
                 document.getElementById('orderSummaryBtn').click();
-
-                // Save to backend
+                                // Save to backend
                 $.ajax({
                     url: `${baseUrl}pos/add_to_pos_cart`,
                     method: 'POST',
@@ -246,10 +288,19 @@ ${extraPrice.toFixed(2)})</option>`;
                         variantId: selectedVariantId,
                         addons: JSON.stringify(selectedExtras),
                         options_1: JSON.stringify(selectedExtras),
-                        options_2: null
-                    },
+                        options_2: null,
+                        pos_data:  JSON.stringify({
+                                    name,
+                                    basePrice,
+                                    menuId,
+                                    hasVariant,
+                                    maincatid,
+                                    variants
+                                }),
+                        updated_cart_id: $("#pos-add-to-cart").attr("current-update-cart-id") || null
+                        },
+                   
                     success: function (res) {
-                        console.log('Saved to DB:', res);
                                 updateOrderSummary();
 
                     },
@@ -273,8 +324,10 @@ ${extraPrice.toFixed(2)})</option>`;
             .then(res => res.text())
             .then(html => {
                 container.innerHTML = html;
-                console.log(html);
                 container.querySelectorAll('.optional-item').forEach(cb => {
+                    cb.addEventListener('change', updateVariantPanelTotal);
+                });
+                container.querySelectorAll('.required-item').forEach(cb => {
                     cb.addEventListener('change', updateVariantPanelTotal);
                 });
             })
@@ -288,121 +341,27 @@ ${extraPrice.toFixed(2)})</option>`;
     // Update variant panel total
     // -------------------------
     function updateVariantPanelTotal() {
+        // debugger;
         const priceSpan = document.getElementById('variantPrice');
         const variant_name = document.getElementById('variantSelect');
-        console.log(variant_name);
-        console.log(priceSpan);
+
         if (!priceSpan) return;
         let base = parseFloat(priceSpan.dataset.baseprice) || 0;
         let extrasTotal = 0;
         document.querySelectorAll('.optional-item:checked').forEach(cb => {
             extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
         });
+         document.querySelectorAll('.required-item:checked').forEach(cb => {        
+                    extrasTotal += parseFloat(cb.dataset.itemPrice) || 0;
+                });
         priceSpan.innerText = (base + extrasTotal).toFixed(2);
     }
 
     // -------------------------
     // Update order summary
     // -------------------------
-   function formatAddons(addons) {
-    if (!addons) return "";
-    try {
-        return JSON.parse(addons).join(", ");   // single line
-    } catch (e) {
-        return addons;
-    }
-}
+ 
 
-
-
-    async function updateOrderSummary() {
-    // debugger;
-    const cartBox = document.getElementById('cartItemsContainer');
-    const orderTotals = document.getElementById('orderTotals');
-    if (!cartBox || !orderTotals) return;
-
-    const posId = 1001;
-
-    const response = await fetch(`${baseUrl}pos/pos_cart_items?pos_id=${posId}`);
-    const dbCartItems = await response.json();  // DB rows
-    console.log(dbCartItems + "das");
-    // console.log(cartItems); // JS cart
-    if (!dbCartItems || dbCartItems.length === 0) {
-        document.getElementById("placeOrderBtn").classList.add("disabled");
-        document.getElementById("placeOrderBtnCard").classList.add("disabled");
-        cartBox.innerHTML = `<p class="text-muted text-center" id="emptyCartMsg">No items added yet.</p>`;
-        orderTotals.style.display = 'none';
-        return;
-    }
-
-     document.getElementById("placeOrderBtn").classList.remove("disabled");
-        document.getElementById("placeOrderBtnCard").classList.remove("disabled");
-
-    let html = '';
-    let subtotal = 0;
-
-    dbCartItems.forEach(item => {
-        const total = item.price * item.quantity;
-        subtotal += total;
-
-        console.log(item);
-
-        html += `
-            <div class="d-flex justify-content-between mb-2 flex-wrap">
-                <div class="d-flex justify-content-between flex-wrap" style="width:50%">
-                    <span><b>${item.menu_name} <span class="quan">x${item.quantity}</span></b></span>
-                     <small>${formatAddons(item.addons)}</small>
-                </div>
-                <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="price-buttons">
-                    <span><b>£
-${total.toFixed(2)}</b></span>
-                   
-                    <div>
-                        <button class="sec-button" onclick="editCartItem(this)">Edit</button>
-                        <button class="sec-button" style="color:#f54748" data-cart-id="${item.id}">Delete</button>
-                    </div>
-                </div>
-                <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="quan-edit d-none">
-                    <div style="width:100%;text-align:right;" class="quan-price">
-                        <span><b>£
-${total.toFixed(2)}</b></span>
-                    </div>
-                   
-                    <div style="width:100%;display:flex;justify-content:flex-end;gap:5px;">
-                    <button class="sec-button" style="padding-left:20px;padding-right:20px"  data-item-id="${item.id}">&#x2714;</button>
-                        <button class="sec-button" onclick="updateQuantity(1,this)"><b>+</b></button>
-                        <button class="sec-button" onclick="updateQuantity(-1,this)"><b>-</b></button>
-                        <button class="sec-button" style="padding-left:20px;padding-right:20px" onclick="close_quan(this)">&#10006;</button>
-                    </div>
-                </div>
-            </div>
-            <hr>
-        `;
-    });
-
-    cartBox.innerHTML = html;
-
-    const service = parseFloat(document.getElementById('service')?.innerText.replace("£
-", "")) || 0;
-    const bag = parseFloat(document.getElementById('bag')?.innerText.replace("£
-", "")) || 0;
-    const discountPercent = parseFloat(document.getElementById('discountPercent')?.innerText) || 0;
-    const discountAmount = subtotal * discountPercent / 100;
-
-    document.getElementById('subtotal').innerText = `£
-${subtotal.toFixed(2)}`;
-    document.getElementById('discountAmount').innerText = `-£
-${discountAmount.toFixed(2)}`;
-    document.getElementById('grandTotal').innerText = `£
-${(subtotal + service + bag - discountAmount).toFixed(2)}`;
-
-    orderTotals.style.display = 'block';
-
-
-
-    
-
-}
 document.addEventListener('click', function(e) {
     if (e.target && e.target.matches('.sec-button[data-cart-id]')) {
         const cartId = e.target.dataset.cartId;
@@ -415,7 +374,8 @@ document.addEventListener('click', function(e) {
         })
         .then(res => res.text()) 
         .then(() => {
-            location.reload();
+            
+                    updateOrderSummary();
         })
         .catch(err => {
             console.error(err);
@@ -423,42 +383,86 @@ document.addEventListener('click', function(e) {
         });
     }
 });
+$(document).on('click', '.sec-button.edit', function () {
+    // update pos
+    const id = $(this).data('item-id');
+    const item = currentItems.find(i => i.id === String(id));
 
-document.addEventListener('click', function(e) {
-    if (e.target && e.target.matches('.sec-button[data-item-id]')) {
-        const cartId = e.target.dataset.itemId;
-        if (!cartId) return;
+    if (!item) return;
 
-        let parent = e.target.closest(".d-flex");
-        let quantityEl = parent.parentElement.querySelector(".quan");
-        let quantityValue = parseInt(quantityEl.innerText.replace(/\D/g, ""));
-        console.log(quantityValue);
-        let priceEl = parent.parentElement.querySelector(".quan-price b");
-        let priceValue = parseFloat(priceEl.innerText.replace(/[^0-9.]/g, "")); 
-        console.log(priceValue);
-        fetch(`${baseUrl}pos/update_cart`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                cart_id: cartId,
-                quantity: quantityValue,
-                price: priceValue
-            })
+    const json_data = JSON.parse(item.pos_data);
+    // console.log(json_data.variants);
+    
+    showVariantPanel(
+        json_data.name,
+        parseFloat(json_data.basePrice),
+        json_data.menuId,
+        parseInt(json_data.hasVariant),
+        json_data.maincatid,
+        json_data.variants || '[]'
+    );
+
+    document.getElementById('variantBtn').click();
+
+    $(".variant-select-btn[data-id='" + item.variant_id + "']").click();
+    setTimeout(() => {
+        JSON.parse(item.options_1).forEach(element => {
+            $("span[data-name='" + element + "']").click();
         })
-        .then(res => res.text())
-        .then(res => {
-            console.log("Updated:", res);
-            location.reload();
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Failed to update item.');
-        });
-    }
+    }, 300);
+    $("#pos-add-to-cart span").text("Update");
+
+    $("#pos-add-to-cart").attr("current-update-cart-id", id);
+    // $("#pos-add-to-cart").text($("#pos-add-to-cart").text().replace("Add To Cart", "Update"));
+
 });
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.sec-button[data-item-id]');
+    if (!btn) return;
 
+    debugger;
+
+    const cartId = btn.dataset.itemId;
+
+    // ✅ FIXED parent
+    let parent = btn.closest('.d-flex.justify-content-between.mb-2');
+    if (!parent) return;
+
+    let quantityEl = parent.querySelector(".quan");
+    let priceEl = parent.querySelector(".price-buttons span b");
+
+    if (!quantityEl || !priceEl) return;
+
+    let quantityValue = parseInt(quantityEl.innerText.replace(/\D/g, ""));
+
+    // ✅ FIXED + / -
+    const param = btn.innerText.trim() === '+' ? 1 : -1;
+
+    if (param < 0 && quantityValue === 1) return;
+
+    quantityValue += param;
+
+    quantityEl.innerText = `x${quantityValue}`;
+
+    // price calculation (same logic as before)
+    let priceValue = parseFloat(priceEl.innerText.replace(/[^0-9.]/g, ""));
+    let unitPrice = priceValue / (quantityValue - param);
+    let totalPrice = unitPrice * quantityValue;
+
+    priceEl.innerText = `£${totalPrice.toFixed(2)}`;
+
+    // ✅ AJAX untouched
+    fetch(`${baseUrl}pos/update_cart`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            cart_id: cartId,
+            quantity: quantityValue,
+            price: totalPrice
+        })
+    });
+    updateOrderSummary();
+});
 
 
     // -------------------------
@@ -469,8 +473,8 @@ document.addEventListener('click', function(e) {
             customer_id: posCustomerId,
             items: cartItems,
             subtotal: parseFloat(document.getElementById("subtotal").innerText.replace("£", "")) || 0,
-            service_charges: parseFloat(document.getElementById("service").innerText.replace("£", "")) || 0,
-            bag_charges: parseFloat(document.getElementById("bag").innerText.replace("£", "")) || 0,
+            // service_charges: parseFloat(document.getElementById("service").innerText.replace("£", "")) || 0,
+            // bag_charges: parseFloat(document.getElementById("bag").innerText.replace("£", "")) || 0,
             discount_percent: parseFloat(document.getElementById("discountPercent").innerText) || 0,
             discount_amount: Math.abs(parseFloat(document.getElementById("discountAmount").innerText.replace("-£", ""))) || 0,
             grand_total: parseFloat(document.getElementById("grandTotal").innerText.replace("£", "")) || 0
@@ -561,14 +565,19 @@ document.addEventListener('click', function(e) {
     }
         updateOrderSummary();
 
-    function send_mail(order_code){
-
+        function send_mail(order_code){
+        const posCustomerId = localStorage.getItem('customer_id'); 
+        // debugger;/
         $.ajax({
     url: '<?php echo site_url('pos/order_placing_mail/'); ?>' + order_code,
     method: 'POST', 
+     data: { 
+            pos_id: posCustomerId 
+        },
     success: function(response) {
-    
-        console.log('sent');
+        data: { 
+            pos_id: posCustomerId 
+        }
          
     },
     error: function(xhr, status, error) {
@@ -578,8 +587,126 @@ document.addEventListener('click', function(e) {
 
 
     }
-
+   
+     
 });
+
+
+
+
+    async function updateOrderSummary() {
+    const cartBox = document.getElementById('cartItemsContainer');
+    const orderTotals = document.getElementById('orderTotals');
+    if (!cartBox || !orderTotals) return;
+
+    const posId = posCustomerId;
+
+    const response = await fetch(`${baseUrl}pos/pos_cart_items?pos_id=${posId}`);
+    var dbCartItems = await response.json();  // DB rows
+    document.getElementById('discountPercent').innerHTML = dbCartItems.discount;
+    dbCartItems = dbCartItems.menu;
+    currentItems = dbCartItems;
+    
+    if (!dbCartItems || dbCartItems.length === 0) {
+        document.getElementById("placeOrderBtn").classList.add("disabled");
+        document.getElementById("placeOrderBtnCard").classList.add("disabled");
+        cartBox.innerHTML = `<p class="text-muted text-center" id="emptyCartMsg">No items added yet.</p>`;
+        orderTotals.style.display = 'none';
+        return;
+    }
+
+     document.getElementById("placeOrderBtn").classList.remove("disabled");
+        document.getElementById("placeOrderBtnCard").classList.remove("disabled");
+
+    let html = '';
+    let subtotal = 0;
+
+    dbCartItems.forEach(item => {
+        let total = parseFloat(item.price);
+        subtotal += total;
+        
+        console.log(item);
+
+
+        html += `
+            <div class="d-flex justify-content-between mb-2 flex-wrap">
+                <div class="d-flex justify-content-between flex-wrap" style="width:50%; align-items: flex-start;">
+                    <span><b>${item.menu_name} ${item.variant_name == null ? '' : `(${item.variant_name})`} <span class="quan">x${item.quantity}</span></b></span>
+                     <small>${formatAddons(item.addons)}</small>
+                     <div class="mt-5 d-flex" ></div>
+                </div>
+                <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="price-buttons">
+                    <span><b>£${total.toFixed(2)}</b></span>
+                    <div class="mt-5 d-flex" ></div>
+                    <div  class="d-flex" >
+                        <button class="sec-button edit" data-item-id="${item.id}">Edit</button>
+                    
+                                <button class="sec-button" data-item-id="${item.id}">
+                <b>+</b>
+                </button>
+
+                <button class="sec-button" data-item-id="${item.id}">
+                <b>-</b>
+                </button>
+
+
+                        <button class="sec-button" style="color:#f54748" data-cart-id="${item.id}">Delete</button>
+                    </div>
+                  
+                </div>
+                 
+                <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="quan-edit d-none">
+                    <div style="width:100%;text-align:right;" class="quan-price">
+                        <span><b>£${total.toFixed(2)}</b></span>
+                    </div>
+                   
+                    <div style="width:100%;display:flex;justify-content:flex-end;gap:5px;">
+                    <button class="sec-button" style="padding-left:20px;padding-right:20px"  onclick="close_quan(this,false)" data-item-id="${item.id}">&#x2714;</button>
+                        
+                        <button class="sec-button" style="padding-left:20px;padding-right:20px" onclick="close_quan(this)">&#10006;</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        `;
+    });
+
+    
+    cartBox.innerHTML = html;
+
+    // const service = parseFloat(document.getElementById('service')?.innerText.replace("£", "")) || 0;
+    // const bag = parseFloat(document.getElementById('bag')?.innerText.replace("£", "")) || 0;
+    const discountPercent = parseFloat(document.getElementById('discountPercent')?.innerText) || 0;
+    const discountAmount = subtotal * discountPercent / 100;
+
+    document.getElementById('subtotal').innerText = `£${subtotal.toFixed(2)}`;
+    document.getElementById('discountAmount').innerText = `-£${discountAmount.toFixed(2)}`;
+    document.getElementById('grandTotal').innerText = `£${(subtotal - discountAmount).toFixed(2)}`;
+
+    orderTotals.style.display = 'block';
+
+
+
+    
+
+}
+  function formatAddons(addons) {
+    if (!addons) return "";
+    try {
+        return JSON.parse(addons).join(", ");   // single line
+    } catch (e) {
+        return addons;
+    }
+}
+ function close_quan(e,param){
+
+        e.parentElement.parentElement.classList.add("d-none");
+        e.parentElement.parentElement.parentElement.querySelector(".price-buttons").classList.remove("d-none");
+        let quantity = e.parentElement.parentElement.parentElement.querySelector(".quan");
+        if(param)
+            quantity.innerHTML = "x1";
+    }
+    
 
 </script>
 

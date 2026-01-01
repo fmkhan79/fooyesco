@@ -1,4 +1,3 @@
-
 <aside class="main-sidebar sidebar-dark-danger elevation-4 hold-transition layout-fixed">
     <!-- Brand Logo -->
     <a href="<?php echo site_url('dashboard'); ?>" class="brand-link">
@@ -56,7 +55,8 @@ $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(
         <a href="<?php echo site_url('pos/category/' . $restaurant_category['id']); ?>" 
            class="nav-link <?php if ($page_name == 'dashboard/index') echo 'active'; ?>">
             <i class="nav-icon fas fa-hamburger"></i>
-            <p><?php echo htmlspecialchars($restaurant_category['name']); ?></p>
+            <p><?php echo htmlspecialchars_decode($restaurant_category['name'], ENT_QUOTES); ?>
+        </p>
         </a>
     </li>
 <?php endforeach; ?>
