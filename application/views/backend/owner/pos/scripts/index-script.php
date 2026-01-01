@@ -167,15 +167,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Variant selection handling
-    const variantSelect = document.getElementById('variantSelect');
-    if (variantSelect) {
-        variantSelect.addEventListener('change', function () {
-            const selected = this.options[this.selectedIndex];
-          const variantPrice = parseFloat(selected.dataset.price || basePrice);
+  const variantSelect = document.getElementById('variantSelect');
+
+if (variantSelect) {
+    variantSelect.addEventListener('change', function () {
+        const selected = this.options[this.selectedIndex];
+        const variantPrice = parseFloat(selected.dataset.price);
+
+        // Only update price if variant price exists AND is greater than 0
+        if (!isNaN(variantPrice) && variantPrice > 0) {
             if (priceSpan) {
                 priceSpan.dataset.baseprice = variantPrice.toFixed(2);
                 priceSpan.innerText = variantPrice.toFixed(2);
             }
+        }
+        // else: do nothing → original price remains
+   
+
 
 
             // Show selected variant extras
@@ -624,14 +632,15 @@ document.addEventListener('click', function(e) {
 
         html += `
             <div class="d-flex justify-content-between mb-2 flex-wrap">
-                <div class="d-flex justify-content-between flex-wrap" style="width:50%">
+                <div class="d-flex justify-content-between flex-wrap" style="width:50%; align-items: flex-start;">
                     <span><b>${item.menu_name} ${item.variant_name == null ? '' : `(${item.variant_name})`} <span class="quan">x${item.quantity}</span></b></span>
                      <small>${formatAddons(item.addons)}</small>
+                     <div class="mt-5 d-flex" ></div>
                 </div>
                 <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="price-buttons">
                     <span><b>£${total.toFixed(2)}</b></span>
-                   
-                    <div>
+                    <div class="mt-5 d-flex" ></div>
+                    <div  class="d-flex" >
                         <button class="sec-button edit" data-item-id="${item.id}">Edit</button>
                     
                  <button class="sec-button" data-item-id="${item.id}" onclick="updateQuantity(1,this)">
@@ -644,7 +653,9 @@ document.addEventListener('click', function(e) {
 
                         <button class="sec-button" style="color:#f54748" data-cart-id="${item.id}">Delete</button>
                     </div>
+                  
                 </div>
+                 
                 <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="quan-edit d-none">
                     <div style="width:100%;text-align:right;" class="quan-price">
                         <span><b>£${total.toFixed(2)}</b></span>

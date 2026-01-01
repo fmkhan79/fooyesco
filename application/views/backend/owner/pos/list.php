@@ -197,7 +197,8 @@ $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(
             class="img-fluid mb-2" 
             style="border-radius: 10px; height: 150px; object-fit: cover;"
           > -->
-          <h6 class="mt-2 text-dark"><?php echo htmlspecialchars($restaurant_category['name']); ?></h6>
+          <h6 class="mt-2 text-dark">
+            <?php echo htmlspecialchars_decode($restaurant_category['name'], ENT_QUOTES); ?></h6>
         </div>
       </a>
     </div>
