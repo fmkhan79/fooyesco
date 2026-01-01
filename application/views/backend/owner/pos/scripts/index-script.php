@@ -420,39 +420,38 @@ document.addEventListener('click', function(e) {
     const btn = e.target.closest('.sec-button[data-item-id]');
     if (!btn) return;
 
+    debugger;
+
     const cartId = btn.dataset.itemId;
-    let parent = btn.closest(".d-flex");
+
+    // ✅ FIXED parent
+    let parent = btn.closest('.d-flex.justify-content-between.mb-2');
+    if (!parent) return;
 
     let quantityEl = parent.querySelector(".quan");
-    let priceEl = parent.querySelector(".quan-price b");
-    let minusBtn = parent.querySelector('.sec-button.minus');
+    let priceEl = parent.querySelector(".price-buttons span b");
+
+    if (!quantityEl || !priceEl) return;
 
     let quantityValue = parseInt(quantityEl.innerText.replace(/\D/g, ""));
 
-    if (btn.classList.contains('plus')) {
-        quantityValue++;
-    } else if (btn.classList.contains('minus')) {
-        quantityValue--;
-    }
+    // ✅ FIXED + / -
+    const param = btn.innerText.trim() === '+' ? 1 : -1;
 
-    // Disable minus at 1
-    if (quantityValue <= 1) {
-        quantityValue = 1;
-        minusBtn.disabled = true;
-        minusBtn.classList.add('disabled');
-    } else {
-        minusBtn.disabled = false;
-        minusBtn.classList.remove('disabled');
-    }
+    if (param < 0 && quantityValue === 1) return;
 
-    quantityEl.innerText = quantityValue;
+    quantityValue += param;
 
-    // Update price (assuming unit price is stored in data attribute)
-    let unitPrice = parseFloat(parent.dataset.unitPrice || 1);
+    quantityEl.innerText = `x${quantityValue}`;
+
+    // price calculation (same logic as before)
+    let priceValue = parseFloat(priceEl.innerText.replace(/[^0-9.]/g, ""));
+    let unitPrice = priceValue / (quantityValue - param);
     let totalPrice = unitPrice * quantityValue;
-    priceEl.innerText = totalPrice.toFixed(2);
 
-    // Send AJAX
+    priceEl.innerText = `£${totalPrice.toFixed(2)}`;
+
+    // ✅ AJAX untouched
     fetch(`${baseUrl}pos/update_cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -462,9 +461,8 @@ document.addEventListener('click', function(e) {
             price: totalPrice
         })
     });
+    updateOrderSummary();
 });
-
-
 
 
     // -------------------------
@@ -643,13 +641,14 @@ document.addEventListener('click', function(e) {
                     <div  class="d-flex" >
                         <button class="sec-button edit" data-item-id="${item.id}">Edit</button>
                     
-                 <button class="sec-button" data-item-id="${item.id}" onclick="updateQuantity(1,this)">
-    <b>+</b>
-</button>
+                                <button class="sec-button" data-item-id="${item.id}">
+                <b>+</b>
+                </button>
 
-<button class="sec-button" data-item-id="${item.id}" onclick="updateQuantity(-1,this)">
-    <b>-</b>
-</button>
+                <button class="sec-button" data-item-id="${item.id}">
+                <b>-</b>
+                </button>
+
 
                         <button class="sec-button" style="color:#f54748" data-cart-id="${item.id}">Delete</button>
                     </div>
