@@ -153,10 +153,19 @@
   <div class="wrapper">
       <?php include 'partials/navbar.php'; ?>
     <?php include 'partials/sidebar.php'; ?>
-<?php 
-// Fetch dynamic categories
-$restaurant_categories = $this->category_model->get_categories_by_restaurant_id(3);
-?>
+      <?php
+      $restaurant_id = isset($_GET['restaurant_id']) 
+          ? sanitize($_GET['restaurant_id']) 
+          : null;
+
+      $restaurant_categories = [];
+
+      if ($restaurant_id && $restaurant_id !== 'all') {
+          $restaurant_categories = $this->category_model
+              ->get_categories_by_restaurant_id($restaurant_id);
+      }
+      ?>
+
  <!-- Content Wrapper -->
     <div class="content-wrapper">
       <div class="content">
