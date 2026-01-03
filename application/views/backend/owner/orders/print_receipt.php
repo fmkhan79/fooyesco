@@ -108,6 +108,82 @@
 
 <body>
 <?php
+function formatPizzaDealReceiptAddons(array $addons, string $menuName)
+{
+    if (!preg_match('/pizza\s*deal/i', $menuName)) {
+        return '<div class="addon-block">' . implode('<br>', $addons) . '</div>';
+    }
+
+    $bases  = ['BBQ Base','Chilli Base','Garlic Base','Regular Base'];
+    $crusts = ['Deep Pan','Thin Crust','Stuffed Crust'];
+
+    $pizzas = [];
+    $extras = [];
+    $currentPizza = [];
+
+    foreach ($addons as $item) {
+
+        if (preg_match('/\d+x/i', $item)) {
+            $extras[] = $item;
+            continue;
+        }
+
+        if (stripos($item, 'pizza') !== false) {
+            if (!empty($currentPizza)) {
+                $pizzas[] = $currentPizza;
+            }
+            $currentPizza = [
+                'name'  => $item,
+                'base'  => '',
+                'crust' => ''
+            ];
+            continue;
+        }
+
+        if (in_array($item, $bases)) {
+            $currentPizza['base'] = $item;
+            continue;
+        }
+
+        if (in_array($item, $crusts)) {
+            $currentPizza['crust'] = $item;
+            continue;
+        }
+    }
+
+    if (!empty($currentPizza)) {
+        $pizzas[] = $currentPizza;
+    }
+
+    // 🔽 FORCE VERTICAL OUTPUT
+    $html = '<div class="pizza-deal-block">';
+
+    foreach ($pizzas as $i => $pizza) {
+        $html .= '<div><b>Pizza ' . ($i + 1) . ':</b></div>';
+        $html .= '<div>- ' . $pizza['name'] . '</div>';
+
+        if (!empty($pizza['base'])) {
+            $html .= '<div>- ' . $pizza['base'] . '</div>';
+        }
+
+        if (!empty($pizza['crust'])) {
+            $html .= '<div>- ' . $pizza['crust'] . '</div>';
+        }
+    }
+
+    if (!empty($extras)) {
+        $html .= '<div><b>Extra:</b></div>';
+        foreach ($extras as $ex) {
+            $html .= '<div>- ' . $ex . '</div>';
+        }
+    }
+
+    $html .= '</div>';
+
+    return $html;
+}
+
+
 // --- SAFETY / NORMALIZATION ---
 if (!is_array($order_details)) {
     if (is_string($order_details)) {
@@ -218,9 +294,13 @@ $restaurant_details = [];
                 $addons = json_decode($ordered_item["addons"], true);
 
                 if (is_array($addons) && count($addons) > 0) {
-                    if (isset($addons[0]) && is_string($addons[0])) {
-                        $addonHTML = '<ul class="line-item"><li> ' . implode(", ", $addons) . '</li></ul>';
-                    } 
+                   if (is_array($addons) && isset($addons[0]) && is_string($addons[0])) {
+                $addonHTML = formatPizzaDealReceiptAddons(
+                    $addons,
+                    $menu_details['name'] ?? ''
+                );
+            }
+
                     else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
                         $groupedAddons = [];
                         foreach ($addons as $addon) {
