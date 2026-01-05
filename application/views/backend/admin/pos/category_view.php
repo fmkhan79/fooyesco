@@ -27,7 +27,8 @@
 
                         <div class="col-lg-7">
                             <div class="align-items-center mb-3" style="justify-content: flex-start;">
-                                <h4><?php echo htmlspecialchars($category['name']); ?> Items</h4>
+                                <h4><?php echo htmlspecialchars_decode($category['name'], ENT_QUOTES); ?>
+ Items</h4>
                                            <div class="required-msg text-danger d-none">Please select the required item</div>
 
                                 <!-- <input type="text" class="search-bar form-control w-50" placeholder="Search items" /> -->
@@ -69,11 +70,12 @@
                                                      <img src="<?php echo !empty($menu['thumbnail']) 
                                                         ? base_url('uploads/menu/' . $menu['thumbnail']) 
                                                         : 'https://via.placeholder.com/150?text=No+Image'; ?>"
-                                                        alt="<?php echo htmlspecialchars($menu['name']); ?>"
+                                                        alt="    <?php echo htmlspecialchars_decode($menu['name'], ENT_QUOTES); ?>"
                                                         class="img-fluid mb-2"
                                                         style="border-radius: 10px; height: 150px; object-fit: cover;"> 
 
-                                                    <h6 class="mt-2 text-dark"><?php echo htmlspecialchars($menu['name']); ?></h6>
+                                                    <h6 class="mt-2 text-dark" >    <?php echo htmlspecialchars_decode($menu['name'], ENT_QUOTES); ?>
+</h6>
 
                                                     <p class="text-muted small mb-2">
                                                         <?php echo htmlspecialchars($menu['description']); ?>
@@ -115,7 +117,7 @@
      </style>
     <div id="tab-order" style="display:flex; justify-content:center; align-items:center; ">
         <button id="orderSummaryBtn" style="border-right: 4px solid white;" class="active">Order Summary</button>
-        <button id="variantBtn">Variant Options</button>
+        <button id="variantBtn" class="d-none">Variant Options</button>
 
     </div>
     <div id="product-options-container"></div>
@@ -155,7 +157,7 @@
                 <span id="grandTotal">€0.00</span>
             </div>
         </div>
-
+        
         <!-- PLACE ORDER BUTTON -->
         <div class="mt-3" style="display: flex; gap: 10px; height:55px; flex-direction: column;">
             <button id="placeOrderBtn" class="btn btn-warning w-100 h-20">Pay via Cash</button>
@@ -163,12 +165,16 @@
 
                     </div>
                 </div>
-            </div>
-            <button id="pos-add-to-cart" onclick="addtocart_updated()" class="d-none">
+                
+                <button id="pos-add-to-cart" onclick="addtocart_updated()" style="width:100%" class="d-none">
                 <p class="text-white text-small m-0">Price: £ <small id="variantPrice" style="font-weight:bold" data-baseprice=""></small></p>
                                 
                 <span>Add To Cart</span>
             </button>
+                    
+            </div>
+            
+
 
                                                             </div>
 
