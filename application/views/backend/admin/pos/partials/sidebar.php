@@ -40,7 +40,13 @@ $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(
               
                 <li class="nav-header"><?php echo get_phrase("navigation_section", true); ?></li>
                 <li class="nav-item">
-                    <a href="<?php echo site_url('dashboard'); ?>" class="nav-link <?php if ($page_name == "dashboard/index") echo 'active'; ?>">
+                    <a href="<?php echo site_url('dashboard'); ?>" 
+                    style="
+    display: flex;
+    align-items: center;
+        gap: 5px;
+"
+                    class="nav-link <?php if ($page_name == "dashboard/index") echo 'active'; ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             <?php echo get_phrase('Dashboard'); ?>
@@ -53,7 +59,12 @@ $restaurant_categories = $this->category_model->get_categories_by_restaurant_id(
             <?php foreach ($restaurant_categories as $restaurant_category): ?>
     <li class="nav-item">
         <a href="<?php echo site_url('pos/category/' . $restaurant_category['id']); ?>" 
-           class="nav-link <?php if ($page_name == 'dashboard/index') echo 'active'; ?>">
+        style="
+    display: flex;
+    align-items: center;
+        gap: 5px;
+"  
+        class="nav-link <?php if ($page_name == 'dashboard/index') echo 'active'; ?>">
             <i class="nav-icon fas fa-hamburger"></i>
             <p><?php echo htmlspecialchars_decode($restaurant_category['name'], ENT_QUOTES); ?>
         </p>
