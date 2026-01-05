@@ -692,6 +692,7 @@ document.addEventListener('click', function(e) {
 
 }
   function formatAddons(addons, menuName = '') {
+    debugger;
     if (!addons) return "";
 
     let items;
@@ -809,7 +810,7 @@ document.addEventListener('click', function(e) {
     color:white;
     font-weight:bold;
     border:none;
-
+margin-top:auto;
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-around;
@@ -817,5 +818,8 @@ document.addEventListener('click', function(e) {
 }
 #rightPanel{
         overflow-x: hidden;
+        display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 </style>
