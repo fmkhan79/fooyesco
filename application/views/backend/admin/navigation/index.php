@@ -63,7 +63,7 @@
                      <li class="nav-item">
                     <a href="<?php echo site_url('/pos/restaurant'); ?>" class="nav-link <?php if ($page_name == "user/index") echo 'active'; ?>">
                         <i class="fas fa-user nav-icon"></i>
-                        <p><?php echo "Enter Pos"?></p>
+                        <p><?php echo "Point of Sale"?></p>
                     </a>
                 </li>
 

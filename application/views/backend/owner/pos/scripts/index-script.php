@@ -632,7 +632,8 @@ document.addEventListener('click', function(e) {
             <div class="d-flex justify-content-between mb-2 flex-wrap">
                 <div class="d-flex justify-content-between flex-wrap" style="width:50%; align-items: flex-start;">
                     <span><b>${item.menu_name} ${item.variant_name == null ? '' : `(${item.variant_name})`} <span class="quan">x${item.quantity}</span></b></span>
-                     <small>${formatAddons(item.addons)}</small>
+                    
+<small>${formatAddons(item.addons, item.menu_name)}</small>
                      <div class="mt-5 d-flex" ></div>
                 </div>
                 <div style="gap:5px;width:50%;flex-direction:column;align-items:flex-end;display:flex;justify-content:space-between;" class="price-buttons">
@@ -690,14 +691,90 @@ document.addEventListener('click', function(e) {
     
 
 }
-  function formatAddons(addons) {
+  function formatAddons(addons, menuName = '') {
+    debugger;
     if (!addons) return "";
+
+    let items;
     try {
-        return JSON.parse(addons).join(", ");   // single line
-    } catch (e) {
+        items = JSON.parse(addons);
+    } catch {
         return addons;
     }
+
+    // ✅ ONLY Pizza Deal
+    if (!/pizza\s*deal/i.test(menuName)) {
+        return items.join(", ");
+    }
+
+    const bases  = ['BBQ Base','Chilli Base','Garlic Base','Regular Base'];
+    const crusts = ['Deep Pan','Thin Crust','Stuffed Crust'];
+
+    let pizzas = [
+        { base:'', crust:'', toppings:[] },
+        { base:'', crust:'', toppings:[] },
+        { base:'', crust:'', toppings:[] }
+    ];
+
+    let chips = [];
+    let currentPizza = 0;
+
+    items.forEach(item => {
+
+        if (/chips/i.test(item)) {
+            chips.push(item);
+            return;
+        }
+
+        if (bases.includes(item)) {
+            if (currentPizza < pizzas.length) {
+                pizzas[currentPizza].base = item;
+            }
+            return;
+        }
+
+        if (crusts.includes(item)) {
+            pizzas[currentPizza].crust = item;
+            currentPizza++; // 🔁 move to next pizza AFTER crust
+            return;
+        }
+
+        if (item !== 'No More Toppings') {
+            if (currentPizza < pizzas.length) {
+                pizzas[currentPizza].toppings.push(item);
+            }
+        }
+    });
+
+    let html = '';
+
+    pizzas.forEach((p, i) => {
+        if (!p.base && !p.toppings.length) return;
+
+        html += `
+            <div class="mb-1">
+                <b>Pizza ${i + 1}</b><br>
+                <small>
+                    Base: ${p.base || '-'}<br>
+                    ${p.crust ? `Crust: ${p.crust}<br>` : ''}
+                    Toppings: ${p.toppings.length ? p.toppings.join(', ') : 'None'}
+                </small>
+            </div>
+        `;
+    });
+
+    if (chips.length) {
+        html += `
+            <div class="mt-1">
+                <b>Chips</b><br>
+                <small>${chips.join(', ')}</small>
+            </div>
+        `;
+    }
+
+    return html;
 }
+
  function close_quan(e,param){
 
         e.parentElement.parentElement.classList.add("d-none");
@@ -733,7 +810,7 @@ document.addEventListener('click', function(e) {
     color:white;
     font-weight:bold;
     border:none;
-
+margin-top:auto;
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-around;
@@ -741,5 +818,8 @@ document.addEventListener('click', function(e) {
 }
 #rightPanel{
         overflow-x: hidden;
+        display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 </style>

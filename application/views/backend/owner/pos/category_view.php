@@ -157,7 +157,7 @@
                 <span id="grandTotal">€0.00</span>
             </div>
         </div>
-
+        
         <!-- PLACE ORDER BUTTON -->
         <div class="mt-3" style="display: flex; gap: 10px; height:55px; flex-direction: column;">
             <button id="placeOrderBtn" class="btn btn-warning w-100 h-20">Pay via Cash</button>
@@ -165,12 +165,16 @@
 
                     </div>
                 </div>
-            </div>
-            <button id="pos-add-to-cart" onclick="addtocart_updated()" class="d-none">
+                
+                <button id="pos-add-to-cart" onclick="addtocart_updated()" style="width:100%" class="d-none">
                 <p class="text-white text-small m-0">Price: £ <small id="variantPrice" style="font-weight:bold" data-baseprice=""></small></p>
                                 
                 <span>Add To Cart</span>
             </button>
+                    
+            </div>
+            
+
 
                                                             </div>
 

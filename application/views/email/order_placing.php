@@ -231,7 +231,6 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
     }
     </style>
 </head>
-
 <body>
     <div class="container">
         <div class="header">
@@ -242,11 +241,10 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
         </div>
 
         <div class="info">
-            <p>Thank you for choosing Fooyes! Your <span class="highlight">order</span> has been successfully placed and forwarded to our kitchen team. If you need to make any changes to your <span class="highlight">order</span>, please contact takeaway/restaurant directly at <a href="tel:<?= $restaurant_details['phone'] ?>"><?= $restaurant_details['phone'] ?></a>.</p>
+            <p>Thank you for choosing Fooyes! Your <span class="highlight">order</span> has been successfully placed and forwarded to our kitchen team. If you need to make any changes to your <span class="highlight">order</span>, please contact takeaway/restaurant directly at <a href="tel:<?= sanitize($restaurant_details['phone']) ?>"><?= sanitize($restaurant_details['phone']) ?></a>.</p>
             <p>For non delivery issues please call or drop us a message as soon as you can on this number <a href="tel:07438797814">07438797814</a></p>
             <p>Kindly ensure that any modifications or cancellations are requested within 5 minutes of placing your <span class="highlight">order</span> to avoid delays.</p>
         </div>
-
 
         <div class="summary-header">
             <div>ORDER SUMMARY</div>
@@ -255,8 +253,8 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
 
         <div class="details">
             <p><strong>From:</strong><br>
-                <?= $restaurant_details['name'] ?>,<br>
-                <?= $restaurant_details['address'] ?>
+                <?= sanitize($restaurant_details['name']) ?>,<br>
+                <?= sanitize($restaurant_details['address']) ?>
             </p>
             <?php if (!empty($decoded_address)) { ?>
                 <p><strong>Delivered to:</strong><br>
@@ -267,78 +265,72 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
                     <?= sanitize($decoded_address['city'] ?? '') ?><br>
                 </p>
             <?php } ?>
-          <table class="order-items">
 
-             <?php foreach ($ordered_items as $ordered_item): ?>
-    <?php
-        // Get menu details
-        $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
+            <table class="order-items">
+            <?php foreach ($ordered_items as $ordered_item): ?>
+            <?php
+                $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
+                $addonHTML = "";
 
-        // Handle addons
-        $addonHTML = "";
+                if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
+                    $addons = json_decode($ordered_item["addons"], true);
 
-        if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
-            $addons = json_decode($ordered_item["addons"], true);
-
-            if (is_array($addons) && count($addons) > 0) {
-                if (isset($addons[0]) && is_string($addons[0])) {
-                    $addonHTML = '<ul class="line-item"><li> ' . implode(", ", $addons) . '</li></ul>';
-                } 
-                else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
-                    $groupedAddons = [];
-                    foreach ($addons as $addon) {
-                        $subVariantId = $addon['subVariantId'] ?? null;
-                        $itemId = $addon['itemId'] ?? null;
-                        if ($subVariantId === null) continue;
-                        if (!isset($groupedAddons[$subVariantId])) {
-                            $groupedAddons[$subVariantId] = [];
+                    if (is_array($addons) && count($addons) > 0) {
+                        if (isset($addons[0]) && is_string($addons[0])) {
+                            $addonHTML = '<ul class="line-item"><li>' .
+                                implode(", ", array_map('sanitize', $addons)) .
+                                '</li></ul>';
+                        } 
+                        else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
+                            $groupedAddons = [];
+                            foreach ($addons as $addon) {
+                                $subVariantId = $addon['subVariantId'] ?? null;
+                                $itemId = $addon['itemId'] ?? null;
+                                if ($subVariantId === null) continue;
+                                if (!isset($groupedAddons[$subVariantId])) {
+                                    $groupedAddons[$subVariantId] = [];
+                                }
+                                $groupedAddons[$subVariantId][] = $itemId;
+                            }
+                            $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
                         }
-                        $groupedAddons[$subVariantId][] = $itemId;
                     }
-                    $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
                 }
-            }
-        }
-    ?>
+            ?>
 
-    <!-- MAIN ITEM ROW -->
-    <tr>
-        <td>
-            <?= $ordered_item['quantity'] ?> x <?= html_entity_decode(sanitize($menu_details['name'])) ?>
+            <tr>
+                <td>
+                    <?= (int)$ordered_item['quantity'] ?> x <?= sanitize($menu_details['name']) ?>
 
-            <?php if (!empty($addonHTML)): ?>
-                <br><small><strong>Addons:</strong></small>
-                <?= $addonHTML ?>
+                    <?php if (!empty($addonHTML)): ?>
+                        <br><small><strong>Addons:</strong></small>
+                        <?= $addonHTML ?>
+                    <?php endif; ?>
+                </td>
+                <td><?= currency(number_format((float)$ordered_item['total'], 2)) ?></td>
+            </tr>
+
+            <?php if (!empty($ordered_item["variant_id"])): ?>
+            <tr>
+                <td>
+                    Selected:
+                    <?= sanitize($this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"]) ?>
+                </td>
+                <td></td>
+            </tr>
             <?php endif; ?>
-        </td>
 
-                      <td><?= currency(number_format(sanitize($ordered_item['total']), 2)) ?></td>
-                  </tr>
-
-                  <!-- SELECTED VARIANT -->
-                  <?php if (!empty($ordered_item["variant_id"])): ?>
-                  <tr>
-                      <td>
-                          Selected:
-                          <?= $this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"] ?>
-                      </td>
-                      <td></td>
-                  </tr>
-                  <?php endif; ?>
-
-              <?php endforeach; ?>
-
-              </table>
-
+            <?php endforeach; ?>
+            </table>
 
             <table class="totals">
                 <tr>
                     <td><strong>Subtotal</strong></td>
-                    <td><?= currency(number_format($subtotal, 2)) ?></td>
+                    <td><?= currency(number_format((float)$subtotal, 2)) ?></td>
                 </tr>
                 <tr>
                     <td>Service Charge</td>
-                    <td><?= currency(number_format($service_charge, 2)) ?></td>
+                    <td><?= currency(number_format((float)$service_charge, 2)) ?></td>
                 </tr>
                 <tr>
                     <td>Bag Charges</td>
@@ -347,39 +339,38 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
                 <?php if($delivery_charge != 0){ ?>
                 <tr>
                     <td>Delivery Charge</td>
-                    <td><?= currency(number_format($delivery_charge, 2)) ?></td>
+                    <td><?= currency(number_format((float)$delivery_charge, 2)) ?></td>
                 </tr>
                 <?php } ?>
                 <tr>
-                    <td>                                                                        
+                    <td>
                         <?php if($message['promo_discount'] != null): ?>
-                        <?= $message['promo_discount'] ?>% PROMO DISCOUNT
+                            <?= sanitize($message['promo_discount']) ?>% PROMO DISCOUNT
                         <?php elseif($message["order_type"] == "pickup"): ?>
-                          25% ONLINE DISCOUNT                          
+                            25% ONLINE DISCOUNT                          
                         <?php elseif($message['order_type'] == "delivery"): ?>
-                          20% ONLINE DISCOUNT      
-                         <?php else:?>
-                          90% ONLINE DISCOUNT
+                            20% ONLINE DISCOUNT      
+                        <?php else: ?>
+                            90% ONLINE DISCOUNT
                         <?php endif; ?>
                     </td>
-                    <td>- <?= currency(number_format($discount_amount, 2)) ?></td>
+                    <td>- <?= currency(number_format((float)$discount_amount, 2)) ?></td>
                 </tr>
+
                 <?php if($message['is_online_discount'] != null): ?>
                 <tr>
-                    <td>
-                        <?= $message['is_online_discount'] ?>% ONLINE DISCOUNT
-                    </td>
+                    <td><?= sanitize($message['is_online_discount']) ?>% ONLINE DISCOUNT</td>
                     <td>- <?php
-                        $getOnlineDisc = $message['is_online_discount'];
-                        // echo $getOnlineDisc;
+                        $getOnlineDisc = (float)$message['is_online_discount'];
                         $is_online_discount = ($subtotal * $getOnlineDisc) / 100;
-                        echo currency(number_format($is_online_discount, 2)) ?>
-                        </td>
+                        echo currency(number_format($is_online_discount, 2));
+                    ?></td>
                 </tr>
                 <?php endif; ?>
+
                 <tr>
-                    <td><strong>Total</strong> (<?php echo $total_items; ?> Items)</td>
-                    <td><strong><?= currency($message['grand_total']) ?></strong></td>
+                    <td><strong>Total</strong> (<?= (int)$total_items ?> Items)</td>
+                    <td><strong><?= currency((float)$message['grand_total']) ?></strong></td>
                 </tr>
             </table>
         </div>
@@ -387,15 +378,14 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
         <div class="footer">
             &copy; 2025 
             <a class="float-right" target="_blank"
-              <?php 
-                  if ($host == 'www.fooyes.local' || $host == 'www.chillihutmarch.fooyes.local') {
-                      echo 'href="http://' . $message['order_url'] . '"';
-                  }else{
-                      echo 'href="https://' . $message['order_url'] . '"';
-                  }
-              ?>
-              >
-                <?php echo $message['order_url']; ?>
+            <?php 
+                if ($host == 'www.fooyes.local' || $host == 'www.chillihutmarch.fooyes.local') {
+                    echo 'href="http://' . sanitize($message['order_url']) . '"';
+                } else {
+                    echo 'href="https://' . sanitize($message['order_url']) . '"';
+                }
+            ?>>
+                <?= sanitize($message['order_url']) ?>
             </a>.
         </div>
     </div>
