@@ -93,81 +93,156 @@
   </ul>
 </nav>
 
-
 <script>
-  let ShowTest = false;
-    
+let ShowTest = false;
 
-    function showpopup(){
-      var urls;
-      const check = location.origin;
-      if(check == "http://localhost"){
-         urls = '/fooyesco/orders/';
-      }
-      else
-      {
-         urls = '/orders/';
-      }
+/* =======================
+   NEW ORDER CHECK (OLD)
+======================= */
 
-      $.ajax({
-
-            url: urls +'/check_new_order',
-
-          // url: window.location.origin + '/orders/check_new_order/',  // Dynamically resolve the absolute URL
-              method: 'GET',
-              success: function(data) {
-
-                // console.log(data);
-                  if (data.length > 0) {
-                      // Update the dashboard with the new orders
-                      showNewOrderNotification(data);
-                  }
-              },
-              error: function() {
-                  console.error('Error fetching new orders.');
-              }
-          });
+function showpopup() {
+    var urls;
+    const check = location.origin;
+    if (check == "http://localhost") {
+        urls = '/fooyesco/orders/';
+    } else {
+        urls = '/orders/';
     }
-    
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      showpopup();
-    }, false);
 
+    $.ajax({
+        url: urls + '/check_new_order',
+        method: 'GET',
+        success: function (data) {
+            if (data.length > 0) {
+                showNewOrderNotification(data);
+            }
+        },
+        error: function () {
+            console.error('Error fetching new orders.');
+        }
+    });
+}
 
-    
-    setInterval(function() {
-      showpopup();
-    }, 8000);
+document.addEventListener('DOMContentLoaded', function () {
+    showpopup();
+    checkCustomerCancelOrder(); // 👈 NEW
+}, false);
 
-    function showNewOrderNotification(data) {
-      // debugger;
+setInterval(function () {
+    showpopup();
+}, 8000);
+
+/* =======================
+   CUSTOMER CANCEL CHECK (NEW)
+======================= */
+
+setInterval(function () {
+    checkCustomerCancelOrder();
+}, 7000);
+
+function checkCustomerCancelOrder() {
+
+    var urls;
+    const check = location.origin;
+    if (check == "http://localhost") {
+        urls = '/fooyesco/orders/';
+    } else {
+        urls = '/orders/';
+    }
+
+    $.ajax({
+        url: urls + '/check_customer_cancel_order',
+        method: 'GET',
+        success: function (data) {
+
+            if (data.length > 0) {
+                const obj = JSON.parse(data);
+
+                if (obj.customer_cancel == 1) {
+                    showCustomerCancelPopup(obj);
+                }
+            }
+        },
+        error: function () {
+            console.error('Error checking customer cancel order.');
+        }
+    });
+}
+
+/* =======================
+   CUSTOMER CANCEL POPUP
+======================= */
+
+function showCustomerCancelPopup(obj) {
+
+    Swal.fire({
+        title: "Order Cancelled!",
+        text: "Order ID: " + obj.id + " has been cancelled by customer.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        allowOutsideClick: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            resetCustomerCancel(obj.id);
+        }
+    });
+}
+
+/* =======================
+   RESET CUSTOMER CANCEL
+======================= */
+
+function resetCustomerCancel(orderId) {
+
+    var urls;
+    const check = location.origin;
+    if (check == "http://localhost") {
+        urls = '/fooyesco/orders/';
+    } else {
+        urls = '/orders/';
+    }
+
+    $.ajax({
+        url: urls + '/reset_customer_cancel',
+        method: 'POST',
+        data: { order_id: orderId },
+        success: function () {
+            console.log('Customer cancel reset successfully');
+        },
+        error: function () {
+            console.error('Error resetting customer cancel.');
+        }
+    });
+}
+
+/* =======================
+   NEW ORDER POPUP (OLD)
+======================= */
+
+function showNewOrderNotification(data) {
+
     const obj = JSON.parse(data);
-    // console.log(obj);
     const name = JSON.parse(obj.billing).first_name;
-      if(name == "test" && ShowTest == false){
+
+    if (name == "test" && ShowTest == false) {
         return;
-      }
-  const grandTotal = parseFloat(obj.grand_total) || 0;
-  const deliveryCharge = parseFloat(obj.total_delivery_charge) || 0;
-  const total = (grandTotal + deliveryCharge).toFixed(2);
-    // console.log(total); // Output: 6.35        
-    const add = JSON.parse(obj.address);  
-    console.log(obj.address);
+    }
+
+    const grandTotal = parseFloat(obj.grand_total) || 0;
+    const deliveryCharge = parseFloat(obj.total_delivery_charge) || 0;
+    const total = (grandTotal + deliveryCharge).toFixed(2);
+    const add = JSON.parse(obj.address);
 
     const notificationSound = new Audio('<?php echo base_url('assets/auth/audio/foodpanda.mp3'); ?>');
-    notificationSound.loop = true; // This will automatically loop the sound
-
-    // Play the sound on loop
+    notificationSound.loop = true;
     notificationSound.play();
 
     let text;
     if (obj.order_type == "delivery") {
-
         text = "DELIVERY | Order ID: " + obj.id + " | Total Amount: " + total +
-            " | Addresss: " + add.address;
-    } else if (obj.order_type == "pickup") {
-        text = "COLLECTION | Order ID: " + obj.id + " | Total Amount:  £" + obj.grand_total;
+            " | Address: " + add.address;
+    } else {
+        text = "COLLECTION | Order ID: " + obj.id + " | Total Amount: £" + obj.grand_total;
     }
 
     Swal.fire({
@@ -175,11 +250,11 @@
         text: text,
         icon: "success",
         showCancelButton: true,
-        confirmButtonText: "Accept Order ",
+        confirmButtonText: "Accept Order",
         cancelButtonText: "Reject Order",
         allowOutsideClick: false,
     }).then((result) => {
-        // Stop the sound once the user has either accepted or rejected the order
+
         notificationSound.pause();
         notificationSound.currentTime = 0;
 
@@ -190,86 +265,75 @@
         }
     });
 }
-    function updateOrderReadStatus(orderId, code) {
-      var urls;
-      const check = location.origin;
-      if(check == "http://localhost"){
-         urls = '/fooyesco/orders/';
-      }
-      else
-      {
-         urls = '/orders/';
-      }
 
-        $.ajax({
-            url: urls +'/mark_order_as_read/',
-            method: 'POST',
-            data: { order_id: orderId },
-            success: function(response) {
-                $.ajax({
-                    url: urls + '/process/'+code+"/approved",
-                    method: 'POST',
-                    data: { order_id: orderId },
-                    success: function(response) {
-                        // window.location.href = urls + "/print_recipt/" + code;
-                        
-                        const printUrl = '<?php echo base_url('orders/print_recipt/'); ?>' + code;
-                        const win = window.open(printUrl, '_blank', 'width=1,height=1,left=0,top=0,resizable=no,scrollbars=no');
+/* =======================
+   ACCEPT ORDER
+======================= */
 
-                        if (!win) {
-                            alert('Popup blocked! Please allow popups for this site.');
-                        }
-                        console.log('Order marked as read successfully');
-                    },
-                    error: function() {
-                        console.error('Error marking order as read.');
-                    }
-                });
-            },
-            error: function() {
-                console.error('Error marking order as read.');
-            }
-        });
+function updateOrderReadStatus(orderId, code) {
+
+    var urls;
+    const check = location.origin;
+    if (check == "http://localhost") {
+        urls = '/fooyesco/orders/';
+    } else {
+        urls = '/orders/';
     }
 
-    function cancelOrderAndMarkAsRead(orderId, code) {
-      var urls;
-      const check = location.origin;
-      if(check == "http://localhost"){
-         urls = '/fooyesco/orders/';
-      }
-      else
-      {
-         urls = '/orders/';
-      }
+    $.ajax({
+        url: urls + '/mark_order_as_read/',
+        method: 'POST',
+        data: { order_id: orderId },
+        success: function () {
 
-      $.ajax({
-            url: urls +'/mark_order_as_read/',
-            method: 'POST',
-            data: { order_id: orderId },
-            success: function(response) {
-                // Now cancel the order
-                $.ajax({
-                    url: urls +'/cancel/' + code,
-                    method: 'POST',
-                    data: { order_id: orderId },
-                    success: function(response) {
-                        Swal.fire({
-                            title: 'Order Rejected!',
-                            text: 'The order has been canceled.',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                        console.log('Order canceled successfully');
-                    },
-                    error: function() {
-                        console.error('Error canceling the order.');
-                    }
-                });
-            },
-            error: function() {
-                console.error('Error marking order as read.');
-            }
-        });
+            $.ajax({
+                url: urls + '/process/' + code + "/approved",
+                method: 'POST',
+                success: function () {
+
+                    const printUrl = '<?php echo base_url('orders/print_recipt/'); ?>' + code;
+                    window.open(printUrl, '_blank', 'width=1,height=1');
+                }
+            });
+        }
+    });
+}
+
+/* =======================
+   REJECT ORDER
+======================= */
+
+function cancelOrderAndMarkAsRead(orderId, code) {
+
+    var urls;
+    const check = location.origin;
+    if (check == "http://localhost") {
+        urls = '/fooyesco/orders/';
+    } else {
+        urls = '/orders/';
     }
+
+    $.ajax({
+        url: urls + '/mark_order_as_read/',
+        method: 'POST',
+        data: { order_id: orderId },
+        success: function () {
+
+            $.ajax({
+                url: urls + '/cancel/' + code,
+                method: 'POST',
+                success: function () {
+
+                    Swal.fire({
+                        title: 'Order Rejected!',
+                        text: 'The order has been canceled.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }
+    });
+}
 </script>
+

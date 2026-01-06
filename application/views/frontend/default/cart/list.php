@@ -143,8 +143,14 @@ if (count($restaurant_ids) > 0):
                 <?php echo site_phrase('your_order_has_been_placed_successfully'); ?>.
             </span>
             <a href="<?php echo site_url(); ?>" class="rr-btn btn-danger mt-4">
-    Go To Home
-</a>
+                Go To Home
+            </a>
+            <?php
+            $order_code = $this->input->get('order_code');
+            ?>
+            <a href="<?php echo site_url('cart/cancel_order_frontend/' . $order_code); ?>" class="rr-btn btn-danger mt-4">
+                    Cancel Your Order    
+                    </a>
             <span class="d-block mt-2">
                 <!-- <?php // echo site_phrase('check_your_order_status'); ?> <a href="<?php // echo site_url('orders/today'); ?>"> -->
                     <!-- <php echo strtolower(site_phrase('here')); ?>. -->
