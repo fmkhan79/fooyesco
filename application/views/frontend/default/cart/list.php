@@ -146,11 +146,14 @@ if (count($restaurant_ids) > 0):
                 Go To Home
             </a>
             <?php
-            $order_code = $this->input->get('order_code');
+            $order_code = $this->input->get('q');
             ?>
-            <a href="<?php echo site_url('cart/cancel_order_frontend/' . $order_code); ?>" class="rr-btn btn-danger mt-4">
-                    Cancel Your Order    
-                    </a>
+            <a href="javascript:void(0)" 
+    class="rr-btn btn-danger mt-4"
+    onclick="confirmCancelOrder('<?php echo site_url('cart/cancel_order_frontend/' . $order_code); ?>')">
+    Cancel Your Order
+    </a>
+
             <span class="d-block mt-2">
                 <!-- <?php // echo site_phrase('check_your_order_status'); ?> <a href="<?php // echo site_url('orders/today'); ?>"> -->
                     <!-- <php echo strtolower(site_phrase('here')); ?>. -->
@@ -202,3 +205,24 @@ if (count($restaurant_ids) > 0):
         window.location = window.location.origin + '/site/restaurants/recent';
     }, 4000);
 </script> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+function confirmCancelOrder(cancelUrl) {
+    Swal.fire({
+        title: 'Cancel Order?',
+        text: 'Are you sure you want to cancel this order? This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, Cancel Order',
+        cancelButtonText: 'No, Keep Order',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = cancelUrl;
+        }
+    });
+}
+</script>

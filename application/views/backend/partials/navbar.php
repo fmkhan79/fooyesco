@@ -123,6 +123,7 @@ function showpopup() {
     });
 }
 
+
 document.addEventListener('DOMContentLoaded', function () {
     showpopup();
     checkCustomerCancelOrder(); // 👈 NEW
@@ -177,9 +178,11 @@ function showCustomerCancelPopup(obj) {
 
     Swal.fire({
         title: "Order Cancelled!",
-        text: "Order ID: " + obj.id + " has been cancelled by customer.",
+     html: "Order ID: " + obj.id +
+      " has been cancelled by customer.<br>" +
+      "Total Amount: £" + obj.grand_total + "<br> Customer Name: " + JSON.parse(obj.billing).first_name,
         icon: "warning",
-        confirmButtonText: "OK",
+        confirmButtonText: "Aknowledge",
         allowOutsideClick: false
     }).then((result) => {
         if (result.isConfirmed) {

@@ -265,7 +265,7 @@ class Cart_model extends Base_model
         'quantity' => $quantity,
         'price'    => $price
     ];
-
+    
     $this->db->where('id', $cart_id);
     return $this->db->update('cart', $data);
 }

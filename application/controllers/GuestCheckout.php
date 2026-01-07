@@ -299,7 +299,7 @@ class GuestCheckout extends Base
         if ($order_code) {
             $this->session->set_flashdata('confirm_order', true);
             success(site_phrase('order_submitted_successfully'), 
-                    site_url('cart') . '?order_code=' . $order_code);
+                    site_url('cart') . '?q=' . $order_code);
 
         } else {
             error(site_phrase('an_error_occurred'), site_url('cart'));
@@ -316,7 +316,7 @@ class GuestCheckout extends Base
         if ($order_code) {
             $this->session->set_flashdata('confirm_order', true);
             success(site_phrase('order_submitted_successfully'), 
-                    site_url('cart') . '?order_code=' . $order_code);
+                    site_url('cart') . '?q=' . $order_code);
         } else {
             error(site_phrase('an_error_occurred'), site_url('cart'));
         }
@@ -405,7 +405,7 @@ class GuestCheckout extends Base
             $order_code = $this->checkout_model->paid_with_stripe($address_id, $order_type, $response);
             if ($order_code) {
                 $this->session->set_flashdata('confirm_order', true);
-                success(site_phrase('order_submitted_successfully'), site_url('cart') . '?order_code=' . $order_code);
+                success(site_phrase('order_submitted_successfully'), site_url('cart') . '?q=' . $order_code);
             } else {
                 error(site_phrase('an_error_occurred'), site_url('cart'));
             }
