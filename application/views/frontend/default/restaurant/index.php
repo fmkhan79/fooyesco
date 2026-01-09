@@ -468,7 +468,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 </section>
 
 <center>
-<button id="seeCategoriesBtn" class="btn" style="
+<button id="seeCategoriesBtn" class="btn d-lg-none" style="
           
     padding: 11px 22px;
     background: #f54748;
