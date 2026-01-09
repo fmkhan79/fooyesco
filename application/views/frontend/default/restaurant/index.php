@@ -467,6 +467,22 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 </section>
 
+<center>
+<button id="seeCategoriesBtn" class="btn" style="
+          
+    padding: 11px 22px;
+    background: #f54748;
+    border-radius: 41px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+    margin-top:10px;
+
+        ">
+            See Categories
+        </button>
+
+        </center>
 <section class="d-lg-none " style="border-radius: 20px;">
     <div class="container" style="display: contents;">
                 <div class="mobile-category-bar d-lg-none">
@@ -482,6 +498,50 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 </section>
 <!-- ./Category tabs with scrool nav -->
+ <!-- Fullscreen Popup -->
+<div id="categoryPopup" style="
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+">
+    <div style="
+        background: #fff;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 400px;
+        max-height: 90%;
+        overflow-y: auto;
+        padding: 15px 0;
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    ">
+        <h3 style="text-align: center; margin-bottom: 15px;">Categories</h3>
+        <div id="categoryList" style="display: flex; flex-direction: column;"></div>
+
+        <button id="closePopup" style="
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border: none;
+            background: none;
+            font-size: 22px;
+            cursor: pointer;
+        ">✖</button>
+    </div>
+</div>
+
+
 
 <div class="container mt-5 mt-md-0">
     <!-- Accordion Wrapper -->
@@ -763,14 +823,14 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 </section>
 
 <!-- MOBILE CATEGORY POPUP -->
-<div id="mobileCategoryPopup" class="mobile-category-popup d-lg-none">
+<!-- <div id="mobileCategoryPopup" class="mobile-category-popup d-lg-none">
     <div class="popup-header">
         <span id="popupCategoryTitle"></span>
         <button id="closePopup">&times;</button>
     </div>
 
     <div id="popupCategoryContent" class="popup-content"></div>
-</div>
+</div> -->
 
 
 
@@ -922,7 +982,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
  
 </script>
 
-<script>
+<!-- <script>
 document.addEventListener("DOMContentLoaded", function () {
 
     if (window.innerWidth >= 992) return; // mobile only
@@ -960,10 +1020,73 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
-</script>
+</script> -->
 
 
 
 <!-- ./Mobile app section -->
 
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.innerWidth >= 992) return; // mobile only
+
+    const seeBtn = document.getElementById("seeCategoriesBtn");
+    const popup = document.getElementById("categoryPopup");
+    const closeBtn = document.getElementById("closePopup");
+    const categoryList = document.getElementById("categoryList");
+
+    const categoryLinks = document.querySelectorAll(".mobile-category-bar a");
+
+    seeBtn.addEventListener("click", function () {
+        categoryList.innerHTML = "";
+
+        categoryLinks.forEach((link) => {
+            const container = document.createElement("a");
+            container.href = link.href;
+            container.style.display = "flex";
+            container.style.alignItems = "center";
+            container.style.padding = "10px 15px";
+            container.style.borderBottom = "1px solid #eee";
+            container.style.textDecoration = "none";
+            container.style.color = "#333";
+
+            // Image/Icon
+            const imgSrc = link.dataset.img || "https://via.placeholder.com/40";
+            const img = document.createElement("img");
+            img.src = imgSrc;
+            img.style.width = "40px";
+            img.style.height = "40px";
+            img.style.objectFit = "cover";
+            img.style.borderRadius = "8px";
+            img.style.marginRight = "15px";
+
+            // Text
+            const text = document.createElement("span");
+            text.textContent = link.textContent;
+            text.style.fontSize = "16px";
+            text.style.flex = "1";
+
+            container.appendChild(img);
+            container.appendChild(text);
+
+            container.addEventListener("click", function () {
+                popup.style.display = "none";
+                document.body.style.overflow = "";
+            });
+
+            categoryList.appendChild(container);
+        });
+
+        popup.style.display = "flex";
+        popup.style.justifyContent = "center";
+        popup.style.alignItems = "center";
+        document.body.style.overflow = "hidden";
+    });
+
+    closeBtn.addEventListener("click", function () {
+        popup.style.display = "none";
+        document.body.style.overflow = "";
+    });
+});
+</script>
