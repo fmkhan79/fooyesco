@@ -485,9 +485,10 @@ div.sticky {
     gap: 6px;                 /* reduced gap */
     overflow-x: auto;
     white-space: nowrap;
-    padding: 6px 8px;         /* tight vertical padding */
+    padding: 9px 8px;         /* tight vertical padding */
     background: #fff;
     scrollbar-width: none;
+    margin-top:10px;
 }
 
 .mobile-category-bar::-webkit-scrollbar {

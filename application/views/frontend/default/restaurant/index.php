@@ -468,7 +468,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 </section>
 
 <section class="d-lg-none " style="border-radius: 20px;">
-    <div class="container">
+    <div class="container" style="display: contents;">
                 <div class="mobile-category-bar d-lg-none">
             <?php foreach ($restaurant_categories as $restaurant_category) { ?>
                 <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>"
