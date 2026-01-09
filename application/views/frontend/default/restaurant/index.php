@@ -762,6 +762,16 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 </section>
 
+<!-- MOBILE CATEGORY POPUP -->
+<div id="mobileCategoryPopup" class="mobile-category-popup d-lg-none">
+    <div class="popup-header">
+        <span id="popupCategoryTitle"></span>
+        <button id="closePopup">&times;</button>
+    </div>
+
+    <div id="popupCategoryContent" class="popup-content"></div>
+</div>
+
 
 
 <script>
@@ -907,10 +917,50 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
     }
 
 
+    
 
  
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (window.innerWidth >= 992) return; // mobile only
+
+    const popup = document.getElementById("mobileCategoryPopup");
+    const popupTitle = document.getElementById("popupCategoryTitle");
+    const popupContent = document.getElementById("popupCategoryContent");
+    const closeBtn = document.getElementById("closePopup");
+
+    document.querySelectorAll(".mobile-category-bar a").forEach(link => {
+        link.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute("href").substring(1);
+            const targetSection = document.getElementById(targetId);
+
+            if (!targetSection) return;
+
+            // title
+            popupTitle.innerText = targetSection.innerText;
+
+            // grab category items (next sibling container)
+            const categoryBox = targetSection.nextElementSibling;
+            popupContent.innerHTML = categoryBox.outerHTML;
+
+            popup.style.display = "flex";
+            document.body.style.overflow = "hidden";
+        });
+    });
+
+    closeBtn.addEventListener("click", function () {
+        popup.style.display = "none";
+        popupContent.innerHTML = "";
+        document.body.style.overflow = "";
+    });
+
+});
+</script>
 
 
 

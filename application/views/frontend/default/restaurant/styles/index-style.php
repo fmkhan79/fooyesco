@@ -485,7 +485,8 @@ div.sticky {
     gap: 6px;                 /* reduced gap */
     overflow-x: auto;
     white-space: nowrap;
-    padding: 9px 8px;         /* tight vertical padding */
+    padding: 10px 15px 10px;
+    border-radius: 20px;         /* tight vertical padding */
     background: #fff;
     scrollbar-width: none;
     margin-top:10px;
@@ -521,6 +522,46 @@ div.sticky {
 .category-pill.active {
     background: #000;
     color: #fff;
+}
+
+/* FULL SCREEN POPUP */
+.mobile-category-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+}
+
+/* HEADER */
+.popup-header {
+    height: 56px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* CLOSE BUTTON */
+.popup-header button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+}
+
+/* CONTENT */
+.popup-content {
+    padding: 10px 15px;
+    overflow-y: auto;
+    flex: 1;
 }
 
 </style>
