@@ -477,6 +477,49 @@ div.sticky {
 }
 
 
-/* Hide the element on larger screens (tablets and up) */
+/* Hide the element on larger screens (tablets and up
+   /* MOBILE CATEGORY BAR */
+.mobile-category-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;                 /* reduced gap */
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 6px 8px;         /* tight vertical padding */
+    background: #fff;
+    scrollbar-width: none;
+}
+
+.mobile-category-bar::-webkit-scrollbar {
+    display: none;
+}
+
+/* CATEGORY PILL */
+.category-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px 12px;        /* tight pill padding */
+    height: 28px;             /* force compact height */
+    line-height: 1;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    border-radius: 14px;
+    background: #f2f2f2;
+    color: #000;
+    text-decoration: none;
+
+    margin: 0;                /* remove anchor defaults */
+}
+
+/* ACTIVE / HOVER */
+.category-pill:hover,
+.category-pill.active {
+    background: #000;
+    color: #fff;
+}
 
 </style>

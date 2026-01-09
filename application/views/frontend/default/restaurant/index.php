@@ -452,7 +452,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
 
-<section class="order-detail-btns container d-lg-block " style="border-radius: 20px;">
+<section class="order-detail-btns container d-none d-lg-block" style="border-radius: 20px;">
     <div class="container">
         <div class="order-detail-slider owl-carousel owl-theme my-5 ">
             <?php foreach ($restaurant_categories as $restaurant_category) {
@@ -467,6 +467,20 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 </section>
 
+<section class="d-lg-none " style="border-radius: 20px;">
+    <div class="container">
+                <div class="mobile-category-bar d-lg-none">
+            <?php foreach ($restaurant_categories as $restaurant_category) { ?>
+                <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>"
+                class="category-pill">
+                    <?php echo $restaurant_category['name']; ?>
+                </a>
+            <?php } ?>
+        </div>
+
+    </div>
+
+</section>
 <!-- ./Category tabs with scrool nav -->
 
 <div class="container mt-5 mt-md-0">
@@ -901,3 +915,5 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
 <!-- ./Mobile app section -->
+
+
