@@ -178,14 +178,28 @@ function showCustomerCancelPopup(obj) {
 
     Swal.fire({
         title: "Order Cancelled!",
-     html: "Order ID: " + obj.id +
-      " has been cancelled by customer.<br>" +
-      "Total Amount: £" + obj.grand_total + "<br> Customer Name: " + JSON.parse(obj.billing).first_name,
+        html:
+            "Order ID: " + obj.id +
+            " has been cancelled by customer.<br>" +
+            "Total Amount: £" + obj.grand_total +
+            "<br> Customer Name: " + JSON.parse(obj.billing).first_name,
         icon: "warning",
-        confirmButtonText: "Aknowledge",
+
+        confirmButtonText: "View Order",
+        cancelButtonText: "Acknowledge",
+        showCancelButton: true,
+
         allowOutsideClick: false
     }).then((result) => {
+
+        // View Order clicked → reset + redirect
         if (result.isConfirmed) {
+            resetCustomerCancel(obj.id);
+            window.location.href = "orders/details/" + obj.code;
+        }
+
+        // Acknowledge clicked → reset only
+        if (result.dismiss === Swal.DismissReason.cancel) {
             resetCustomerCancel(obj.id);
         }
     });

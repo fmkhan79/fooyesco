@@ -470,15 +470,13 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 <center>
 <button id="seeCategoriesBtn" class="btn d-lg-none" style="
           
-    padding: 11px 22px;
+    padding: 9px 18px;
     background: #f54748;
     border-radius: 41px;
     font-size: 14px;
     color: #fff;
     font-weight: 500;
-    margin-top:10px;
-
-        ">
+    margin-top:10px;">
             See Categories
         </button>
 
