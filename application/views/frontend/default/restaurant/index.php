@@ -467,20 +467,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 </section>
 
-            <center>
-            <button id="seeCategoriesBtn" class="btn d-lg-none" style="
-                    
-                padding: 9px 18px;
-                background: #f54748;
-                border-radius: 41px;
-                font-size: 14px;
-                color: #fff;
-                font-weight: 500;x
-                margin-top:10px;">
-                        See Categories
-                    </button>
-
-                    </center>
+            
 <section class="d-lg-none " style="border-radius: 20px;">
     <div class="container" style="display: contents;">
                 <div class="mobile-category-bar d-lg-none">
@@ -490,7 +477,21 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     <?php echo $restaurant_category['name']; ?>
                 </a>
             <?php } ?>
+              <button id="seeCategoriesBtn"
+                style="
+                    padding: 8px 14px;
+                    background: #f54748;
+                    border-radius: 20px;
+                    font-size: 18px;
+                    color: #fff;
+                    font-weight: 600;
+                    border: none;
+                    position: sticky;
+                    right: 0;
+                ">
+                &#8942;
         </div>
+        
 
     </div>
 
