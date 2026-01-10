@@ -467,20 +467,20 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 </section>
 
-<center>
-<button id="seeCategoriesBtn" class="btn d-lg-none" style="
-          
-    padding: 9px 18px;
-    background: #f54748;
-    border-radius: 41px;
-    font-size: 14px;
-    color: #fff;
-    font-weight: 500;
-    margin-top:10px;">
-            See Categories
-        </button>
+            <center>
+            <button id="seeCategoriesBtn" class="btn d-lg-none" style="
+                    
+                padding: 9px 18px;
+                background: #f54748;
+                border-radius: 41px;
+                font-size: 14px;
+                color: #fff;
+                font-weight: 500;x
+                margin-top:10px;">
+                        See Categories
+                    </button>
 
-        </center>
+                    </center>
 <section class="d-lg-none " style="border-radius: 20px;">
     <div class="container" style="display: contents;">
                 <div class="mobile-category-bar d-lg-none">
@@ -510,6 +510,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
     align-items: center;
     padding: 10px;
     box-sizing: border-box;
+    font-weight: bold;
 ">
     <div style="
         background: #fff;
@@ -1050,14 +1051,7 @@ document.addEventListener("DOMContentLoaded", function () {
             container.style.color = "#333";
 
             // Image/Icon
-            const imgSrc = link.dataset.img || "https://via.placeholder.com/40";
-            const img = document.createElement("img");
-            img.src = imgSrc;
-            img.style.width = "40px";
-            img.style.height = "40px";
-            img.style.objectFit = "cover";
-            img.style.borderRadius = "8px";
-            img.style.marginRight = "15px";
+           
 
             // Text
             const text = document.createElement("span");
@@ -1065,7 +1059,7 @@ document.addEventListener("DOMContentLoaded", function () {
             text.style.fontSize = "16px";
             text.style.flex = "1";
 
-            container.appendChild(img);
+            // container.appendChild(img);
             container.appendChild(text);
 
             container.addEventListener("click", function () {
