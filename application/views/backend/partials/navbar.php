@@ -176,6 +176,11 @@ function checkCustomerCancelOrder() {
 
 function showCustomerCancelPopup(obj) {
 
+    // sound init
+    let cancelnotificationSound = new Audio('<?php echo base_url('assets/auth/audio/foodpanda.mp3'); ?>');
+    cancelnotificationSound.loop = true;
+    cancelnotificationSound.play();
+
     Swal.fire({
         title: "Order Cancelled!",
         html:
@@ -192,18 +197,23 @@ function showCustomerCancelPopup(obj) {
         allowOutsideClick: false
     }).then((result) => {
 
-        // View Order clicked → reset + redirect
+        // stop sound
+        cancelnotificationSound.pause();
+        cancelnotificationSound.currentTime = 0;
+
+        // View Order clicked
         if (result.isConfirmed) {
             resetCustomerCancel(obj.id);
             window.location.href = "orders/details/" + obj.code;
         }
 
-        // Acknowledge clicked → reset only
+        // Acknowledge clicked
         if (result.dismiss === Swal.DismissReason.cancel) {
             resetCustomerCancel(obj.id);
         }
     });
 }
+
 
 /* =======================
    RESET CUSTOMER CANCEL
