@@ -190,8 +190,8 @@ class Orders extends Authorization
     // CANCEL AN ORDER. BEFORE CANCELING AN ORDER MAKE SURE TO CHECK THE CUSTOMER ID AND THE ORDER STATUS
     public function cancel($order_code)
     {
-        $order_id = $this->input->post('order_id');
 
+        $order_id = $this->input->post('order_id');
         authorization(['admin', 'driver', 'cook', 'owner'], true);
         $is_valid = $this->order_model->is_valid($order_code);
         if (!$is_valid) {
@@ -209,6 +209,32 @@ class Orders extends Authorization
             error(get_phrase('the_order_can_not_be_canceled'), site_url('orders/details/' . $order_code));
         }
     }
+            public function check_customer_cancel_order()
+            {
+                $order = $this->db
+                    ->where('customer_cancel', 1)
+                    ->where('read_status', 1)
+                    ->get('orders')
+                    ->row();
+
+                if ($order) {
+                    echo json_encode($order);
+                } else {
+                    echo '';
+                }
+            }
+
+                    public function reset_customer_cancel()
+                {
+                    $order_id = $this->input->post('order_id');
+
+                    $this->db->where('id', $order_id);
+                    $this->db->update('orders', [
+                        'customer_cancel' => 0
+                    ]);
+
+                    echo json_encode(['status' => 'success']);
+                }
 
     // LIVE ORDERS FOR TODAY
     public function live($response = false)

@@ -247,7 +247,7 @@ class Checkout_model extends Base_model
             $this->Promo_model->update_promo_status($offerCode);
         }
         $this->session->set_userdata('delivery_charges', 0);
-        return true;
+        return $order_code;
     }
     
     public function cash_on_collection()
@@ -323,7 +323,7 @@ class Checkout_model extends Base_model
             $this->Promo_model->update_promo_status($offerCode);
         }
         $this->session->set_userdata('delivery_charges', 0);
-        return true;
+        return $order_code;
     }
     
     // public function cash_on_collection()
@@ -516,6 +516,6 @@ class Checkout_model extends Base_model
 
         $this->session->set_userdata('delivery_charges', 0);
 
-        return true;
+        return $order_code;
     }
 }

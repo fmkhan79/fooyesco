@@ -259,7 +259,7 @@ class GuestCheckout extends Base
         $this->session->set_userdata('delivery_charges', 0);
         // var_dump( $this->session->userdata());
         // die();
-  $click = $this->input->get('guest') == '1' ? 1 : 0;
+        $click = $this->input->get('guest') == '1' ? 1 : 0;
 
     // Update `cart_visits` with click value
     $this->db->where('session_id', session_id());
@@ -294,10 +294,13 @@ class GuestCheckout extends Base
         $address_id = sanitize($this->input->post('address_number'));
         // $this->check_address_validity($address_id);
 
-        $response = $this->checkout_model->cash_on_delivery();
-        if ($response) {
+        $order_code = $this->checkout_model->cash_on_delivery();
+       
+        if ($order_code) {
             $this->session->set_flashdata('confirm_order', true);
-            success(site_phrase('order_submitted_successfully'), site_url('cart'));
+            success(site_phrase('order_submitted_successfully'), 
+                    site_url('cart') . '?q=' . $order_code);
+
         } else {
             error(site_phrase('an_error_occurred'), site_url('cart'));
         }
@@ -309,10 +312,11 @@ class GuestCheckout extends Base
         $address_id = sanitize($this->input->post('address_number'));
         // $this->check_address_validity($address_id);
 
-        $response = $this->checkout_model->cash_on_collection();
-        if ($response) {
+        $order_code = $this->checkout_model->cash_on_collection();
+        if ($order_code) {
             $this->session->set_flashdata('confirm_order', true);
-            success(site_phrase('order_submitted_successfully'), site_url('cart'));
+            success(site_phrase('order_submitted_successfully'), 
+                    site_url('cart') . '?q=' . $order_code);
         } else {
             error(site_phrase('an_error_occurred'), site_url('cart'));
         }
@@ -398,10 +402,10 @@ class GuestCheckout extends Base
         //THIS IS HOW I CHECKED THE STRIPE PAYMENT STATUS
         $response = $this->checkout_model->stripe_payment($session_id);
         if ($response['payment_status'] === 'succeeded') {
-            $confirmation_response = $this->checkout_model->paid_with_stripe($address_id, $order_type, $response);
-            if ($confirmation_response) {
+            $order_code = $this->checkout_model->paid_with_stripe($address_id, $order_type, $response);
+            if ($order_code) {
                 $this->session->set_flashdata('confirm_order', true);
-                success(site_phrase('order_submitted_successfully'), site_url('cart'));
+                success(site_phrase('order_submitted_successfully'), site_url('cart') . '?q=' . $order_code);
             } else {
                 error(site_phrase('an_error_occurred'), site_url('cart'));
             }

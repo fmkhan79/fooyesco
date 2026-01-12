@@ -93,7 +93,7 @@ class Promo_model extends Base_model
         if ($promo) {
             $this->db->where('offer_code', $offer_code);
             $this->db->update('promo_codes', [
-                'is_used' => 1,
+                'is_used' => 0,
                 'user_id' => $user_id
             ]);
 

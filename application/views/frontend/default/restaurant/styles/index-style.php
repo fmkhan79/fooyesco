@@ -477,6 +477,91 @@ div.sticky {
 }
 
 
-/* Hide the element on larger screens (tablets and up) */
+/* Hide the element on larger screens (tablets and up
+   /* MOBILE CATEGORY BAR */
+.mobile-category-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;                 /* reduced gap */
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 15px 10px;
+    border-radius: 20px;         /* tight vertical padding */
+    background: #fff;
+    scrollbar-width: none;
+    margin-top:10px;
+}
+
+.mobile-category-bar::-webkit-scrollbar {
+    display: none;
+}
+
+/* CATEGORY PILL */
+.category-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px 12px;        /* tight pill padding */
+    height: 28px;             /* force compact height */
+    line-height: 1;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    border-radius: 14px;
+    background: #f2f2f2;
+    color: #000;
+    text-decoration: none;
+
+    margin: 0;                /* remove anchor defaults */
+}
+
+/* ACTIVE / HOVER */
+.category-pill:hover,
+.category-pill.active {
+    background: #000;
+    color: #fff;
+}
+
+/* FULL SCREEN POPUP */
+.mobile-category-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+}
+
+/* HEADER */
+.popup-header {
+    height: 56px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* CLOSE BUTTON */
+.popup-header button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+}
+
+/* CONTENT */
+.popup-content {
+    padding: 10px 15px;
+    overflow-y: auto;
+    flex: 1;
+}
 
 </style>
