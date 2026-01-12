@@ -377,8 +377,8 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
                   <div style="text-align: center; margin: 30px 0;">
     <a href="<?php echo site_url('cart/cancel_order_frontend/' . sanitize($message['code'])); ?>"
        style="
-           background-color: #dc3545;
-           color: #fff;
+           background: #f54748;
+             color: #ffffff;
            padding: 12px 25px;
            font-size: 16px;
            font-weight: bold;
