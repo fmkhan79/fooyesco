@@ -374,22 +374,24 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
                 </tr>
             </table>
         </div>
-                  <div style="text-align: center; margin: 30px 0;">
-    <a href="<?php echo site_url('cart/cancel_order_frontend/' . sanitize($message['code'])); ?>"
-       style="
-           background: #f54748;
-             color: #ffffff;
-           padding: 12px 25px;
-           font-size: 16px;
-           font-weight: bold;
-           text-decoration: none;
-           border-radius: 6px;
-           display: inline-block;
-       "
-       onclick="return confirm('Are you sure you want to cancel this order?');">
-        Cancel Your Order
-    </a>
+                <div style="text-align: center; margin: 30px 0;">
+  <a href="<?php echo site_url('cart/cancel_order_frontend/' . sanitize($message['code'])); ?>"
+     style="
+        background:#ffffff;
+        padding:12px 25px;
+        font-size:16px;
+        font-weight:bold;
+        text-decoration:none;
+        border-radius:6px;
+        display:inline-block;
+        border:2px solid #f54748;
+        color:#f54748;
+     "
+     onclick="return confirm('Are you sure you want to cancel this order?');">
+     Cancel Your Order
+  </a>
 </div>
+
 
         <div class="footer">
             &copy; 2025 
