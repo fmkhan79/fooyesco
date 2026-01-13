@@ -374,6 +374,9 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
                 </tr>
             </table>
         </div>
+        <div style="text-align: center; margin: 20px 0;">
+            <strong style="color: #f54748;">You can only cancel your order in the next 5 minutes</strong>
+                </div>
                 <div style="text-align: center; margin: 30px 0;">
   <a href="<?php echo site_url('cart/cancel_order_frontend/' . sanitize($message['code'])); ?>"
      style="
