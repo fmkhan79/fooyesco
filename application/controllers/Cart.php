@@ -90,29 +90,50 @@ class Cart extends Base
         // $this->session->sess_destroy();
     }
 
-    public function cancel_order_frontend($order_code)
-    
-    {
-        $is_valid = $this->order_model->is_valid($order_code);
-        if (!$is_valid) {
-            error(get_phrase('nothing_found'), site_url('orders'));
-        }
+   public function cancel_order_frontend($order_code)
+{
+    $order = $this->db->get_where('orders', ['code' => $order_code])->row();
 
-        $response = $this->order_model->cancel($order_code);
-        if ($response) {
-            $this->db->set('customer_cancel', 1);       
-            $this->db->set('no_response', 0);     
-              $this->db->set('read_status', 1);             
-             $this->db->set('order_status', 'canceled');     
-            $this->db->where('code', $order_code);
-            $this->db->update('orders');
-
-            success(get_phrase('order_canceled_successfully'), site_url());
-        } else {
-            error(get_phrase('the_order_can_not_be_canceled'), site_url('orders/details/' . $order_code));
-        }
-     
+    if (!$order) {
+        error(get_phrase('nothing_found'), site_url('orders'));
     }
+
+    // Created time
+    $created_at = strtotime($order->created_at);
+
+    // Current time
+    $current_time = time();
+
+    // Difference in minutes
+    $diff_minutes = ($current_time - $created_at) / 60;
+
+    // Check 5 minutes rule
+    if ($diff_minutes > 5) {
+        error(
+            get_phrase('you_cannot_cancel_order_after_5_minutes'),
+            site_url('orders/details/' . $order_code)
+        );
+    }
+
+    // Cancel order
+    $response = $this->order_model->cancel($order_code);
+
+    if ($response) {
+        $this->db->set('customer_cancel', 1);
+        $this->db->set('no_response', 0);
+        $this->db->set('read_status', 1);
+        $this->db->set('order_status', 'canceled');
+        $this->db->where('code', $order_code);
+        $this->db->update('orders');
+
+        success(get_phrase('order_canceled_successfully'), site_url());
+    } else {
+        error(
+            get_phrase('the_order_can_not_be_canceled'),
+            site_url('orders/details/' . $order_code)
+        );
+    }
+}
 
     function damn()
     {
