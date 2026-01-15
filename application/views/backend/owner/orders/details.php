@@ -128,6 +128,33 @@ $host = $_SERVER['HTTP_HOST'];
                                     <?php echo $order_data['order_url']; ?>
                                 </a>
                             </li>
+                            <li class="list-group-item border-bottom-0">
+                                <b><?php echo get_phrase('User Device'); ?>: </b>
+                                <a class="float-right">
+                                    <strong>
+                        <?php
+                        $userAgent = $order_data['user_agent'] ?? '';
+
+                        $browser = 'Unknown';
+
+                        if (strpos($userAgent, 'Chrome') !== false && strpos($userAgent, 'Edg') === false) {
+                            $browser = 'Chrome';
+                        } elseif (strpos($userAgent, 'Firefox') !== false) {
+                            $browser = 'Firefox';
+                        } elseif (strpos($userAgent, 'Safari') !== false && strpos($userAgent, 'Chrome') === false) {
+                            $browser = 'Safari';
+                        } elseif (strpos($userAgent, 'Edg') !== false) {
+                            $browser = 'Edge';
+                        } elseif (strpos($userAgent, 'Opera') !== false || strpos($userAgent, 'OPR') !== false) {
+                            $browser = 'Opera';
+                        }
+
+                        echo $browser;
+                        ?>
+
+                                    </strong>
+                                </a>
+                            </li>
                             <?php } ?>
                             <li class="list-group-item border-bottom-0 text-center">
                                 <a href="javascript:void(0)" onclick="openHiddenWindow('<?php echo site_url('orders/print_recipt/' . sanitize($order_data['code'])); ?>'); return false;" class="btn btn-primary btn-block" "><b> <i class="fas fa-times-rectangle"></i> Print</b></a>

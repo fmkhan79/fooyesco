@@ -546,6 +546,7 @@ class Order_model extends Base_model
         // Count how many orders have been placed today
         $this->db->where('DATE(created_at)', $today);
         $count = $this->db->count_all_results('orders');
+         $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
         // New order number for the day
         $daily_order_number = $count + 1;
@@ -562,7 +563,7 @@ class Order_model extends Base_model
         $data['total_delivery_charge'] = $this->cart_model->get_total_delivery_charge();
         $data['total_vat_amount'] = $this->cart_model->get_vat_amount();
         $data['grand_total'] = $this->cart_model->get_grand_total($order_type);
-
+        $data['user_agent'] = $user_agent;
         $cart_items = $this->cart_model->get_all();
         if (!empty($cart_items)) {
             $data['restaurant_id'] = $cart_items[0]['restaurant_id'];
