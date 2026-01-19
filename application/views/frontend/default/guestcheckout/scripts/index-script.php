@@ -1,4 +1,5 @@
 <!-- Leaflet JS -->
+ 
 <script src="<?php echo base_url('assets/global/leaflet/leaflet.js'); ?>"></script>
 <script src="<?php echo base_url('assets/frontend/default/js/init.js') ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
@@ -1334,4 +1335,9 @@ document.addEventListener("DOMContentLoaded", function() {
             radio.addEventListener("change", updateMessageAndSaveToLocalStorage);
         });
     });
+
+document.getElementById("pay-with-stripe-form").addEventListener("click", function () {
+    document.getElementById("order_completed_button").disabled = true;
+});
+
 </script>
