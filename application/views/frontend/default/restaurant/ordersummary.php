@@ -8,25 +8,66 @@ if (count($restaurant_ids) > 0):
     $cart_items = $this->cart_model->get_cart_by_condition(['customer_id' => $this->session->userdata('user_id'), 'restaurant_id' => sanitize($restaurant_details['id'])]);
     $c = 1;
     foreach ($cart_items as $cart_item):
+        // print_r($cart_item);
 ?>
 <div class="price-box d-flex justify-content-between">
     <div class="product-tile">
         <span>
-            <span id="cart-quantity-<?php echo sanitize($cart_item['id']); ?>">
-                <?php echo sanitize($cart_item['quantity']); ?>
-            </span> x <?php echo html_entity_decode(sanitize($cart_item['menu_name'])); ?>
+    <span id="cart-quantity-<?php echo sanitize($cart_item['id']); ?>">
+        <?php echo sanitize($cart_item['quantity']); ?>
+    </span>
+    x <?php echo html_entity_decode(sanitize($cart_item['menu_name'])); ?>
+</span>
 
-        </span>
-        <?php 
-                // Display options_1_details if available
-                if (!empty($cart_item['options_1_details'])):
-                ?>
-        <ul class="options-list">
-            <?php foreach ($cart_item['options_1_details'] as $option): ?>
-            <li><?php echo $option['subOptionName']; ?></li>
-            <?php endforeach; ?>
-        </ul>
-        <?php endif; ?>
+<?php
+$pizza1 = [];
+$pizza2 = [];
+$extras = [];
+
+if (!empty($cart_item['options_1_details'])) {
+    foreach ($cart_item['options_1_details'] as $opt) {
+        
+        if (stripos($opt['variantName'], 'Pizza 1') !== false) {
+            $pizza1[] = $opt['subOptionName'];
+        } 
+        elseif (stripos($opt['variantName'], 'Pizza 2') !== false) {
+            $pizza2[] = $opt['subOptionName'];
+        } 
+        else {
+            $extras[] = $opt['subOptionName'];
+        }
+    }
+}
+?>
+
+<?php if (!empty($pizza1)): ?>
+<ul class="options-list">
+    <li><strong>Pizza 1</strong></li>
+    <?php foreach ($pizza1 as $item): ?>
+        <li>• <?= $item ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+
+<?php if (!empty($pizza2)): ?>
+<ul class="options-list">
+    <li><strong>Pizza 2</strong></li>
+    <?php foreach ($pizza2 as $item): ?>
+        <li>• <?= $item ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+
+<?php if (!empty($extras)): ?>
+<ul class="options-list">
+    <li><strong>Extras</strong></li>
+    <?php foreach ($extras as $item): ?>
+        <li>• <?= $item ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+
+
         <?php 
                 // Display options_1_details if available
                 if (!empty($cart_item['variant_id'])):

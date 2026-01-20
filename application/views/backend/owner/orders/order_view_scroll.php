@@ -245,7 +245,6 @@ $redirect_url = base_url('orders/details/' . $order_code);
     ?>
 
     <div id="ordered_items">
-        
         <?php
         foreach ($ordered_items as $ordered_item) :
             // defensive checks
@@ -263,25 +262,76 @@ $redirect_url = base_url('orders/details/' . $order_code);
 
             if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
                 $addons = json_decode($ordered_item["addons"], true);
-
+                // print_r($addons);
                 if (is_array($addons) && count($addons) > 0) {
-                    if (isset($addons[0]) && is_string($addons[0])) {
-                        $addonHTML = '<ul class="line-item"><li> ' . implode(", ", $addons) . '</li></ul>';
-                    } 
-                    else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
-                        $groupedAddons = [];
-                        foreach ($addons as $addon) {
-                            $subVariantId = $addon['subVariantId'] ?? null;
-                            
-                            $itemId = $addon['itemId'] ?? null;
-                            if ($subVariantId === null) continue;
-                            if (!isset($groupedAddons[$subVariantId])) {
-                                $groupedAddons[$subVariantId] = [];
-                            }
-                            $groupedAddons[$subVariantId][] = $itemId;
-                        }
-                        $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
-                    }
+                   if (is_array($addons) && isset($addons[0]) && is_string($addons[0])) {
+                $addonHTML = formatPizzaDealReceiptAddons(
+                    $addons,
+                    $menu_details['name'] ?? ''
+                );
+            }
+
+              else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
+
+    $pizza1 = [];
+    $pizza2 = [];
+    $extras = [];
+
+    foreach ($addons as $addon) {
+
+        if (empty($addon['itemId'])) continue;
+
+        $item = $this->menu_model->get_addon_item_detail($addon['itemId']);
+        if (empty($item)) continue;
+
+        $variantName = $item['variantName'] ?? '';
+        $subOptionName = $item['subOptionName'] ?? '';
+
+        if (stripos($variantName, 'Pizza 1') !== false) {
+            $pizza1[] = $subOptionName;
+        }
+        elseif (stripos($variantName, 'Pizza 2') !== false) {
+            $pizza2[] = $subOptionName;
+        }
+        else {
+            $extras[] = $subOptionName;
+        }
+    }
+
+    ob_start();
+    ?>
+
+    <?php if (!empty($pizza1)): ?>
+        <ul class="options-list">
+            <li><strong>Pizza 1</strong></li>
+            <?php foreach ($pizza1 as $p): ?>
+                <li>• <?= html_entity_decode(sanitize($p)) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+
+    <?php if (!empty($pizza2)): ?>
+        <ul class="options-list">
+            <li><strong>Pizza 2</strong></li>
+            <?php foreach ($pizza2 as $p): ?>
+                <li>• <?= html_entity_decode(sanitize($p)) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+
+    <?php if (!empty($extras)): ?>
+        <ul class="options-list">
+            <li><strong>Extras</strong></li>
+            <?php foreach ($extras as $p): ?>
+                <li>• <?= html_entity_decode(sanitize($p)) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+
+    <?php
+    $addonHTML = ob_get_clean();
+}
+
                 }
             }
         ?>

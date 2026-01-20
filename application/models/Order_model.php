@@ -586,9 +586,10 @@ class Order_model extends Base_model
         // die();   
 
         foreach ($cart_items as $cart_item) {
+            // print_r($cart_item);
+            // die();
             $restaurant_ids = $order_details['restaurant_id'];
-
-            $order_details['order_code'] = $data['code'];
+                        $order_details['order_code'] = $data['code'];
             $order_details['menu_id'] = $cart_item['menu_id'];
             $order_details['restaurant_id'] = $cart_item['restaurant_id'];
             $order_details['servings'] = $cart_item['servings'];
