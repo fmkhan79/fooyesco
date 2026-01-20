@@ -142,25 +142,25 @@ $host = $_SERVER['HTTP_HOST'];
                                 <b><?php echo get_phrase('User Device'); ?>: </b>
                                 <a class="float-right">
                                     <strong>
-                        <?php
-                        $userAgent = $order_data['user_agent'] ?? '';
+                                    <?php
+                                    $userAgent = $order_data['user_agent'] ?? '';
 
-                        $browser = 'Unknown';
+                                    $browser = 'Unknown';
 
-                        if (strpos($userAgent, 'Chrome') !== false && strpos($userAgent, 'Edg') === false) {
-                            $browser = 'Chrome';
-                        } elseif (strpos($userAgent, 'Firefox') !== false) {
-                            $browser = 'Firefox';
-                        } elseif (strpos($userAgent, 'Safari') !== false && strpos($userAgent, 'Chrome') === false) {
-                            $browser = 'Safari';
-                        } elseif (strpos($userAgent, 'Edg') !== false) {
-                            $browser = 'Edge';
-                        } elseif (strpos($userAgent, 'Opera') !== false || strpos($userAgent, 'OPR') !== false) {
-                            $browser = 'Opera';
-                        }
+                                    if (strpos($userAgent, 'Chrome') !== false && strpos($userAgent, 'Edg') === false) {
+                                        $browser = 'Chrome';
+                                    } elseif (strpos($userAgent, 'Firefox') !== false) {
+                                        $browser = 'Firefox';
+                                    } elseif (strpos($userAgent, 'Safari') !== false && strpos($userAgent, 'Chrome') === false) {
+                                        $browser = 'Safari';
+                                    } elseif (strpos($userAgent, 'Edg') !== false) {
+                                        $browser = 'Edge';
+                                    } elseif (strpos($userAgent, 'Opera') !== false || strpos($userAgent, 'OPR') !== false) {
+                                        $browser = 'Opera';
+                                    }
 
-                        echo $browser;
-                        ?>
+                                    echo $browser;
+                                    ?>
 
                                     </strong>
                                 </a>

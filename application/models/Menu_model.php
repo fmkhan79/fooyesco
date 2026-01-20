@@ -34,10 +34,14 @@ class Menu_model extends Base_model
         return $this->merger($menu, true);
     }
 
-    public function get_addon_item_detail($itemId)
+  public function get_addon_item_detail($itemId)
 {
     return $this->db
-        ->select('v.variant as subOptionName, vso.name as variantName')
+        ->select('
+            v.variant AS subOptionName,
+            vso.name AS variantName,
+            v.price
+        ')
         ->from('variants v')
         ->join('variant_sub_options vso', 'vso.id = v.variant_option_id', 'left')
         ->where('v.id', $itemId)
