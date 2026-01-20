@@ -103,7 +103,10 @@
         .order-url small{
             font-size: 16px !important;
         }
-        
+        .price-right {
+    float: right; /* Moves price to the right side */
+}
+
     </style>
 </head>
 
@@ -323,32 +326,28 @@ foreach ($ordered_items as $ordered_item) :
                     if (empty($addon['itemId'])) continue;
 
                     $item = $this->menu_model->get_addon_item_detail($addon['itemId']);
-                                            if (empty($item)) continue;
-                        $variantName   = $item['variantName'] ?? '';
-                        $subOptionName = $item['subOptionName'] ?? '';
-                        $price         = floatval($item['price'] ?? 0);
+                    if (empty($item)) continue;
 
-                        // Build label with name and price
-                        $label = '<ul class="line-item font-weight-bold">';
-                        $label .= '<li>' . html_entity_decode(sanitize($subOptionName ?: $variantName)) . '</li>';
+                    $variantName   = $item['variantName'] ?? '';
+                    $subOptionName = $item['subOptionName'] ?? '';
+                    $price         = floatval($item['price'] ?? 0);
 
-                        if ($price > 0) {
-                            $label .= '<li>' . currency(number_format($price, 2)) . '</li>';
-                        }
+                    // Build label with price
+                    $label = $subOptionName;
+                    if ($price > 0) {
+                        
+    $label .= ' <span class="price-right">' . currency(number_format($price, 2)) . '</span>';
+                    }
 
-                        $label .= '</ul>';
-
-                        // Assign to arrays based on variant
-                        if (stripos($variantName, 'Pizza 1') !== false) {
-                            $pizza1[] = $label;
-                        } elseif (stripos($variantName, 'Pizza 2') !== false) {
-                            $pizza2[] = $label;
-                        } else {
-                            $extras[] = $label;
-                        }
-
-
-
+                    if (stripos($variantName, 'Pizza 1') !== false) {
+                        $pizza1[] = $label;
+                    }
+                    elseif (stripos($variantName, 'Pizza 2') !== false) {
+                        $pizza2[] = $label;
+                    }
+                    else {
+                        $extras[] = $label;
+                    }
                 }
 
                 // Generate HTML
