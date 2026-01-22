@@ -90,50 +90,109 @@ class Cart extends Base
         // $this->session->sess_destroy();
     }
 
-   public function cancel_order_frontend($order_code)
+public function cancel_order_frontend($order_code)
 {
+    // Get order
     $order = $this->db->get_where('orders', ['code' => $order_code])->row();
 
     if (!$order) {
-        error(get_phrase('nothing_found'), site_url('orders'));
+        redirect('orders');
+        return;
     }
 
-    // Created time
-    $created_at = strtotime($order->created_at);
-
-    // Current time
-    $current_time = time();
-
-    // Difference in minutes
-    $diff_minutes = ($current_time - $created_at) / 60;
-
-    // Check 5 minutes rule
-    if ($diff_minutes > 5) {
-        error(
-            get_phrase('you_cannot_cancel_order_after_5_minutes'),
-            site_url('orders/details/' . $order_code)
-        );
+    // Already canceled
+    if ($order->customer_cancel == 1 || $order->order_status == 'canceled') {
+        $page_data['page_name']  = 'cart/already_cancel';
+    $page_data['page_title'] = get_phrase('order_already_canceled', true);
+    $this->load->view(frontend('index'), $page_data); 
+    return;
     }
 
-    // Cancel order
-    $response = $this->order_model->cancel($order_code);
+    $created_at = new DateTime($order->created_at, new DateTimeZone('Asia/Kolkata'));
+    $now        = new DateTime('now', new DateTimeZone('Asia/Kolkata'));
 
-    if ($response) {
-        $this->db->set('customer_cancel', 1);
-        $this->db->set('no_response', 0);
-        $this->db->set('read_status', 1);
-        $this->db->set('order_status', 'canceled');
-        $this->db->where('code', $order_code);
-        $this->db->update('orders');
+    $diff = $now->getTimestamp() - $created_at->getTimestamp();
+    $diff_minutes = $diff / 60;
 
-        success(get_phrase('order_canceled_successfully'), site_url());
-    } else {
-        error(
-            get_phrase('the_order_can_not_be_canceled'),
-            site_url('orders/details/' . $order_code)
-        );
-    }
+if ($diff_minutes > 5) {
+    $page_data['page_name']  = 'cart/time_out';
+    $page_data['page_title'] = get_phrase('cancel_time_finished', true);
+    $this->load->view(frontend('index'), $page_data);
+    return;
 }
+    if ($diff_minutes > 5) {
+      $page_data['page_name']  = 'cart/time_out';
+    $page_data['page_title'] = get_phrase('cancel_time_finished', true);
+    $this->load->view(frontend('index'), $page_data);
+    return;
+    }
+
+    // Cancel order in DB
+    $this->order_model->cancel($order_code);
+    $this->db->where('code', $order_code)->update('orders', [
+        'customer_cancel' => 1,
+        'no_response'     => 0,
+        'read_status'     => 1,
+        'order_status'    => 'canceled'
+    ]);
+
+    // Decode billing info
+    $billing = json_decode($order->billing, true);
+    $customer_name  = $billing['first_name'] . ' ' . $billing['last_name'];
+    $customer_email = $billing['email'];
+    
+    // Prepare message for email template
+    $message = [
+        'order_code'    => $order->code,
+        'customer_name' => $customer_name,
+        'customer_email'=> $customer_email,
+        'order_date'    => $order->created_at,
+       'total_amount'  => number_format($order->grand_total, 2) // ✅ Add total order amount
+
+    ];
+
+    // Load email model
+    $this->load->model('email_model');
+
+    // Debug log before sending
+    log_message('info', 'Attempting to send order cancel email for ' . $customer_email);
+
+    // Send cancel email
+    $sent = $this->email_model->send_mail_using_php_mailer(
+        $message,
+        'Your order has been successfully canceled',
+        $customer_email,
+        false, // password
+        false, // contact
+        false, // refund
+        false, // promotion
+        false, // error
+        true   // order cancel
+    );
+
+    if ($sent) {
+        log_message('info', 'Order cancel email sent to ' . $customer_email);
+    } else {
+        log_message('error', 'Failed to send order cancel email to ' . $customer_email);
+    }
+
+    // Redirect or success message
+    success(get_phrase('order_canceled_successfully'), site_url());
+}
+
+
+
+
+public function cancel_time_finished()
+{
+    $this->load->view('frontend/default/cart/time_out');
+}
+
+public function order_already_canceled()
+{
+    $this->load->view('frontend/default/cart/already_cancel');
+}
+
 
     function damn()
     {

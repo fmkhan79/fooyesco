@@ -62,102 +62,157 @@ class Email_model extends Base_model
         }
     }
 
-	public function send_mail_using_php_mailer($message = NULL, $subject = NULL, $to = NULL, $is_password_restting_mail = false, $is_contact_submission_mail = false, $is_refund_request_mail = false, $is_promotion_mail_to_customers = false, $is_error_mail = false)
-	{
-		// Load PHPMailer library
-		// print_r('dsaas');
-		// die();
-		$this->load->library('phpmailer_lib');
-		// PHPMailer object
-		$mail = $this->phpmailer_lib->load();
-		// SMTP configuration
-		$mail->isSMTP();
-		$mail->Host       = 'mail.fooyes.co.uk'; // Your SMTP server
-		$mail->SMTPAuth   = true;
-		$mail->Username   = 'support@fooyes.co.uk'; // Your email username
-		$mail->Password   = 'hYEjNhb@[w&T7fRg'; // Your email password
-		$mail->SMTPSecure = 'ssl'; // Use 'ssl' for SSL
-		$mail->Port       = 465; // Use 465 for SSL
+	public function send_mail_using_php_mailer(
+    $message = NULL,
+    $subject = NULL,
+    $to = NULL,
+    $is_password_restting_mail = false,
+    $is_contact_submission_mail = false,
+    $is_refund_request_mail = false,
+    $is_promotion_mail_to_customers = false,
+    $is_error_mail = false,
+    $is_order_cancel_mail = false // ✅ NEW FLAG
+)
+{
+    // Load PHPMailer library
+    $this->load->library('phpmailer_lib');
 
-		$mail->setFrom('support@fooyes.co.uk', 'Fooyes'); // Your email and name
+    // PHPMailer object
+    $mail = $this->phpmailer_lib->load();
 
-		// Add a recipient
-		$mail->addAddress('fooyesuk@gmail.com');
+    // SMTP configuration
+    $mail->isSMTP();
+    $mail->Host       = 'mail.fooyes.co.uk';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'support@fooyes.co.uk';
+    $mail->Password   = 'hYEjNhb@[w&T7fRg';
+    $mail->SMTPSecure = 'ssl';
+    $mail->Port       = 465;
 
-		// FIX: Handle array or string emails safely
-			if (is_array($to)) {
-				foreach ($to as $email) {
-					if (!empty($email)) {
-						$mail->addBCC($email);
-					}
-				}
-			} else {
-				if (!empty($to)) {
-					$mail->addBCC($to);
-				}
-			}
+    $mail->setFrom('support@fooyes.co.uk', 'Fooyes');
 
+    // Admin email
+    $mail->addAddress('fooyesuk@gmail.com');
 
-		// Email subject
-		$mail->Subject = $subject;
+    // Handle recipient(s)
+    if (is_array($to)) {
+        foreach ($to as $email) {
+            if (!empty($email)) {
+                $mail->addBCC($email);
+            }
+        }
+    } else {
+        if (!empty($to)) {
+            $mail->addBCC($to);
+        }
+    }
 
-		// Set email format to HTML
-		$mail->isHTML(true);
-		// Enabled debug
-		$mail->SMTPDebug = false;
-		if ($is_password_restting_mail) {
-			
-			$htmlContent = $this->load->view('email/template', array('message' => $message), TRUE);
-		} elseif($is_contact_submission_mail) {
-			$htmlContent = $this->load->view('email/contact_submission', array('subject' => $subject, 'message' => $message), TRUE);
-		
-			  // ========== SECOND EMAIL TO USER ==========
-				$mail2 = $this->phpmailer_lib->load();
-				$mail2->isSMTP();
-				$mail2->Host = 'mail.fooyes.co.uk';
-				$mail2->SMTPAuth = true;
-				$mail2->Username = 'support@fooyes.co.uk';
-				$mail2->Password = 'hYEjNhb@[w&T7fRg';
-				$mail2->SMTPSecure = 'ssl';
-				$mail2->Port = 465;
-				$mail2->setFrom('support@fooyes.co.uk', 'Fooyes');
-				$mail2->isHTML(true);
-				$mail2->SMTPDebug = false;
+    // Subject
+    $mail->Subject = $subject;
 
-				$mail2->addAddress($message['email']); 
-				$mail2->Subject = 'Thank You for Contacting Fooyes';
-				$htmlContent2 = $this->load->view('email/thank_you', ['name' => $message['name']], TRUE);
-				$mail2->Body = $htmlContent2;
+    // HTML email
+    $mail->isHTML(true);
+    $mail->SMTPDebug = false;
 
-				$sentToUser = $mail2->send();
-				if (!$sentToUser) {
-					log_message('error', 'Thank You Mail to user failed: ' . $mail2->ErrorInfo);
-				} else {
-					log_message('info', 'Thank You Mail to user sent');
-				}
+    /* =========================
+       EMAIL TEMPLATE SELECTION
+       ========================= */
 
-		}elseif ($is_refund_request_mail) {
-			$htmlContent = $this->load->view('email/refund_request_admin', array('subject' => $subject, 'message' => $message), TRUE);
-		} elseif ($is_promotion_mail_to_customers) {
-			$htmlContent = $this->load->view('email/promotion_mail_to_customers', array('subject' => $subject, 'message' => $message), TRUE);
-		} elseif ($is_error_mail) {
-			$htmlContent = $this->load->view('email/error', array('subject' => $subject, 'message' => $message), TRUE);
-		} else {
-			
-			$htmlContent = $this->load->view('email/order_placing', array('subject' => $subject, 'message' => $message), TRUE);
-		}
+    if ($is_password_restting_mail) {
 
-		$mail->Body = $htmlContent;
-		// Send email
-		if (!$mail->send()) {
+        $htmlContent = $this->load->view(
+            'email/template',
+            ['message' => $message],
+            TRUE
+        );
 
-			log_message('error', 'Mail Error: ' . $mail->ErrorInfo);
+    } elseif ($is_contact_submission_mail) {
 
-			// YOU CAN DEBUG HERE, WHETHER MAIL IS GOING OT NO. YOU CAN PRING THE "ErrorInfo" OF MAIL OBJECT
-			return false;
-		} else {
-			// YOU CAN DEBUG HERE. WHETHER THE MAIL IS GOING OR NOT. YOU CAN ECHO HERE
-			return true;
-		}
-	}
+        $htmlContent = $this->load->view(
+            'email/contact_submission',
+            ['subject' => $subject, 'message' => $message],
+            TRUE
+        );
+
+        // SECOND MAIL TO USER
+        $mail2 = $this->phpmailer_lib->load();
+        $mail2->isSMTP();
+        $mail2->Host = 'mail.fooyes.co.uk';
+        $mail2->SMTPAuth = true;
+        $mail2->Username = 'support@fooyes.co.uk';
+        $mail2->Password = 'hYEjNhb@[w&T7fRg';
+        $mail2->SMTPSecure = 'ssl';
+        $mail2->Port = 465;
+        $mail2->setFrom('support@fooyes.co.uk', 'Fooyes');
+        $mail2->isHTML(true);
+        $mail2->SMTPDebug = false;
+
+        $mail2->addAddress($message['email']);
+        $mail2->Subject = 'Thank You for Contacting Fooyes';
+        $mail2->Body = $this->load->view(
+            'email/thank_you',
+            ['name' => $message['name']],
+            TRUE
+        );
+
+        if (!$mail2->send()) {
+            log_message('error', 'Thank You Mail failed: ' . $mail2->ErrorInfo);
+        }
+
+    } elseif ($is_refund_request_mail) {
+
+        $htmlContent = $this->load->view(
+            'email/refund_request_admin',
+            ['subject' => $subject, 'message' => $message],
+            TRUE
+        );
+
+    } elseif ($is_promotion_mail_to_customers) {
+
+        $htmlContent = $this->load->view(
+            'email/promotion_mail_to_customers',
+            ['subject' => $subject, 'message' => $message],
+            TRUE
+        );
+
+    } elseif ($is_error_mail) {
+
+        $htmlContent = $this->load->view(
+            'email/error',
+            ['subject' => $subject, 'message' => $message],
+            TRUE
+        );
+
+    } elseif ($is_order_cancel_mail) {
+
+	    log_message('info', 'ORDER CANCEL EMAIL TRIGGERED');
+
+        // ✅ ORDER CANCEL EMAIL
+        $htmlContent = $this->load->view(
+            'email/order_cancel',
+            ['subject' => $subject, 'message' => $message],
+            TRUE
+        );
+
+    } else {
+
+        // Default: order placed
+        $htmlContent = $this->load->view(
+            'email/order_placing',
+            ['subject' => $subject, 'message' => $message],
+            TRUE
+        );
+    }
+
+    $mail->Body = $htmlContent;
+
+    // Send mail
+    if (!$mail->send()) {
+        log_message('error', 'Mail Error: ' . $mail->ErrorInfo);
+        return false;
+    }
+
+    return true;
+}
+
 }
