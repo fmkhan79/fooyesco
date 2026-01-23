@@ -369,11 +369,11 @@ function handleCuisine(restaurantSlug, restId, categoryName){
 
     window.initMap = initMap;
 
-    window.onload = function () {
-        if (!getCookie("cookieConsent")) {
-            document.getElementById("cookie-banner").style.display = "block";
-        }
-    };
+document.addEventListener("DOMContentLoaded", function () {
+    if (getCookie("cookieConsent") === null) {
+        document.getElementById("cookie-banner").style.display = "block";
+    }
+});
 
     // Accept handler
     function acceptCookies() {
