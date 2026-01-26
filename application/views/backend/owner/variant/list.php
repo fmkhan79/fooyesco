@@ -64,137 +64,198 @@ $menu_variant_options = $this->variation_model->get_variant_options(sanitize($me
 
 <?php } */?>
 <!-- </div> -->
-
 <div class="row">
   <div class="col-md-12 p-4">
-    <?php
-    // var_dump($param2);
-    $menu_options = $this->variation_model->get_options(sanitize($menu_data['id']));
 
-    // var_dump($menu_options);
-    ?>
-    <?php if (is_array($menu_options) && count($menu_options) > 0): ?>
-     
+<?php
+$menu_options = $this->variation_model->get_options($menu_data['id']);
+?>
 
-      <?php
+<?php if (!empty($menu_options)): ?>
+<?php foreach ($menu_options as $menu_option): ?>
 
-   
-      foreach ($menu_options as $key => $menu_option): ?>
-        <div class="form-group">
-          <div class="form-row cat-main bg-dark rounded">
-            <label class="col-sm-6 col-form-label menu_variation_options" for="menu_variation_options">
-              <?php echo get_phrase($menu_option['name']); ?><span class="text-danger"></span>
-            </label>
-            
-            <label class="col-sm-2 col-form-label flex-align" >
-            <?php if(get_phrase($menu_option['price']) > 0 ){ echo "£".get_phrase($menu_option['price']); } ?>
-            </label>
-           
-            <div class="col-sm-4 flex-align">
-              
-                <button style="margin:2px;font-size: 18px;" class="btn btn-info btn-sm add_variant">
-Save Varirants
-</button>
-            <button style="margin:2px;font-size: 18px;" data-menu-id="<?php echo $menu_option['menu_id']; ?>"
-                data-variation-id="<?php echo $menu_option['id']; ?>"
-                class="btn btn-light duplicate_variant">
-                Duplicate
-              </button>
+<div class="form-group">
 
-       
+  <!-- MAIN VARIANT -->
+  <div class="form-row bg-dark text-white p-2 rounded">
+    <div class="col-md-6">
+      <?= $menu_option['name']; ?>
+    </div>
 
+    <div class="col-md-2">
+      <?php if ($menu_option['price'] > 0) echo '£'.$menu_option['price']; ?>
+    </div>
 
-            <button style="float:right;font-size: 18px;" data-menu-id="<?php echo $menu_option['menu_id']; ?>"
-                data-variation-id="<?php echo $menu_option['id']; ?>"
-                class="btn btn-warning add_sub_variant add_variant_item_<?php echo $menu_option['id']; ?>">
-                Add Food Sub Category
-              </button>
-              
+    <div class="col-md-4 text-right">
+      <button class="btn btn-info btn-sm add_variant">Save Variants</button>
 
-            </div>
-          </div>
-          
+      <!-- SINGLE MAIN FREE ITEM BUTTON -->
+      <button
+        type="button"
+        class="btn btn-success btn-sm add_free_item_main"
+        data-menu-id="<?= $menu_option['id']; ?>">
+        Add Free Item
+      </button>
 
-          <div class="variant_<?php echo $menu_option['id']; ?>">
+      <button
+        class="btn btn-warning btn-sm add_sub_variant"
+        data-variation-id="<?= $menu_option['id']; ?>">
+        Add Food Sub Category
+      </button>
+    </div>
+  </div>
 
-            <?php
-            $variant_sub_options = $this->variation_model->get_sub_options(sanitize($menu_option['id']));
-            // var_dump($variant_sub_options);
-            foreach ($variant_sub_options as $key => $variant_sub_option) {
-              ?>
-              <!--sub_variants  work starts from hear -->
-              <div class="v_var_div" id="sub_variant-<?php echo $variant_sub_option["id"] ?>">
-                <div class="form-row v_var_row">
-                  <div class="col-md-6">
-                    <input type="text" data-variant-sub-id="<?php echo $variant_sub_option["id"] ?>" data-item-name="name"
-                      class="form-control variant_sub_cat" placeholder="Food sub Category name"
-                      value="<?php echo $variant_sub_option["name"] ?>">
-                  </div>
-                  <div class="col-md-4">
-                    <label>Is Addons
-                  <input type="checkbox"  class="variant_sub_cat"  data-variant-sub-id="<?php echo $variant_sub_option["id"] ?>" data-item-name="isoptional"  <?php if($variant_sub_option["isoptional"]){ echo "checked";} ?> >
-                    </label>
-                    <button  data-menu-id="<?php echo $variant_sub_option["menu_id"] ?>"
-                      data-variation-sub-id="<?php echo $variant_sub_option["id"] ?>" class="btn btn-info btn-sm delete_sub_variant">Delete
-                    </button>
+  <!-- SUB VARIANTS -->
+  <div class="variant_<?= $menu_option['id']; ?> mt-3">
 
+<?php
+$sub_variants = $this->variation_model->get_sub_options($menu_option['id']);
+foreach ($sub_variants as $sub):
+?>
 
-                    <!-- <button style="float:right" data-menu-id="<?php echo $variant_sub_option["menu_id"] ?>"
-                      data-variation-sub-id="<?php echo $variant_sub_option["id"] ?>" class="btn btn-light btn-sm duplicate_sub_variant">Duplicate
-                    </button> -->
+<div class="border p-2 mb-3">
 
-                  </div>
-                  <div class="col-md-2">
-                    <button style="float:right" data-menu-id="<?php echo $variant_sub_option["menu_id"] ?>"
-                      data-variation-sub-id="<?php echo $variant_sub_option["id"] ?>" class="btn btn-primary btn-sm add_variant">Add
-                      Food Item
-                    </button>
+  <div class="form-row align-items-center">
 
-                  </div>
-                </div>
-                <div class="v_items variant_items_<?php echo $variant_sub_option["id"]; ?>">
+    <div class="col-md-6">
+      <input type="text"
+        class="form-control variant_sub_cat"
+        data-variant-sub-id="<?= $sub['id']; ?>"
+        data-item-name="name"
+        value="<?= $sub['name']; ?>"
+        placeholder="Food Sub Category Name">
+    </div>
 
-                  <!-- items work start from hear -->
-                  <?php
-                  $variant_sub_items = $this->variation_model->get_sub_option_items($variant_sub_option["id"]);
-                  // var_dump($variant_sub_items);
-                  foreach ($variant_sub_items as $key => $variant_sub_item) {
-                    ?>
-                    <div id="item-<?php echo $variant_sub_item["id"]; ?>">
-                      <div class="form-row item-row">
-                        <div class="col">
-                          <input type="text" data-item-id="<?php echo $variant_sub_item["id"]; ?>" data-item-name="variant"
-                            class="form-control variant_item" placeholder="Food Item Name"
-                            value="<?php echo $variant_sub_item["variant"]; ?>">
-                        </div>
-                        <div class="col">
-                          <input type="text" data-item-id="<?php echo $variant_sub_item["id"]; ?>" data-item-name="price"
-                            class="form-control variant_item" placeholder="Price"
-                            value="<?php echo $variant_sub_item["price"]; ?>">
-                        </div>
-                        <div class="col">
-                          <button class="btn btn-info delete-item" data-item-id="<?php echo $variant_sub_item["id"]; ?>">Delete</button>
-                        </div>
-                      </div>
-                    </div>
-                  <?php } ?>
-                  <!-- items work end from hear -->
-                </div>
-              </div>
-              <!--sub_variants  work ends from hear -->
-            <?php } ?>
-          </div>
+    <div class="col-md-2">
+      <label>
+        Is Addons
+        <input type="checkbox"
+          class="variant_sub_cat"
+          data-variant-sub-id="<?= $sub['id']; ?>"
+          data-item-name="isoptional"
+          <?= $sub['isoptional'] ? 'checked' : ''; ?>>
+      </label>
+    </div>
 
-        </div>
-      <?php endforeach; ?>
-    <?php else: ?>
-      <div class="alert alert-info lighten-info text-center">
-        <i class="icon fas fa-exclamation-triangle"></i> <strong>
-          <?php echo get_phrase('heads_up'); ?>
-        </strong>!
-        <?php echo get_phrase('add_variant_option_first_to_add_menu_variants'); ?>.
-      </div>
-    <?php endif; ?>
+    <div class="col-md-4 text-right">
+      <!-- NORMAL ITEM BUTTON -->
+      <button
+        class="btn btn-primary btn-sm add_variant"
+        data-variation-sub-id="<?= $sub['id']; ?>">
+        Add Food Item
+      </button>
+    </div>
+  </div>
+
+  <!-- NORMAL ITEMS CONTAINER -->
+  <div class="variant_items_<?= $sub['id']; ?> mt-2">
+
+<?php
+$items = $this->variation_model->get_sub_option_items($sub['id']);
+foreach ($items as $item):
+if ($item['is_free']) continue;
+?>
+
+<div class="form-row mb-2">
+  <div class="col">
+    <input type="text"
+      class="form-control variant_item"
+      data-item-id="<?= $item['id']; ?>"
+      data-item-name="variant"
+      value="<?= $item['variant']; ?>">
+  </div>
+
+  <div class="col">
+    <input type="text"
+      class="form-control variant_item"
+      data-item-id="<?= $item['id']; ?>"
+      data-item-name="price"
+      value="<?= $item['price']; ?>">
+  </div>
+
+  <div class="col">
+    <button class="btn btn-danger delete-item"
+      data-item-id="<?= $item['id']; ?>">Delete</button>
+  </div>
+</div>
+
+<?php endforeach; ?>
 
   </div>
 </div>
+
+<?php endforeach; ?>
+  </div>
+
+  <!-- SINGLE FREE ITEM CONTAINER AT LAST -->
+  <div class="free_items_container_<?= $menu_option['id']; ?> mt-3" style="display:none;">
+    <h6 class="text-success">Free Items</h6>
+  </div>
+
+</div>
+
+<?php endforeach; ?>
+<?php endif; ?>
+
+  </div>
+</div>
+
+<!-- FREE ITEM TEMPLATE -->
+<template id="free-item-template">
+  <div class="form-row mb-2 free-item-row">
+    <div class="col">
+      <input type="text"
+        class="form-control variant_item"
+        data-item-name="variant"
+        placeholder="Free Item Name">
+    </div>
+
+    <div class="col">
+      <input type="text"
+        class="form-control variant_item"
+        data-item-name="price"
+        value="0"
+        readonly>
+    </div>
+
+    <div class="col">
+      <input type="hidden"
+        class="variant_item"
+        data-item-name="is_free"
+        value="1">
+
+      <button type="button"
+        class="btn btn-danger remove-free-item">
+        Delete
+      </button>
+    </div>
+  </div>
+</template>
+
+<script>
+document.addEventListener('click', function (e) {
+
+  // SINGLE MAIN ADD FREE ITEM BUTTON CLICK
+  if (e.target.classList.contains('add_free_item_main')) {
+    e.preventDefault();
+
+    let menuId = e.target.getAttribute('data-menu-id');
+    let container = document.querySelector('.free_items_container_' + menuId);
+    let template = document.getElementById('free-item-template');
+
+    if (!container || !template) return;
+
+    container.style.display = 'block';
+    container.appendChild(template.content.cloneNode(true));
+  }
+
+  // REMOVE FREE ITEM
+  if (e.target.classList.contains('remove-free-item')) {
+    e.preventDefault();
+    let row = e.target.closest('.free-item-row');
+    if (row) row.remove();
+  }
+
+});
+</script>
+
