@@ -305,7 +305,7 @@ $redirect_url = base_url('orders/details/' . $order_code);
         <ul class="options-list">
             <li><strong>Pizza 1</strong></li>
             <?php foreach ($pizza1 as $p): ?>
-                <li>• <?= html_entity_decode(sanitize($p)) ?></li>
+                <li> <?= html_entity_decode(sanitize($p)) ?></li>
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>
@@ -314,7 +314,7 @@ $redirect_url = base_url('orders/details/' . $order_code);
         <ul class="options-list">
             <li><strong>Pizza 2</strong></li>
             <?php foreach ($pizza2 as $p): ?>
-                <li>• <?= html_entity_decode(sanitize($p)) ?></li>
+                <li> <?= html_entity_decode(sanitize($p)) ?></li>
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>
@@ -323,7 +323,7 @@ $redirect_url = base_url('orders/details/' . $order_code);
         <ul class="options-list">
             <li><strong>Extras</strong></li>
             <?php foreach ($extras as $p): ?>
-                <li>• <?= html_entity_decode(sanitize($p)) ?></li>
+                <li> <?= html_entity_decode(sanitize($p)) ?></li>
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>

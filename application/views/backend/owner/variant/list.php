@@ -175,6 +175,18 @@ Save Varirants
                         <div class="col">
                           <button class="btn btn-info delete-item" data-item-id="<?php echo $variant_sub_item["id"]; ?>">Delete</button>
                         </div>
+                        <div class="col">
+                    <label style="font-size:14px;">
+                      Free with deal
+                      <input type="checkbox"
+                        class="variant_item"
+                        data-item-id="<?php echo $variant_sub_item["id"]; ?>"
+                        data-item-name="is_free"
+                        <?php if(!empty($variant_sub_item["is_free"])) echo "checked"; ?>
+                      >
+                    </label>
+                  </div>
+
                       </div>
                     </div>
                   <?php } ?>

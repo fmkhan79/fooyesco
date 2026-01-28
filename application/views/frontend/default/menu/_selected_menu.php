@@ -425,95 +425,6 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
         }
     });
 
-    // function updateOrderButton() {
-    //     let groupArr = [];
-    //     $(".modal-body input[type='radio']").each( (index, item) => { 
-    //         groupArr.push(item.getAttribute('name')); 
-    //     }); 
-    //     let ar = [...new Set(groupArr)];
-    //     let button = document.querySelector("#add-to-order-container");
-        
-    //     ar.length == $(".modal-body input[type='radio']:checked").length ? button.classList.remove("disabled") : button.classList.add("disabled");
-        
-    //     console.log(ar.length, $(".modal-body input[type='radio']:checked").length, button.classList);
-
-    // }   
-
-
-    // function checkRequireds() {
-    //     let allRequiredGroups = new Set();
-    //     let checkedRequiredGroups = new Set();
-
-    //     // Collect all required input groups (radio buttons)
-    //     $(".modal-body input[type='radio'].required-item").each(function () {
-    //         allRequiredGroups.add($(this).attr("name"));
-    //     });
-
-    //     // Collect all groups that are actually selected
-    //     $(".modal-body input[type='radio'].required-item:checked").each(function () {
-    //         checkedRequiredGroups.add($(this).attr("name"));
-    //     });
-
-    //     // Compare lengths
-    //     if (allRequiredGroups.size === checkedRequiredGroups.size) {
-    //         // ✅ All requireds selected, now proceed
-    //         addToCart();
-    //     } else {
-    //         // ❌ Some required missing
-    //         alert("Please select all required options before adding to order.");
-    //         // Scroll to first unselected required option
-    //         let firstMissing = [...allRequiredGroups].find(r => !checkedRequiredGroups.has(r));
-    //         if (firstMissing) {
-    //             let el = $(`input[name='${firstMissing}']`).first();
-    //             $('html, body').animate({ scrollTop: el.offset().top - 100 }, 500);
-    //         }
-    //     }
-    // }
-
-// function checkRequireds() {
-//     let allRequiredGroups = new Set();
-//     let checkedRequiredGroups = new Set();
-
-//     // Saare required groups nikaalo
-//     $(".modal-body input[type='radio'].required-item").each(function () {
-//         allRequiredGroups.add($(this).attr("name"));
-//     });
-
-//     // Jo checked hain unke groups
-//     $(".modal-body input[type='radio'].required-item:checked").each(function () {
-//         checkedRequiredGroups.add($(this).attr("name"));
-//     });
-
-//     // Purane error messages hata do
-//     $(".required-error").remove();
-
-//     // Check karo sab required selected hain ya nahi
-//     if (allRequiredGroups.size === checkedRequiredGroups.size) {
-//         addToCart(); // sab complete ho gaya
-//     } else {
-//         // Missing groups find karo
-//         let missingGroups = [...allRequiredGroups].filter(r => !checkedRequiredGroups.has(r));
-//         if (missingGroups.length > 0) {
-//             let firstMissing = missingGroups[0];
-//             // console.log(firstMissing);
-            
-//             let el = $(`input[name='${firstMissing}']`).first();
-
-//             // Scroll to missing required group
-//             $('.modal, .box2').animate({ scrollTop: el.offset().top - 120 }, 500);
-
-//             // Error message lagao us group ke parent ke upar (sirf ek bar)
-//             if (el.closest(".choice-box").parent().find(".required-error").length === 0) {
-//                 el.closest(".choice-box").parent().prepend(
-//                     `<span class="required-error" style="color:red;display:block;margin-bottom:5px;">
-//                         This option is required
-//                     </span>`
-//                 );
-//             }
-//         }
-//     }
-// }
-
 function checkRequireds() {
     let allRequiredGroups = new Set();
     let checkedRequiredGroups = new Set();
@@ -558,6 +469,12 @@ function checkRequireds() {
         }
     }
 }
+$(document).ready(function () {
+    // Auto trigger change for free required items
+    $(".menuoptions[hidden]:checked").each(function () {
+        $(this).trigger("change");
+    });
+});
 
 
 

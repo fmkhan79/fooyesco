@@ -1,141 +1,154 @@
-
 <?php 
-
 $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
+?>
 
- 
+<!-- CSS for FREE badge -->
+<style>
+.free-badge {
+    background: #28a745;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+    font-weight: 600;
+}
+</style>
 
+<div id="main-catagories">
 
- ?>
-<!-- One option seletion starts -->
-<div class="" id="main-catagories">
+<?php foreach($menu_sub_catagory_items as $menu_sub_catagory_item){ 
+  if($menu_sub_catagory_item["name"]){
 
-<?php
-                  foreach($menu_sub_catagory_items as $menu_sub_catagory_item){
-// var_dump($menu_sub_catagory_item);
-if($menu_sub_catagory_item["name"]){
-                    if($menu_sub_catagory_item["isoptional"] == 0){
-                  ?>
+    // Get all items of this sub-category
+    $items = $this->menu_model->get_sub_option_items($menu_sub_catagory_item["id"]);
+
+    $isFreeOption = false;
+    $firstFreeItemId = null;
+
+    foreach ($items as $it) {
+        if ($it["is_free"] == 1) {
+            $isFreeOption = true;
+            if ($firstFreeItemId === null) {
+                $firstFreeItemId = $it["id"];
+            }
+        }
+    }
+
+    /* ================= REQUIRED OPTIONS ================= */
+    if($menu_sub_catagory_item["isoptional"] == 0){
+?>
+
+<!-- REQUIRED HEADING -->
 <div class="d-flex align-items-center justify-content-between p-4 popup-gray-box">
   <div class="d-block">
-    <h3 class="p-0 m-0"> <?php echo $menu_sub_catagory_item["name"];  ?></h3>
-  <div class="error-msg"></div>
+      <h3 class="p-0 m-0 d-flex justify-content-between align-items-center">
+          <span><?php echo $menu_sub_catagory_item["name"]; ?></span>
+          <!-- <?php if($isFreeOption){ ?>
+              <span class="free-badge">FsREE</span>
+          <?php } ?> -->
+      </h3>
+      <div class="error-msg"></div>
   </div>
-  <div class="op-rq-box"><span>Required</span></div>
+
+  <?php if(!$isFreeOption){ ?>
+    <div class="op-rq-box">
+        <span>Required</span>
+    </div>
+  <?php } ?>
 </div>
 
-                 <?php   $items = $this->menu_model->get_sub_option_items($menu_sub_catagory_item["id"]); 
-                //  var_dump($items);  ?>
-<!--Items starts fron hear  -->
-<?php
-                  foreach($items as $item){
-                    // var_dump($item);
-                    if($item["variant"]){
-                  ?>
-                  <div
-                    class="d-flex align-items-center p-4 choice-box align-items-center justify-content-between gray-border">
-                    <div class="label-box">
-                      <label>
-                        <input required name="<?php if($option == "menu-option-2"){ echo $option.$menu_sub_catagory_item["name"]; }else{ echo $menu_sub_catagory_item["name"]; }  ?>"   data-item-price="<?php echo $item["price"];  ?>" data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"] ?>"   data-item-id="<?php echo $item["id"];  ?>" class="menuoptions required-item" type="radio" value="<?php echo  $item["id"]; ?>"  />
-                        <?php echo $item["variant"];  ?>
-                      </label>
-                    </div>
-                    <?php if($item["price"]){ ?>
-                    <div class="amount-box"><?php echo currency($item["price"]);  ?></div>
-                    <?php } else { echo ""; }?>
-                  </div>
-                  <?php } } }else{
-                  ?>
+<!-- REQUIRED ITEMS -->
+<?php foreach($items as $item){ 
+  if($item["variant"]){
+?>
+<div class="d-flex align-items-center p-4 choice-box justify-content-between gray-border">
 
-<!-- One option seletion starts end -->
+  <div class="label-box">
+    <label>
 
+      <?php if(!$isFreeOption){ ?>
+        <!-- NORMAL REQUIRED RADIO -->
+        <input
+          type="radio"
+          required
+          name="<?php echo $menu_sub_catagory_item["name"]; ?>"
+          value="<?php echo $item["id"]; ?>"
+          data-item-price="<?php echo $item["price"]; ?>"
+          data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"]; ?>"
+          data-item-id="<?php echo $item["id"]; ?>"
+          class="menuoptions required-item"
+        />
+      <?php } else { ?>
+        <!-- FREE → hidden + auto selected -->
+        <input
+          type="checkbox"
+          checked
+          hidden
+          name="<?php echo $menu_sub_catagory_item["name"]; ?>"
+          value="<?php echo $item["id"]; ?>"
+          data-item-price="0"
+          data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"]; ?>"
+          data-item-id="<?php echo $item["id"]; ?>"
+          class="menuoptions required-item"
+        />
+      <?php } ?>
 
+      <?php echo $item["variant"]; ?>
+
+      <?php if($item["is_free"] == 1){ ?>
+        <span class="free-badge">FREE</span>
+      <?php } ?>
+
+    </label>
+  </div>
+
+  <?php if($item["price"] && $item["is_free"] != 1){ ?>
+    <div class="amount-box"><?php echo currency($item["price"]); ?></div>
+  <?php } ?>
+
+</div>
+<?php } } ?>
+
+<?php } else { ?>
+
+<!-- ================= OPTIONAL OPTIONS ================= -->
 <div class="addons" id="med-addons">
-                    <div class="d-flex align-items-center justify-content-between p-4 popup-gray-box">
-                      <h3 class="p-0 m-0"><?php echo $menu_sub_catagory_item["name"];  ?></h3>
-                      <div class="op-rq-box">+£ <input type="text" id="grandtotal" disabled /><span>Optional</span>
-                      </div>
-                    </div>
+  <div class="d-flex align-items-center justify-content-between p-4 popup-gray-box">
+    <h3 class="p-0 m-0"><?php echo $menu_sub_catagory_item["name"]; ?></h3>
+    <div class="op-rq-box">
+      <span><?php echo ($isFreeOption) ? "Free" : "Optional"; ?></span>
+    </div>
+  </div>
 
-                    <?php   $items = $this->menu_model->get_sub_option_items($menu_sub_catagory_item["id"]); 
-                //  var_dump($items);  ?>
-<!--Items starts fron hear  -->
-<?php
-                  foreach($items as $item){
-                    if($item["variant"]){
-                  ?>
-                    <div
-                      class="d-flex align-items-center p-4 choice-box align-items-center justify-content-between gray-border">
-                      <div class="d-flex align-items-center">
-                        <input type="checkbox" value="10.00" id="cbx1"class="menuoptions optional-item" data-item-price="<?php echo $item["price"];  ?>" data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"] ?>"   data-item-id="<?php echo $item["id"];  ?>" />
-                        <label> <?php echo $item["variant"];  ?></label>
-                      </div>
-                      <?php if($item["price"]){ ?>
-                      <div class="amount-box"><?php echo currency($item["price"]);  ?></div>
-                      <?php }  else { echo ""; }  ?>
-                    </div>
-                    
-                    <?php }  }
-                  ?>
-                    
-                  </div> 
+<?php foreach($items as $item){
+  if($item["variant"]){
+?>
+<div class="d-flex align-items-center p-4 choice-box justify-content-between gray-border">
+  <div class="d-flex align-items-center">
+    <input 
+      type="checkbox"
+      class="menuoptions optional-item"
+      data-item-price="<?php echo $item["price"]; ?>"
+      data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"]; ?>"
+      data-item-id="<?php echo $item["id"]; ?>" />
+    <label>
+      <?php echo $item["variant"]; ?>
+      <?php if($item["is_free"] == 1){ ?>
+        <span class="free-badge">FREE</span>
+      <?php } ?>
+    </label>
+  </div>
 
-                  <!--Items end fron hear  -->
-                  <?php } } 
-                  }
-                  ?>
+  <?php if($item["price"] && $item["is_free"] != 1){ ?>
+    <div class="amount-box"><?php echo currency($item["price"]); ?></div>
+  <?php } ?>
+</div>
+<?php } } ?>
 
-
-                
 </div>
 
+<?php } } } ?>
 
+</div>
 
-
-
-
-
-                  <!--  
-                  optional work for addons 2
-
-                  <div id="lg-addons" class="addons" style="display: none;">
-                    <div class="d-flex align-items-center justify-content-between p-4 popup-gray-box">
-                      <h3 class="p-0 m-0">Add ons2</h3>
-                      <div class="op-rq-box">+£ <input type="text" id="grandtotal2" disabled><span>Optional</span></div>
-                    </div>
-
-                    <div
-                      class="d-flex align-items-center p-4 choice-box align-items-center justify-content-between gray-border">
-                      <div class="d-flex align-items-center">
-                        <input type="checkbox" value="10.00" id="cbx1" />
-                        <label>Add 1Açai (80g)</label>
-                      </div>
-                      <div class="amount-box">£10.00</div>
-                    </div>
-                    <div
-                      class="d-flex align-items-center p-4 choice-box align-items-center justify-content-between gray-border">
-                      <div class="d-flex align-items-center">
-                        <input type="checkbox" value="10.00" id="cbx2" />
-                        <label>Large</label>
-                      </div>
-                      <div class="amount-box">£10.00</div>
-                    </div>
-                    <div
-                      class="d-flex align-items-center p-4 choice-box align-items-center justify-content-between gray-border">
-                      <div class="d-flex align-items-center">
-                        <input type="checkbox" value="10.00" id="cbx3" />
-                        <label>Add 1Açai (80g)</label>
-                      </div>
-                      <div class="amount-box">£10.00</div>
-                    </div>
-                    <div
-                      class="d-flex align-items-center p-4 choice-box align-items-center justify-content-between gray-border">
-                      <div class="d-flex align-items-center">
-                        <input type="checkbox" value="10.00" id="cbx4" />
-                        <label>Large</label>
-                      </div>
-                      <div class="amount-box">£10.00</div>
-                    </div>
-                  </div>
-                
-                -->

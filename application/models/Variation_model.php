@@ -124,7 +124,6 @@ class Variation_model extends Base_model
             
 
               if($this->duplicate_variant_sub_variant($variation_id,$new_row_id)){
-                var_dump("came out");
               }
 
 
@@ -249,24 +248,31 @@ class Variation_model extends Base_model
 
     }
 
+public function update_item()
+{
+    $fieldName = required(sanitize($this->input->post('variation_attr_name')));
+    $variation_item_id = required(sanitize($this->input->post('variation_item_id')));
 
-    public function update_item()
-    {
-        
-        $val = $this->input->post('variation_attr_value') == "" ? 0 : $this->input->post('variation_attr_value');
+    // Checkbox / normal input handling
+    $value = $this->input->post('variation_attr_value');
 
-        $data[required(sanitize($this->input->post('variation_attr_name')))] = required(sanitize($val));
-        
-        //  $data['variation_item_id'] = required(sanitize($this->input->post('variation_item_id')));
-        //  $data['options'] = required(trim(strtolower(str_replace('-', ' ', sanitize($this->input->post('options'))))));
-
-
-        $variation_item_id = required(sanitize($this->input->post('variation_item_id')));
-        $this->db->where('id', $variation_item_id);
-        $this->db->update('variants', $data);
-        return true;
-
+    if ($value === null || $value === "") {
+        $value = 0;
     }
+
+    // Special handling for checkbox (FREE ITEM)
+    if ($fieldName === 'is_free') {
+        $value = ($value == 'on' || $value == 1) ? 1 : 0;
+    }
+
+    $data[$fieldName] = sanitize($value);
+
+    $this->db->where('id', $variation_item_id);
+    $this->db->update('variants', $data);
+
+    return true;
+}
+
 
 
     /**
@@ -506,3 +512,8 @@ class Variation_model extends Base_model
         }
     }
 }
+
+
+
+
+?>

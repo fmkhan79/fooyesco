@@ -108,11 +108,13 @@ public function cancel_order_frontend($order_code)
     return;
     }
 
-    $created_at = new DateTime($order->created_at, new DateTimeZone('Asia/Kolkata'));
-    $now        = new DateTime('now', new DateTimeZone('Asia/Kolkata'));
+    $created_at = new DateTime($order->created_at); // DB me stored format ke hisab se
+$now        = new DateTime('now', new DateTimeZone('Asia/Kolkata'));
 
-    $diff = $now->getTimestamp() - $created_at->getTimestamp();
-    $diff_minutes = $diff / 60;
+// Convert both to same timezone
+$created_at->setTimezone(new DateTimeZone('Asia/Kolkata'));
+
+$diff_minutes = ($now->getTimestamp() - $created_at->getTimestamp()) / 60;
 
 if ($diff_minutes > 5) {
     $page_data['page_name']  = 'cart/time_out';
@@ -120,12 +122,6 @@ if ($diff_minutes > 5) {
     $this->load->view(frontend('index'), $page_data);
     return;
 }
-    if ($diff_minutes > 5) {
-      $page_data['page_name']  = 'cart/time_out';
-    $page_data['page_title'] = get_phrase('cancel_time_finished', true);
-    $this->load->view(frontend('index'), $page_data);
-    return;
-    }
 
     // Cancel order in DB
     $this->order_model->cancel($order_code);
