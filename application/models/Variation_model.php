@@ -1,5 +1,3 @@
-
-
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -126,7 +124,6 @@ class Variation_model extends Base_model
             
 
               if($this->duplicate_variant_sub_variant($variation_id,$new_row_id)){
-                var_dump("came out");
               }
 
 
@@ -519,3 +516,4 @@ public function update_item()
 
 
 
+?>
