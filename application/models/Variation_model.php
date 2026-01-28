@@ -1,3 +1,5 @@
+
+
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -254,11 +256,14 @@ public function update_item()
     $fieldName = required(sanitize($this->input->post('variation_attr_name')));
     $variation_item_id = required(sanitize($this->input->post('variation_item_id')));
 
+    // Checkbox / normal input handling
     $value = $this->input->post('variation_attr_value');
+
     if ($value === null || $value === "") {
         $value = 0;
     }
 
+    // Special handling for checkbox (FREE ITEM)
     if ($fieldName === 'is_free') {
         $value = ($value == 'on' || $value == 1) ? 1 : 0;
     }
@@ -271,19 +276,6 @@ public function update_item()
     return true;
 }
 
-public function add_item()
-{
-    $data['variation_sub_id'] = sanitize($this->input->post('variation_sub_id'));
-    $data['variant'] = '';
-    $data['price'] = 0;
-    $data['is_free'] = sanitize($this->input->post('is_free')) ? 1 : 0;
-
-    $this->db->insert('variants', $data);
-    $data['id'] = $this->db->insert_id();
-
-    // SAME ROW STRUCTURE
-    $this->load->view('backend/variant_item_row', $data);
-}
 
 
     /**
@@ -452,68 +444,46 @@ public function add_item()
      *  CREATE OR UPDATE VARIATION
      */
 
-   public function save_variant($action)
-{
-    $data['menu_id'] = required(sanitize($this->input->post('menu_id')));
-    $data['price'] = required(sanitize($this->input->post('variant_price')));
-    $variants = $this->input->post('menu_variation_options');
-    $variants = array_map('strtolower', $variants);
-    sort($variants);
-    $data['variant'] = required(trim(sanitize(implode(",", $variants))));
+    public function save_variant($action)
+    {
+        $data['menu_id'] = required(sanitize($this->input->post('menu_id')));
+        $data['price'] = required(sanitize($this->input->post('variant_price')));
+        $variants = $this->input->post('menu_variation_options');
+        $variants = array_map('strtolower', $variants);
+        sort($variants);
+        $data['variant'] = required(trim(sanitize(implode(",", $variants))));
 
-    // FREE ITEMS ARRAY
-    $free_items = $this->input->post('free_items'); 
-    // Expected format: free_items[SUB_ID][] = Free Item Name
+        if ($this->menu_model->authentication($data['menu_id'])) {
+            if ($action == "create") {
+                $previous_data = $this->db->get_where('variants', array('menu_id' => $data['menu_id'], 'variant' => $data['variant']));
+                if ($previous_data->num_rows() == 0) {
+                    $this->db->insert('variants', $data);
+                } else {
+                    $previous_data = $previous_data->row_array();
+                    $menu_variant_id = $previous_data['id'];
+                    $this->db->where('id', $menu_variant_id);
+                    $this->db->update('variants', $data);
+                }
 
-    if ($this->menu_model->authentication($data['menu_id'])) {
-
-        // NORMAL VARIANTS INSERT/UPDATE (existing code)
-        if ($action == "create") {
-            $previous_data = $this->db->get_where('variants', array('menu_id' => $data['menu_id'], 'variant' => $data['variant']));
-            if ($previous_data->num_rows() == 0) {
-                $this->db->insert('variants', $data);
+                return true;
             } else {
-                $previous_data = $previous_data->row_array();
-                $menu_variant_id = $previous_data['id'];
-                $this->db->where('id', $menu_variant_id);
-                $this->db->update('variants', $data);
+                $previous_data = $this->db->get_where('variants', array('menu_id' => $data['menu_id'], 'variant' => $data['variant']));
+                if ($previous_data->num_rows() == 0) {
+                    $menu_variant_id = required(sanitize($this->input->post('menu_variant_id')));
+                    $this->db->where('id', $menu_variant_id);
+                    $this->db->update('variants', $data);
+                } else {
+                    $previous_data = $previous_data->row_array();
+                    $menu_variant_id = $previous_data['id'];
+                    $this->db->where('id', $menu_variant_id);
+                    $this->db->update('variants', $data);
+                }
+                return true;
             }
         } else {
-            $previous_data = $this->db->get_where('variants', array('menu_id' => $data['menu_id'], 'variant' => $data['variant']));
-            if ($previous_data->num_rows() == 0) {
-                $menu_variant_id = required(sanitize($this->input->post('menu_variant_id')));
-                $this->db->where('id', $menu_variant_id);
-                $this->db->update('variants', $data);
-            } else {
-                $previous_data = $previous_data->row_array();
-                $menu_variant_id = $previous_data['id'];
-                $this->db->where('id', $menu_variant_id);
-                $this->db->update('variants', $data);
-            }
+            error(get_phrase("you_are_not_authorized"), site_url('menu'));
         }
-
-        // ✅ FREE ITEMS INSERT
-        if (!empty($free_items)) {
-            foreach ($free_items as $sub_id => $items) {
-                foreach ($items as $item_name) {
-                    if (trim($item_name) === '') continue;
-                    $this->db->insert('variants', [
-                        'variation_sub_id' => $sub_id,
-                        'variant' => sanitize($item_name),
-                        'price' => 0,
-                        'is_free' => 1
-                    ]);
-                }
-            }
-        }
-
-        return true;
-
-    } else {
-        error(get_phrase("you_are_not_authorized"), site_url('menu'));
     }
-}
-
 
     /**
      * DELETE MENU VARIANT
@@ -545,3 +515,7 @@ public function add_item()
         }
     }
 }
+
+
+
+

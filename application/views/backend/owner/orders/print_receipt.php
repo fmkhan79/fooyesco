@@ -355,31 +355,31 @@ foreach ($ordered_items as $ordered_item) :
                 ?>
 
                 <?php if (!empty($pizza1)): ?>
-                    <ul class="options-list">
-                        <li><strong>Pizza 1</strong></li>
-                        <?php foreach ($pizza1 as $p): ?>
-<li><?= html_entity_decode(sanitize($p)) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
+                            <ul class="options-list">
+                                <li><strong>Pizza 1</strong></li>
+                                <?php foreach ($pizza1 as $p): ?>
+        <li><?= html_entity_decode(sanitize($p)) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
 
-                <?php if (!empty($pizza2)): ?>
-                    <ul class="options-list">
-                        <li><strong>Pizza 2</strong></li>
-                        <?php foreach ($pizza2 as $p): ?>
-<li><?= html_entity_decode(sanitize($p)) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
+                        <?php if (!empty($pizza2)): ?>
+                            <ul class="options-list">
+                                <li><strong>Pizza 2</strong></li>
+                                <?php foreach ($pizza2 as $p): ?>
+        <li><?= html_entity_decode(sanitize($p)) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
 
-                <?php if (!empty($extras)): ?>
-    <ul class="options-list">
-        <li><strong>Extras</strong></li>
-        <?php foreach ($extras as $p): ?>
-            <li><?= html_entity_decode(sanitize($p)) ?></li>
-        <?php endforeach; ?>
-    </ul>
-<?php endif; ?>
+                        <?php if (!empty($extras)): ?>
+            <ul class="options-list">
+                <li><strong>Extras</strong></li>
+                <?php foreach ($extras as $p): ?>
+                    <li><?= html_entity_decode(sanitize($p)) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
 
 
                 <?php

@@ -44,7 +44,7 @@ if (!empty($cart_item['options_1_details'])) {
 <ul class="options-list">
     <li><strong>Pizza 1</strong></li>
     <?php foreach ($pizza1 as $item): ?>
-        <li>• <?= $item ?></li>
+        <li> <?= $item ?></li>
     <?php endforeach; ?>
 </ul>
 <?php endif; ?>
@@ -53,7 +53,7 @@ if (!empty($cart_item['options_1_details'])) {
 <ul class="options-list">
     <li><strong>Pizza 2</strong></li>
     <?php foreach ($pizza2 as $item): ?>
-        <li>• <?= $item ?></li>
+        <li><?= $item ?></li>
     <?php endforeach; ?>
 </ul>
 <?php endif; ?>
@@ -62,7 +62,7 @@ if (!empty($cart_item['options_1_details'])) {
 <ul class="options-list">
     <li><strong>Extras</strong></li>
     <?php foreach ($extras as $item): ?>
-        <li>• <?= $item ?></li>
+        <li><?= $item ?></li>
     <?php endforeach; ?>
 </ul>
 <?php endif; ?>
