@@ -292,7 +292,7 @@ $stripe_settings = json_decode($stripe_settings);
                     <div class="mt-3 fw-bold mx-5 " style="color: #F54748; font-weight: bold; cursor: pointer;" onclick="openAddressEditModal()">Edit</div>
                 </div>
                 <span id="show-address"></span><br>
-                    <button onclick="goToPaymentTable()" class="rr-btn border-0 mt-4">Go to next step: Place Order</button>
+                    <button id="next-step-btn" onclick="goToPaymentTable()" class="rr-btn border-0 mt-4" disabled>Go to next step: Place Order</button>
                 </div>
 
                 <div class="col-md-6">
@@ -855,16 +855,24 @@ $stripe_settings = json_decode($stripe_settings);
 
 <script>
 
- // Accept handler
+// Accept handler
 function acceptCookies() {
     setCookie("cookieConsent", "accepted", 30);
     document.getElementById("cookie-banner").style.display = "none";
     document.getElementById("termBackdrop").style.display = "none";
+
+    // Enable the button when cookies are accepted
+    document.getElementById("next-step-btn").disabled = false;
 }
+
 // Ignore handler
 function ignoreCookies() {
     setCookie("cookieConsent", "ignored", 30);
     document.getElementById("cookie-banner").style.display = "none";
+    document.getElementById("termBackdrop").style.display = "none";
+
+    // Keep button disabled if ignored
+    document.getElementById("next-step-btn").disabled = true;
 }
 
 // Set cookie
@@ -874,6 +882,7 @@ function setCookie(name, value, days) {
     const expires = "expires=" + date.toUTCString();
     document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
 }
+
 // Get cookie
 function getCookie(name) {
     const nameEQ = name + "=";
@@ -887,22 +896,33 @@ function getCookie(name) {
 
 // On load
 $(document).ready(function () {
-    console.log("Cookie on load:", getCookie("cookieConsent"));
+    const cookieConsent = getCookie("cookieConsent");
+    console.log("Cookie on load:", cookieConsent);
 
-    // Agar cookie accept nahi hui to banner show karo
-    if (getCookie("cookieConsent") !== "accepted") {
+    // Always start disabled
+    const btn = document.getElementById("next-step-btn");
+    btn.disabled = true;
+
+    // Enable only if cookieConsent is accepted
+    if (cookieConsent === "accepted") {
+        btn.disabled = false;
+    }
+
+    // Show banner if not accepted
+    if (cookieConsent !== "accepted") {
         document.getElementById("cookie-banner").style.display = "block";
         document.getElementById("termBackdrop").style.display = "block";
     }
 
-    // Example: Agar orderType delivery hai aur cookie accept ho chuki hai
-    if (typeof orderTypeV !== 'undefined' && orderTypeV === 'delivery' && getCookie("cookieConsent") === "accepted") {
+    // Show guest address modal if delivery and cookies accepted
+    if (typeof orderTypeV !== 'undefined' && orderTypeV === 'delivery' && cookieConsent === "accepted") {
         $('#guestAddressModal').modal({
             backdrop: 'static',
             keyboard: false
         }).modal('show');
     }
 });
+
 
 const nameMap = {};
 
