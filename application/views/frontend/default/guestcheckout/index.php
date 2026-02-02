@@ -728,9 +728,9 @@ $stripe_settings = json_decode($stripe_settings);
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="text-dark"><span class="order_type">Address</span> Finder</h4>
-               <button type="button" class="close" onclick="history.back();" style="font-size: 1.5rem; cursor: pointer; color: #000; background: none; border: none;">
+               <!-- <button type="button" class="close" onclick="history.back();" style="font-size: 1.5rem; cursor: pointer; color: #000; background: none; border: none;">
                         <span>&times;</span>
-                        </button>
+                        </button> -->
                   </div>
   
 
