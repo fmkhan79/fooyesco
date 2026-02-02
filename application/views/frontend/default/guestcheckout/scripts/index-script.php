@@ -824,6 +824,23 @@
                     autocomplete_to.setBounds(null); // Restrict to empty bounds if alphabets are present
                 }
             });
+// 🔒 Address change / backspace pe button disable
+address.addEventListener('input', function () {
+
+    const button = document.getElementById("checking");
+
+    // hide error message
+    $('#not-deliever').addClass('d-none');
+
+    // disable confirm button
+    button.classList.add("disabled");
+    button.style.pointerEvents = "none";
+    $($(".rr-btn.border-0.mt-4")[1]).prop("disabled", true);
+
+    // clear lat / long so distance dobara calculate ho
+    $("#lat_to").val('');
+    $("#long_to").val('');
+});
 
             // Optional: Reset autocomplete on clearing the address field (if needed)
             address.addEventListener('focus', function() {
@@ -1145,74 +1162,81 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function calculateDistance() {
-        var lat_to = $("#lat_to").val();
-        var long_to = $("#long_to").val();
 
-        $("#not-deliever").addClass("d-none");
-        $("input[name='address']").css("border", "1px solid rgba(0, 0, 0, .15)");
-        $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled");
-        var button = document.getElementById("checking");
-        button.classList.remove("disabled");
-        button.style.pointerEvents = "auto";
+    var lat_to = $("#lat_to").val();
+    var long_to = $("#long_to").val();
 
-        if (lat_to && long_to) {
-            // Perform the AJAX request
-            $.ajax({
-                type: "POST",
-                dataType: 'json',
-                url: "<?= site_url('GuestCheckout/send_distance') ?>",
-                data: {
-                    lat_to: lat_to,
-                    long_to: long_to,
-                },
-                success: function(response) {
-                    //  debugger;
+    // ❌ START ME KUCH BHI ENABLE NA KARO
+    $("#not-deliever").addClass("d-none");
+    $("input[name='address']").css("border", "1px solid rgba(0, 0, 0, .15)");
 
-                    if (response.message == 'Not delivery at this location') {
-                        // Handle 'Not delivery' error
-                        $($(".rr-btn.border-0.mt-4")[1]).prop("disabled", "true"); // Disable button
-                        $("input[name='address']").css("border", "1px solid red"); // Highlight input
-                        $("#not-deliever").toggleClass("d-none"); // Show error message
-                    } else if (response.message == 'Free delivery applied') {
-                        // Handle Free delivery
-                        $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled"); // Enable button
-                        $("input[name='address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
-                        $("#not-deliever").addClass("d-none"); // Hide error message
-                        $(".total-delivery-price").text("£0 (Free Delivery)"); // Display free delivery price
-                    } else {
-                        // Handle regular delivery price
-                        $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled"); // Enable button
-                        $("input[name='address']").css("border", "1px solid rgba(0, 0, 0, .15)"); // Reset input border
-                        $("#not-deliever").addClass("d-none"); // Show error message
-                        $(".total-delivery-price").text("£" + response.message); // Show delivery price
-                        // console.log(response.message);
-                        // Update the grand total price
-                        console.log(response.message);
+    // ensure button is disabled by default
+    var button = document.getElementById("checking");
+    button.classList.add("disabled");
+    button.style.pointerEvents = "none";
+    $($(".rr-btn.border-0.mt-4")[1]).prop("disabled", true);
 
-                        $.ajax({
-                            url: 'Cart/set_delivery_charges',
-                            type: 'POST',
-                            data: { delivery_charges: response.message },
-                            success: function(res) {
-                                console.log('Delivery charges saved in session');
-                            }
-                        });
-                        let subTotal = parseFloat($(".subtotal-price").html().replace("£", ""));
-                        // let totalVatPrice = parseFloat($(".total-vat-price").html().replace("£", ""));
-                        let totalServicePrice = parseFloat($(".total-service-price").html().replace("£", ""));
-                        let totalDiscount = parseFloat($(".total-discount-applied").html().replace("£", ""));
-                        let bagcharges = parseFloat($(".bag-charges").html().replace("£", ""));
-                        // NOTE: The adding of totalDiscount is correct, beacuse the discount is in negative. That's why it is added.
+    if (lat_to && long_to) {
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "<?= site_url('GuestCheckout/send_distance') ?>",
+            data: {
+                lat_to: lat_to,
+                long_to: long_to,
+            },
+            success: function(response) {
 
-                        let total = subTotal + totalServicePrice + parseFloat(response.message) + totalDiscount + bagcharges;
-                    }
-                },
-                error: function(xhr, status, error) {
-                    $(".data").text("An error occurred: " + xhr.responseText);
+                // ❌ NOT DELIVERABLE
+                if (response.message === 'Not delivery at this location') {
+
+                    $("#not-deliever").removeClass("d-none");
+                    $("input[name='address']").css("border", "1px solid red");
+
+                    // 🔒 button disabled hi rahe
+                    button.classList.add("disabled");
+                    button.style.pointerEvents = "none";
+                    $($(".rr-btn.border-0.mt-4")[1]).prop("disabled", true);
                 }
-            });
-        }
+
+                // ✅ DELIVERABLE (FREE)
+                else if (response.message === 'Free delivery applied') {
+
+                    $("#not-deliever").addClass("d-none");
+                    $("input[name='address']").css("border", "1px solid rgba(0, 0, 0, .15)");
+
+                    // 🔓 SIRF YAHAN ENABLE
+                    button.classList.remove("disabled");
+                    button.style.pointerEvents = "auto";
+                    $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled");
+
+                    $(".total-delivery-price").text("£0 (Free Delivery)");
+                }
+
+                // ✅ DELIVERABLE (PAID)
+                else {
+
+                    $("#not-deliever").addClass("d-none");
+                    $("input[name='address']").css("border", "1px solid rgba(0, 0, 0, .15)");
+
+                    // 🔓 SIRF YAHAN ENABLE
+                    button.classList.remove("disabled");
+                    button.style.pointerEvents = "auto";
+                    $($(".rr-btn.border-0.mt-4")[1]).removeAttr("disabled");
+
+                    $(".total-delivery-price").text("£" + response.message);
+
+                    $.ajax({
+                        url: 'Cart/set_delivery_charges',
+                        type: 'POST',
+                        data: { delivery_charges: response.message }
+                    });
+                }
+            }
+        });
     }
+}
+
 
 
     document.getElementById("mobile").addEventListener("keypress", function(e) {
