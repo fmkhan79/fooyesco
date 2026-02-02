@@ -858,12 +858,16 @@ $stripe_settings = json_decode($stripe_settings);
  // Accept handler
 function acceptCookies() {
     setCookie("cookieConsent", "accepted", 30);
+        localStorage.setItem("termsAccepted", "yes");   // ✅ ADD
+
     document.getElementById("cookie-banner").style.display = "none";
     document.getElementById("termBackdrop").style.display = "none";
 }
 // Ignore handler
 function ignoreCookies() {
     setCookie("cookieConsent", "ignored", 30);
+        localStorage.setItem("termsAccepted", "yes");   // ✅ ADD
+
     document.getElementById("cookie-banner").style.display = "none";
 }
 
@@ -1118,7 +1122,37 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     }
+
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const placeOrderBtn = document.querySelector(
+        'button[onclick="goToPaymentTable()"]'
+    );
+
+    if (!placeOrderBtn) return;
+
+    function checkTermsStatus() {
+        const termsAccepted = localStorage.getItem("termsAccepted");
+
+        if (termsAccepted === "yes") {
+            placeOrderBtn.classList.remove("disabled");
+            placeOrderBtn.style.pointerEvents = "auto";
+            placeOrderBtn.style.opacity = "1";
+        } else {
+            placeOrderBtn.classList.add("disabled");
+            placeOrderBtn.style.pointerEvents = "none";
+            placeOrderBtn.style.opacity = "0.5";
+        }
+    }
+
+    // Initial check
+    checkTermsStatus();
+
+    // Re-check when cookie accepted/ignored
+    window.addEventListener("storage", checkTermsStatus);
+});
+
 </script>
 
 
