@@ -677,7 +677,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                                             <?php echo ucfirst($menu['name']); ?>
                                                         </span>
                                                     </h3>
-                                                    <?php echo $menu['details']; ?>
+                                                    <?php echo html_entity_decode($menu["details"]); ?>
                                                 </div>
                                             </div>
                                             <div class="col-md-4 d-flex p-0 m-0 flex-column-reverse flex-md-row align-items-center">

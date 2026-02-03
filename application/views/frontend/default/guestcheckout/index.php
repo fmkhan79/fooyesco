@@ -768,6 +768,8 @@ $stripe_settings = json_decode($stripe_settings);
 
             <input type="hidden" id="inputNameMap" name="inputNameMap" value="">
             <button id="checking" type="submit" class="rr-btn border-0 mt-4 disabled">Confirm Address</button>
+              <button type="submit" onclick="history.back();" class="rr-btn border-0 mt-4">Back To Menu</button>
+
           </form>
         </div>
       </div>
@@ -1136,6 +1138,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
             });
+        }
+    }
+});
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        const tag = e.target.tagName.toLowerCase();
+        // textarea me enter allow rehne do
+        if (tag !== 'textarea') {
+            e.preventDefault();
+            return false;
         }
     }
 });
