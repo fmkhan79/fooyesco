@@ -93,7 +93,7 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
 
 <div class="popup-price-detail text-center mb-4">
     <h4>Start From <?php echo currency($starts_from->menu); ?></h4>
-    <?php echo $menu_details["details"]; ?>
+    <?php echo html_entity_decode($menu_details["details"]); ?>
 
 </div>
 <!-- Main Catagories Start -->
