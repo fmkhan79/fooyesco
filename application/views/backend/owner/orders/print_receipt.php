@@ -1,7 +1,6 @@
 <?php
 
-// print_r($order_details['address']);
-// die();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -284,6 +283,7 @@ foreach ($ordered_items as $ordered_item) :
 
     // Defensive checks
     $ordered_item = is_array($ordered_item) ? $ordered_item : (array)$ordered_item;
+            $restaurant_details = $this->restaurant_model->get_by_id($ordered_item['restaurant_id'] ?? 0);
 
     $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id'] ?? 0);
 
@@ -478,7 +478,9 @@ foreach ($ordered_items as $ordered_item) :
         $is_online_discount = floatval($order_details['is_online_discount']);
         $online_discount_amount_show = $total_menu_price * ($is_online_discount / 100.0);
     ?>
+
         <div class="did mt-3">
+            
             <span><?php echo sanitize($order_details['is_online_discount']); ?>% ONLINE DISCOUNT</span>
             <span><?php echo "-" . currency(number_format($online_discount_amount_show, 2)); ?></span>
         </div>
