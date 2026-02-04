@@ -109,10 +109,10 @@ public function cancel_order_frontend($order_code)
     }
 
     $created_at = new DateTime($order->created_at); // DB me stored format ke hisab se
-$now        = new DateTime('now', new DateTimeZone('Asia/Kolkata'));
+$now        = new DateTime('now', new DateTimeZone('Europe/London')); // Current time in UTC
 
 // Convert both to same timezone
-$created_at->setTimezone(new DateTimeZone('Asia/Kolkata'));
+$created_at->setTimezone(new DateTimeZone('Europe/London'));
 
 $diff_minutes = ($now->getTimestamp() - $created_at->getTimestamp()) / 60;
 

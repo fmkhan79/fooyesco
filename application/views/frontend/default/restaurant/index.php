@@ -149,6 +149,32 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
     }
 }
 
+.carousel-wrapper {
+    position: relative;
+}
+
+/* right side space taa ke items hide/block na hon */
+.order-detail-slider {
+    padding-right: 50px;
+}
+
+/* button styling */
+.carousel-fixed-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 8px 14px;
+    background: #f54748;
+    border-radius: 20px;
+    font-size: 18px;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    z-index: 5;
+    cursor: pointer;
+}
+
 </style>
 <!-- RESTAURANT GALLERY -->
 <script>
@@ -452,20 +478,31 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
 
 
-<section class="order-detail-btns container d-none d-lg-block" style="border-radius: 20px;">
-    <div class="container">
-        <div class="order-detail-slider owl-carousel owl-theme my-5 ">
-            <?php foreach ($restaurant_categories as $restaurant_category) {
-                
-                ?>
-                <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
-                    <?php echo $restaurant_category['name']; ?>
-                </a>
-            <?php } ?>
-        </div>
-    </div>
+<section class="order-detail-btns container d-none d-lg-block">
+    <div class="container position-relative">
 
+        <div class="carousel-wrapper position-relative">
+
+            <!-- Owl Carousel -->
+            <div class="order-detail-slider owl-carousel owl-theme my-5">
+                <?php foreach ($restaurant_categories as $restaurant_category) { ?>
+                    <a href="#<?php echo strtolower(str_replace(' ', '-', $restaurant_category['name'])); ?>">
+                        <?php echo $restaurant_category['name']; ?>
+                    </a>
+                <?php } ?>
+            </div>
+
+            <!-- Fixed button (carousel ke andar hi) -->
+<button id="desktopCategoryBtn" class="carousel-fixed-btn">
+                &#8942;
+            </button>
+
+        </div>
+
+    </div>
 </section>
+
+
 
             
 <section class="d-lg-none " style="border-radius: 20px;">
@@ -489,7 +526,10 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                     position: sticky;
                     right: 0;
                 ">
+                
                 &#8942;
+
+                                </button>
         </div>
         
 
@@ -1059,6 +1099,8 @@ document.addEventListener("DOMContentLoaded", function () {
             text.textContent = link.textContent;
             text.style.fontSize = "16px";
             text.style.flex = "1";
+              text.style.color = "black";
+
 
             // container.appendChild(img);
             container.appendChild(text);
@@ -1081,5 +1123,67 @@ document.addEventListener("DOMContentLoaded", function () {
         popup.style.display = "none";
         document.body.style.overflow = "";
     });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const seeBtn = document.getElementById("desktopCategoryBtn");
+    const popup = document.getElementById("categoryPopup");
+    const closeBtn = document.getElementById("closePopup");
+    const categoryList = document.getElementById("categoryList");
+
+    if (!seeBtn) return;
+
+    seeBtn.addEventListener("click", function () {
+
+        categoryList.innerHTML = "";
+
+        // 👉 Mobile vs Desktop categories
+        let categoryLinks;
+
+        if (window.innerWidth < 992) {
+            categoryLinks = document.querySelectorAll(".mobile-category-bar a");
+        } else {
+            categoryLinks = document.querySelectorAll(".order-detail-slider a");
+        }
+
+        categoryLinks.forEach((link) => {
+            const container = document.createElement("a");
+            container.href = link.href;
+            container.style.display = "flex";
+            container.style.alignItems = "center";
+            container.style.padding = "10px 15px";
+            container.style.borderBottom = "1px solid #eee";
+            container.style.textDecoration = "none";
+            container.style.color = "#333";
+
+            const text = document.createElement("span");
+            text.textContent = link.textContent;
+            text.style.fontSize = "16px";
+            text.style.flex = "1";
+            text.style.color = "black";
+
+            container.appendChild(text);
+
+            container.addEventListener("click", function () {
+                popup.style.display = "none";
+                document.body.style.overflow = "";
+            });
+
+            categoryList.appendChild(container);
+        });
+
+        popup.style.display = "flex";
+        popup.style.justifyContent = "center";
+        popup.style.alignItems = "center";
+        document.body.style.overflow = "hidden";
+    });
+
+    closeBtn.addEventListener("click", function () {
+        popup.style.display = "none";
+        document.body.style.overflow = "";
+    });
+
 });
 </script>
