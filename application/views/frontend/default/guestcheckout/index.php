@@ -455,7 +455,11 @@ $stripe_settings = json_decode($stripe_settings);
 
             <div id="orderTypeMessage" class="d-flex text-center font-weight-bold mb-2"></div>
 
-            <div class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-between my-4 my-display-none">
+            <div class="c-basketSwitcher u-spacingBottom align-items-center justify-content-between my-4 my-display-none">
+
+            <!-- collection or delivery wapsi lanay ka item -->
+                       <!-- <div class="c-basketSwitcher u-spacingBottom d-flex align-items-center justify-content-between my-4 my-display-none"> -->
+  
                 <label class="c-basketSwitcher-switch d-flex align-items-center justify-content-between">
                     <input type="radio" name="basket-switcher" value="delivery" checked="checked"
                     <input type="radio" name="basket-switcher" value="delivery" 
