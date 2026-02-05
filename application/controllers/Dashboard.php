@@ -90,24 +90,18 @@ class Dashboard extends Authorization
             }
         }
 
-        function two_way_dashboard() {
-    // You can add role checks if needed
-    if ($this->logged_in_user_role == "customer" || 
-        $this->logged_in_user_role == "driver" || 
-        $this->logged_in_user_role == "cook" || 
-        $this->logged_in_user_role == "owner" || 
-        $this->logged_in_user_role == "admin" || 
-        $this->logged_in_user_role == "restaurants") {
+     function two_way_dashboard() {
+    if (in_array($this->logged_in_user_role, [
+        'customer','driver','cook','owner','admin','restaurants'
+    ])) {
 
-        // Redirect to dashboard/2
-        $page_data['page_name'] = 'dashboard/second_page';
-         $page_data['orders'] = $this->order_model->filter();
-
-         $this->load->view('backend/index', $page_data);
+        $page_data['orders'] = $this->order_model->filter();
+        $this->load->view('backend/owner/dashboard/second_page', $page_data);
 
     } else {
         redirect('auth');
     }
 }
+
 
     }

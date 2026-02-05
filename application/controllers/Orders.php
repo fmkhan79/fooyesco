@@ -263,6 +263,11 @@ class Orders extends Authorization
         // $this->session->sess_destroy();
     }
 
+    public function get_order_items($code){
+    $items = $this->order_model->details($code);
+    echo json_encode($items);
+}
+
 
     public function print_recipt($order_code)
     {
