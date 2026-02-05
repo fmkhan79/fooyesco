@@ -828,6 +828,8 @@ class Order_model extends Base_model
         return $order_rows > 0 ? true : false;
     }
 
+    
+
     // CANCEL AN ORDER
     public function cancel($order_code)
     {
@@ -1940,5 +1942,16 @@ if ($pos && $pos !== 'all') {
 
         return $query->result();
     }
+
+
+    public function complete_order($order_code)
+{
+    // yahin saari logic rahegi
+    $this->db->where('code', $order_code);
+    return $this->db->update('orders', [
+        'order_status' => 'delivered',
+    ]);
+}
+
 
 }

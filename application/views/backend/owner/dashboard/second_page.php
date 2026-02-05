@@ -3,13 +3,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <meta charset="UTF-8">
 <title>POS Dashboard</title>
 
 <style>
 body{
     margin:0;
-    font-family:'Segoe UI', Tahoma, sans-serif;
+     font-family: 'Plus Jakarta Sans', sans-serif;
     /* background:#f4f6f8; */
 background: url("<?php echo base_url('uploads/category/MaskGroup.png'); ?>") center/cover no-repeat;
 
@@ -135,9 +140,11 @@ background: url("<?php echo base_url('uploads/category/MaskGroup.png'); ?>") cen
 /* ================= RIGHT ================= */
 .pos-right{
     flex:1.2;
+    border-radius: 16px;
     padding:20px;
     overflow-y:auto;
     background:#fff;
+    margin-top:24px;
 }
 
 .order{
@@ -243,15 +250,18 @@ background: url("<?php echo base_url('uploads/category/MaskGroup.png'); ?>") cen
 }
 
 .order-actions button{
-    padding:8px 12px;
+    padding:13px 12px;
     border-radius:5px;
     border:1px solid #ddd;
     background:#f7f7f7;
-    font-size:12px;
+    font-size:14px;
     cursor:pointer;
      padding-right: 28px;
     padding-left: 28px;
+            font-family: 'Plus Jakarta Sans';
+            font-weight:bold;
 
+    
 }
 
 .order-actions .primary{
@@ -274,11 +284,15 @@ background: url("<?php echo base_url('uploads/category/MaskGroup.png'); ?>") cen
 .order-total{
     margin-top:auto;
     /* border-top:2px solid #000; */
+    margin-top:25px;
+    padding-top:20px;
     padding-top:25px;
     font-size:18px;
     font-weight:700;
     display:flex;
     justify-content:space-between;
+        border-top:1px solid #e9e9e9; /* ya solid */
+
 }
 
 .get-direction{
@@ -295,7 +309,8 @@ display: flex;
 
 .order-info-details{
     color:#565656;
-    font-family: 'Helix', Arial, sans-serif;
+        font-family: 'Manrope', sans-serif;
+
 }
 
 .line-item,
@@ -316,7 +331,8 @@ ul {
 
 .receipt-item {
     margin-bottom: 12px;
-    font-family: 'Helix', Arial, sans-serif;
+        font-family: 'Manrope', sans-serif;
+
 }
 
 .receipt-header {
@@ -362,10 +378,10 @@ ul {
     align-items:center;
     padding:14px 30px;
     box-shadow:0 10px 30px rgba(0,0,0,0.08);
-    font-family:'Segoe UI', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 /* LOGO */
 .nav-logo img{
@@ -378,7 +394,8 @@ body {
     display:flex;
     gap:45px;
     margin:0 auto;
-    padding:0;
+    align-items:flex-end;
+    
 }
 
 .nav-menu li{
@@ -427,24 +444,24 @@ body {
     <ul class="nav-menu">
         <li class="active">
             <i class="fa-solid fa-house"></i>
-                    <img src="<?= base_url('uploads/category/home.png') ?>" style="height:20px;" alt="Chilli Hut">
+                    <img src="<?= base_url('uploads/category/home.png') ?>" style="height: 26px;" alt="Chilli Hut">
             <span>HOME</span>
         </li>
         <li>
             <i class="fa-solid fa-cash-register"></i>
-              <img src="<?= base_url('uploads/category/point.png') ?>" style="height:20px;" alt="Chilli Hut">
+              <img src="<?= base_url('uploads/category/point.png') ?>" style="height:26px;" alt="Chilli Hut">
 
             <span>POINT OF SALE</span>
         </li>
         <li>
             <i class="fa-solid fa-receipt"></i>
-          <img src="<?= base_url('uploads/category/order.png') ?>" style="height:20px;" alt="Chilli Hut">
+          <img src="<?= base_url('uploads/category/order.png') ?>" style="height:22px;" alt="Chilli Hut">
 
             <span>ORDERS</span>
         </li>
         <li>
             <i class="fa-solid fa-store"></i>
-                      <img src="<?= base_url('uploads/category/res.png') ?>" style="height:20px;" alt="Chilli Hut">
+                      <img src="<?= base_url('uploads/category/res.png') ?>" style="height:26px;" alt="Chilli Hut">
 
             <span>RESTAURANTS</span>
         </li>
@@ -502,9 +519,16 @@ body {
     <!-- RIGHT -->
     <div class="pos-right">
 
+
+     <div class="order-actions">
+    <button class="primary" onclick="filterOrders('current')">Current</button>
+    <button onclick="filterOrders('completed')">Order Completed</button>
+</div>
+
+
         <?php 
         $orders = $orders ?? [];
-        $perPage = 7;
+        $perPage = 8;
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $totalOrders = count($orders);
         $start = ($currentPage - 1) * $perPage;
@@ -605,7 +629,7 @@ function showOrderDetail(data) {
 
                 <div class="receipt-header">
                     <span>${item.quantity}x ${name}</span>
-                    <span>$${price}</span>
+                    <span>£${price}</span>
                 </div>
         `;
 
@@ -621,7 +645,7 @@ function showOrderDetail(data) {
             item.addons.forEach(addon => {
                 const addonName  = addon.subOptionName || addon.name || '';
                 const addonPrice = addon.price > 0 
-                    ? `$${parseFloat(addon.price).toFixed(2)}` 
+                    ? `£${parseFloat(addon.price).toFixed(2)}` 
                     : '';
 
                 itemsHTML += `
@@ -641,11 +665,24 @@ function showOrderDetail(data) {
         <div class="order-card">
 
             <div class="order-actions">
-                <button class="primary">Edit</button>
                 
-                <button>Print</button>
-                <button>Complete</button>
-                <button>Options</button>
+            <button
+            type="button"
+            class="btn btn-primary btn-block"
+            data-code="${order.code}"
+            onclick="printOrder(this)">
+            <b><i class="fas fa-times-rectangle"></i> Print</b>
+        </button>
+
+
+               <button
+                type="button"
+                class="btn btn-success"
+                data-code="${order.code}"
+                onclick="completeOrder(this)">
+                Complete
+            </button>
+                
             </div>
 
             <div class="order-card-header">
@@ -666,12 +703,7 @@ function showOrderDetail(data) {
 
             </div>
 
-            <div style="display:flex; align-items:center; gap:8px; margin-top:15px;" >
-        <img src="<?= base_url('uploads/category/Frame.png') ?>" alt="Directions" style="width:20px; height:20px;">
-            Directions
-                <img src="<?= base_url('uploads/category/detail.png') ?>" alt="Directions" style="width:20px; height:20px;">
-                    Details
-    </div>
+           
         </div>
 
         <div class="order-card" style="margin-top:20px;">
@@ -686,30 +718,145 @@ function showOrderDetail(data) {
             <div class="order-info-details">
                 <div class="right-left">
                     <span>Sub Total:</span>
-                    <span>$${parseFloat(order.total_menu_price).toFixed(2)}</span>
+                    <span>£${parseFloat(order.total_menu_price).toFixed(2)}</span>
                 </div>
 
                 <div class="right-left">
                     <span>Service Charges:</span>
-                    <span>$2.00</span>
+                    <span>£2.00</span>
                 </div>
 
                 <div class="right-left">
                     <span>Delivery Charges:</span>
-                    <span>$${parseFloat(order.total_delivery_charge).toFixed(2)}</span>
+                    <span>£${parseFloat(order.total_delivery_charge).toFixed(2)}</span>
                 </div>
 
                 <div class="right-left">
                     <span>Online Discount:</span>
-                    <span>$2.00</span>
+                    <span>£2.00</span>
                 </div>
             </div>
                 
             <div class="order-total">
-                <span>Grand Total</span>
-                <span>$${parseFloat(order.grand_total).toFixed(2)}</span>
-            </div>
+    <span>Grand Total</span>
+    <span id="grandTotal">
+        £${parseFloat(order.grand_total).toFixed(2)}
+    </span>
+</div>
+
         </div>
     `;
+    checkPaymentStatus(order.code);
 }
+
+
+
+function printOrder(btn) {
+    const code = btn.getAttribute('data-code');
+    const url = "<?= site_url('orders/print_recipt/') ?>" + code;
+    openHiddenWindow(url);
+}
+
+function openHiddenWindow(url) {
+    const win = window.open(
+        url,
+        '_blank',
+        'width=1,height=1,left=0,top=0,resizable=no,scrollbars=no,toolbar=no,menubar=no,status=no'
+    );
+
+    if (win) {
+        win.blur();
+        window.focus();
+    } else {
+        alert('Popup blocked! Please allow popups for this website.');
+    }
+}
+
+
+function completeOrder(btn) {
+    const code = btn.getAttribute('data-code');
+
+    fetch("<?= site_url('orders/complete_order') ?>", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "order_code=" + encodeURIComponent(code)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Order completed successfully');
+        } else {
+            alert(data.message || 'Something went wrong');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Server error');
+    });
+
+            }
+
+            function filterOrders(type) {
+    const orders = document.querySelectorAll('.order');
+    
+    orders.forEach(order => {
+        const badge = order.querySelector('.badge');
+        const status = badge ? badge.textContent.toLowerCase() : '';
+
+        if(type === 'current') {
+            // show all except completed/delivered
+            if(status === 'completed' || status === 'delivered') {
+                order.style.display = 'none';
+            } else {
+                order.style.display = 'flex';
+            }
+        } else if(type === 'completed') {
+            // show only completed/delivered
+            if(status === 'completed' || status === 'delivered') {
+                order.style.display = 'flex';
+            } else {
+                order.style.display = 'none';
+            }
+        }
+    });
+
+    // Update active button style
+    document.querySelectorAll('.order-actions button').forEach(btn => btn.classList.remove('primary'));
+    document.querySelector(`.order-actions button[onclick="filterOrders('${type}')"]`).classList.add('primary');
+}
+
+function checkPaymentStatus(orderCode) {
+    fetch("<?= site_url('orders/check_payment_status') ?>", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "order_code=" + encodeURIComponent(orderCode)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.paid) {
+            const grandTotal = document.getElementById('grandTotal');
+
+            const amount = grandTotal.innerText; // £21.00
+
+            grandTotal.innerHTML = `
+                <span style="color:#21930F;font-weight:700;">
+                    PAID:
+                </span>
+                <span style="margin-left:6px;">
+                    ${amount}
+                </span>
+            `;
+        }
+    })
+    .catch(err => console.error(err));
+}
+
+
+
+
+
 </script>
