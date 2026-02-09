@@ -263,6 +263,11 @@ class Orders extends Authorization
         // $this->session->sess_destroy();
     }
 
+    public function get_order_items($code){
+    $items = $this->order_model->details($code);
+    echo json_encode($items);
+}
+
 
     public function print_recipt($order_code)
     {
@@ -504,6 +509,48 @@ class Orders extends Authorization
                 $this->load->view('backend/owner/orders/order_view_scroll', $data);
 
 }
+
+
+    public function complete_order()
+{
+    $code = $this->input->post('order_code');
+
+    if (!$code) {
+        echo json_encode(['status' => 'error', 'message' => 'Order code missing']);
+        return;
+    }
+
+    $this->load->model('order_model');
+    $result = $this->order_model->complete_order($code);
+
+    if ($result) {
+        echo json_encode(['status' => 'success']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Unable to complete order']);
+    }
+}
+
+
+public function check_payment_status()
+{
+    $order_code = $this->input->post('order_code');
+
+    $payment = $this->db
+        ->where('order_code', $order_code)
+        ->get('payment')
+        ->row();
+
+    if ($payment && $payment->payment_method === 'stripe') {
+        echo json_encode([
+            'paid' => true
+        ]);
+    } else {
+        echo json_encode([
+            'paid' => false
+        ]);
+    }
+}
+
 
 }
 
