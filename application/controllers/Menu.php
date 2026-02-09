@@ -99,6 +99,7 @@ class Menu extends Authorization
     function store()
     {
         $response = $this->menu_model->store();
+        
         if ($response) {
             success(get_phrase('menu_added_successfully'), site_url('menu'));
         }

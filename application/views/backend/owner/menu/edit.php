@@ -49,6 +49,25 @@
                                         </select>
                                     </div>
 
+                                  <div class="form-group">
+                                <label for="menu_for_standalone">
+                                    Show menu on
+                                </label>
+
+                                <?php $selectedStandalone = $menu_data['menu_for_standalone'] ?? 0; ?>
+
+                                <select class="form-control select2" name="menu_for_standalone" id="menu_for_standalone">
+                                    <option value="0" <?= $selectedStandalone == 0 ? 'selected' : '' ?>>
+                                        Fooyes Domain
+                                    </option>
+                                    <option value="1" <?= $selectedStandalone == 1 ? 'selected' : '' ?>>
+                                        Standalone
+                                    </option>
+                                </select>
+                            </div>
+
+
+
                                     <div class="custom-control custom-checkbox">
                                         <input class="custom-control-input" name="availability" type="checkbox" id="availability" <?php if ($menu_data['availability']) echo "checked"; ?>>
                                         <label for="availability" class="custom-control-label"><?php echo get_phrase("it_is_available"); ?> <small>( <?php echo get_phrase('uncheck') . ', ' . get_phrase('if_it_is_out_of_stock'); ?> )</small></label>
@@ -63,6 +82,8 @@
                                         <input class="custom-control-input" name="todayspecial" type="checkbox" id="todayspecial" <?php if ($menu_data['today_special']) echo "checked"; ?>>
                                         <label for="todayspecial" class="custom-control-label">Today Special Offer<small>( <?php echo get_phrase('check') . ', ' . get_phrase('if_it_is_available_for_offer'); ?> )</small></label>
                                     </div>
+
+                                    
                                     <button type="submit" class="btn btn-primary mt-4"><?php echo get_phrase('update_basic'); ?></button>
                                 </form>
                             </div>
@@ -182,6 +203,7 @@
                                                 ?>%
                                             </span> <?php echo get_phrase('discount'); ?></small>
                                     </div>
+                                    
                                     <button type="submit" class="btn btn-primary float-left"><?php echo get_phrase('update_price'); ?></button>
                                 </form>
                             </div>

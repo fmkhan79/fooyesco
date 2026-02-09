@@ -634,11 +634,24 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                                 <div class="order col-md-2">Order</div>
                             </div>
                             <?php
-                            $counter = 1;
-                            foreach ($menus as $key => $menu):
+                           $current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
+                                $isFooyes = (strpos($current_domain, 'fooyes') !== false);
 
-                                $starts_from = json_decode($menu["price"]);
-                            ?>
+                                foreach ($menus as $menu):
+
+                                    $isStandalone = $menu['menu_for_standalone'] ?? 0;
+
+                                    // 🔴 CASE 1: fooyes domain → standalone HIDE
+                                    if ($isFooyes && $isStandalone == 1) {
+                                        continue;
+                                    }
+
+                                    if (!$isFooyes && $isStandalone != 1) {
+                                        continue;
+                                    }
+
+                                    $starts_from = json_decode($menu['price']);
+                                    ?>
 
                                 <?php // Load the model
                                 $this->load->model('user_model');
