@@ -463,7 +463,7 @@ public function merger_pos($cart_items)
 }
 
 
-   private function get_options_details($options)
+   public function get_options_details($options)
 {
     // If not array → convert to empty array
     if (!is_array($options)) {
@@ -677,25 +677,44 @@ public function get_total_discount_applied_percentage($order_type, $restaurant_i
 {
     $total_discount = 0.00;
 
-    if (!empty($restaurant_id)) {
-        $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
-
-        if (!empty($restaurant_details) && $this->get_sub_total() > 0) {
-            if (in_array($order_type, ['collection', 'pickup'])) {
-                $discount_value = $restaurant_details['pick_discount'] ?? '0%';
-            } else {
-                $discount_value = $restaurant_details['res_discount'] ?? '0%';
-            }
-
-            // ✅ Remove % and cast to float
-            $total_discount = (float)str_replace('%', '', $discount_value);
-        }
-    } else {
+    if (empty($restaurant_id)) {
         log_message('debug', 'No restaurant_id provided in get_total_discount_applied_percentage()');
+        return $total_discount;
     }
 
+    $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
+
+    if (empty($restaurant_details) || $this->get_sub_total() <= 0) {
+        return $total_discount;
+    }
+
+    // Domain check
+    $current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
+    $isFooyes = (strpos($current_domain, 'fooyes') !== false);
+
+    if ($isFooyes) {
+
+        // Fooyes domain
+        if (in_array($order_type, ['collection', 'pickup'])) {
+            $discount_value = $restaurant_details['pick_discount'] ?? '0%';
+        } else {
+            $discount_value = $restaurant_details['res_discount'] ?? '0%';
+        }
+
+    } else {
+
+        if (in_array($order_type, ['collection', 'pickup'])) {
+            $discount_value = $restaurant_details['standalone_pick_discount'] ?? '0%';
+        } else {
+            $discount_value = $restaurant_details['standalone_res_discount'] ?? '0%';
+        }
+    }
+
+    $total_discount = (float) str_replace('%', '', $discount_value);
     return $total_discount;
 }
+
+
 
 
     /**
