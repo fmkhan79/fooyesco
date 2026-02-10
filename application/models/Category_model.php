@@ -129,16 +129,33 @@ class Category_model extends Base_model
      */
     public function get_categories_by_restaurant_id($restaurant_id)
     {
-        // FIRST GET ALL THE CATEGORY ID AS NUMERIC ARRAY
+                // FIRST GET ALL THE CATEGORY ID AS NUMERIC ARRAY
         $this->db->distinct();
         $this->db->select('category_id');
         $this->db->where('restaurant_id', $restaurant_id);
-        $categories_array = $this->db->get('food_menus')->result_array();
-        $categories = array();
-        foreach ($categories_array as $category) {
-            array_push($categories, $category['category_id']);
+        
+        $current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
+        $isFooyes = (strpos($current_domain, 'fooyes') !== false);
+
+        $categories_array = $this->db->get('food_menus');
+
+        if($isFooyes)
+        {
+            $this->db->where_in('menu_for_standalone', [0, NULL]);
+            
+            $categories_array = $this->db->get('food_menus');
+        }else{
+            $this->db->where('menu_for_standalone', 1);
+            $categories_array = $this->db->get('food_menus');
         }
 
+
+        $categories = array();
+        
+        foreach ($categories_array->result_array() as $category) {
+            array_push($categories, $category['category_id']);
+        }
+    
         // NOW GET THE ACTUAL CATEGORY DETAILS
         if (count($categories) > 0) {
             $this->db->where_in('id', $categories);

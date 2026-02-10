@@ -180,7 +180,8 @@ class Menu_model extends Base_model
         $data['has_discount'] = json_encode(array('menu' => $menu_discount_flag));
         $data['price'] = json_encode(array('menu' => $menu_price));
         $data['discounted_price'] = json_encode(array('menu' => $menu_discounted_price));
-
+        $data['menu_for_standalone'] = intval($this->input->post('menu_for_standalone'));
+        
         return $data;
     }
 
@@ -193,6 +194,8 @@ class Menu_model extends Base_model
         $data['byoneoffer'] = isset($_POST['byoneoffer']) ? 1 : 0;
         $data['today_special'] = isset($_POST['todayspecial']) ? 1 : 0;
         $data['slug'] = slugify(sanitize($this->input->post('name')));
+        $data['menu_for_standalone'] = intval($this->input->post('menu_for_standalone'));
+
         $data['restaurant_id'] = required(sanitize($this->input->post('restaurant_id')));
         return $data;
     }

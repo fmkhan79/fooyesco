@@ -105,6 +105,21 @@
                                 </small>
                             </div>
 
+                           <div class="form-group">
+    <label for="menu_for_standalone">
+        Show menu on
+    </label>
+    <select class="form-control select2" name="menu_for_standalone" id="menu_for_standalone">
+        <option value="0" selected>
+            Fooyes Domain
+        </option>
+        <option value="1">
+            Standalone
+        </option>
+    </select>
+</div>
+
+                             <br>
                             <!-- MENU THUMBNAIL -->
                             <div class="form-group">
                                 <label for="food_menu_thumbnail">
