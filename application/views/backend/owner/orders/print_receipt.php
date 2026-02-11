@@ -158,7 +158,7 @@ function formatPizzaDealReceiptAddons(array $addons, string $menuName)
         $pizzas[] = $currentPizza;
     }
 
-    // 🔽 FORCE VERTICAL OUTPUT
+    // ðŸ”½ FORCE VERTICAL OUTPUT
     $html = '<div class="pizza-deal-block">';
 
     foreach ($pizzas as $i => $pizza) {
@@ -243,6 +243,7 @@ $billing_phone = $billing['phone_mobile'] ?? '';
 
 // Ensure restaurant_details is available after loop (fallback)
 $restaurant_details = [];
+
 
 // --- HTML output ---
 ?>
@@ -424,56 +425,71 @@ foreach ($ordered_items as $ordered_item) :
     </div>
 
     <?php
-    // Ensure we have restaurant discounts available
+        $order_url = strtolower($order_details['order_url'] ?? '');
+        $isFooyes = (strpos($order_url, 'fooyes') !== false);
+        $res_discount  = 0;
+        $pick_discount = 0;
+        $pos_discount  = floatval($restaurant_details['pos_discount'] ?? 0);
 
-    $res_discount = floatval($restaurant_details['res_discount'] ?? 0);
-    $pick_discount = floatval($restaurant_details['pick_discount'] ?? 0);
-    $pos_discount = floatval($restaurant_details['pos_discount'] ?? 0);
+        if ($isFooyes) {
+            // Fooyes order
+            $res_discount  = floatval($restaurant_details['res_discount'] ?? 0);
+            $pick_discount = floatval($restaurant_details['pick_discount'] ?? 0);
+        } else {
+            // Standalone order
+            $res_discount  = floatval($restaurant_details['standalone_res_discount'] ?? 0);
+            $pick_discount = floatval($restaurant_details['standalone_pick_discount'] ?? 0);
+        }
+
+
 
     // Determine which discount to show
     if (!empty($order_details['promo_code'])) { ?>
-        <div class="did mt-3">
-            <span><?php echo sanitize($order_details['promo_discount'] ?? 0); ?>% PROMO DISCOUNT</span>
-    <?php } elseif ($order_type === "pickup") { ?>
-        <div class="did mt-3">
-            <span><?php echo sanitize($pick_discount); ?>% ONLINE DISCOUNT</span>
-            <span>
-    <?php } elseif($order_type == "pos") { ?>
-        <div class="did mt-3">
-            <span><?php echo sanitize($pos_discount); ?>% POS DISCOUNT</span>
-            <span>
-    <?php } else { ?>
-        <div class="did mt-3">
-            <span><?php echo sanitize($res_discount); ?>% ONLINE DISCOUNT</span>
-            <span>
-    <?php } ?>
+    <div class="did mt-3">
+        <span><?php echo sanitize($order_details['promo_discount'] ?? 0); ?>% PROMO DISCOUNT</span>
 
-    <?php
-    // calculate discount percentages and amounts
-    $res_discount = floatval($restaurant_details['res_discount'] ?? 0);
-    if ($order_type === "pickup") {
-        $res_discount = floatval($restaurant_details['pick_discount'] ?? $res_discount);
-    }
-    if (!empty($order_details['promo_code'])) {
-        $res_discount = floatval($order_details['promo_discount'] ?? $res_discount);
-    }
+        <?php } elseif ($order_type === "pickup") { ?>
+            <div class="did mt-3">
+                <span><?php echo sanitize($pick_discount); ?>% ONLINE DISCOUNT</span>
+                <span>
 
-    if($order_type == "pos"){
-        $res_discount = floatval($pos_discount);
-    }
-    // if($order_T)
+        <?php } elseif ($order_type === "pos") { ?>
+            <div class="did mt-3">
+                <span><?php echo sanitize($pos_discount); ?>% POS DISCOUNT</span>
+                <span>
+
+        <?php } else { ?>
+            <div class="did mt-3">
+                <span><?php echo sanitize($res_discount); ?>% ONLINE DISCOUNT</span>
+                <span>
+        <?php } ?>
+
+
+<?php
+    $final_discount = 0;
+
+if (!empty($order_details['promo_code'])) {
+    $final_discount = floatval($order_details['promo_discount'] ?? 0);
+} elseif ($order_type === "pickup") {
+    $final_discount = $pick_discount;   // already domain-aware
+} elseif ($order_type === "pos") {
+    $final_discount = $pos_discount;
+} else {
+    $final_discount = $res_discount;    // already domain-aware
+}
+
 
     $total_menu_price = floatval($order_details['total_menu_price'] ?? $total_amount);
-    $discount_amount_show = $total_menu_price * ($res_discount / 100.0);
-
-    // sanitize grand total and delivery charge;
+    $discount_amount_show = $total_menu_price * ($final_discount / 100);
     $grand_total = floatval($order_details['grand_total'] ?? ($total_menu_price - $discount_amount_show));
     $total_delivery_charge = floatval($order_details['total_delivery_charge'] ?? 0.0);
 
-    echo "-" . currency(number_format($discount_amount_show, 2));
-    ?>
-            </span>
-        </div>
+  
+echo "-" . currency(number_format($discount_amount_show, 2));
+?>
+        </span>
+    </div>
+
     <?php if (!empty($order_details['is_online_discount'])) { 
         $is_online_discount = floatval($order_details['is_online_discount']);
         $online_discount_amount_show = $total_menu_price * ($is_online_discount / 100.0);
@@ -591,13 +607,13 @@ foreach ($ordered_items as $ordered_item) :
                         //             const base64Image = imgData.split(',')[1]; // Remove prefix
 
                         //             socket.send(base64Image);
-                        //             console.log("ðŸ“¤ Image of .receipt sent to server.");
+                        //             console.log("Ã°Å¸â€œÂ¤ Image of .receipt sent to server.");
                         //             // window.close();
                         //         });
                         //     };
 
                         //     socket.onmessage = (event) => {
-                        //         console.log("ðŸ“¥ Server:", event.data);
+                        //         console.log("Ã°Å¸â€œÂ¥ Server:", event.data);
                         //     };
                         // };
                         window.onload = function () {
@@ -627,7 +643,7 @@ foreach ($ordered_items as $ordered_item) :
                                     }));
                                 }
 
-                                console.log(`ðŸ“¤ Sent ${totalChunks} chunks.`);
+                                console.log(`Ã°Å¸â€œÂ¤ Sent ${totalChunks} chunks.`);
 
                                 setTimeout(() => {
                                     window.close();
@@ -636,7 +652,7 @@ foreach ($ordered_items as $ordered_item) :
                         };
 
                         socket.onmessage = (event) => {
-                            console.log("ðŸ“¥ Server:", event.data);
+                            console.log("Ã°Å¸â€œÂ¥ Server:", event.data);
                             window.close();
                         };
                     };

@@ -200,11 +200,15 @@ public function update_offers()
     $res_discount  = sanitize($this->input->post('res_discount'));
     $pick_discount = sanitize($this->input->post('pick_discount'));
     $pos_discount = sanitize($this->input->post('pos_discount'));
+    $standalone_res_discount = sanitize($this->input->post('standalone_res_discount'));
+    $standalone_pick_discount = sanitize($this->input->post('standalone_pick_discount'));
 
     $data = [
         'res_discount'  => $res_discount,
         'pick_discount' => $pick_discount,
         'pos_discount'  => $pos_discount,
+        'standalone_res_discount' => $standalone_res_discount,
+        'standalone_pick_discount' => $standalone_pick_discount,
         'updated_at'    => strtotime(date('D, d-M-Y'))
     ];
 
