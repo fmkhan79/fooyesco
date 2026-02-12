@@ -27,6 +27,10 @@ $restaurant_details = $this->restaurant_model->get_by_id($ordered_items[0]['rest
 $appliedPromo = $this->session->userdata('user_promo');
 
 // promo discount safe
+  $order_url = strtolower($message['order_url'] ?? '');
+        $isFooyes = (strpos($order_url, 'fooyes') !== false);
+        
+        if($isFooyes){
 if (!empty($message['promo_discount'])) {
     // remove "%" or other chars
     $cleanPromo = preg_replace('/[^0-9.]/', '', $message['promo_discount']);
@@ -35,6 +39,17 @@ if (!empty($message['promo_discount'])) {
     // default discount
     $res_discount = ($message["order_type"] == "pickup") ? 25 : 20;
 }
+        }else{
+            if (!empty($message['promo_discount'])) {
+    // remove "%" or other chars
+    $cleanPromo = preg_replace('/[^0-9.]/', '', $message['promo_discount']);
+    $res_discount = ($cleanPromo !== "") ? floatval($cleanPromo) : 0;
+} else {
+    // default discount
+    $res_discount = ($message["order_type"] == "pickup") ? 0 : 0;
+}
+
+        }
 
 /* ===============================
    SAFE CALCULATIONS
@@ -44,7 +59,7 @@ if (!empty($message['promo_discount'])) {
 $subtotal = floatval(preg_replace('/[^0-9.]/', '', ($message['total_menu_price'] ?? 0)));
 
 // service charge
-$service_charge = floatval($this->cart_model->get_service_amount() ?? 0);
+$service_charge = floatval($this->cart_model->get_service_amount($message['restaurant_id']) ?? 0);
 
 // delivery charge (skip for pickup)
 $delivery_charge = ($message['order_type'] == 'pickup')
@@ -343,17 +358,39 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
                 </tr>
                 <?php } ?>
                 <tr>
-                    <td>
-                        <?php if($message['promo_discount'] != null): ?>
-                            <?= sanitize($message['promo_discount']) ?>% PROMO DISCOUNT
-                        <?php elseif($message["order_type"] == "pickup"): ?>
-                            25% ONLINE DISCOUNT                          
-                        <?php elseif($message['order_type'] == "delivery"): ?>
-                            20% ONLINE DISCOUNT      
-                        <?php else: ?>
-                            90% ONLINE DISCOUNT
-                        <?php endif; ?>
-                    </td>
+                  <td>
+<?php 
+$order_url = strtolower($message['order_url'] ?? '');
+$isFooyes = (strpos($order_url, 'fooyes') !== false);
+
+if ($isFooyes) {
+
+    if (!empty($message['promo_discount'])) {
+        echo sanitize($message['promo_discount']) . "% PROMO DISCOUNT";
+    } elseif ($message["order_type"] == "pickup") {
+        echo "25% ONLINE DISCOUNT";
+    } elseif ($message['order_type'] == "delivery") {
+        echo "20% ONLINE DISCOUNT";
+    } else {
+        echo "90% ONLINE DISCOUNT";
+    }
+
+} else {
+
+    if (!empty($message['promo_discount'])) {
+        echo sanitize($message['promo_discount']) . "% PROMO DISCOUNT";
+    } elseif ($message["order_type"] == "pickup") {
+        echo "0% ONLINE DISCOUNT";
+    } elseif ($message['order_type'] == "delivery") {
+        echo "0% ONLINE DISCOUNT";
+    } else {
+        echo "0% ONLINE DISCOUNT";
+    }
+
+}
+?>
+</td>
+
                     <td>- <?= currency(number_format((float)$discount_amount, 2)) ?></td>
                 </tr>
 
