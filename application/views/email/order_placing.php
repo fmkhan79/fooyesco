@@ -59,7 +59,7 @@ if (!empty($message['promo_discount'])) {
 $subtotal = floatval(preg_replace('/[^0-9.]/', '', ($message['total_menu_price'] ?? 0)));
 
 // service charge
-$service_charge = floatval($this->cart_model->get_service_amount($message['restaurant_id']) ?? 0);
+$service_charge = floatval($this->cart_model->get_service_amount() ?? 0);
 
 // delivery charge (skip for pickup)
 $delivery_charge = ($message['order_type'] == 'pickup')
