@@ -201,13 +201,25 @@ class Checkout_model extends Base_model
 
         $onlineDiscount = null;
         $onlineDiscountChecked = $this->session->userdata('is_online_discount_checked');
-        if($onlineDiscountChecked == '1'){
-            if($order_type == "pickup"){
-                $onlineDiscount = 25;
-            } else {
-                $onlineDiscount = 20;
-            }
+       $host = strtolower($_SERVER['HTTP_HOST']); // example: fooyes.com, www.fooyes.co.uk
+$isFooyes = (strpos($host, 'fooyes') !== false);
+
+if ($onlineDiscountChecked == '1') {
+    if($isFooyes){
+        if ($order_type == "pickup") {
+            $onlineDiscount = 25;
+        } else {
+            $onlineDiscount = 20;
         }
+    } else {
+        if ($order_type == "pickup") {
+            $onlineDiscount = 0;
+        } else {
+            $onlineDiscount = 0;
+        }
+    }
+}
+
         if ($order_type == "pickup") {
             $order_data  = $this->order_model->get_by_code($order_code);
             $grand_total = $data['amount_to_pay'];
@@ -277,13 +289,25 @@ class Checkout_model extends Base_model
 
         $onlineDiscount = null;
         $onlineDiscountChecked = $this->session->userdata('is_online_discount_checked');
-        if($onlineDiscountChecked == '1'){
-            if($order_type == "pickup"){
-                $onlineDiscount = 25;
-            } else {
-                $onlineDiscount = 20;
-            }
+         $host = strtolower($_SERVER['HTTP_HOST']); // example: fooyes.com, www.fooyes.co.uk
+$isFooyes = (strpos($host, 'fooyes') !== false);
+
+if ($onlineDiscountChecked == '1') {
+    if($isFooyes){
+        if ($order_type == "pickup") {
+            $onlineDiscount = 25;
+        } else {
+            $onlineDiscount = 20;
         }
+    } else {
+        if ($order_type == "pickup") {
+            $onlineDiscount = 0;
+        } else {
+            $onlineDiscount = 0;
+        }
+    }
+}
+
         if ($order_type == "pickup") {
             $order_data  = $this->order_model->get_by_code($order_code);
             $grand_total = $data['amount_to_pay'];
@@ -470,13 +494,25 @@ class Checkout_model extends Base_model
 
         $onlineDiscount = null;
         $onlineDiscountChecked = $this->session->userdata('is_online_discount_checked');
-        if ($onlineDiscountChecked == '1') {
-            if ($order_type == "pickup") {
-                $onlineDiscount = 25;
-            } else {
-                $onlineDiscount = 20;
-            }
+      $host = strtolower($_SERVER['HTTP_HOST']); // example: fooyes.com, www.fooyes.co.uk
+$isFooyes = (strpos($host, 'fooyes') !== false);
+
+if ($onlineDiscountChecked == '1') {
+    if($isFooyes){
+        if ($order_type == "pickup") {
+            $onlineDiscount = 25;
+        } else {
+            $onlineDiscount = 20;
         }
+    } else {
+        if ($order_type == "pickup") {
+            $onlineDiscount = 0;
+        } else {
+            $onlineDiscount = 0;
+        }
+    }
+}
+
 
         if ($order_type == "pickup") {
             $billing_data =  $this->session->userdata('billing');
