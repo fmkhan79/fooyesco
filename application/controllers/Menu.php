@@ -76,6 +76,119 @@ class Menu extends Authorization
         $this->load->view('backend/index', $page_data);
     }
 
+
+    function duplicate()
+    {
+        $restaurant_id = $this->session->userdata('restaurant_id');
+
+       
+        $this->db->order_by("id", "asc");
+        $menus = $this->db->get("food_menus")->result_array();
+        
+        foreach($menus as $menu){
+
+
+            $menu_id = $menu["id"];
+
+            
+
+            $_menu_id = $this->duplicate_row( 
+                table: "food_menus",
+                object: $menu 
+            );
+
+            $variant_options = $this->menu_model->get_variant_options_for_duplication($menu_id);
+            
+
+            foreach($variant_options as $variant_option){
+
+                
+                $_variant_option_id = $this->duplicate_row( 
+                    table: "variant_options",
+                    object: $variant_option,
+
+                    relation_column_name: "menu_id",
+                    relation_column_value: $_menu_id 
+                );              
+             
+                $variant_sub_options = $this->menu_model->get_sub_options_for_duplication($variant_option["id"]);
+
+                
+                foreach($variant_sub_options as $variant_sub_option){
+
+                        $_variant_sub_option = $this->duplicate_row( 
+                            table: "variant_sub_options",
+                            object: $variant_sub_option,
+
+                            relation_column_name: "variant_option_id",
+                            relation_column_value: $_variant_option_id 
+                        );              
+
+                    }
+                    $variant_sub_options_items = $this->menu_model->get_variants_for_duplication($variant_sub_option['id']);
+                    // dd($variant_sub_options_items);
+
+                foreach($variant_sub_options_items as $variant ){
+                $_variants = $this->duplicate_row(
+                    table: "variants",
+                    object: $variant,
+                    relation_column_name: "variant_option_id",
+                    relation_column_value: $_variant_sub_option 
+                );
+
+                }
+
+            }
+
+            return; 
+        }
+        
+
+    }
+    // Creates a SQL query and execute it and return inserted id
+    function duplicate_row($table,
+            $object, 
+            $relation_column_name = NULL,
+            $relation_column_value = NULL, 
+            $isRemoveID = true
+        ) : int{
+
+            
+        if($relation_column_name != NULL && $relation_column_value != NULL){
+            $object[$relation_column_name] = $relation_column_value;            
+        }
+
+        $columns = array_keys($object);
+        $values  = array_values($object);
+
+        //REMOVING IDS 
+        if($isRemoveID){
+            unset($columns[0]);
+            unset($values[0]);    
+        }
+
+        $escapedValues = array_map(function($value) {
+        
+            if($value != "")
+                return "'". $value . "'";
+    
+            return 'NULL';
+        }, $values);
+
+        $sql = "INSERT INTO ". $table." (" . implode(",",$columns) . ") VALUES ( " . implode(",",$escapedValues) . ")"; 
+        $this->db->query($sql);
+
+        $id = $this->db->insert_id();
+
+        echo "CREATED IN ". $table . " - ID: " . $id. "<br>";
+        return $id;
+
+
+
+
+    }
+
+
     // Edit function is responsible for showing the menu edit page.
     function edit($id, $active_tab = 'basic')
     {

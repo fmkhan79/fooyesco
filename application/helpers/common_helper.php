@@ -25,6 +25,16 @@ if (!function_exists('get_system_settings')) {
     }
 }
 
+if (!function_exists('dd')) {
+    function dd($param)
+    {
+        echo "<pre>"; 
+        var_dump($param);
+        die();
+    }
+}
+
+
 if (!function_exists('get_website_settings')) {
     function get_website_settings($key = '')
     {
