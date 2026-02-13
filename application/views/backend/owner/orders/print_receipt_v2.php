@@ -110,8 +110,6 @@
 </head>
 
 <body>
-
-pintReceipt
 <?php
 function formatPizzaDealReceiptAddons(array $addons, string $menuName)
 {
@@ -427,73 +425,80 @@ foreach ($ordered_items as $ordered_item) :
     </div>
 
     <?php
-        $order_url = strtolower($order_details['order_url'] ?? '');
-        $isFooyes = (strpos($order_url, 'fooyes') !== false);
-        $res_discount  = 0;
-        $pick_discount = 0;
-        $pos_discount  = floatval($restaurant_details['pos_discount'] ?? 0);
 
-        if ($isFooyes) {
-            // Fooyes order
-            $res_discount  = floatval($restaurant_details['res_discount'] ?? 0);
-            $pick_discount = floatval($restaurant_details['pick_discount'] ?? 0);
-        } else {
-            // Standalone order
-            $res_discount  = floatval($restaurant_details['standalone_res_discount'] ?? 0);
-            $pick_discount = floatval($restaurant_details['standalone_pick_discount'] ?? 0);
-        }
+
+
+        $order_data = $this->cart_model->get_order_calculations($order_details['code']);
+            // print_r($order_data);
+
+
+        // $order_url = strtolower($order_details['order_url'] ?? '');
+        // $isFooyes = (strpos($order_url, 'fooyes') !== false);
+        // $res_discount  = 0;
+        // $pick_discount = 0;
+        // $pos_discount  = floatval($restaurant_details['pos_discount'] ?? 0);
+
+        // if ($isFooyes) {
+        //     // Fooyes order
+        //     $res_discount  = floatval($restaurant_details['res_discount'] ?? 0);
+        //     $pick_discount = floatval($restaurant_details['pick_discount'] ?? 0);
+        // } else {
+        //     // Standalone order
+        //     $res_discount  = floatval($restaurant_details['standalone_res_discount'] ?? 0);
+        //     $pick_discount = floatval($restaurant_details['standalone_pick_discount'] ?? 0);
+        // }
 
 
 
     // Determine which discount to show
+
     if (!empty($order_details['promo_code'])) { ?>
     <div class="did mt-3">
         <span><?php echo sanitize($order_details['promo_discount'] ?? 0); ?>% PROMO DISCOUNT</span>
 
         <?php } elseif ($order_type === "pickup") { ?>
             <div class="did mt-3">
-                <span><?php echo sanitize($pick_discount); ?>% ONLINE DISCOUNT</span>
+                <span><?php echo sanitize($order_data['discounted_amount']); ?>% ONLINE DISCOUNT</span>
                 <span>
 
         <?php } elseif ($order_type === "pos") { ?>
             <div class="did mt-3">
-                <span><?php echo sanitize($pos_discount); ?>% POS DISCOUNT</span>
+                <span><?php echo sanitize($order_data['discounted_amount']); ?>% POS DISCOUNT</span>
                 <span>
 
         <?php } else { ?>
             <div class="did mt-3">
-                <span><?php echo sanitize($res_discount); ?>% ONLINE DISCOUNT</span>
+                <span><?php echo sanitize($order_data['discounted_amount']);?>% ONLINE DISCOUNT</span>
                 <span>
         <?php } ?>
 
 
-            <?php
-                $final_discount = 0;
+<?php
+//     $final_discount = 0;
 
-            if (!empty($order_details['promo_code'])) {
-                $final_discount = floatval($order_details['promo_discount'] ?? 0);
-            } elseif ($order_type === "pickup") {
-                $final_discount = $pick_discount;   // already domain-aware
-            } elseif ($order_type === "pos") {
-                $final_discount = $pos_discount;
-            } else {
-                $final_discount = $res_discount;    // already domain-aware
-            }
+// if (!empty($order_details['promo_code'])) {
+//     $final_discount = floatval($order_details['promo_discount'] ?? 0);
+// } elseif ($order_type === "pickup") {
+//     $final_discount = $order_data['discounted_amount'];  // already domain-aware
+// } elseif ($order_type === "pos") {
+//     $final_discount = $order_data['discounted_amount'];
+// } else {
+//     $final_discount = $order_data['discounted_amount'];    // already domain-aware
+// }
 
 
-    $total_menu_price = floatval($order_details['total_menu_price'] ?? $total_amount);
-    $discount_amount_show = $total_menu_price * ($final_discount / 100);
-    $grand_total = floatval($order_details['grand_total'] ?? ($total_menu_price - $discount_amount_show));
-    $total_delivery_charge = floatval($order_details['total_delivery_charge'] ?? 0.0);
+//     $total_menu_price = floatval($order_details['total_menu_price'] ?? $total_amount);
+//     $discount_amount_show = $total_menu_price * ($final_discount / 100);
+//     $grand_total = floatval($order_details['grand_total'] ?? ($total_menu_price - $discount_amount_show));
+//     $total_delivery_charge = floatval($order_details['total_delivery_charge'] ?? 0.0);
 
   
-echo "-" . currency(number_format($discount_amount_show, 2));
+echo "-" . currency(number_format($order_data['total_discount_applied'], 2));
 ?>
         </span>
     </div>
-
-    <?php if (!empty($order_details['is_online_discount'])) { 
-        $is_online_discount = floatval($order_details['is_online_discount']);
+    <?php if (!empty($order_details['is_online_discount']) ) { 
+        $is_online_discount = ($order_details['is_online_discount']);
         $online_discount_amount_show = $total_menu_price * ($is_online_discount / 100.0);
     ?>
 
@@ -511,20 +516,20 @@ echo "-" . currency(number_format($discount_amount_show, 2));
     <div class="did mt-3">
         
         <span>1X CARRY BAG</span>
-        <span><?php echo currency(number_format(0.10, 2)); ?></span>
+        <span><?php echo $order_data['bag_price']; ?></span>
     </div>
 
     <div class="did mt-3 text-uppercase">
         <span>Service Charge</span>
-        <span><?php echo currency(number_format($this->cart_model->get_service_amount($order_details['restaurant_id']), 2)); ?></span>
+        <span><?php echo $order_data['total_service_price']; ?></span>
     </div>
     <?php
         } ?>
     <?php if ($order_type === "delivery") { 
-        if ($total_delivery_charge > 0) { ?>
+        if ($order_data['delivery_charges'] > 0) { ?>
             <div class="did mt-3 text-uppercase">
                 <span>Delivery Charge</span>
-                <span><?php echo currency(number_format($total_delivery_charge, 2)); ?></span>
+                <span><?php echo $order_data['delivery_charges']; ?></span>
             </div>
         <?php } else { ?>
             <div class="did mt-3">
@@ -541,7 +546,7 @@ echo "-" . currency(number_format($discount_amount_show, 2));
         <span><?php echo currency(number_format($grand_total, 2)); ?></span>
 
         <?php }else {?>
-                 <span><?php echo currency(number_format($grand_total, 2)); ?></span>
+                 <span><?php echo $order_data['grand_total']; ?></span>
         <?php }?>
     </div>
 

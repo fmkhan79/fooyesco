@@ -564,14 +564,29 @@ class Order_model extends Base_model
         $data['total_vat_amount'] = $this->cart_model->get_vat_amount();
         $data['grand_total'] = $this->cart_model->get_grand_total($order_type);
         $data['user_agent'] = $user_agent;
+        // $data['discount_amount'] = $this->discount_calculation($order_type);
+        // $data['after_discount'] = $this->discount_calculation($order_type);
+        
+        
         $cart_items = $this->cart_model->get_all();
         if (!empty($cart_items)) {
-            $data['restaurant_id'] = $cart_items[0]['restaurant_id'];
-        }
-        
-      $data['commission_res'] = $this->restaurant_model->commision_check($data['restaurant_id']);
-    $commission_value = floatval(preg_replace('/[^0-9.]/', '', $data['commission_res']));
-    $data['commission_paid'] = $data['grand_total'] * ($commission_value / 100);
+                $data['restaurant_id'] = $cart_items[0]['restaurant_id'];
+                $restaurant_id = $data['restaurant_id'];
+            } else {
+                return false; // ya error handle karo
+            }
+
+
+            $restaurant_id = $data['restaurant_id'];
+            $data['service_amount'] =$this->cart_model->get_service_amount($restaurant_id);
+            $data['bag_charges'] = $this->cart_model->get_bag_charges($restaurant_id);
+
+        $discountData = $this->discount_calculation($order_type , $restaurant_id , $data['total_menu_price'] );
+        $data['discount_amount'] = $discountData['discount_amount'];
+        $data['after_discount'] = $discountData['after_discount'];
+      $data['commission_res'] = $this->restaurant_model->commision_check($restaurant_id);
+        $commission_value = floatval(preg_replace('/[^0-9.]/', '', $data['commission_res']));
+        $data['commission_paid'] = $data['grand_total'] * ($commission_value / 100);
 
 
         // log_message('error',  $data['commission_res'] ."lol");
@@ -617,6 +632,21 @@ class Order_model extends Base_model
         return $data['code'];
     }
 
+    public function discount_calculation($order_type, $restaurant_id, $total_amount)
+{
+    $discountData = $this->restaurant_model->get_discount($restaurant_id, $order_type);
+
+    $discount_amount = $discountData['total_discount'];
+
+    $after_discount = $total_amount * ($discount_amount / 100);
+
+    // $after_discount  = $total_amount - $discount_amount;
+    
+    return [
+        'discount_amount'    => $discount_amount,
+        'after_discount'  => $after_discount
+    ];
+}
 
     // CONFIRM POS ORDER FUNCTION
     public function confirm_pos_order($customer_id)

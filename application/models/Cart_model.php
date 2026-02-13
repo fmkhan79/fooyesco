@@ -659,17 +659,18 @@ public function merger_pos($cart_items)
     public function acc_distance_charges() {}
 
 
-    public function get_service_amount()
-    {
-        // $total_service = 0.00;
-        $total_service = 1;
-        return $total_service;
-    }
+  public function get_service_amount($restaurant_id)
+{
+    $total_service = $this->restaurant_model->get_service_price($restaurant_id);
+    return $total_service;
+}
 
-    public function get_bag_charges()
+
+    public function get_bag_charges($restaurant_id)
     {
         // $total_service = 0.00;
-        $total_price = 0.10;
+        $total_price = $this->restaurant_model->get_bag_price($restaurant_id);
+        
         return $total_price;
     }
 
@@ -887,9 +888,10 @@ public function get_discounted_amount($order_type, $restaurant_id = null)
 
     public function get_grand_total($order_type)
     {
+          $restaurant_id = $this->session->userdata('restaurant_id');
         $subtotal = sanitize($this->get_total_menu_price());
-        $serviceCharge = sanitize($this->get_service_amount());
-        $bagCharges = (float) sanitize($this->get_bag_charges($order_type));
+        $serviceCharge = sanitize($this->get_service_amount($restaurant_id));
+        $bagCharges = (float) sanitize($this->get_bag_charges($restaurant_id));
         $total_delivery_charges = (float) sanitize($this->get_total_delivery_charge());
 
         $onlineDiscount = $this->session->userdata('is_online_discount_checked');
@@ -918,4 +920,95 @@ public function get_discounted_amount($order_type, $restaurant_id = null)
 
         return $grandTotal;
     }
+
+        public function get_order_calculations($order_code = null)
+    {
+                if ($order_code) {
+
+            $order_details = $this->order_model->get_by_code($order_code);
+
+            $order_type      = $order_details['order_type'];
+            $deliveryCharge  = $order_details['total_delivery_charge'];
+            $subtotal        = $order_details['total_menu_price'];
+            $bagCharges      = $order_details['bag_charges'];
+            $serviceCharge   = $order_details['service_amount'];
+
+            $discountAmount  = $order_details['discount_amount'];
+
+            $totalDiscount   = $order_details['after_discount'];
+
+            $grandTotal = $subtotal 
+                        + $serviceCharge 
+                        + $bagCharges 
+                        + $deliveryCharge 
+                        - $totalDiscount;
+
+            $data = [
+                'sub_total' => currency($subtotal),
+                'total_service_price' => currency($serviceCharge),
+                'bag_price' => currency($bagCharges),
+                'delivery_charges' => currency($deliveryCharge),
+                'total_discount_applied' => $totalDiscount,
+                'discounted_amount' => $discountAmount,
+                'grand_total' => currency($grandTotal, 2)
+            ];
+
+            return $data;
+            }
+
+
+        $order_type = isset($_POST['order_type']) ? sanitize($_POST['order_type']) : '';
+        $deliveryCharge = $this->session->userdata('delivery_charges');
+        $subtotal = sanitize($this->cart_model->get_total_menu_price());
+        
+        // ✅ Load restaurant ID (from session or order)
+        $restaurant_id = $this->session->userdata('restaurant_id');
+        $bagCharges = number_format((float) sanitize($this->cart_model->get_bag_charges($restaurant_id)), 2, '.', '');
+        $serviceCharge = sanitize($this->cart_model->get_service_amount($restaurant_id));
+
+        // Promo session check
+        $promo = $this->session->userdata('applied_promo');
+        $promo_discount = 0;
+        $discountedAmount = 0;
+        $discountLabel = '0%';
+
+        if (!empty($promo) && isset($promo['discount'])) {
+            $discountLabel = $promo['discount'] . '%';
+            $promo_discount = ($subtotal * $promo['discount']) / 100;
+
+            if ($promo['add_on_by_default'] == true) {
+                $this->session->set_userdata('is_online_discount_checked', true);
+
+                // ✅ Pass restaurant_id to get_discounted_amount
+                $discountedAmount = (float) sanitize($this->cart_model->get_discounted_amount($order_type, $restaurant_id));
+
+                // ✅ Include restaurant discount label
+                $discountLabel .= ' + ' . $this->cart_model->get_total_discount_applied_percentage($order_type, $restaurant_id) . '%';
+            }
+
+        } else {
+            // ✅ Pass restaurant_id here too
+            $discountedAmount = number_format((float) sanitize($this->cart_model->get_discounted_amount($order_type, $restaurant_id)), 2, '.', '');
+            $discountLabel = $this->cart_model->get_total_discount_applied_percentage($order_type, $restaurant_id) . "%";
+        }
+
+        $totalDiscount = $discountedAmount + $promo_discount;
+        $grandTotal = $subtotal + $serviceCharge + $bagCharges + $deliveryCharge - $totalDiscount;
+
+        $data = [
+            'sub_total' => currency($subtotal),
+            'total_service_price' => currency($serviceCharge),
+            'bag_price' => currency($bagCharges),
+            'total_discount_applied' => $discountLabel,
+            'discounted_amount' => currency($totalDiscount),
+            'grand_total' => currency($grandTotal, 2)
+        ];
+    
+                echo json_encode($data);
+
+        
+
+    }
+
+        
 }

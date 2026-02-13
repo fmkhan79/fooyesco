@@ -109,7 +109,7 @@ public function cancel_order_frontend($order_code)
     }
 
     $created_at = new DateTime($order->created_at); // DB me stored format ke hisab se
-$now        = new DateTime('now', new DateTimeZone('Europe/London')); // Current time in UTC
+    $now        = new DateTime('now', new DateTimeZone('Europe/London')); // Current time in UTC
 
 // Convert both to same timezone
 $created_at->setTimezone(new DateTimeZone('Europe/London'));
@@ -370,57 +370,12 @@ public function order_already_canceled()
     //     echo json_encode($data);
     // }
 
-    public function get_order_summary()
+    public function get_order_summary($order_code = null)
 {
-    $order_type = isset($_POST['order_type']) ? sanitize($_POST['order_type']) : '';
-    $deliveryCharge = $this->session->userdata('delivery_charges');
-    $subtotal = sanitize($this->cart_model->get_total_menu_price());
-    $serviceCharge = sanitize($this->cart_model->get_service_amount());
-    $bagCharges = number_format((float) sanitize($this->cart_model->get_bag_charges($order_type)), 2, '.', '');
+    
+  $this->cart_model->get_order_calculations($order_code = null);
 
-    // ✅ Load restaurant ID (from session or order)
-    $restaurant_id = $this->session->userdata('restaurant_id');
 
-    // Promo session check
-    $promo = $this->session->userdata('applied_promo');
-    $promo_discount = 0;
-    $discountedAmount = 0;
-    $discountLabel = '0%';
-
-    if (!empty($promo) && isset($promo['discount'])) {
-        $discountLabel = $promo['discount'] . '%';
-        $promo_discount = ($subtotal * $promo['discount']) / 100;
-
-        if ($promo['add_on_by_default'] == true) {
-            $this->session->set_userdata('is_online_discount_checked', true);
-
-            // ✅ Pass restaurant_id to get_discounted_amount
-            $discountedAmount = (float) sanitize($this->cart_model->get_discounted_amount($order_type, $restaurant_id));
-
-            // ✅ Include restaurant discount label
-            $discountLabel .= ' + ' . $this->cart_model->get_total_discount_applied_percentage($order_type, $restaurant_id) . '%';
-        }
-
-    } else {
-        // ✅ Pass restaurant_id here too
-        $discountedAmount = number_format((float) sanitize($this->cart_model->get_discounted_amount($order_type, $restaurant_id)), 2, '.', '');
-        $discountLabel = $this->cart_model->get_total_discount_applied_percentage($order_type, $restaurant_id) . "%";
-    }
-
-    $totalDiscount = $discountedAmount + $promo_discount;
-    $grandTotal = $subtotal + $serviceCharge + $bagCharges + $deliveryCharge - $totalDiscount;
-
-    $data = [
-        'sub_total' => currency($subtotal),
-        'total_service_price' => currency($serviceCharge),
-        'bag_price' => currency($bagCharges),
-        'total_discount_applied' => $discountLabel,
-        'discounted_amount' => currency($totalDiscount),
-        'grand_total' => currency($grandTotal, 2)
-    ];
-
-    echo json_encode($data);
 }
-
 
 }

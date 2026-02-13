@@ -176,6 +176,28 @@
 
                                     </div>
 
+                                    
+                                    <div class="form-group">
+                                        <label
+                                            for="service_amount">Service Amount</label>
+                                        <input type="text" class="form-control" id="service_amount"
+                                            name="service_amount"
+                                            placeholder="Service Amount"
+                                            value="<?php echo sanitize($restaurant_data['service_amount']); ?>">
+
+                                    </div>
+
+                                    
+                                    <div class="form-group">
+                                        <label
+                                            for="bag_charges">Bag Charges</label>
+                                        <input type="text" class="form-control" id="bag_charges"
+                                            name="bag_charges"
+                                            placeholder="Bag charges"
+                                            value="<?php echo sanitize($restaurant_data['bag_charges']); ?>">
+
+                                    </div>
+
 
                                     <button
                                         class="btn btn-primary"><?php echo get_phrase('update_delivery_data'); ?></button>

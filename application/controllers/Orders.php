@@ -291,9 +291,24 @@ class Orders extends Authorization
         $data['ordered_items'] = $ordered_items;
         $data['payment']       = $payment;
         $data['daily_order_number'] = $order_details->daily_order_number;
-
+       
         // Load the view for printing
-        $this->load->view('backend/owner/orders/print_receipt', $data);
+       $createdAt = new DateTime($order_details['created_at']); // 2026-02-12 18:12:14
+       
+        $checkDate = new DateTime('2025-2-13');
+
+        if ($createdAt > $checkDate) {
+        $this->load->view('backend/owner/orders/print_receipt_v2', $data);
+        } else {
+         $this->load->view('backend/owner/orders/print_receipt', $data);
+
+        }
+
+// die();
+
+        // print_r($date);
+        // if($date < $created_At)
+        // $this->load->view('backend/owner/orders/print_receipt', $data);
     }
 
 

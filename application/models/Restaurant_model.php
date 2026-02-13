@@ -55,7 +55,44 @@ class Restaurant_model extends Base_model
             return $query->row()->restaurant_slug;
             
         return null;
+
     }
+
+    public function get_bag_price($restaurant_id)
+    {
+        
+        $this->db->select('bag_charges');
+        $this->db->from('restaurants');
+        $this->db->where('id', $restaurant_id);
+
+        $qurey = $this->db->get();
+
+        if($qurey->num_rows() > 0){
+             $row = $qurey->row();
+
+            return $row->bag_charges;
+        }else{
+        return 0;
+    }
+
+    }
+   public function get_service_price($restaurant_id)
+{
+    $this->db->select('service_amount');
+    $this->db->from('restaurants'); 
+    $this->db->where('id', $restaurant_id);
+
+    $query = $this->db->get();
+
+    if ($query->num_rows() > 0) {
+        $row = $query->row();
+        return $row->service_amount;
+    } else {
+        return 0;
+    }
+}
+
+
 
 
     /**
@@ -192,6 +229,43 @@ class Restaurant_model extends Base_model
         }
     }
 
+       public function get_discount($restaurant_id, $order_type)
+    {
+
+        $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
+
+       
+
+    $current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
+    $isFooyes = (strpos($current_domain, 'fooyes') !== false);
+
+    if ($isFooyes) {
+
+        // Fooyes domain
+        if (in_array($order_type, ['collection', 'pickup'])) {
+            $discount_value = $restaurant_details['pick_discount'] ?? '0%';
+        } else {
+            $discount_value = $restaurant_details['res_discount'] ?? '0%';
+        }
+
+    } else {
+
+        if (in_array($order_type, ['collection', 'pickup'])) {
+            $discount_value = $restaurant_details['standalone_pick_discount'] ?? '0%';
+        } else {
+            $discount_value = $restaurant_details['standalone_res_discount'] ?? '0%';
+        }
+    }
+
+    $total_discount = (float) str_replace('%', '', $discount_value);
+    return [
+        
+    'total_discount' => $total_discount,
+    'discount_value' => $discount_value
+    ];
+
+    }
+
     // UPDATE DISCOUNTS (RES DISCOUNT & PICKUP DISCOUNT)
 public function update_offers()
 {
@@ -325,7 +399,8 @@ public function update_address()
         $data['free_range'] = sanitize($this->input->post('free_range'));
         $data['maximum_range'] = sanitize($this->input->post('maximum_range'));
         $data['rate_per_mile'] = sanitize($this->input->post('rate_per_mile'));
-
+        $data['service_amount'] = sanitize($this->input->post('service_amount'));
+        $data['bag_charges'] = sanitize($this->input->post('bag_charges'));
         if (get_order_settings('pickup_order') && !get_order_settings('multi_restaurant_order') && isset($_POST['support_pickup_order']) && $_POST['support_pickup_order'] == 1) {
             $data['support_pickup_order'] = 1;
         } else {
