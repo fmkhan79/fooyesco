@@ -961,14 +961,27 @@ class Order_model extends Base_model
         //     $conditions['code'] = count($this->get_order_code_by_restaurant_id($restaurant_id)) > 0 ? $this->get_order_code_by_restaurant_id($restaurant_id) :  array();
         // }
 
-        if ($restaurant_id && $restaurant_id != "all") {
-            $order_codes = $this->get_order_code_by_restaurant_id($restaurant_id);
-            if (count($order_codes) > 0) {
-                $conditions['code'] = $order_codes;
-            } else {
-                $conditions['code'] = array();
-            }
-        }
+        $owner_restaurants = $this->restaurant_model->get_approved_restaurant_ids_by_owner_id($this->logged_in_user_id);
+
+if ($restaurant_id && $restaurant_id != "all") {
+    // Owner ne specific restaurant select kiya
+    if (in_array($restaurant_id, $owner_restaurants)) {
+        $order_codes = $this->get_order_code_by_restaurant_id($restaurant_id);
+        $conditions['code'] = count($order_codes) ? $order_codes : array();
+    } else {
+        // Agar owner ne apni nahi wali restaurant select ki → empty
+        $conditions['code'] = array();
+    }
+} else {
+    // Agar “all” select kiya → sirf owner ke restaurants ka data
+    $all_codes = [];
+    foreach ($owner_restaurants as $r_id) {
+        $codes = $this->get_order_code_by_restaurant_id($r_id);
+        if (count($codes)) $all_codes = array_merge($all_codes, $codes);
+    }
+    $conditions['code'] = $all_codes;
+}
+
 
         // CHECK CUSTOMER SELECTION
         $conditions['customer_id']     = nuller(sanitize($this->input->get('customer_id')));
