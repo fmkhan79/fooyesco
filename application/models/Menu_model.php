@@ -506,6 +506,37 @@ class Menu_model extends Base_model
          $variant_sub_option_items = $this->db->get_where('variants', ['variant_option_id' => $variant_sub_option_id])->result_array();
          return $variant_sub_option_items;
      }
+
+
+     // DUPLICATE
+     public function get_variant_options_for_duplication($menu_id){
+
+        $this->db->order_by("id", "asc");
+        $variant_options = $this->db->where("menu_id", $menu_id)->get("variant_options")->result_array();
+
+        return $variant_options;
+
+     }
+
+    public function get_sub_options_for_duplication($variant_id){
+
+        $this->db->order_by("id", "asc");
+        $variant_sub_options = $this->db->where("variant_option_id", $variant_id)->get("variant_sub_options")->result_array();
+
+        return $variant_sub_options;
+
+     }
+
+      public function get_variants_for_duplication($variant_sub_options){
+
+        $this->db->order_by("id", "asc");
+        $variant_sub_options_items = $this->db->where("variant_option_id", $variant_sub_options)->get("variants")->result_array();
+
+        return $variant_sub_options_items;
+
+     }
+
+
 }
 
 /* End of file Menu_model.php */
