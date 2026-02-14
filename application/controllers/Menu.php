@@ -37,18 +37,22 @@ class Menu extends Authorization
         $page_data['page_title'] = get_phrase('food_menu');
         $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
         $page_data['categories']  = $this->category_model->get_all();
-
-        if ($this->logged_in_user_role == "admin") {
-            $conditions = array(
-                'restaurant_id' => $page_data['restaurant_id'] == "all" ? null : $page_data['restaurant_id'],
-                'category_id' => $page_data['category_id'] == "all" ? null : $page_data['category_id']
-            );
+        $page_data['menu_for_standalone'] = isset($_GET['menu_for_standalone']) 
+            ? sanitize($_GET['menu_for_standalone']) 
+            : "all";
+                if ($this->logged_in_user_role == "admin") {
+                $conditions = array(
+            'restaurant_id' => $page_data['restaurant_id'] == "all" ? null : $page_data['restaurant_id'],
+            'category_id' => $page_data['category_id'] == "all" ? null : $page_data['category_id'],
+            'menu_for_standalone' => $page_data['menu_for_standalone'] == "all" ? null : $page_data['menu_for_standalone']
+        );
         } else {
             $approved_restaurant_ids = $this->restaurant_model->get_approved_restaurant_ids_by_owner_id($this->logged_in_user_id);
             $approved_restaurant_ids = count($approved_restaurant_ids) > 0 ? $approved_restaurant_ids : [null];
-            $conditions = array(
+           $conditions = array(
                 'restaurant_id' => $page_data['restaurant_id'] == "all" ? $approved_restaurant_ids : $page_data['restaurant_id'],
-                'category_id' => $page_data['category_id'] == "all" ? null : $page_data['category_id']
+                'category_id' => $page_data['category_id'] == "all" ? null : $page_data['category_id'],
+                'menu_for_standalone' => $page_data['menu_for_standalone'] == "all" ? null : $page_data['menu_for_standalone']
             );
         }
 
@@ -94,7 +98,9 @@ class Menu extends Authorization
 
             $_menu_id = $this->duplicate_row( 
                 table: "food_menus",
-                object: $menu 
+                object: $menu,
+                relation_column_name: "menu_for_standalone",
+                relation_column_value: '1', 
             );
 
             $variant_options = $this->menu_model->get_variant_options_for_duplication($menu_id);
@@ -140,9 +146,12 @@ class Menu extends Authorization
 
             }
 
-            return; 
+        
         }
         
+    $this->session->set_flashdata('success', 'Menu duplicated successfully');
+    redirect('menu');
+                
 
     }
     // Creates a SQL query and execute it and return inserted id
@@ -180,7 +189,7 @@ class Menu extends Authorization
 
         $id = $this->db->insert_id();
 
-        echo "CREATED IN ". $table . " - ID: " . $id. "<br>";
+        // echo "CREATED IN ". $table . " - ID: " . $id. "<br>";
         return $id;
 
 

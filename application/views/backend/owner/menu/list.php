@@ -1,6 +1,14 @@
+<?php if ($this->session->flashdata('success')): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?php echo $this->session->flashdata('success'); ?>
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 <div class="card">
     <div class="card-body">
-        <form action="<?php echo site_url('menu/index'); ?>" action="get">
+        <form action="<?php echo site_url('menu/index'); ?>" method="get">
             <div class="row justify-content-sm-center">
                 <div class="col-lg-4">
                     <div class="form-group">
@@ -12,6 +20,14 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    <div class="form-group">
+    <label>Menu Type</label>
+    <select class="form-control select2 w-100" name="menu_for_standalone">
+        <option value="all" <?php if ($menu_for_standalone == "all") echo "selected"; ?>>All</option>
+        <option value="1" <?php if ($menu_for_standalone == "1") echo "selected"; ?>>Standalone</option>
+        <option value="0" <?php if ($menu_for_standalone == "0") echo "selected"; ?>>Fooyes (Main Domain)</option>
+    </select>
+</div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
@@ -23,6 +39,7 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    
                 </div>
                 <div class="col-1">
                     <div class="form-group mt-30">
@@ -69,12 +86,22 @@
                                 </a>
                             </li>
                             <li class="list-group-item">
-                                <b><?php echo get_phrase('availability'); ?></b>
+                                <b><?php echo get_phrase('availability');  ?></b>
                                 <a class="float-right">
                                     <?php if ($menu['availability']) : ?>
                                         <span class="badge badge-success"><?php echo get_phrase('available'); ?></span>
                                     <?php else : ?>
                                         <span class="badge badge-danger"><?php echo get_phrase('not_available'); ?></span>
+                                    <?php endif; ?>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <b><?php echo "Menu On";  ?></b>
+                                <a class="float-right">
+                                    <?php if ($menu['menu_for_standalone'] != 1 ) : ?>
+                                        <span class="badge badge-success"><?php echo "Main Domain"; ?></span>
+                                    <?php else : ?>
+                                        <span class="badge badge-danger"><?php echo "Stand Alone Domain"; ?></span>
                                     <?php endif; ?>
                                 </a>
                             </li>
