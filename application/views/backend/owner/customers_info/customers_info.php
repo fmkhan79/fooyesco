@@ -162,7 +162,7 @@
                                     <th><?php echo get_phrase("name"); ?></th>
                                     <th><?php echo get_phrase("email"); ?></th>
                                     <th><?php echo get_phrase("phone"); ?></th>
-                                    <th><?php echo get_phrase("restaurant"); ?></th>
+                                    <!-- <th><?php echo get_phrase("restaurant"); ?></th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -171,10 +171,15 @@
                                 $printed = [];
                                 $restaurant_map = [];
                                 foreach ($restaurants as $r) {
-                                    $restaurant_map[$r['id']] = $r['name'];
+                                    // $restaurant_map[$r['id']] = $r['name'];
+                                    // print_r($r['id']);
                                 }
-
+                                
                                 foreach ($customers as $customer) {
+
+                                    if($customer['restaurant_id'] != $r['id'] ){
+                                        continue;
+                                    }
                                     $billing = json_decode($customer['billing'], true);
                                     if ($billing['email'] == null && $billing['phone'] == null) continue;
 
@@ -190,7 +195,7 @@
                                         <td><?= $billing['first_name'] . ' ' . $billing['last_name'] ?></td>
                                         <td><?= $billing['email'] ?></td>
                                         <td><?= $billing['phone_mobile'] ?? 'No Phone Number' ?></td>
-                                        <td><?= $restaurantName ?></td>
+                                        <!-- <td><?= $restaurantName ?></td> -->
                                     </tr>
                                 <?php } ?>
                             </tbody>
