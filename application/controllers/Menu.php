@@ -128,10 +128,9 @@ class Menu extends Authorization
 
                             relation_column_name: "variant_option_id",
                             relation_column_value: $_variant_option_id 
-                        );              
-
-                    }
-                    $variant_sub_options_items = $this->menu_model->get_variants_for_duplication($variant_sub_option['id']);
+                        );       
+                        
+                        $variant_sub_options_items = $this->menu_model->get_variants_for_duplication($variant_sub_option['id']);
                     // dd($variant_sub_options_items);
 
                 foreach($variant_sub_options_items as $variant ){
@@ -142,7 +141,10 @@ class Menu extends Authorization
                     relation_column_value: $_variant_sub_option 
                 );
 
-                }
+                }       
+
+                    }
+                    
 
             }
 
