@@ -133,7 +133,12 @@ if (count($restaurant_ids) > 0):
 <div class="booking-checkbox_wrap mb-2">
     <div class="row">
         <div class="col-sm-12 text-center">
-            <?php if ($this->session->flashdata('confirm_order')): ?>
+           <?php if ($this->session->flashdata('confirm_order')): ?>
+            <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                localStorage.removeItem("appliedPromo");
+            });
+            </script>
             <h5>
                 <?php echo site_phrase('congratulations'); ?>!
             </h5>
