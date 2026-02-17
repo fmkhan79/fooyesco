@@ -1,17 +1,8 @@
 <?php
-$restaurant_ids = $this->cart_model->get_restaurant_ids();
-if (count($restaurant_ids) > 0):
-    foreach ($restaurant_ids as $restaurant_id):
-
-        $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
-
-        $cart_items = $this->cart_model->get_cart_by_condition([
-            'customer_id'  => $this->session->userdata('user_id'),
-            'restaurant_id'=> sanitize($restaurant_details['id'])
-        ]);
-
+    items_menu();
+    
         foreach ($cart_items as $cart_item):
-?>
+?> 
 
 <div class="price-box d-flex justify-content-between">
 
@@ -128,6 +119,5 @@ if (!empty($cart_item['variant_id'])) {
 
 <?php
         endforeach;
-    endforeach;
-endif;
+
 ?>
