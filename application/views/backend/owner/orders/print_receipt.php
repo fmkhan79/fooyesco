@@ -471,8 +471,7 @@ echo "-" . currency(number_format($discount_amount_show, 2));
         </span>
     </div>
 
-    <?php if (!empty($order_details['is_online_discount'])) { 
-        $is_online_discount = floatval($order_details['is_online_discount']);
+    <?php if (!empty($order_details['is_online_discount']) || $order_details['is_online_discount'] === 0) { 
         $online_discount_amount_show = $total_menu_price * ($is_online_discount / 100.0);
     ?>
 
