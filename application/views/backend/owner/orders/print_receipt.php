@@ -110,6 +110,7 @@
 </head>
 
 <body>
+
 <?php
 function formatPizzaDealReceiptAddons(array $addons, string $menuName)
 {
@@ -279,143 +280,123 @@ $restaurant_details = [];
     ?>
 
   <div id="ordered_items">
+<?php foreach ($ordered_items as $ordered_item) : ?>
+
 <?php
-foreach ($ordered_items as $ordered_item) :
+$ordered_item = is_array($ordered_item) ? $ordered_item : (array)$ordered_item;
 
-    // Defensive checks
-    $ordered_item = is_array($ordered_item) ? $ordered_item : (array)$ordered_item;
-            $restaurant_details = $this->restaurant_model->get_by_id($ordered_item['restaurant_id'] ?? 0);
+$restaurant_details = $this->restaurant_model->get_by_id($ordered_item['restaurant_id'] ?? 0);
+$menu_details       = $this->menu_model->get_by_id($ordered_item['menu_id'] ?? 0);
 
-    $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id'] ?? 0);
+$qty        = floatval($ordered_item['quantity'] ?? 0);
+$item_total = floatval($ordered_item['total'] ?? 0.0);
 
-    $qty        = floatval($ordered_item['quantity'] ?? 0);
-    $item_total = floatval($ordered_item['total'] ?? 0.0);
+$total_items  += $qty;
+$total_amount += $item_total;
 
-    $total_items  += $qty;
-    $total_amount += $item_total;
+$addonHTML = "";
 
-    $addonHTML = "";
+if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
 
-    if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
+    $addons = json_decode($ordered_item["addons"], true);
 
-        $addons = json_decode($ordered_item["addons"], true);
+    if (is_array($addons) && count($addons) > 0) {
 
-        if (is_array($addons) && count($addons) > 0) {
+        // ==========================
+        // NORMAL ADDONS (Dynamic)
+        // ==========================
 
-            /**
-             * CASE 1: Pizza Deal (string based addons)
-             */
-            if (isset($addons[0]) && is_string($addons[0])) {
+        if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
 
-                $addonHTML = formatPizzaDealReceiptAddons(
-                    $addons,
-                    $menu_details['name'] ?? ''
-                );
-            }
+            $pizzas = [];
+            $extras = [];
 
-            /**
-             * CASE 2: Normal addons with subVariantId
-             */
-            else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
+            foreach ($addons as $addon) {
 
-                $pizza1 = [];
-                $pizza2 = [];
-                $extras = [];
+                if (empty($addon['itemId'])) continue;
 
-                foreach ($addons as $addon) {
+                $item = $this->menu_model->get_addon_item_detail($addon['itemId']);
+                if (empty($item)) continue;
 
-                    if (empty($addon['itemId'])) continue;
+                $variantName   = $item['variantName'] ?? '';
+                $subOptionName = $item['subOptionName'] ?? '';
+                $price         = floatval($item['price'] ?? 0);
 
-                    $item = $this->menu_model->get_addon_item_detail($addon['itemId']);
-                    if (empty($item)) continue;
+                $label = $subOptionName;
 
-                    $variantName   = $item['variantName'] ?? '';
-                    $subOptionName = $item['subOptionName'] ?? '';
-                    $price         = floatval($item['price'] ?? 0);
-
-                    // Build label with price
-                    $label = $subOptionName;
-                    if ($price > 0) {
-                        
-    $label .= ' <span class="price-right">' . currency(number_format($price, 2)) . '</span>';
-                    }
-
-                    if (stripos($variantName, 'Pizza 1') !== false) {
-                        $pizza1[] = $label;
-                    }
-                    elseif (stripos($variantName, 'Pizza 2') !== false) {
-                        $pizza2[] = $label;
-                    }
-                    else {
-                        $extras[] = $label;
-                    }
+                if ($price > 0) {
+                    $label .= ' <span class="price-right">' . currency(number_format($price, 2)) . '</span>';
                 }
 
-                // Generate HTML
-                ob_start();
-                ?>
+                // 🔥 Dynamic Pizza Detection
+                if (preg_match('/Pizza\s*(\d+)/i', $variantName, $matches)) {
 
-                <?php if (!empty($pizza1)): ?>
-                            <ul class="options-list">
-                                <li><strong>Pizza 1</strong></li>
-                                <?php foreach ($pizza1 as $p): ?>
-        <li><?= html_entity_decode(sanitize($p)) ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
+                    $pizzaNumber = $matches[1];
+                    $pizzas[$pizzaNumber][] = $label;
 
-                        <?php if (!empty($pizza2)): ?>
-                            <ul class="options-list">
-                                <li><strong>Pizza 2</strong></li>
-                                <?php foreach ($pizza2 as $p): ?>
-        <li><?= html_entity_decode(sanitize($p)) ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
+                } else {
 
-                        <?php if (!empty($extras)): ?>
-            <ul class="options-list">
-                <li><strong>Extras</strong></li>
-                <?php foreach ($extras as $p): ?>
-                    <li><?= html_entity_decode(sanitize($p)) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-
-
-                <?php
-                $addonHTML = ob_get_clean();
+                    $extras[] = $label;
+                }
             }
+
+            ob_start();
+            ?>
+
+            <?php if (!empty($pizzas)): ?>
+                <?php foreach ($pizzas as $number => $items): ?>
+                    <ul class="options-list">
+                        <li><strong>Pizza <?= $number ?></strong></li>
+                        <?php foreach ($items as $p): ?>
+                            <li><?= html_entity_decode(sanitize($p)) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+            <?php if (!empty($extras)): ?>
+                <ul class="options-list">
+                    <li><strong>Extras</strong></li>
+                    <?php foreach ($extras as $p): ?>
+                        <li><?= html_entity_decode(sanitize($p)) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+
+            <?php
+            $addonHTML = ob_get_clean();
         }
     }
+}
 ?>
-    <hr style="margin-top: 20px;">
 
-    <ul class="line-item font-weight-bold">
+<hr style="margin-top: 20px;">
+
+<ul class="line-item font-weight-bold">
+    <li>
+        <?= intval($qty) . "x " . html_entity_decode(sanitize($menu_details['name'] ?? '')) ?>
+    </li>
+    <li>
+        <?= currency(number_format($item_total, 2)) ?>
+    </li>
+</ul>
+
+<?php if (!empty($ordered_item["variant_id"])): ?>
+    <ul class="line-item">
         <li>
-            <?= intval($qty) . "x " . html_entity_decode(sanitize($menu_details['name'] ?? '')) ?>
-        </li>
-        <li>
-            <?= currency(number_format($item_total, 2)) ?>
-            
+            <?php
+            $variant = $this->menu_model->get_variant_detail($ordered_item["variant_id"]);
+            echo "Selected: " . html_entity_decode(sanitize($variant[0]["name"] ?? ''), ENT_QUOTES);
+            ?>
         </li>
     </ul>
+<?php endif; ?>
 
-    <?php if (!empty($ordered_item["variant_id"])): ?>
-        <ul class="line-item">
-            <li>
-                <?php
-                $variant = $this->menu_model->get_variant_detail($ordered_item["variant_id"]);
-                echo "Selected: " . html_entity_decode(sanitize($variant[0]["name"] ?? ''), ENT_QUOTES);
-                ?>
-            </li>
-        </ul>
-    <?php endif; ?>
-
-    <?php if (!empty($addonHTML)) echo $addonHTML; ?>
+<?php if (!empty($addonHTML)) echo $addonHTML; ?>
 
 <?php endforeach; ?>
-</div>
+
+</div>  
 
     <hr>
 
