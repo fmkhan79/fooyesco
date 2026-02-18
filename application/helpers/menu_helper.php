@@ -14,20 +14,18 @@
  */
 
 if (!function_exists('items_menu')) {
-    function items_menu($order_code)
+
+    function items_menu($order_code = "")
     {
-        if($order_code){
-            // print_r($order_code);
-            $CI    = &get_instance();
-        // $CI->load->database();
+    
+        $CI    = &get_instance();        
         $CI->load->model('items_model');
         $order = $CI->items_model->order_items($order_code);
-            return $order;
-        // print_r($order);
-        // return $order;
-        // dd($order);
-                }
+
+        return $order;
+        
     }
+
 }
 
 

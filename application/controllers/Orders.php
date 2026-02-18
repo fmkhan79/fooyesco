@@ -271,7 +271,7 @@ class Orders extends Authorization
 
     public function print_recipt($order_code)
     {
-        // Fetch order details based on the order code
+
         $order_details = $this->order_model->get_by_code($order_code);
         $payment       = $this->order_model->get_order_payment($order_code);
 
@@ -279,20 +279,14 @@ class Orders extends Authorization
             show_404(); // If no order found, show 404 page
         }
 
-        // Load necessary models
         $ordered_items = $this->order_model->details($order_code);
 
-        // --- START: Calculate daily order number ---
-
-        // --- END ---
-
-        // Prepare data for the view
         $data['order_details'] = $order_details;
         $data['ordered_items'] = $ordered_items;
         $data['payment']       = $payment;
         $data['daily_order_number'] = $order_details->daily_order_number;
 
-        // Load the view for printing
+
         $this->load->view('backend/owner/orders/print_receipt', $data);
     }
 
