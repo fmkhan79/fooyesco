@@ -1,7 +1,9 @@
 <?php
-    items_menu();
-    
+    // items_menu();
+    // $cart_items = items_menu();
+    // print_r($cart_items);
         foreach ($cart_items as $cart_item):
+                    print_r($cart_items);
 ?> 
 
 <div class="price-box d-flex justify-content-between">
@@ -23,7 +25,7 @@
         $extras = [];
 
         if (!empty($cart_item['options_1_details'])) {
-
+            // print_r($cart_item['options_1_details']);
             foreach ($cart_item['options_1_details'] as $opt) {
 
                 $variantName   = $opt['variantName'] ?? '';
@@ -87,7 +89,7 @@ if (!empty($cart_item['variant_id'])) {
     </div>
 
     <!-- Cart Buttons -->
-    <div class="d-flex p-1">
+    <div id="hide" class="d-flex p-1">
         <button type="button"
                 class="cart-actions mr-1 cart-btns"
                 onclick="updateCart('<?php echo sanitize($cart_item['id']); ?>', true)">

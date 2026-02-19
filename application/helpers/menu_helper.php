@@ -21,7 +21,7 @@ if (!function_exists('items_menu')) {
         $CI    = &get_instance();        
         $CI->load->model('items_model');
         $order = $CI->items_model->order_items($order_code);
-
+    
         return $order;
         
     }

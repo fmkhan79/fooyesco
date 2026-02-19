@@ -85,9 +85,19 @@ class Site extends Base
     }
 
 
-    function selected_cat_items_summary(){
-        $this->load->view("frontend/default/restaurant/ordersummary.php");
+   function selected_cat_items_summary($cart_item = [], $order_code = "")
+{
+    $this->load->model('items_model');
+
+    if (!empty($order_code)) {
+        $data['cart_items'] = $this->items_model->order_items($order_code);
+    } else {
+        $data['cart_items'] = $cart_item;
     }
+
+    $this->load->view("frontend/default/restaurant/ordersummary.php", $data);
+}
+
     
 
     // THIS FUNCTION IS RESPONSIBLE FOR SHOWING POPULAR RESTAURANT LIST
