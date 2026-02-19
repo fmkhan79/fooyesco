@@ -33,22 +33,33 @@ if (count($restaurant_ids) > 0):
 
         if (!empty($cart_item['options_1_details'])) {
 
-            foreach ($cart_item['options_1_details'] as $opt) {
+          $currentPizza = null;
 
-                $variantName   = $opt['variantName'] ?? '';
-                $subOptionName = $opt['subOptionName'] ?? '';
+foreach ($cart_item['options_1_details'] as $opt) { 
+                
+    $variantName   = $opt['variantName'] ?? '';
+    $subOptionName = $opt['subOptionName'] ?? '';
 
-                // Dynamic Pizza Detection (Pizza 1, Pizza 2, Pizza 3...)
-                if (preg_match('/Pizza\s*(\d+)/i', $variantName, $matches)) {
-
-                    $pizzaNumber = $matches[1];
-                    $pizzas[$pizzaNumber][] = $subOptionName;
-
-                } else {
-
-                    $extras[] = $subOptionName;
-                }
-            }
+    // Detect Pizza Number
+    if (preg_match('/Pizza\s*(\d+)/i', $variantName, $matches)) {
+        $currentPizza = $matches[1];
+        $pizzas[$currentPizza][] = $subOptionName;
+    }
+    // If variant related to pizza (Base / Crust / Toppings)
+    elseif (
+        stripos($variantName, 'Base') !== false ||
+        stripos($variantName, 'Crust') !== false ||
+        stripos($variantName, 'Toppings') !== false
+    ) {
+        if ($currentPizza !== null) {
+            $pizzas[$currentPizza][] = $subOptionName;
+        }
+    }
+    // Everything else = Extras
+    else {
+        $extras[] = $subOptionName;
+    }
+}
         }
 ?>
 

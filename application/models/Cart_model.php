@@ -410,9 +410,28 @@ public function merger_pos($cart_items)
                 $cart_items[$key]['menu_thumbnail']  = $menu_data['thumbnail'];
                 $cart_items[$key]['restaurant_name']  = $restaurant_data['name'];
                 $cart_items[$key]['delivery_charge']  = delivery_charge($restaurant_data['id']);
-                $cart_items[$key]['options_1_details'] = $this->get_options_details(json_decode($cart_item['options_1'], true));
-                $cart_items[$key]['options_2_details'] = $this->get_options_details(json_decode($cart_item['options_2'], true));
+                            $options1 = [];
+                $options2 = [];
+
+                if (!empty($cart_item['options_1']) && $cart_item['options_1'] !== 'null') {
+                    $decoded1 = json_decode($cart_item['options_1'], true);
+                    if (is_array($decoded1)) {
+                        $options1 = $decoded1;
+                    }
+                }
+
+                if (!empty($cart_item['options_2']) && $cart_item['options_2'] !== 'null') {
+                    $decoded2 = json_decode($cart_item['options_2'], true);
+                    if (is_array($decoded2)) {
+                        $options2 = $decoded2;
+                    }
+                }
+
+                $cart_items[$key]['options_1_details'] = $this->get_options_details($options1);
+                $cart_items[$key]['options_2_details'] = $this->get_options_details($options2);
+
             }
+            // print_r($cart_items);
             return $cart_items;
         } else {
             $cart_item = $query_obj->row_array();
@@ -484,7 +503,7 @@ public function merger_pos($cart_items)
 
         // Get sub-option item name
         $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId);
-
+        
         $details[] = [
             'subVariantId' => $subVariantId,
             'itemId' => $itemId,
