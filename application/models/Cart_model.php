@@ -131,33 +131,33 @@ class Cart_model extends Base_model
 
 
         // Calculate price based on whether the menu item has variants
-        if ($menu_details['has_variant'] == 1) {
+       // Calculate price based on whether the menu item has variants
+if ($menu_details['has_variant'] == 1) {
 
-            $data['variant_id'] = sanitize($this->input->post('variantId'));
+    $data['variant_id'] = sanitize($this->input->post('variantId'));
 
-            $variant_details = $this->db->get_where('variant_options', ['id' => $data['variant_id']]);
-            if ($variant_details->num_rows() > 0) {
-                $variant_details = $variant_details->row_array();
-                $price = $data['quantity'] * $variant_details['price'];
-                $data['price'] = $price;
-            }
-        } else {
-            $price = $data['quantity'] * get_menu_price($data['menu_id']);
-            $data['price'] = $price;
-        }
+    $variant_details = $this->db->get_where('variant_options', ['id' => $data['variant_id']]);
+    if ($variant_details->num_rows() > 0) {
+        $variant_details = $variant_details->row_array();
+        $price = $data['quantity'] * $variant_details['price'];
+        $data['price'] = $price;
+    }
 
-        // Add price for selected addons
-        if (isset($_POST['addons']) && !empty($_POST['addons'])) {
-            $total_addon_price = 0;
-            $selected_addons = explode(',', $this->input->post('addons'));
-            foreach ($selected_addons as $selected_addon) {
-                $selected_addon_details = $this->db->get_where('addons', ['id' => $selected_addon])->row_array();
-                $total_addon_price += $selected_addon_details['price'];
-            }
+    // ✅ OPTIONS only when variant exists
+    $data['options_1'] = $this->input->post('options_1') ?? null;
+    $data['options_2'] = $this->input->post('options_2') ?? null;
 
-            $data['addons'] = implode(",", $selected_addons);
-            $data['price'] = $data['price'] + $total_addon_price;
-        }
+} else {
+
+    // ✅ CLEAR OPTIONS ONLY (price logic same as before)
+    $data['variant_id'] = null;
+    $data['options_1']  = null;
+    $data['options_2']  = null;
+
+    $price = $data['quantity'] * get_menu_price($data['menu_id']);
+    $data['price'] = $price;
+}
+
 
         // Final price calculation
         $price = $data['quantity'] * $totalprice;
@@ -410,28 +410,9 @@ public function merger_pos($cart_items)
                 $cart_items[$key]['menu_thumbnail']  = $menu_data['thumbnail'];
                 $cart_items[$key]['restaurant_name']  = $restaurant_data['name'];
                 $cart_items[$key]['delivery_charge']  = delivery_charge($restaurant_data['id']);
-                            $options1 = [];
-                $options2 = [];
-
-                if (!empty($cart_item['options_1']) && $cart_item['options_1'] !== 'null') {
-                    $decoded1 = json_decode($cart_item['options_1'], true);
-                    if (is_array($decoded1)) {
-                        $options1 = $decoded1;
-                    }
-                }
-
-                if (!empty($cart_item['options_2']) && $cart_item['options_2'] !== 'null') {
-                    $decoded2 = json_decode($cart_item['options_2'], true);
-                    if (is_array($decoded2)) {
-                        $options2 = $decoded2;
-                    }
-                }
-
-                $cart_items[$key]['options_1_details'] = $this->get_options_details($options1);
-                $cart_items[$key]['options_2_details'] = $this->get_options_details($options2);
-
+                $cart_items[$key]['options_1_details'] = $this->get_options_details(json_decode($cart_item['options_1'], true));
+                $cart_items[$key]['options_2_details'] = $this->get_options_details(json_decode($cart_item['options_2'], true));
             }
-            // print_r($cart_items);
             return $cart_items;
         } else {
             $cart_item = $query_obj->row_array();
@@ -503,7 +484,7 @@ public function merger_pos($cart_items)
 
         // Get sub-option item name
         $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId);
-        
+
         $details[] = [
             'subVariantId' => $subVariantId,
             'itemId' => $itemId,
