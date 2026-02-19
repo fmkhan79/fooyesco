@@ -106,6 +106,10 @@
     float: right; /* Moves price to the right side */
 }
 
+.line-item{
+    width:100%;
+}
+
     </style>
 </head>
 
@@ -308,8 +312,9 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
 
         if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
 
-            $pizzas = [];
+           $pizzas = [];
             $extras = [];
+            $currentPizza = null;
 
             foreach ($addons as $addon) {
 
@@ -328,13 +333,27 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
                     $label .= ' <span class="price-right">' . currency(number_format($price, 2)) . '</span>';
                 }
 
-                // 🔥 Dynamic Pizza Detection
+                // 🔥 Detect Pizza Number
                 if (preg_match('/Pizza\s*(\d+)/i', $variantName, $matches)) {
 
-                    $pizzaNumber = $matches[1];
-                    $pizzas[$pizzaNumber][] = $label;
+                    $currentPizza = $matches[1];
+                    $pizzas[$currentPizza][] = $label;
 
-                } else {
+                }
+                // If related to pizza options (Base, Crust, Toppings)
+                elseif (
+                    stripos($variantName, 'Base') !== false ||
+                    stripos($variantName, 'Crust') !== false ||
+                    stripos($variantName, 'Toppings') !== false
+                ) {
+
+                    if ($currentPizza !== null) {
+                        $pizzas[$currentPizza][] = $label;
+                    }
+
+                }
+                // Otherwise → Extra
+                else {
 
                     $extras[] = $label;
                 }
