@@ -79,6 +79,80 @@ class Menu extends Authorization
         $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
         $this->load->view('backend/index', $page_data);
     }
+    
+    function debug(){
+        
+        echo date('Y-m-d H:i:s');
+        echo "<br>";
+        //FOOD MENUS START
+        $this->db->order_by("id", "asc");
+        $food_menus = $this->db
+            ->select('id')
+            ->where('menu_for_standalone', 1)
+            ->get('food_menus')
+            ->result_array();
+        
+        //use this
+        $food_menu_ids = array_column($food_menus, 'id');
+        
+        if (!empty($food_menu_ids)) {
+
+            $food_menu_ids_list = implode(',', $food_menu_ids);
+        
+            echo $food_menu_sql = "DELETE FROM food_menus WHERE id IN ($food_menu_ids_list)";
+        
+        }
+        //FOOD MENUS DONE
+        echo "<hr><br>";
+        //VARIANT OPTION START
+        $this->db->order_by("id", "asc");
+        $variant_options = $this->db
+            ->select('id')
+            ->where_in('menu_id', $food_menu_ids)
+            ->get('variant_options')
+            ->result_array();
+        
+        //use this
+        $variant_options_ids = array_column($variant_options, 'id');
+        
+        
+        if (!empty($variant_options_ids)) {
+            
+            $variant_options_ids_list = implode(',', $variant_options_ids);
+            
+            echo $variant_options_sql = "DELETE FROM variant_options WHERE id IN ($variant_options_ids_list)";
+        
+        }
+        //VARIANT OPTION END
+        echo "<hr><br>";
+        //VARIANT SUB OPTION START
+        $this->db->order_by("id", "asc");
+        $variant_sub_options = $this->db
+            ->select('id')
+            ->where_in('variant_option_id', $variant_options_ids)
+            ->get('variant_sub_options')
+            ->result_array();
+        
+        //use this
+        $variant_sub_options_ids = array_column($variant_sub_options, 'id');
+        
+        
+        if (!empty($variant_sub_options_ids)) {
+            
+            $variant_options_ids_list = implode(',', $variant_sub_options_ids);
+            
+            echo $variant_sub_options_sql = "DELETE FROM variant_sub_options WHERE id IN ($variant_options_ids_list)";
+        
+        }
+        //VARIANT OPTION END
+        
+        
+        
+        
+        
+        
+        
+    }
 
 
     function duplicate()
@@ -86,7 +160,7 @@ class Menu extends Authorization
         $restaurant_id = $this->session->userdata('restaurant_id');
 
        
-        $this->db->order_by("id", "asc");
+    $this->db->order_by("id", "asc");
         $menus = $this->db->get("food_menus")->result_array();
         
         foreach($menus as $menu){
@@ -134,6 +208,8 @@ class Menu extends Authorization
                     // dd($variant_sub_options_items);
 
                 foreach($variant_sub_options_items as $variant ){
+                        $variant['menu_id'] = $_menu_id;
+
                 $_variants = $this->duplicate_row(
                     table: "variants",
                     object: $variant,
@@ -199,25 +275,141 @@ class Menu extends Authorization
 
     }
 
+        public function process_duplicate()
+        {
+            ini_set('max_execution_time', 600); // 10 minutes
+            set_time_limit(600);
+            $from_restaurant = $this->input->post('from_restaurant');
+            $from_domain     = $this->input->post('from_domain');
+            $to_restaurant   = $this->input->post('to_restaurant');
+            $to_domain       = $this->input->post('to_domain');
 
-    // Edit function is responsible for showing the menu edit page.
-    function edit($id, $active_tab = 'basic')
-    {
-        // CHECK MENU AUTHENTICITY
-        $authenticity = $this->menu_model->authentication($id);
-        if (!$authenticity) {
-            error(get_phrase('your_are_not_authorized'), site_url('menu'));
+            if($from_restaurant == $to_restaurant && $from_domain == $to_domain){
+                show_error('Source and target cannot be same');
+            }
+
+            // Restaurant names
+            $from_res = $this->db->get_where('restaurants',['id'=>$from_restaurant])->row();
+            $to_res   = $this->db->get_where('restaurants',['id'=>$to_restaurant])->row();
+
+            $from_res_name = $from_res->name ?? 'N/A';
+            $to_res_name   = $to_res->name ?? 'N/A';
+
+            $from_domain_name = $from_domain==0?'Main Domain':'Standalone';
+            $to_domain_name   = $to_domain==0?'Main Domain':'Standalone';
+
+            /* TARGET BEFORE */
+            $target_before = $this->db->where([
+                'restaurant_id'=>$to_restaurant,
+                'menu_for_standalone'=>$to_domain
+            ])->count_all_results('food_menus');
+
+            $this->db->trans_start();
+
+            $total_menus = 0;
+            $total_variant_options = 0;
+            $total_sub_options = 0;
+            $total_variants = 0;
+
+            $menus = $this->db->where([
+                'restaurant_id'=>$from_restaurant,
+                'menu_for_standalone'=>$from_domain
+            ])->get('food_menus')->result_array();
+            $source_total_menus = count($menus);
+            foreach($menus as $menu){
+
+                $total_menus++;
+                $old_menu_id = $menu['id'];
+                unset($menu['id']);
+
+                $menu['restaurant_id'] = $to_restaurant;
+                $menu['menu_for_standalone'] = $to_domain;
+
+                $this->db->insert('food_menus',$menu);
+                $new_menu_id = $this->db->insert_id();
+
+                $variant_options = $this->db->where('menu_id',$old_menu_id)->get('variant_options')->result_array();
+
+                foreach($variant_options as $variant_option){
+
+                    $total_variant_options++;
+                    $old_variant_option_id = $variant_option['id'];
+                    unset($variant_option['id']);
+                    $variant_option['menu_id'] = $new_menu_id;
+
+                    $this->db->insert('variant_options',$variant_option);
+                    $new_variant_option_id = $this->db->insert_id();
+
+                    $sub_options = $this->db->where('variant_option_id',$old_variant_option_id)->get('variant_sub_options')->result_array();
+
+                    foreach($sub_options as $sub_option){
+
+                        $total_sub_options++;
+                        $old_sub_option_id = $sub_option['id'];
+                        unset($sub_option['id']);
+                        $sub_option['variant_option_id'] = $new_variant_option_id;
+
+                        $this->db->insert('variant_sub_options',$sub_option);
+                        $new_sub_option_id = $this->db->insert_id();
+
+                        $variants = $this->db->where('variant_option_id',$old_sub_option_id)->get('variants')->result_array();
+
+                        foreach($variants as $variant){
+
+                            $total_variants++;
+                            unset($variant['id']);
+                            $variant['menu_id'] = $new_menu_id;
+                            $variant['variant_option_id'] = $new_sub_option_id;
+
+                            $this->db->insert('variants',$variant);
+                        }
+                    }
+                }
+            }
+
+            $this->db->trans_complete();
+        $skipped_menus = $source_total_menus - $total_menus;
+            $target_after = $this->db->where([
+                'restaurant_id'=>$to_restaurant,
+                'menu_for_standalone'=>$to_domain
+            ])->count_all_results('food_menus');
+
+            /* ================================
+            SHOW MODAL BOX DIRECTLY
+            ================================= */
+
+            $this->session->set_flashdata('duplicate_report', [
+            'from' => $from_res_name.' ('.$from_domain_name.')',
+            'to' => $to_res_name.' ('.$to_domain_name.')',
+            'source_total' => $source_total_menus,
+            'before' => $target_before,
+            'inserted_menus' => $total_menus,
+            'skipped_menus' => $skipped_menus,
+            'variant_options' => $total_variant_options,
+            'sub_options' => $total_sub_options,
+            'variants' => $total_variants,
+            'after' => $target_after
+        ]);
+        redirect('menu');
         }
 
-        $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
-        $page_data['categories']  = $this->category_model->get_all();
-        $page_data['id'] = $id;
-        $page_data['active_tab'] = $active_tab;
-        $page_data['menu_data'] = $this->menu_model->get_by_id($id);
-        $page_data['page_name'] = 'menu/edit';
-        $page_data['page_title'] = $page_data['menu_data']['name'];
-        $this->load->view('backend/index', $page_data);
-    }
+            function edit($id, $active_tab = 'basic')
+            {
+                // CHECK MENU AUTHENTICITY
+                $authenticity = $this->menu_model->authentication($id);
+                if (!$authenticity) {
+                    error(get_phrase('your_are_not_authorized'), site_url('menu'));
+                }
+
+                $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
+                $page_data['categories']  = $this->category_model->get_all();
+                $page_data['id'] = $id;
+                $page_data['active_tab'] = $active_tab;
+                $page_data['menu_data'] = $this->menu_model->get_by_id($id);
+                $page_data['page_name'] = 'menu/edit';
+                $page_data['page_title'] = $page_data['menu_data']['name'];
+                $this->load->view('backend/index', $page_data);
+            }
 
     // store function is responsible for storing the menu data.
     function store()
