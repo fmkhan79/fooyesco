@@ -1,3 +1,24 @@
+<!-- SweetAlert2 CSS & JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php if($info = $this->session->flashdata('duplication_info')): ?>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    Swal.fire({
+        title: 'Menu Duplication Complete!',
+        html: `
+<b>From Restaurant:</b> <?= $info['from_restaurant'] ?> <?= $info['from_count'] ?> menus<br>
+<b>Total number of food menus in Restaurant Before:</b> <?= $info['to_restaurant'] ?> <?= $info['to_count_before'] ?> menus<br>
+ <b>Menus Duplicated:</b> <?= $info['inserted_count'] ?><br>
+<b>After Duplication total number of food menus:</b> <?= $info['to_count_after'] ?> menus
+        `,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false
+    });
+});
+</script>
+<?php endif; ?>
 <div class="card">
     <div class="card-body">
         <form action="<?php echo site_url('menu/index'); ?>" action="get">
@@ -12,6 +33,14 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
+                <div class="form-group">
+                    <label>Menu Type</label>
+                    <select class="form-control select2 w-100" name="menu_for_standalone">
+                        <option value="all" <?php if ($menu_for_standalone == "all") echo "selected"; ?>>All</option>
+                        <option value="1" <?php if ($menu_for_standalone == "1") echo "selected"; ?>>Standalone</option>
+                        <option value="0" <?php if ($menu_for_standalone == "0") echo "selected"; ?>>Fooyes (Main Domain)</option>
+                    </select>
+                </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
@@ -23,6 +52,7 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    
                 </div>
                 <div class="col-1">
                     <div class="form-group mt-30">
@@ -75,6 +105,16 @@
                                         <span class="badge badge-success"><?php echo get_phrase('available'); ?></span>
                                     <?php else : ?>
                                         <span class="badge badge-danger"><?php echo get_phrase('not_available'); ?></span>
+                                    <?php endif; ?>
+                                </a>
+                            </li>
+                             <li class="list-group-item">
+                                <b><?php echo "Menu On";  ?></b>
+                                <a class="float-right">
+                                    <?php if ($menu['menu_for_standalone'] != 1 ) : ?>
+                                        <span class="badge badge-success"><?php echo "Main Domain"; ?></span>
+                                    <?php else : ?>
+                                        <span class="badge badge-danger"><?php echo "Stand Alone Domain"; ?></span>
                                     <?php endif; ?>
                                 </a>
                             </li>
