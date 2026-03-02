@@ -165,6 +165,7 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
     <?php if($menu_details["byoneoffer"] == 1){ ?>
 
     <div class="main-div-2" id="main-catagories ">
+        
         <div class="d-flex align-items-center justify-content-between p-4 popup-gray-box">
             <h3 class="p-0 m-0">Choose one</h3>
             <div class="op-rq-box"><span>Required</span></div>
@@ -240,7 +241,7 @@ $menu_main_catagories = $this->menu_model->get_options($menuid);
                 
                     <!-- <div class="d-flex justify-content-between align-items-center add-order-box <?= $hasRequireVariant ? "disabled" : ""?>" id="add-to-order-container" onclick="addToCart()"  > -->
                 
-                                        <div class="d-flex justify-content-between align-items-center add-order-box" id="add-to-order-container" onclick="checkRequireds()"  >
+                                        <div class="d-flex justify-content-between align-items-center add-order-box" id="add-to-order-container" onclick="checkRequireds()" style="cursor: pointer;">
 
                         <div class="add-order-txt">Add To Order</div>
                         <div class="add-order-price" id="add-order-price">0</div>
