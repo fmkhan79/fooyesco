@@ -137,6 +137,7 @@ if (preg_match('/Maximum\s*(\d+)/i', $name, $matches)) {
     ⚠ Only <span class="max-number"></span> addons can be selected
 </div>
 <div class="addons" id="med-addons"  data-max="<?php echo $max_limit; ?>">
+
   <div class="d-flex align-items-center justify-content-between p-4 popup-gray-box">
     <h3 class="p-0 m-0"><?php echo $menu_sub_catagory_item["name"]; ?></h3>
     <div class="op-rq-box">
@@ -196,7 +197,7 @@ if (preg_match('/Maximum\s*(\d+)/i', $name, $matches)) {
                 toast: true,                 // 👈 toast style (small box)
                 position: 'top',             // 👈 upar show hoga
                 icon: 'warning',
-                title: 'Only ' + maxAllowed + ' addons can be selected',
+                title: 'Only ' + maxAllowed + ' free toppings allowed',
                 showConfirmButton: false,
                 timer: 2000,                 // 👈 2 sec auto close
                 timerProgressBar: true,
