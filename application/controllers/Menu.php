@@ -315,6 +315,7 @@ class Menu extends Authorization
                 'restaurant_id'=>$from_restaurant,
                 'menu_for_standalone'=>$from_domain
             ])->get('food_menus')->result_array();
+            // dd($menus);
             $source_total_menus = count($menus);
             foreach($menus as $menu){
 
@@ -329,26 +330,28 @@ class Menu extends Authorization
                 $new_menu_id = $this->db->insert_id();
 
                 $variant_options = $this->db->where('menu_id',$old_menu_id)->get('variant_options')->result_array();
-
+                // dd($variant_options);
                 foreach($variant_options as $variant_option){
 
                     $total_variant_options++;
                     $old_variant_option_id = $variant_option['id'];
+                    // dd($old_variant_option_id);
                     unset($variant_option['id']);
                     $variant_option['menu_id'] = $new_menu_id;
 
                     $this->db->insert('variant_options',$variant_option);
                     $new_variant_option_id = $this->db->insert_id();
 
-                    $sub_options = $this->db->where('variant_option_id',$old_variant_option_id)->get('variant_sub_options')->result_array();
+                    $sub_options = $this->db->where('variant_option_id',$old_variant_option_id)->order_by('id','ASC')->get('variant_sub_options')->result_array();
 
+                        
                     foreach($sub_options as $sub_option){
 
                         $total_sub_options++;
                         $old_sub_option_id = $sub_option['id'];
                         unset($sub_option['id']);
                         $sub_option['variant_option_id'] = $new_variant_option_id;
-
+                         $sub_option['menu_id'] = $new_menu_id;
                         $this->db->insert('variant_sub_options',$sub_option);
                         $new_sub_option_id = $this->db->insert_id();
 
