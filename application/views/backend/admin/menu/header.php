@@ -49,6 +49,12 @@
                                 <i class="fas fa-external-link-alt"></i> 
                                 <?php echo get_phrase("view_in_frontend", true); ?>
                             </a>
+                            <a href="#" 
+   class="btn btn-outline-danger btn-rounded float-right mr-1"
+   data-toggle="modal"
+   data-target="#duplicateSingleMenuModal">
+    Duplicate This Menu
+</a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -244,3 +250,86 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 <?php endif; ?>
+
+<!-- ================= DUPLICATE SINGLE MENU MODAL ================= -->
+<div class="modal fade" id="duplicateSingleMenuModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <form method="POST" action="<?= site_url('menu/process_duplicate_single_menu'); ?>">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Duplicate This Menu</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- Hidden Menu ID -->
+                    <input type="hidden" name="menu_id" value="<?= $menu_data['id']; ?>">
+
+                    <!-- FROM RESTAURANT -->
+                    <div class="form-group">
+                        <label>From Restaurant</label>
+                        <select name="from_restaurant" class="form-control" required>
+                            <?php foreach($restaurants as $res): ?>
+                                <option value="<?= $res['id']; ?>" 
+                                    <?= ($res['id'] == $menu_data['restaurant_id']) ? 'selected' : ''; ?>>
+                                    <?= $res['name']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <!-- FROM DOMAIN -->
+                    <div class="form-group">
+                        <label>From Domain</label>
+                        <select name="from_domain" class="form-control" required>
+                            <option value="0" <?= ($menu_data['menu_for_standalone']==0)?'selected':''; ?>>
+                                Main Domain
+                            </option>
+                            <option value="1" <?= ($menu_data['menu_for_standalone']==1)?'selected':''; ?>>
+                                Standalone
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- TO RESTAURANT -->
+                    <div class="form-group">
+                        <label>To Restaurant</label>
+                        <select name="to_restaurant" class="form-control" required>
+                            <?php foreach($restaurants as $res): ?>
+                                <option value="<?= $res['id']; ?>">
+                                    <?= $res['name']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <!-- TO DOMAIN -->
+                    <div class="form-group">
+                        <label>To Domain</label>
+                        <select name="to_domain" class="form-control" required>
+                            <option value="0">Main Domain</option>
+                            <option value="1">Standalone</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        Duplicate Menu
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

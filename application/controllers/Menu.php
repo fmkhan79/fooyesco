@@ -396,6 +396,9 @@ class Menu extends Authorization
         redirect('menu');
         }
 
+
+            
+
             function edit($id, $active_tab = 'basic')
             {
                 // CHECK MENU AUTHENTICITY
@@ -413,6 +416,127 @@ class Menu extends Authorization
                 $page_data['page_title'] = $page_data['menu_data']['name'];
                 $this->load->view('backend/index', $page_data);
             }
+
+          public function process_duplicate_single_menu()
+{
+    ini_set('max_execution_time', 600);
+    set_time_limit(600);
+
+    $menu_id        = $this->input->post('menu_id');
+    $from_restaurant= $this->input->post('from_restaurant');
+    $from_domain    = $this->input->post('from_domain');
+    $to_restaurant  = $this->input->post('to_restaurant');
+    $to_domain      = $this->input->post('to_domain');
+
+    if (empty($menu_id)) {
+        show_error('Menu ID is required');
+    }
+
+    $menu = $this->db->get_where('food_menus', ['id' => $menu_id])->row_array();
+
+    if (!$menu) {
+        show_error('Menu not found');
+    }
+
+    /* VALIDATE SOURCE */
+    if ($menu['restaurant_id'] != $from_restaurant) {
+        show_error('Source restaurant mismatch');
+    }
+
+    if ($menu['menu_for_standalone'] != $from_domain) {
+        show_error('Source domain mismatch');
+    }
+
+    $this->db->trans_start();
+
+    $total_variant_options = 0;
+    $total_sub_options     = 0;
+    $total_variants        = 0;
+
+    /* ================= DUPLICATE MENU ================= */
+    $old_menu_id = $menu['id'];
+    unset($menu['id']);
+
+    $menu['restaurant_id']      = $to_restaurant;
+    $menu['menu_for_standalone']= $to_domain;
+    $menu['created_at']         = date('Y-m-d H:i:s');
+
+    $this->db->insert('food_menus', $menu);
+    $new_menu_id = $this->db->insert_id();
+
+
+    /* ================= DUPLICATE VARIANT OPTIONS ================= */
+    $variant_options = $this->db
+        ->where('menu_id', $old_menu_id)
+        ->get('variant_options')
+        ->result_array();
+
+    foreach ($variant_options as $variant_option) {
+
+        $total_variant_options++;
+        $old_variant_option_id = $variant_option['id'];
+
+        unset($variant_option['id']);
+        $variant_option['menu_id'] = $new_menu_id;
+
+        $this->db->insert('variant_options', $variant_option);
+        $new_variant_option_id = $this->db->insert_id();
+
+
+        /* ================= DUPLICATE SUB OPTIONS ================= */
+        $sub_options = $this->db
+            ->where('variant_option_id', $old_variant_option_id)
+            ->order_by('id', 'ASC')
+            ->get('variant_sub_options')
+            ->result_array();
+
+        foreach ($sub_options as $sub_option) {
+
+            $total_sub_options++;
+            $old_sub_option_id = $sub_option['id'];
+
+            unset($sub_option['id']);
+            $sub_option['variant_option_id'] = $new_variant_option_id;
+            $sub_option['menu_id']           = $new_menu_id;
+
+            $this->db->insert('variant_sub_options', $sub_option);
+            $new_sub_option_id = $this->db->insert_id();
+
+
+            /* ================= DUPLICATE VARIANTS ================= */
+            $variants = $this->db
+                ->where('variant_option_id', $old_sub_option_id)
+                ->get('variants')
+                ->result_array();
+
+            foreach ($variants as $variant) {
+
+                $total_variants++;
+
+                unset($variant['id']);
+                $variant['menu_id']           = $new_menu_id;
+                $variant['variant_option_id'] = $new_sub_option_id;
+
+                $this->db->insert('variants', $variant);
+            }
+        }
+    }
+
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status() === FALSE) {
+        show_error('Something went wrong while duplicating the menu.');
+    }
+
+    $this->session->set_flashdata('duplicate_report', [
+        'message'         => 'Menu duplicated successfully',
+        'variant_options' => $total_variant_options,
+        'sub_options'     => $total_sub_options,
+        'variants'        => $total_variants,
+    ]);
+
+    redirect('menu');
+}
 
     // store function is responsible for storing the menu data.
     function store()
