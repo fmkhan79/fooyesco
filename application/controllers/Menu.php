@@ -423,8 +423,8 @@ class Menu extends Authorization
     set_time_limit(600);
 
     $menu_id        = $this->input->post('menu_id');
-    $from_restaurant= $this->input->post('from_restaurant');
-    $from_domain    = $this->input->post('from_domain');
+    // $from_restaurant= $this->input->post('from_restaurant');
+    // $from_domain    = $this->input->post('from_domain');
     $to_restaurant  = $this->input->post('to_restaurant');
     $to_domain      = $this->input->post('to_domain');
 
@@ -439,13 +439,13 @@ class Menu extends Authorization
     }
 
     /* VALIDATE SOURCE */
-    if ($menu['restaurant_id'] != $from_restaurant) {
-        show_error('Source restaurant mismatch');
-    }
+    // if ($menu['restaurant_id'] != $from_restaurant) {
+    //     show_error('Source restaurant mismatch');
+    // }
 
-    if ($menu['menu_for_standalone'] != $from_domain) {
-        show_error('Source domain mismatch');
-    }
+    // if ($menu['menu_for_standalone'] != $from_domain) {
+    //     show_error('Source domain mismatch');
+    // }
 
     $this->db->trans_start();
 
@@ -528,7 +528,7 @@ class Menu extends Authorization
         show_error('Something went wrong while duplicating the menu.');
     }
 
-    $this->session->set_flashdata('duplicate_report', [
+    $this->session->set_flashdata('duplicate_report_single', [
         'message'         => 'Menu duplicated successfully',
         'variant_options' => $total_variant_options,
         'sub_options'     => $total_sub_options,
@@ -536,6 +536,7 @@ class Menu extends Authorization
     ]);
 
     redirect('menu');
+    exit;
 }
 
     // store function is responsible for storing the menu data.

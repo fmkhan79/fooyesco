@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <input type="hidden" name="menu_id" value="<?= $menu_data['id']; ?>">
 
                     <!-- FROM RESTAURANT -->
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>From Restaurant</label>
                         <select name="from_restaurant" class="form-control" required>
                             <?php foreach($restaurants as $res): ?>
@@ -281,10 +281,10 @@ document.addEventListener("DOMContentLoaded", function() {
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
+                    </div> -->
 
                     <!-- FROM DOMAIN -->
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>From Domain</label>
                         <select name="from_domain" class="form-control" required>
                             <option value="0" <?= ($menu_data['menu_for_standalone']==0)?'selected':''; ?>>
@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 Standalone
                             </option>
                         </select>
-                    </div>
+                    </div> -->
 
                     <!-- TO RESTAURANT -->
                     <div class="form-group">
@@ -333,3 +333,47 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
     </div>
 </div>
+
+<?php 
+if($this->session->flashdata('duplicate_report_single')): 
+    $report = $this->session->flashdata('duplicate_report_single');
+?>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const key = 'duplicateSingleReportShown';
+
+    // Agar pehle show ho chuka hai to dobara na dikhaye
+    if(localStorage.getItem(key) === 'yes') return;
+
+    Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        html: `<b><?= $report['message']; ?></b>`,
+        confirmButtonColor: '#3085d6'
+    }).then((result) => {
+        if(result.isConfirmed){
+            localStorage.setItem(key, 'yes');
+        }
+    });
+
+});
+</script>
+
+<?php endif; ?>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const singleForm = document.querySelector('#duplicateSingleMenuModal form');
+
+    if(singleForm){
+        singleForm.addEventListener('submit', function(){
+            localStorage.removeItem('duplicateSingleReportShown');
+        });
+    }
+
+});
+</script>
