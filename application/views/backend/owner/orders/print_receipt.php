@@ -333,30 +333,37 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
                     $label .= ' <span class="price-right">' . currency(number_format($price, 2)) . '</span>';
                 }
 
-                // 🔥 Detect Pizza Number
-                if (preg_match('/Pizza\s*(\d+)/i', $variantName, $matches)) {
+             // ✅ Free Items
+if (stripos($variantName, 'Free Items') !== false) {
 
-                    $currentPizza = $matches[1];
-                    $pizzas[$currentPizza][] = $label;
+    $freeItems[] = $label;
 
-                }
-                // If related to pizza options (Base, Crust, Toppings)
-                elseif (
-                    stripos($variantName, 'Base') !== false ||
-                    stripos($variantName, 'Crust') !== false ||
-                    stripos($variantName, 'Toppings') !== false
-                ) {
+}
 
-                    if ($currentPizza !== null) {
-                        $pizzas[$currentPizza][] = $label;
-                    }
+// ✅ Pizza Number
+elseif (preg_match('/Pizza\s*(\d+)/i', $variantName, $matches)) {
 
-                }
-                // Otherwise → Extra
-                else {
+    $currentPizza = $matches[1];
+    $pizzas[$currentPizza][] = $label;
 
-                    $extras[] = $label;
-                }
+}
+
+// ✅ Pizza Options
+elseif (
+    stripos($variantName, 'Base') !== false ||
+    stripos($variantName, 'Crust') !== false ||
+    stripos($variantName, 'Toppings') !== false
+) {
+
+    if ($currentPizza !== null) {
+        $pizzas[$currentPizza][] = $label;
+    }
+
+}
+else {
+
+    $extras[] = $label;
+}
             }
 
             ob_start();
@@ -373,9 +380,17 @@ if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
                 <?php endforeach; ?>
             <?php endif; ?>
 
+            <?php if (!empty($freeItems)): ?>
+<ul class="options-list">
+<li><strong>Extras</strong></li>
+<?php foreach ($freeItems as $item): ?>
+<li><?= html_entity_decode(sanitize($item)) ?></li>
+<?php endforeach; ?>
+</ul>
+<?php endif; ?>
             <?php if (!empty($extras)): ?>
                 <ul class="options-list">
-                    <li><strong>Extras</strong></li>
+                    <!-- <li><strong>Extras</strong></li> -->
                     <?php foreach ($extras as $p): ?>
                         <li><?= html_entity_decode(sanitize($p)) ?></li>
                     <?php endforeach; ?>

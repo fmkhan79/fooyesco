@@ -28,39 +28,47 @@ if (count($restaurant_ids) > 0):
         // 🔥 Dynamic Addon Logic
         // ==========================
 
-        $pizzas = [];
-        $extras = [];
+       $pizzas = [];
+$extras = [];
+$freeItems = [];
 
-        if (!empty($cart_item['options_1_details'])) {
+if (!empty($cart_item['options_1_details'])) {
 
-          $currentPizza = null;
-
-foreach ($cart_item['options_1_details'] as $opt) { 
+    foreach ($cart_item['options_1_details'] as $opt) { 
                 
-    $variantName   = $opt['variantName'] ?? '';
-    $subOptionName = $opt['subOptionName'] ?? '';
+        $variantName   = $opt['variantName'] ?? '';
+        $subOptionName = $opt['subOptionName'] ?? '';
 
-    // Detect Pizza Number
-    if (preg_match('/Pizza\s*(\d+)/i', $variantName, $matches)) {
-        $currentPizza = $matches[1];
-        $pizzas[$currentPizza][] = $subOptionName;
-    }
-    // If variant related to pizza (Base / Crust / Toppings)
-    elseif (
-        stripos($variantName, 'Base') !== false ||
-        stripos($variantName, 'Crust') !== false ||
-        stripos($variantName, 'Toppings') !== false
-    ) {
-        if ($currentPizza !== null) {
-            $pizzas[$currentPizza][] = $subOptionName;
+        // ✅ 1. Free Items (Chips, Drink etc)
+        if (stripos($variantName, 'Free Items') !== false) {
+            $freeItems[] = $subOptionName;
         }
-    }
-    // Everything else = Extras
-    else {
-        $extras[] = $subOptionName;
+
+        // ✅ 2. Free Toppings (Pizza specific)
+        // elseif (preg_match('/Free Toppings.*Pizza\s*(\d+)/i', $variantName, $matches)) {
+        //     $pizzaNo = $matches[1];
+        //     $pizzas[$pizzaNo][] = $subOptionName;
+        
+        // }
+
+        // // ✅ 3. Extra Toppings (Pizza specific)
+        // elseif (preg_match('/Extra Toppings.*Pizza\s*(\d+)/i', $variantName, $matches)) {
+        //     $pizzaNo = $matches[1];
+        //     $extras[] = $subOptionName; // Extras alag rahenge
+        // }
+
+        // ✅ 4. Pizza Selection / Base / Crust
+        elseif (preg_match('/Pizza\s*(\d+)/i', $variantName, $matches)) {
+            $pizzaNo = $matches[1];
+            $pizzas[$pizzaNo][] = $subOptionName;
+        }
+
+        // ✅ 5. Safety fallback
+        else {
+            $extras[] = $subOptionName;
+        }
     }
 }
-        }
 ?>
 
         <!-- 🔥 Display Dynamic Pizzas -->
@@ -74,16 +82,36 @@ foreach ($cart_item['options_1_details'] as $opt) {
                 </ul>
             <?php endforeach; ?>
         <?php endif; ?>
+        
 
-        <!-- 🔥 Display Extras -->
-        <?php if (!empty($extras)): ?>
+
+           <?php if (!empty($freeItems)): ?>
+    <ul class="options-list">
+        <li><strong>Extras</strong></li>
+        <?php foreach ($freeItems as $item): ?>
+            <li><?= html_entity_decode(sanitize($item)) ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+
+
+         <?php if (!empty($extras)): ?>
             <ul class="options-list">
-                <li><strong>Extras</strong></li>
+                        <!-- <li><strong>extras</strong></li> -->
+
                 <?php foreach ($extras as $item): ?>
                     <li><?= html_entity_decode(sanitize($item)) ?></li>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>
+
+
+
+     
+        <!-- 🔥 Display Extras -->
+       
+        <!-- ✅ Display Free Items -->
+
 
         <!-- Variant Display -->
       <?php
