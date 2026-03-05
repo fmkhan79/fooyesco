@@ -280,64 +280,133 @@ $decoded_address = json_decode($message['address'] ?? "", true) ?? [];
                     <?= sanitize($decoded_address['city'] ?? '') ?><br>
                 </p>
             <?php } ?>
+<table class="order-items">
+<?php foreach ($ordered_items as $ordered_item): ?>
 
-            <table class="order-items">
-            <?php foreach ($ordered_items as $ordered_item): ?>
-            <?php
-                $menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
-                $addonHTML = "";
+<?php
+$menu_details = $this->menu_model->get_by_id($ordered_item['menu_id']);
+$addonHTML = "";
 
-                if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
-                    $addons = json_decode($ordered_item["addons"], true);
+if (!empty($ordered_item["addons"]) && $ordered_item["addons"] !== "[]") {
 
-                    if (is_array($addons) && count($addons) > 0) {
-                        if (isset($addons[0]) && is_string($addons[0])) {
-                            $addonHTML = '<ul class="line-item"><li>' .
-                                implode(", ", array_map('sanitize', $addons)) .
-                                '</li></ul>';
-                        } 
-                        else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
-                            $groupedAddons = [];
-                            foreach ($addons as $addon) {
-                                $subVariantId = $addon['subVariantId'] ?? null;
-                                $itemId = $addon['itemId'] ?? null;
-                                if ($subVariantId === null) continue;
-                                if (!isset($groupedAddons[$subVariantId])) {
-                                    $groupedAddons[$subVariantId] = [];
-                                }
-                                $groupedAddons[$subVariantId][] = $itemId;
-                            }
-                            $addonHTML = $this->menu_model->addons_grouped_data($groupedAddons);
-                        }
-                    }
+    $addons = json_decode($ordered_item["addons"], true);
+
+    if (is_array($addons) && count($addons) > 0) {
+
+        if (isset($addons[0]) && is_string($addons[0])) {
+
+            $addonHTML = '<ul class="line-item"><li>' .
+                implode(", ", array_map('sanitize', $addons)) .
+                '</li></ul>';
+
+        }
+
+        else if (isset($addons[0]) && is_array($addons[0]) && isset($addons[0]['subVariantId'])) {
+
+            $pizzas = [];
+            $freeItems = [];
+            $currentPizza = null;
+
+            foreach ($addons as $addon) {
+
+                if (empty($addon['itemId'])) continue;
+
+                $item = $this->menu_model->get_addon_item_detail($addon['itemId']);
+                if (empty($item)) continue;
+
+                $variantName   = $item['variantName'] ?? '';
+                $subOptionName = $item['subOptionName'] ?? '';
+
+                $label = sanitize($subOptionName);
+
+                // Free items
+                if (stripos($variantName, 'Free Items') !== false) {
+
+                    $freeItems[] = $label;
+
                 }
-            ?>
 
-            <tr>
-                <td>
-                    <?= (int)$ordered_item['quantity'] ?> x <?= sanitize($menu_details['name']) ?>
+                // Pizza number
+                elseif (preg_match('/Pizza\s*(\d+)/i', $variantName, $matches)) {
 
-                    <?php if (!empty($addonHTML)): ?>
-                        <br><small><strong>Addons:</strong></small>
-                        <?= $addonHTML ?>
-                    <?php endif; ?>
-                </td>
-                <td><?= currency(number_format((float)$ordered_item['total'], 2)) ?></td>
-            </tr>
+                    $currentPizza = $matches[1];
+                    $pizzas[$currentPizza][] = $label;
 
-            <?php if (!empty($ordered_item["variant_id"])): ?>
-            <tr>
-                <td>
-                    Selected:
-                    <?= sanitize($this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"]) ?>
-                </td>
-                <td></td>
-            </tr>
-            <?php endif; ?>
+                }
 
-            <?php endforeach; ?>
-            </table>
+                // Pizza options
+                elseif (
+                    stripos($variantName, 'Base') !== false ||
+                    stripos($variantName, 'Crust') !== false ||
+                    stripos($variantName, 'Toppings') !== false
+                ) {
 
+                    if ($currentPizza !== null) {
+                        $pizzas[$currentPizza][] = $label;
+                    }
+
+                }
+            }
+
+            ob_start();
+?>
+
+<?php if (!empty($pizzas)): ?>
+<?php foreach ($pizzas as $number => $items): ?>
+<ul class="line-item">
+<li><strong>Pizza <?= $number ?></strong></li>
+<?php foreach ($items as $p): ?>
+<li><?= $p ?></li>
+<?php endforeach; ?>
+</ul>
+<?php endforeach; ?>
+<?php endif; ?>
+
+<?php if (!empty($freeItems)): ?>
+<ul class="line-item">
+<li><strong>Extras</strong></li>
+<?php foreach ($freeItems as $item): ?>
+<li><?= $item ?></li>
+<?php endforeach; ?>
+</ul>
+<?php endif; ?>
+
+<?php
+            $addonHTML = ob_get_clean();
+            // dd($addonHTML);
+        }
+    }
+}
+?>
+
+<tr>
+<td>
+<?= (int)$ordered_item['quantity'] ?> x <?= sanitize($menu_details['name']) ?>
+
+<?php if (!empty($addonHTML)): ?>
+<br>
+<?= $addonHTML ?>
+<?php endif; ?>
+
+</td>
+
+<td>
+<?= currency(number_format((float)$ordered_item['total'], 2)) ?>
+</td>
+</tr>
+
+<?php if (!empty($ordered_item["variant_id"])): ?>
+<tr>
+<td>
+Selected:
+<?= sanitize($this->menu_model->get_variant_detail($ordered_item["variant_id"])[0]["name"]) ?>
+</td>
+<td></td>
+</tr>
+<?php endif; ?>
+
+<?php endforeach; ?>
+</table>
             <table class="totals">
                 <tr>
                     <td><strong>Subtotal</strong></td>
