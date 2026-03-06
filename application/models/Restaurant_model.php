@@ -550,6 +550,12 @@ public function get_distance($lat1, $lng1, $lat2, $lng2) {
     // Radius of Earth in miles
     define("EARTH_RADIUS", 3958.8);
 
+    // Convert all inputs to float
+    $lat1 = (float)$lat1;
+    $lng1 = (float)$lng1;
+    $lat2 = (float)$lat2;
+    $lng2 = (float)$lng2;
+
     // Convert degrees to radians
     $lat1 = deg2rad($lat1);
     $lng1 = deg2rad($lng1);

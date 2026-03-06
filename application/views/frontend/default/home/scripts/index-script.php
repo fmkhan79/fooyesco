@@ -190,17 +190,17 @@ $(document).ready(function() {
     }
 
     function handleOrderNow(menuId, menuPrice, hasVariant, restaurantSlug, restId) {
-            // debugger;
-        if (hasVariant == 0) {
-            // Agar variant nahi hai → direct add to cart
-            addToCart(menuId, menuPrice, true, restaurantSlug, restId);
-        } else {
-            // Agar variant hai → pehle restaurant page open karo aur uske baad popup dikhana
-            let restaurantUrl = "<?= base_url() ?>site/restaurant/" + restaurantSlug + "/" + restId + "#menu-" + menuId;
-            window.location.href = restaurantUrl;
-        }
-
+    if (hasVariant == 0) {
+        // Agar variant nahi hai → direct add to cart
+        addToCart(menuId, menuPrice, true, restaurantSlug, restId);
+    } else {
+        // Agar variant hai → restaurant page + anchor
+        // Direct slug URL (dash remove) ke liye bas slug use karo
+        let restaurantUrl = "<?= base_url() ?>" + encodeURIComponent(restaurantSlug) + "#menu-" + menuId;
+        window.location.href = restaurantUrl;
     }
+}
+    
 
      // CART OPERATIONS
     function addToCart(menu_id, price, isButton, restaurantSlug, restId) {
