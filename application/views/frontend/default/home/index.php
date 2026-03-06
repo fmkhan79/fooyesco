@@ -646,8 +646,8 @@
                     ?>
                     <div class="card grid-item restaurant-card col-lg-3 col-md-6 mb-lg-0 mb-5 <?php echo implode(' ', $cuisine_classes); ?>">
                         <div class="order-img-box main-img">
-<a href="<?php echo site_url(sanitize($restaurant['slug'])); ?>">
-                                    <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>" alt="#">
+                            <a href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">
+                                <img src="<?php echo base_url('uploads/restaurant/thumbnail/' . sanitize($restaurant['thumbnail'])); ?>" alt="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" viewBox="0 0 250 250" fill="none">
                                     <circle cx="125.035" cy="124.965" r="116.153" transform="rotate(178.687 125.035 124.965)" stroke="url(#paint0_linear_33_536)" stroke-width="16"></circle>
                                     <defs>
@@ -679,9 +679,8 @@
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
                                 <p><?php echo sanitize($restaurant['restaurant_about']); ?></p>
                         </div>
-<a class="btn btn-danger" href="<?php echo site_url($restaurant['slug']); ?>">Order Now</a>
-</div>
-
+                        <a class="btn btn-danger" href="<?php echo site_url('site/restaurant/' . sanitize(rawurlencode($restaurant['slug'])) . '/' . sanitize($restaurant['id'])); ?>">Order Now</a>
+                    </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
