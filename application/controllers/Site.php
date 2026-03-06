@@ -89,7 +89,23 @@ class Site extends Base
         $this->load->view("frontend/default/restaurant/ordersummary.php");
     }
     
+ public function show_restaurant($slug = "")
+{
+    // Exact match using slug from DB
+    $restaurant = $this->db->where('slug', $slug)
+                           ->get('restaurants')
+                           ->row_array();
 
+    if (!$restaurant) {
+        show_404();
+    }
+
+    $page_data['restaurant_details'] = $restaurant;
+    $page_data['page_name'] = 'restaurant/index'; // correct subview
+    $page_data['page_title'] = site_phrase("restaurant", true);
+
+    $this->load->view(frontend('index'), $page_data);
+}
     // THIS FUNCTION IS RESPONSIBLE FOR SHOWING POPULAR RESTAURANT LIST
     function restaurants($type = "")
     {
@@ -225,6 +241,8 @@ public function contact_us() {
         $page_data['page_title']       = 'How to Order';
         $this->load->view(frontend('index'), $page_data);
     }
+
+    
 
     /**
      * THIS FUNCTION IS RESPONSIBLE FOR SHOWING THE PRIVACY POLICY PAGE
@@ -363,6 +381,7 @@ public function get_restaurants_by_category($category_id)
         <?php
     }
 }
+
 
 
 
