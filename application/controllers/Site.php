@@ -52,6 +52,23 @@ class Site extends Base
         $this->load->view(frontend('index'), $page_data);
     }
 
+          public function restaurant_by_slug($slug = "")
+{
+    $slug = strtolower(sanitize($slug));
+
+    // Slug exact match DB me
+    $restaurant = $this->db->where('slug', $slug)->get('restaurants')->row_array();
+
+    if (!$restaurant) {
+        show_404();
+    }
+
+    $page_data['restaurant_details'] = $restaurant;
+    $page_data['page_name'] = 'restaurant/index';
+    $page_data['page_title'] = site_phrase("restaurant", true);
+
+    $this->load->view(frontend('index'), $page_data);
+}
     // RESTAURANT FUNCTION IS RESPONSIBLE FOR SHOWING THE RESTAURANT DETAILS PAGE
     // Have to change for next stnadalone
     function restaurant($slug = '', $id = '3')
