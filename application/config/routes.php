@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 $route['default_controller'] = 'site';
 
+
+$route['(:any)'] = 'site/show_restaurant/$1';
 $route['404_override'] = '';
 $route['login'] = 'auth/index';
 $route['logout'] = 'auth/logout';

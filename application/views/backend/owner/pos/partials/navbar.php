@@ -147,7 +147,8 @@
       // debugger;
     const obj = JSON.parse(data);
     // console.log(obj);
-    const name = JSON.parse(obj.billing).first_name;
+    const name = JSON.parse(obj.billing).last_name;
+    
       if(name == "test" && ShowTest == false){
         return;
       }
