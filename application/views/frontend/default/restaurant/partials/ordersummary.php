@@ -203,8 +203,8 @@ $isChilliHut = (strpos($current_domain, 'chilli-hut-march') !== false);
             <label for="promo_code" class="mb-1">Promo Code</label>
 
             <?php if ($isChilliHut) { ?>
-                <small class="d-block mt-0 mb-1" style="color:green; font-size:12px;">
-                    Get 20% off by applying "20DISC" discount coupon
+                <small class="d-block mt-0 mb-1" style="color:#21930f; font-weight:italic; font-size:13px;">
+                    Apply "20DISC" to Get 20% Off
                 </small>
             <?php } ?>
 
