@@ -49,6 +49,20 @@
                                             placeholder="<?php echo get_phrase("enter_restaurant_name"); ?>"
                                             value="<?php echo sanitize($restaurant_data['name']); ?>" required>
                                     </div>
+                                      
+                                    <div class="form-group">
+                                        <label for="restaurant_about">About Restaurant</label>
+                                        <textarea class="form-control" id="restaurant_about" name="restaurant_about" rows="3" placeholder="About Restaurant"><?php echo sanitize($restaurant_data['restaurant_about']); ?></textarea>
+                                     </div>
+                                     <div class="form-group">
+                                        <label
+                                            for="tag_line"><?php echo get_phrase("tag_line"); ?></label>
+                                        <input type="text" class="form-control" id="tag_line"
+                                            name="tag_line"
+                                            placeholder="<?php echo get_phrase("enter_tag_line"); ?>"
+                                            value="<?php echo sanitize($restaurant_data['tag_line']); ?>" required>
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="cuisine"><?php echo get_phrase("cuisine"); ?></label> <small
                                             class="float-right"><a
@@ -62,6 +76,59 @@
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
+                                    
+
+                                    <!-- standlaone -->
+
+                                      <div class="form-group">
+                                        <label
+                                            for="restaurant_name_standalone"><?php echo get_phrase("restaurant_name_for_standalone"); ?></label>
+                                        <input type="text" class="form-control" id="restaurant_name_standalone"
+                                            name="restaurant_name_standalone"
+                                            placeholder="<?php echo get_phrase("enter_restaurant_name"); ?>"
+                                            value="<?php echo sanitize($restaurant_data['restaurant_name_standalone']); ?>" required>
+                                    </div>
+
+                                     <div class="form-group">
+                                        <label for="restaurant_about_standalone">About Restaurant for Standalone</label>
+                                        <textarea class="form-control" id="restaurant_about_standalone" name="restaurant_about_standalone" rows="3" placeholder="About Restaurant"><?php echo sanitize($restaurant_data['restaurant_about_standalone']); ?></textarea>
+                                     </div>
+
+
+                                     <div class="form-group">
+                                        <label
+                                            for="tag_line_standalone"><?php echo get_phrase("tag_line_for_standalone"); ?></label>
+                                        <input type="text" class="form-control" id="tag_line_standalone"
+                                            name="tag_line_standalone"
+                                            placeholder="<?php echo get_phrase("tag_line_standalone"); ?>"
+                                            value="<?php echo sanitize($restaurant_data['tag_line_standalone']); ?>" required>
+                                    </div> 
+
+                                   <div class="form-group">
+    <label for="cuisine_standalone">
+        <?php echo get_phrase("cuisine_for_standalone"); ?>
+    </label>
+
+    <select class="form-control select2" name="cuisine_standalone[]" multiple="multiple"
+        data-placeholder="<?php echo get_phrase("choose_cuisines"); ?>">
+
+        <?php foreach ($cuisines as $cuisine) : ?>
+
+        <option value="<?php echo sanitize($cuisine['id']); ?>"
+        <?php 
+        if (in_array($cuisine['id'], json_decode($restaurant_data['cuisine_standalone'], true) ?? [])) 
+        echo "selected"; 
+        ?>>
+
+        <?php echo sanitize($cuisine['name']); ?>
+
+        </option>
+
+        <?php endforeach; ?>
+
+    </select>
+</div>
+
                                     <button
                                         class="btn btn-primary"><?php echo get_phrase('update_basic_data'); ?></button>
                                 </div>

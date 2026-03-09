@@ -206,6 +206,13 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
 $this->session->unset_userdata('restaurant_id');
 $this->session->set_userdata('restaurant_id', $restaurant_details['id']);
 
+$current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
+$isFooyes = (strpos($current_domain, 'fooyes') !== false);
+
+$restaurant_name  = $isFooyes ? $restaurant_details['name'] : $restaurant_details['restaurant_name_standalone'];
+$tag_line         = $isFooyes ? $restaurant_details['tag_line'] : $restaurant_details['tag_line_standalone'];
+$restaurant_about = $isFooyes ? $restaurant_details['restaurant_about'] : $restaurant_details['restaurant_about_standalone'];
+$restaurant_cuisines = $isFooyes ? json_decode($restaurant_details['cuisine']) : json_decode($restaurant_details['cuisine_standalone']);
 ?>
 
 <section class="detail-wbox mt-5 d-none d-md-block">
@@ -215,35 +222,41 @@ $this->session->set_userdata('restaurant_id', $restaurant_details['id']);
             <div class="col-md-8" style="padding-left: 20px;">
                 <div class="d-md-flex justify-content-between">
                     <div class="detail-wbox-title">
-                        <h1>
-                            <?php echo $restaurant_details['name']; ?> - Menu | 20% Off On All Orders
-                        </h1>
+                                                    <h1>
+                                <?php echo $restaurant_name; ?> - <?php echo !empty($tag_line) ? $tag_line : 'Menu'; ?>
+                                </h1>
 
                         <?php if ($restaurant_details["address"]) {
                             echo $restaurant_details["address"]; ?> - <span class="red">Get
                                 directions</span>
                         <?php } ?>
-                        <div class="red big-txt pt-3">
+                       <div class="red big-txt pt-3">
+
                             <?php
 
-                            $cuisines = json_decode($restaurant_details['cuisine']);
+                            $cuisines = $restaurant_cuisines;
+
+                            if(!empty($cuisines)):
                             foreach ($cuisines as $key => $cuisine):
 
+                            $cuisine = $this->cuisine_model->get_by_id($cuisine);
+
+                            if (isset($cuisine) && count($cuisine)):
+
+                            if ($key === array_key_last($cuisines)) {
+                            echo sanitize($cuisine['name']);
+                            } else {
+                            echo sanitize($cuisine['name'].' | ');
+                            }
+
+                            endif;
+
+                            endforeach;
+                            endif;
+
                             ?>
-                                <?php
-                                $cuisine = $this->cuisine_model->get_by_id($cuisine);
-                                if (isset($cuisine) && count($cuisine)): ?>
 
-                                    <?php if ($key === array_key_last($cuisines)) {
-                                        echo sanitize($cuisine['name']);
-                                    } else {
-                                        echo sanitize($cuisine['name'] . ' |');
-                                    } ?>
-
-
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        </div>
+                            </div>
                     </div>
 
                     <div class="review-box d-flex justify-content-between align-items-center">
@@ -306,7 +319,10 @@ $this->session->set_userdata('restaurant_id', $restaurant_details['id']);
                     <h5><strong>About"
                             <?php echo $restaurant_details['name']; ?>"
                         </strong></h5>
-                    <span style="font-size: 14px; font-weight:400;"><?php echo $restaurant_details['restaurant_about']; ?>.</span>
+                    <span style="font-size: 14px; font-weight:400;"><div class="restaurant-about">
+                                    <?php echo !empty($restaurant_about) ? $restaurant_about : ''; ?>
+                                    </div>
+                                    .</span>
                     <!-- <a class="red" href="#"> READ MORE</a> -->
                 </div>
 
