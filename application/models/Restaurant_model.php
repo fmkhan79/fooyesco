@@ -159,10 +159,15 @@ class Restaurant_model extends Base_model
         $id = required(sanitize($this->input->post('id')));
         $data['name']     = required(sanitize($this->input->post('restaurant_name')));
         $data['restaurant_about']     = $this->input->post('restaurant_about');
+        $data['tag_line']     = $this->input->post('tag_line');
         $data['slug']     = slugify($data['name']);
         $cuisine = (isset($_POST['cuisine']) && !empty($_POST['cuisine'])) ? $this->input->post('cuisine') : array();
         $data['cuisine']  = json_encode(array_map('intval', $cuisine));
         $data['updated_at'] = strtotime(date('D, d-M-Y'));
+          $data['restaurant_name_standalone']     = required(sanitize($this->input->post('restaurant_name_standalone')));
+        $data['restaurant_about_standalone']     = $this->input->post('restaurant_about_standalone');
+        $data['tag_line_standalone']     = $this->input->post('tag_line_standalone');
+        $data['cuisine_standalone'] = json_encode(array_map('intval', (array)$this->input->post('cuisine_standalone')));
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
         return true;
@@ -545,7 +550,6 @@ public function update_address()
         // Return the filtered restaurant IDs within range
         return $filtered_restaurant_ids;
     }
-
 public function get_distance($lat1, $lng1, $lat2, $lng2) {
     // Radius of Earth in miles
     define("EARTH_RADIUS", 3958.8);
@@ -575,7 +579,6 @@ public function get_distance($lat1, $lng1, $lat2, $lng2) {
     // Calculate distance in miles
     return EARTH_RADIUS * $c;
 }
-
     // public function filter_restaurant_frontend()
     // {
     //     $cuisine    = nuller(sanitize($this->input->get('cuisine')));
