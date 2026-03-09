@@ -190,27 +190,41 @@
             ?>
 
             <hr />
-            <?php if (sizeof($cart_items) > 0) { ?>
-                <div class="row justify-content-md-end">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="promo_code">Promo Code</label>
-                            <div class="d-flex gap-2 justify-content-center">
-                                <div class="grand-product-price d-none"></div> <!-- Total Amount in this like £8.6 -->
-                                <input type="text" class="form-control" id="promo_code" name="promo_code" required>
-                                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo" onclick="remove_promo()">
-                                    <i class="fa fa-times"></i>
-                                </div>
-                            </div>
-                            <small id="promo_code_message" class="d-block mt-1"></small>
-                            <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo" onclick="apply_promo_action()">
-                                APPLY COUPON CODE
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+    <?php  
+$current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
+$isChilliHut = (strpos($current_domain, 'chilli-hut-march') !== false);
+?>
+
+<?php if (sizeof($cart_items) > 0) { ?>
+<div class="row justify-content-md-end">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label for="promo_code" class="mb-1">Promo Code</label>
+
+            <?php if ($isChilliHut) { ?>
+                <small class="d-block mt-0 mb-1" style="color:#21930f; font-weight:italic; font-size:13px;">
+                    Apply "20DISC" to Get 20% Off
+                </small>
             <?php } ?>
 
+            <div class="d-flex gap-2 justify-content-center">
+                <div class="grand-product-price d-none"></div>
+                <input type="text" class="form-control" id="promo_code" name="promo_code" required>
+                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo" onclick="remove_promo()">
+                    <i class="fa fa-times"></i>
+                </div>
+            </div>
+
+            <small id="promo_code_message" class="d-block mt-1"></small>
+
+            <div class="btn btn-sm btn-warning w-100 mt-2 text-dark" id="apply_promo" onclick="apply_promo_action()">
+                APPLY COUPON CODE
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
                     <!-- <div class="offer-spend my-3">Offer Spend £28.05 more to get 10% off</div> -->
 
                     
