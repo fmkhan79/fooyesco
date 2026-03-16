@@ -41,6 +41,7 @@ class Restaurant_model extends Base_model
         return $this->merger($restaurants, true);
     }
     public function get_by_slug($slug) {
+        
         $this->db->where('slug', $slug);
         $restaurants = $this->db->get($this->table);
         // print_r($restaurants);
@@ -49,6 +50,7 @@ class Restaurant_model extends Base_model
     }
 
     public function find_slug($slug) {
+        
         $query = $this->db->where('slug', $slug)->get('domains');
         
         if ($query->num_rows() > 0) 
@@ -80,12 +82,24 @@ class Restaurant_model extends Base_model
 
     public function get_all_approved()
     {
+        $current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
+        $isFooyes = (strpos($current_domain, 'fooyes') !== false);
+
+        $slug = $this->uri->uri_string();
+        
         if ($this->logged_in_user_role == "owner") {
             $this->db->where('owner_id', $this->logged_in_user_id);
         }
+        
+        if($slug == "restaurants/recent"){
+            // Show only active fooyes restaurants 
+            $this->db->where('visible_on_fooyes', 1);
+        }
+
         $this->db->where('status', 1);
         $this->db->order_by("id", "desc");
         $restaurants = $this->db->get($this->table);
+
         return $this->merger($restaurants);
     }
 
@@ -160,7 +174,11 @@ class Restaurant_model extends Base_model
         $data['name']     = required(sanitize($this->input->post('restaurant_name')));
         $data['restaurant_about']     = $this->input->post('restaurant_about');
         $data['tag_line']     = $this->input->post('tag_line');
-        $data['slug']     = slugify($data['name']);
+        
+        // $data['slug']     = slugify($data['name']);
+        $data['slug']     = $this->input->post('slug');
+        $data['fooyes_url'] = str_replace('http://', '', site_url($data['slug']));
+
         $cuisine = (isset($_POST['cuisine']) && !empty($_POST['cuisine'])) ? $this->input->post('cuisine') : array();
         $data['cuisine']  = json_encode(array_map('intval', $cuisine));
         $data['updated_at'] = strtotime(date('D, d-M-Y'));
@@ -366,16 +384,63 @@ public function update_address()
         return true;
     }
 
+    public function update_visibility()
+    {
+        $id = required(sanitize($this->input->post('id')));
+        $active = $this->input->post('flag') == "on" ? 1 : 0;
+
+        $data[$this->input->post("domain")] = $active;
+        
+
+        $this->db->where('id', $id);
+        $this->db->update($this->table, $data);
+
+        return true;
+    }
+
     // UPDATE SEO DATA FOR A RESTAURANT
     public function update_seo()
     {
-        $id = required(sanitize($this->input->post('id')));
-        $data['seo_tags']     = sanitize($this->input->post('seo_tags'));
-        $data['seo_description']     = sanitize($this->input->post('seo_description'));
-        $data['updated_at'] = strtotime(date('D, d-M-Y'));
-        $this->db->where('id', $id);
-        $this->db->update($this->table, $data);
+        $id = sanitize($this->input->post('id'));
+
+        $data = [];
+        foreach ($_POST as $key => $value) {
+            if ($key != 'id') {
+                $data[$key] = sanitize($value);
+            }
+        }
+
+        $data["restaurant_id"] = $id;
+
+        $this->db->where('restaurant_id', $id);
+        $this->db->where('for_standalone', $data["for_standalone"]);
+
+        $query = $this->db->get('seo');
+        
+        if ($query->num_rows() > 0) {
+
+            /* update */
+            $this->db->where('restaurant_id', $id);
+            $this->db->where('for_standalone', $data["for_standalone"]);
+            $this->db->update('seo', $data);
+
+        } else {
+
+            /* insert */
+            $this->db->insert('seo', $data);
+
+        }
+
         return true;
+    }
+
+    public function seo_setting($res_id, $standalone){
+        $this->db->where('restaurant_id', $res_id);
+        $this->db->where('for_standalone', $standalone);
+
+        $query = $this->db->get('seo');
+
+        return $query->row();
     }
 
     // UPDATE GALLERY AND THUMBNAIL INFOS FOR A RESTAURANT
