@@ -43,6 +43,8 @@ class Restaurant_model extends Base_model
     public function get_by_slug($slug) {
         
         $this->db->where('slug', $slug);
+        $this->db->where('visible_on_standalone', 1);
+
         $restaurants = $this->db->get($this->table);
         // print_r($restaurants);
         // die();

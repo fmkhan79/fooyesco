@@ -15,19 +15,25 @@ class Site extends Base
     // INDEX FUNCTION IS RESPONSIBLE FOR SHOWING INDEX PAGE
     function index()
     {
+
         $host = get_subdomain();
     
         $checkSlugInDb = $this->restaurant_model->find_slug($host);
-
+        
+        //Standalone if not null 
         if($checkSlugInDb){    
+
             $page_data['reviews_count'] = 0;
             
-
             $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($checkSlugInDb);
+        
+            if(!$page_data['restaurant_details']["id"]){
+                show_404(); 
+            }
+
             $page_data['page_name']          = 'restaurant/index';
             $page_data['page_title']         = site_phrase("restaurant", true);
 
-            
             $restaurant_id = $page_data['restaurant_details']['id'];
             
             if (isset($restaurant_id) && trim($restaurant_id) !== '') {
@@ -52,23 +58,26 @@ class Site extends Base
         $this->load->view(frontend('index'), $page_data);
     }
 
-          public function restaurant_by_slug($slug = "")
-{
-    $slug = strtolower(sanitize($slug));
+    public function restaurant_by_slug($slug = "")
+    {
+        $slug = strtolower(sanitize($slug));
 
-    // Slug exact match DB me
-    $restaurant = $this->db->where('slug', $slug)->get('restaurants')->row_array();
+        // Slug exact match DB me
+        $restaurant = $this->db->where('slug', $slug)
+        ->where('visible_on_fooyes', 1)->get('restaurants')->row_array();
 
-    if (!$restaurant) {
-        show_404();
+        if (!$restaurant) {
+            show_404();
+        }
+
+        $page_data['restaurant_details'] = $restaurant;
+        $page_data['page_name'] = 'restaurant/index';
+        $page_data['page_title'] = site_phrase("restaurant", true);
+
+        $this->load->view(frontend('index'), $page_data);
     }
 
-    $page_data['restaurant_details'] = $restaurant;
-    $page_data['page_name'] = 'restaurant/index';
-    $page_data['page_title'] = site_phrase("restaurant", true);
 
-    $this->load->view(frontend('index'), $page_data);
-}
     // RESTAURANT FUNCTION IS RESPONSIBLE FOR SHOWING THE RESTAURANT DETAILS PAGE
     // Have to change for next stnadalone
     function restaurant($slug = '', $id = '3')
