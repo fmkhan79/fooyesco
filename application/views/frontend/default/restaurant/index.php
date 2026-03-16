@@ -224,7 +224,9 @@ $restaurant_cuisines = $isFooyes ? json_decode($restaurant_details['cuisine']) :
                 <div class="d-md-flex justify-content-between">
                     <div class="detail-wbox-title">
                         <h1><?php echo $restaurant_name; ?></h1>
-                        <h2 style="font-size:1.3rem;"><?php echo !empty($tag_line) ? $tag_line : 'Menu'; ?></h2>
+                        <?php if (!empty($tag_line)) { ?>
+                            <h2 style="font-size:1.3rem;"><?php echo $tag_line; ?></h2>
+                        <?php } ?>
 
                         <?php if ($restaurant_details["address"]) {
                             echo $restaurant_details["address"]; ?> 
