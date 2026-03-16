@@ -48,6 +48,13 @@ a:hover{
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper  <?php if ($page_name == 'pos/index') echo 'm-0'; ?>" >
+            <?php 
+                // Process to make singular owner and admin page
+                if($page_name == "restaurant/edit"){
+                    $role = "owner";
+                }
+            
+            ?>
             <?php include $role . '/' . $page_name . '.php'; ?>
         </div>
         <!-- /.content-wrapper -->

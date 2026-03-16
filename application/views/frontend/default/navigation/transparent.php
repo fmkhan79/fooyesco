@@ -67,22 +67,12 @@ if($host === 'fooyes' || $host === 'staging')
                                     $host = get_subdomain();
                                     if($host == 'fooyes' || $host == 'staging'){
                                 ?>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <?php echo site_phrase('restaurants'); ?>
-                                        <span class="icon-arrow-down"></span>
+                                 <li class="nav-item">
+
+                                    <a class="nav-link" href="<?php echo site_url('restaurants/recent'); ?>">
+                                         Restaurants
                                     </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item"
-                                            href="<?php echo site_url('restaurants/popular'); ?>">
-                                            <?php echo site_phrase('popular'); ?>
-                                        </a>
-                                        <a class="dropdown-item"
-                                            href="<?php echo site_url('restaurants/recent'); ?>">
-                                            <?php echo site_phrase('recently_added'); ?>
-                                        </a>
-                                    </div>
+
                                 </li>
                                 <?php } ?>
                                 <li class="nav-item">

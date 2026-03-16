@@ -206,6 +206,7 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
 $this->session->unset_userdata('restaurant_id');
 $this->session->set_userdata('restaurant_id', $restaurant_details['id']);
 
+ 
 $current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
 $isFooyes = (strpos($current_domain, 'fooyes') !== false);
 
@@ -222,15 +223,13 @@ $restaurant_cuisines = $isFooyes ? json_decode($restaurant_details['cuisine']) :
             <div class="col-md-8" style="padding-left: 20px;">
                 <div class="d-md-flex justify-content-between">
                     <div class="detail-wbox-title">
-                                                    <h1>
-                                <?php echo $restaurant_name; ?> - <?php echo !empty($tag_line) ? $tag_line : 'Menu'; ?>
-                                </h1>
+                        <h1><?php echo $restaurant_name; ?></h1>
+                        <h2 style="font-size:1.3rem;"><?php echo !empty($tag_line) ? $tag_line : 'Menu'; ?></h2>
 
                         <?php if ($restaurant_details["address"]) {
-                            echo $restaurant_details["address"]; ?> - <span class="red">Get
-                                directions</span>
+                            echo $restaurant_details["address"]; ?> 
                         <?php } ?>
-                       <div class="red big-txt pt-3">
+                       <div class="red big-txt pt-3" style="padding-left:0px">
 
                             <?php
 
@@ -246,7 +245,7 @@ $restaurant_cuisines = $isFooyes ? json_decode($restaurant_details['cuisine']) :
                             if ($key === array_key_last($cuisines)) {
                             echo sanitize($cuisine['name']);
                             } else {
-                            echo sanitize($cuisine['name'].' | ');
+                            echo sanitize($cuisine['name']) . ' | ';
                             }
 
                             endif;
@@ -314,17 +313,26 @@ $restaurant_cuisines = $isFooyes ? json_decode($restaurant_details['cuisine']) :
                     </div>
 
                 </div>
+                <?php 
+                    if($restaurant_details['restaurant_about'] != ""){ 
 
+                ?>
                 <div class="order-about">
-                    <h5><strong>About"
-                            <?php echo $restaurant_details['name']; ?>"
+                    <h5><strong>About
+                            "<?php echo $restaurant_details['name']; ?>"
                         </strong></h5>
                     <span style="font-size: 14px; font-weight:400;"><div class="restaurant-about">
                                     <?php echo !empty($restaurant_about) ? $restaurant_about : ''; ?>
                                     </div>
                                     .</span>
-                    <!-- <a class="red" href="#"> READ MORE</a> -->
+                
                 </div>
+
+                <?php        
+                    }
+                ?>
+
+                
 
             </div>
             <div class="col-md-4"><img class="img-fluid" src="<?php echo base_url('assets/frontend/default/images/detail-wbox-img.png'); ?>" /></div>
@@ -350,7 +358,7 @@ $restaurant_cuisines = $isFooyes ? json_decode($restaurant_details['cuisine']) :
                             <?php echo $restaurant_details['name']; ?>
                         </h3>
                         <?php if ($restaurant_details["address"]) { ?>
-                            <div><?php echo $restaurant_details["address"]; ?> - <span class="red p-0">Get directions</span></div>
+                            <div><?php echo $restaurant_details["address"]; ?>
                         <?php } ?>
                     </div>
                 </div>
@@ -431,6 +439,7 @@ $restaurant_cuisines = $isFooyes ? json_decode($restaurant_details['cuisine']) :
                                 </div>
 
                                 <!-- About Section -->
+                               <!-- This is one is not working -->
                                 <div class="order-about">
                                     <h3><strong>About "<?php echo $restaurant_details['name']; ?>"</strong></h3>
                                     <?php echo $restaurant_details['restaurant_about']; ?>.

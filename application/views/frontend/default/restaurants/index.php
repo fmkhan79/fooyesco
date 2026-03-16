@@ -58,7 +58,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
     </div>
 </section>
 
-<section class="free-delivery-section mt-4 mb-2">
+<section class="free-delivery-section mt-4 mb-2" style="visibility:hidden;>
     <div class="container bg-red p-4 text-light rounded border-light">
         <div class="d-md-flex align-items-center">
             <div class="col-md-9">
@@ -280,11 +280,11 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
                             <?php echo sanitize($page_header); ?>
                             <?php echo ($type == "filter" && isset($_GET['query']) && !empty(sanitize($_GET['query']))) ? strtolower(site_phrase("for_query")) . " '" . sanitize($_GET['query']) . "'" : ""; ?>
                         </span>
-                        <small>
+                        <!-- <small>
                             <?php echo sanitize($total_rows); ?> <span>
                                 <?php echo site_phrase('restaurants_found'); ?>
                             </span>
-                        </small>
+                        </small> -->
                     </p>
                 </div>
 

@@ -16,7 +16,7 @@ class Site extends Base
     function index()
     {
         $host = get_subdomain();
-        
+    
         $checkSlugInDb = $this->restaurant_model->find_slug($host);
 
         if($checkSlugInDb){    
@@ -80,9 +80,7 @@ class Site extends Base
         $page_data['page_name']          = 'restaurant/index';
         $page_data['page_title']         = site_phrase("restaurant", true);
             
-        // print_r($page_data);
         if (isset($restaurant_id) && trim($restaurant_id) !== '') {
-            // print_r($restaurant_id)
             $page_data['reviews_count'] = count($this->review_model->get_by_restaurantr_id($restaurant_id));
         }
 
@@ -140,6 +138,11 @@ class Site extends Base
         $this->pagination->initialize($config);
 
         $page_data['restaurants'] = $this->restaurant_model->merger($this->restaurant_model->paginate($page_size, $current_page, $condition, $order_by));
+
+        $page_data['restaurants'] = array_values(array_filter($page_data['restaurants'], function ($restaurant) {
+            return $restaurant['visible_on_fooyes'] != "0";
+        }));
+
         /**PAGINATION ENDS**/
 
         $page_data['total_rows']  = $total_rows;

@@ -24,7 +24,7 @@
                         <form action="<?php echo site_url('restaurant/update/basic'); ?>" method="post">
                             <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
                             <div class="row">
-                               <div class="col-lg-6">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label
                                             for="restaurant_name"><?php echo get_phrase("restaurant_name"); ?></label>
@@ -33,12 +33,12 @@
                                             placeholder="<?php echo get_phrase("enter_restaurant_name"); ?>"
                                             value="<?php echo sanitize($restaurant_data['name']); ?>" required>
                                     </div>
-                                      
+
                                     <div class="form-group">
                                         <label for="restaurant_about">About Restaurant</label>
                                         <textarea class="form-control" id="restaurant_about" name="restaurant_about" rows="3" placeholder="About Restaurant"><?php echo sanitize($restaurant_data['restaurant_about']); ?></textarea>
-                                     </div>
-                                     <div class="form-group">
+                                    </div>
+                                    <div class="form-group">
                                         <label
                                             for="tag_line"><?php echo get_phrase("tag_line"); ?></label>
                                         <input type="text" class="form-control" id="tag_line"
@@ -54,17 +54,17 @@
                                         <select class="form-control select2" name="cuisine[]" multiple="multiple"
                                             data-placeholder="<?php echo get_phrase("choose_cuisines"); ?>" required>
                                             <?php foreach ($cuisines as $cuisine) : ?>
-                                            <option value="<?php echo sanitize($cuisine['id']); ?>"
-                                                <?php if (in_array($cuisine['id'], json_decode($restaurant_data['cuisine'], true))) echo "selected"; ?>>
-                                                <?php echo sanitize($cuisine['name']); ?></option>
+                                                <option value="<?php echo sanitize($cuisine['id']); ?>"
+                                                    <?php if (in_array($cuisine['id'], json_decode($restaurant_data['cuisine'], true))) echo "selected"; ?>>
+                                                    <?php echo sanitize($cuisine['name']); ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
-                                    
+
 
                                     <!-- standlaone -->
 
-                                      <div class="form-group">
+                                    <div class="form-group">
                                         <label
                                             for="restaurant_name_standalone"><?php echo get_phrase("restaurant_name_for_standalone"); ?></label>
                                         <input type="text" class="form-control" id="restaurant_name_standalone"
@@ -73,56 +73,59 @@
                                             value="<?php echo sanitize($restaurant_data['restaurant_name_standalone']); ?>" required>
                                     </div>
 
-                                     <div class="form-group">
+                                    <div class="form-group">
                                         <label for="restaurant_about_standalone">About Restaurant for Standalone</label>
                                         <textarea class="form-control" id="restaurant_about_standalone" name="restaurant_about_standalone" rows="3" placeholder="About Restaurant"><?php echo sanitize($restaurant_data['restaurant_about_standalone']); ?></textarea>
-                                     </div>
+                                    </div>
 
 
-                                     <div class="form-group">
+                                    <div class="form-group">
                                         <label
                                             for="tag_line_standalone"><?php echo get_phrase("tag_line_for_standalone"); ?></label>
                                         <input type="text" class="form-control" id="tag_line_standalone"
                                             name="tag_line_standalone"
                                             placeholder="<?php echo get_phrase("tag_line_standalone"); ?>"
                                             value="<?php echo sanitize($restaurant_data['tag_line_standalone']); ?>" required>
-                                    </div> 
+                                    </div>
 
                                     <div class="form-group">
-    <label for="cuisine_standalone">
-        <?php echo get_phrase("cuisine_for_standalone"); ?>
-    </label>
+                                        <label for="cuisine_standalone">
+                                            <?php echo get_phrase("cuisine_for_standalone"); ?>
+                                        </label>
 
-    <select class="form-control select2" name="cuisine_standalone[]" multiple="multiple"
-        data-placeholder="<?php echo get_phrase("choose_cuisines"); ?>">
+                                        <select class="form-control select2" name="cuisine_standalone[]" multiple="multiple"
+                                            data-placeholder="<?php echo get_phrase("choose_cuisines"); ?>">
 
-        <?php foreach ($cuisines as $cuisine) : ?>
+                                            <?php foreach ($cuisines as $cuisine) : ?>
 
-        <option value="<?php echo sanitize($cuisine['id']); ?>"
-        <?php 
-        if (in_array($cuisine['id'], json_decode($restaurant_data['cuisine_standalone'], true) ?? [])) 
-        echo "selected"; 
-        ?>>
+                                                <option value="<?php echo sanitize($cuisine['id']); ?>"
+                                                    <?php
+                                                    if (in_array($cuisine['id'], json_decode($restaurant_data['cuisine_standalone'], true) ?? []))
+                                                        echo "selected";
+                                                    ?>>
 
-        <?php echo sanitize($cuisine['name']); ?>
+                                                    <?php echo sanitize($cuisine['name']); ?>
 
-        </option>
+                                                </option>
 
-        <?php endforeach; ?>
+                                            <?php endforeach; ?>
 
-    </select>
-</div>
+                                        </select>
+                                    </div>
 
-                                   
+
                                     <button
                                         class="btn btn-primary"><?php echo get_phrase('update_basic_data'); ?></button>
+                                </div>
+                                <div class="col-lg-6">
+                                    
                                 </div>
                             </div>
                         </form>
                     </div>
                     <!-- /.tab-pane -->
                     <div class="tab-pane <?php if ($active_tab == 'address') echo 'active' ?>" id="address">
-                        
+
                         <form action="<?php echo site_url('restaurant/update/address'); ?>" method="post">
                             <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
                             <div class="row">
@@ -143,13 +146,13 @@
                                         <label for="restaurant_phone"><?php echo get_phrase("phone"); ?></label>
                                         <input type="text" class="form-control" id="restaurant_phone" name="restaurant_phone" placeholder="<?php echo get_phrase("enter_restaurant_phone"); ?>" value="<?php echo sanitize($restaurant_data['phone']); ?>" required>
                                     </div>
-                                             <?php if ($current_user['role_id'] == 1): ?>
-                         <div class="form-group">
-                             <label for="restaurant_commission"><?php echo get_phrase("Commission"); ?></label>
-                             <input type="text" class="form-control" id="comission_res" name="commission_res" placeholder="<?php echo get_phrase("Enter commission in percentage"); ?>" value="<?php echo sanitize($restaurant_data['commission_res']); ?>" required>
-                            </div>
-                          <?php endif; ?>
-                                        
+                                    <?php if ($current_user['role_id'] == 1): ?>
+                                        <div class="form-group">
+                                            <label for="restaurant_commission"><?php echo get_phrase("Commission"); ?></label>
+                                            <input type="text" class="form-control" id="comission_res" name="commission_res" placeholder="<?php echo get_phrase("Enter commission in percentage"); ?>" value="<?php echo sanitize($restaurant_data['commission_res']); ?>" required>
+                                        </div>
+                                    <?php endif; ?>
+
 
                                     <div class="form-group">
                                         <label for="restaurant_website_link"><?php echo get_phrase("restaurant_website_link"); ?></label>
@@ -289,40 +292,40 @@
                     </div>
                     <!-- /.tab-pane -->
 
-                      <div class="tab-pane <?php if ($active_tab == 'offers') echo 'active' ?>" id="offers">
-                     <form action="<?php echo site_url('restaurant/update/offers'); ?>" method="post">
+                    <div class="tab-pane <?php if ($active_tab == 'offers') echo 'active' ?>" id="offers">
+                        <form action="<?php echo site_url('restaurant/update/offers'); ?>" method="post">
                             <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
-                     <?php if ($current_user['role_id'] == 1): ?>
-                         <div class="form-group">
-                             <label for="restaurant_discount"><?php echo get_phrase("Delivery Discount"); ?></label>
-                             <input type="text" class="form-control" id="res_discount" name="res_discount" placeholder="<?php echo get_phrase("Enter Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['res_discount']); ?>" required>
-                            </div>
-                          <?php endif; ?>
-                                             <?php if ($current_user['role_id'] == 1): ?>
-                         <div class="form-group">
-                             <label for="restaurant_discount"><?php echo get_phrase("Collection Discount"); ?></label>
-                             <input type="text" class="form-control" id="pick_discount" name="pick_discount" placeholder="<?php echo get_phrase("Enter Pickup Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pick_discount']); ?>" required>
-                            </div>
-                            <div class="form-group">
-                             <label for="pos_discount">Point of Sale Discount</label>
-                             <input type="text" class="form-control" id="pos_discount" name="pos_discount" placeholder="<?php echo get_phrase("Enter POS Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pos_discount']); ?>" required>
-                            </div>
-                            
-                            <div class="form-group">
-                             <label for="standalone_res_discount">Standalone Restaurant Discount</label>
-                             <input type="text" class="form-control" id="standalone_res_discount" name="standalone_res_discount" placeholder="<?php echo get_phrase("Enter Standalone Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['standalone_res_discount']); ?>" required>
-                            </div>
+                            <?php if ($current_user['role_id'] == 1): ?>
+                                <div class="form-group">
+                                    <label for="restaurant_discount"><?php echo get_phrase("Delivery Discount"); ?></label>
+                                    <input type="text" class="form-control" id="res_discount" name="res_discount" placeholder="<?php echo get_phrase("Enter Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['res_discount']); ?>" required>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($current_user['role_id'] == 1): ?>
+                                <div class="form-group">
+                                    <label for="restaurant_discount"><?php echo get_phrase("Collection Discount"); ?></label>
+                                    <input type="text" class="form-control" id="pick_discount" name="pick_discount" placeholder="<?php echo get_phrase("Enter Pickup Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pick_discount']); ?>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pos_discount">Point of Sale Discount</label>
+                                    <input type="text" class="form-control" id="pos_discount" name="pos_discount" placeholder="<?php echo get_phrase("Enter POS Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['pos_discount']); ?>" required>
+                                </div>
 
-                            
-                              <div class="form-group">
-                             <label for="standalone_pick_discount">Standalone Pickup Discount</label>
-                             <input type="text" class="form-control" id="standalone_pick_discount" name="standalone_pick_discount" placeholder="<?php echo get_phrase("Enter Standalone Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['standalone_pick_discount']); ?>" required>
-                            </div>
-                            
+                                <div class="form-group">
+                                    <label for="standalone_res_discount">Standalone Restaurant Discount</label>
+                                    <input type="text" class="form-control" id="standalone_res_discount" name="standalone_res_discount" placeholder="<?php echo get_phrase("Enter Standalone Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['standalone_res_discount']); ?>" required>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="standalone_pick_discount">Standalone Pickup Discount</label>
+                                    <input type="text" class="form-control" id="standalone_pick_discount" name="standalone_pick_discount" placeholder="<?php echo get_phrase("Enter Standalone Restaurant Discount in percentage"); ?>" value="<?php echo sanitize($restaurant_data['standalone_pick_discount']); ?>" required>
+                                </div>
+
                             <?php endif; ?>
 
 
-                         <button class="btn btn-primary"><?php echo get_phrase('Restaurant Discounts'); ?></button>
+                            <button class="btn btn-primary"><?php echo get_phrase('Restaurant Discounts'); ?></button>
 
                         </form>
                     </div>

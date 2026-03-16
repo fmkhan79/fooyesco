@@ -625,7 +625,13 @@
 
         <?php if (!empty($featured_restaurants)): ?>
             <div class="row gallery featured-responsive-card" id="restaurant-grid">
-                <?php foreach ($featured_restaurants as $key => $restaurant): ?>
+                <?php foreach ($featured_restaurants as $key => $restaurant): 
+                    
+                    if($restaurant["visible_on_fooyes"] != 1){
+                        continue; // Skip this restaurant and move to the next iteration
+                    }
+
+                    ?>
                     <?php
                         // Cuisine IDs ko array banalo
                         $cuisine_ids = is_array($restaurant['cuisine']) 
@@ -679,6 +685,7 @@
                             <h3><?php echo sanitize($restaurant['name']); ?></h3>
                                 <p><?php echo sanitize($restaurant['restaurant_about']); ?></p>
                         </div>
+                        
                        <a class="btn btn-danger" href="<?php echo site_url($restaurant['slug']); ?>">Order Now</a>
                     </div>
                 <?php endforeach; ?>
