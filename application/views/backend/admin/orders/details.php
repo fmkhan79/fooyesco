@@ -138,6 +138,7 @@ $host = $_SERVER['HTTP_HOST'];
                                     <?php echo $order_data['order_url']; ?>
                                 </a>
                             </li>
+                            
                                <li class="list-group-item border-bottom-0">
                                 <b><?php echo get_phrase('User Device'); ?>: </b>
                                 <a class="float-right">
@@ -165,6 +166,12 @@ $host = $_SERVER['HTTP_HOST'];
                                     </strong>
                                 </a>
                             </li>
+
+                             <a href="<?php echo site_url('orders/view/' . sanitize($order_data['code'])); ?>"
+                               target="_blank"
+                                class="btn btn-danger btn-block">
+                                <i class="fas fa-eye"></i> See Order
+                                </a>
                             <?php } ?>
                             <?php if ($order_data['order_status'] == "pending" || $order_data['order_status'] == "approved") : ?>
                                 <li class="list-group-item border-bottom-0">
