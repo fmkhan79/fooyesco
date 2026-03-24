@@ -127,9 +127,15 @@ public function missedresponsenoti() {
                     continue;
                 }
 
-                $customer_first_name = trim(strtolower($billing_data['last_name']));
+                $customer_first_name = trim(strtolower($billing_data['first_name']));
 
                 if ($customer_first_name === 'test') {
+                    continue;
+                }
+
+                  $customer_last_name = trim(strtolower($billing_data['last_name']));
+
+                if ($customer_last_name === 'test') {
                     continue;
                 }
 
