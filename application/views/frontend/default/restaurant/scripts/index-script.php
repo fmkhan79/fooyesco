@@ -501,6 +501,13 @@ $(document).ready(function() {
 
     //  GET AND DISPALY THE MENU MAIN CATAGORIES BASED ON THE CLICK MENU 
     function viewselected_menu(menuid, menuprice, hasvariant, isButton) {
+        
+        var el = document.querySelector("#unavailable_on_<?php echo $domain; ?>");
+
+        if (el != null && el.value == "1") {
+            return;
+        }
+
         if(hasvariant == 0){
 
             addToCart(menuid, menuprice,isButton);

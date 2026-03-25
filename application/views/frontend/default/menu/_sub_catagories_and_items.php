@@ -28,7 +28,9 @@ $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
 
 <div id="main-catagories">
 
-<?php foreach($menu_sub_catagory_items as $menu_sub_catagory_item){ 
+<?php 
+
+foreach($menu_sub_catagory_items as $menu_sub_catagory_item){ 
   if($menu_sub_catagory_item["name"]){
 
     // Get all items of this sub-category
@@ -70,7 +72,8 @@ $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
 </div>
 
 <!-- REQUIRED ITEMS -->
-<?php foreach($items as $item){ 
+<?php 
+foreach($items as $item){ 
   if($item["variant"]){
 ?>
 <div class="d-flex align-items-center p-4 choice-box justify-content-between gray-border">

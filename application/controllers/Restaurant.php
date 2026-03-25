@@ -27,6 +27,7 @@ class Restaurant extends Authorization
         $page_data['page_title']  = get_phrase("restaurant");
         $page_data['restaurant_status'] = 1;
         $page_data['restaurants'] = $this->restaurant_model->get_all_approved();
+        
         $this->load->view('backend/index', $page_data);
     }
 
@@ -62,6 +63,12 @@ class Restaurant extends Authorization
         if (!has_access('restaurants', $id)) {
             error(get_phrase('you_are_not_authorized_for_this_action'), site_url('restaurant'));
         }
+
+        if($active_tab == "seo"){
+            $page_data["restaurant_seo_data"]["fooyes"] = $this->restaurant_model->seo_setting($id,0);
+            $page_data["restaurant_seo_data"]["standalone"] = $this->restaurant_model->seo_setting($id,1);
+        }
+
         $page_data['id'] = $id;
         $page_data['restaurant_data'] = $this->restaurant_model->get_by_id($id);
         $restaurant_name = $page_data['restaurant_data']['name'];
@@ -69,6 +76,7 @@ class Restaurant extends Authorization
         $page_data['active_tab'] = $active_tab;
         $page_data['page_name'] = 'restaurant/edit';
         $page_data['page_title'] = get_phrase("update") . ' ' . $restaurant_name;
+        
         $this->load->view('backend/index', $page_data);
     }
 
@@ -103,7 +111,11 @@ class Restaurant extends Authorization
 
     function update($section)
     {
+    
         $id = required(sanitize($this->input->post('id')));
+
+        
+
 
         /** CHECK IF THE USER HAS ACCESS TO SEE THIS **/
         if (!has_access('restaurants', $id)) {

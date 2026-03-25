@@ -1,5 +1,6 @@
 <!-- NAVIGATION BAR -->
 <?php include APPPATH . 'views/frontend/default/navigation/transparent.php'; ?>
+
 <style>
     .disabled {
         pointer-events: none;

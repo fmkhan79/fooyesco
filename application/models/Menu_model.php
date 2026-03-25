@@ -34,6 +34,12 @@ class Menu_model extends Base_model
         return $this->merger($menu, true);
     }
 
+    public function get_variant_groups($id){
+        $this->db->where('menu_id', $id);
+        $menu = $this->db->get("variant_group");
+        return $menu->result_array();
+    }
+
   public function get_addon_item_detail($itemId)
 {
     return $this->db
@@ -490,6 +496,11 @@ class Menu_model extends Base_model
 
      public function get_sub_options($variant_option_id)
      {
+        
+        $this->db->order_by("sequence IS NULL", "ASC", false);
+        $this->db->order_by("sequence", "ASC");
+        $this->db->order_by("id", "ASC");
+
         $this->db->order_by("id", "asc");
          $variant_sub_options = $this->db->get_where('variant_sub_options', ['variant_option_id' => $variant_option_id])->result_array();
          return $variant_sub_options;

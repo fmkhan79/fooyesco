@@ -31,6 +31,25 @@ class Variation extends Base
         success($message, site_url('menu/edit/' . $menu_id . '/variation'));
     }
 
+     public function group($action, $option_id = null)
+    {
+        authorization(['owner', 'admin'], true);
+
+        if ($action == "delete") {
+            $menu_options = $this->variation_model->get_options_by_id($option_id);
+            $menu_id = $menu_options['menu_id'];
+            $response = $this->variation_model->delete_options($option_id);
+        } else {
+            $menu_id = required(sanitize($this->input->post('menu_id')));
+            $response = $this->variation_model->save_variation_group($action);
+        }
+        $message = ($action == "delete") ? get_phrase("data_has_been_deleted_successfully") : get_phrase('data_has_been_saved_successfully');
+        if (!$response) {
+            error(get_phrase('some_error_occurred'), site_url('menu/edit/' . $menu_id . '/variation'));
+        }
+        success($message, site_url('menu/edit/' . $menu_id . '/variation'));
+    }
+
 
     function create_vartiation_item()
     {
@@ -110,6 +129,43 @@ class Variation extends Base
         }
         success($message, site_url('menu/edit/' . $menu_id . '/variation'));
     }
+
+    public function update_sub_variants_sequence(){
+
+        $data = $this->input->post("result");
+
+        foreach($data as $key => $d){
+            
+            $id = str_replace("#body-", "", $d["id"]);
+            $sequence = $d["sequence"];
+    
+            $this->variation_model->update_sub_variant_sequence($id, $sequence);
+            
+        }
+
+    }
+    
+    public function update_sub_variants_groups(){
+
+        $data = $this->input->post("result");
+
+        foreach($data as $key => $d){
+        
+            foreach($d as $sub_id){
+
+                $_data["variant_group_id"] = $key;
+                $_data["variant_sub_options_id"] = $sub_id;
+
+                echo "<pre>";
+                print_r($_data);
+
+                $this->variation_model->update_variant_group($_data);
+            }
+            
+        }
+
+    }
+
 }
 
 /* End of file Orders.php */

@@ -26,11 +26,26 @@ if (!function_exists('get_system_settings')) {
 }
 
 if (!function_exists('dd')) {
-    function dd($param)
+    function dd($param, $intensity = 0)
     {
-        echo "<pre>"; 
-        var_dump($param);
-        die();
+        switch ($intensity) {
+            case 0:
+                echo "<pre>"; 
+                var_dump($param);
+                die();
+                break;
+            case 1:
+                echo "<pre>"; 
+                print_r($param);
+                die();
+                break;
+            default:
+                echo "<pre>"; 
+                var_dump($param);
+                die();
+                break;
+        }
+        
     }
 }
 

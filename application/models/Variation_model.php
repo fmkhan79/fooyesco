@@ -332,13 +332,40 @@ public function update_item()
      *  GET VARIATION SUB OPTIONS
      */
 
-    public function get_sub_options($variant_option_id)
+    public function get_sub_options($variant_option_id, $group_id = null)
     {
-        $this->db->order_by("id", "asc");
-        $variant_sub_options = $this->db->get_where('variant_sub_options', ['variant_option_id' => $variant_option_id])->result_array();
-        return $variant_sub_options;
-    }
+        $this->db->select('vso.*');
+        $this->db->from('variant_sub_options vso');
+        $this->db->where('vso.variant_option_id', $variant_option_id);
 
+        if (!is_null($group_id)) {
+
+            if ($group_id == 0) {
+                // ONLY ungrouped → no entry in pivot
+                $this->db->join(
+                    'variant_group_variant_sub_options_pivot vgvsp',
+                    'vgvsp.variant_sub_options_id = vso.id',
+                    'left'
+                );
+                $this->db->where('vgvsp.variant_sub_options_id IS NULL', null, false);
+
+            } else {
+                // Specific group
+                $this->db->join(
+                    'variant_group_variant_sub_options_pivot vgvsp',
+                    'vgvsp.variant_sub_options_id = vso.id',
+                    'inner'
+                );
+                $this->db->where('vgvsp.variant_group_id', $group_id);
+            }
+        }
+
+        $this->db->order_by("vso.sequence IS NULL", "ASC", false);
+        $this->db->order_by("vso.sequence", "ASC");
+        $this->db->order_by("vso.id", "ASC");
+
+        return $this->db->get()->result_array();
+    }
 
 
     /**
@@ -352,10 +379,23 @@ public function update_item()
         return $variant_sub_option_items;
     }
 
-    public function get_variant_name_by_id($variant_id)
+    public function get_variant_name_by_id($variant_id, $flag = 0)
     {
-        $this->db->select('variant');
+        if($flag == 1){
+            $this->db->select('variant, is_free');
+        } else {
+            $this->db->select('variant');
+        }
+        
         $variant = $this->db->get_where('variants', ['id' => $variant_id])->row_array();
+
+        if($flag == 1 && $variant) {
+            return [
+                "variant" => $variant['variant'],
+                "is_free" => $variant['is_free']
+            ];
+        }
+        
         return $variant ? $variant['variant'] : null;
     }
 
@@ -510,6 +550,62 @@ public function update_item()
         } else {
             error(get_phrase("you_are_not_authorized"), site_url('menu'));
         }
+    }
+
+    public function update_sub_variant_sequence($id, $seq){
+        
+        $this->db->where('id', $id);
+        $this->db->update('variant_sub_options', ['sequence' => $seq]);
+        
+        return true;
+    }
+
+     public function update_variant_group($data){
+
+
+        $existing = $this->db->get_where("variant_group_variant_sub_options_pivot", ["variant_sub_options_id" => $data["variant_sub_options_id"]])->row();
+    
+
+        if ($existing) {    
+            $this->db->where("variant_sub_options_id", $data["variant_sub_options_id"]);
+            $this->db->update("variant_group_variant_sub_options_pivot", ["variant_group_id" => $data["variant_group_id"]]);
+        } else {
+            $this->db->insert("variant_group_variant_sub_options_pivot", [
+                "variant_group_id"       => $data["variant_group_id"],
+                "variant_sub_options_id" => $data["variant_sub_options_id"]
+            ]);
+        }
+    }
+
+
+    public function save_variation_group($action)
+    {
+        $data['group_name'] = required(sanitize($this->input->post('name')));
+        $data['menu_id'] = required(sanitize($this->input->post('menu_id')));
+        $data['variant_options_id'] = required(sanitize($this->input->post('variant_options_id')));
+        
+        if ($this->menu_model->authentication($data['menu_id'])) {
+            if ($action == "create") {
+                
+                $this->db->insert('variant_group', $data);
+
+                return true;
+            } else {
+                $menu_option_id = required(sanitize($this->input->post('menu_option_id')));
+                $this->db->where('id', $menu_option_id);
+                $this->db->update('variant_group', $data);
+                return true;
+            }
+        } else {
+            error(get_phrase("you_are_not_authorized"), site_url('menu'));
+        }
+    }
+
+    public function get_group($variant_sub_options_id) {
+        $this->db->select('variant_group_variant_sub_options_pivot.*, variant_group.group_name');
+        $this->db->join('variant_group', 'variant_group.id = variant_group_variant_sub_options_pivot.variant_group_id', 'left');
+        $this->db->where('variant_group_variant_sub_options_pivot.variant_sub_options_id', $variant_sub_options_id);
+        return $this->db->get('variant_group_variant_sub_options_pivot')->result_array()[0];
     }
 }
 

@@ -756,12 +756,24 @@ input:checked + .slider:before {
                                 <form action="<?php echo site_url('restaurant/update/visibility'); ?>" method="post">
                                     <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
                                     
-                                    <input type="hidden" name="domain" value="visible_on_fooyes">
-                                    <div class="form-group">
+                                    <input type="hidden" name="domain" value="fooyes">
+                                    <div class="form-group" style="display: flex;align-items: center;gap: 20px;">
+                                        <label for="visible_on_fooyes">Enable:</label>
                                         <label class="toggle">
                                             <input type="checkbox" id="btnToggle" name="flag" <?= $restaurant_data['visible_on_fooyes'] == 1 ? 'checked' : '' ?>/>
                                             <span class="slider"></span>
                                         </label>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group" style="display: flex;align-items: center;gap: 20px;">
+                                        <label for="visible_on_fooyes">Mark Unavailable:</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="unavailable_on_fooyes" name="unavailable_on_fooyes" <?= $restaurant_data['unavailable_on_fooyes'] == 1 ? 'checked' : '' ?>/>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                     <div class="form-group" style="display: flex;align-items: center;gap: 20px;">
+                                        <input type="text" name="unavailable_fooyes_text" class="form-control" placeholder="Popup Text" value="<?php echo sanitize($restaurant_data['unavailable_fooyes_text']); ?>">
                                     </div>
                                     
 
@@ -774,12 +786,24 @@ input:checked + .slider:before {
                                <form action="<?php echo site_url('restaurant/update/visibility'); ?>" method="post">
                                     <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
                                     
-                                    <input type="hidden" name="domain" value="visible_on_standalone">
-                                    <div class="form-group">
+                                    <input type="hidden" name="domain" value="standalone">
+                                    <div class="form-group" style="display: flex;align-items: center;gap: 20px;">
+                                        <label for="visible_on_fooyes">Enable:</label>
                                         <label class="toggle">
                                             <input type="checkbox" id="btnToggle" name="flag" <?= $restaurant_data['visible_on_standalone'] == 1 ? 'checked' : '' ?>/>
                                             <span class="slider"></span>
                                         </label>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group" style="display: flex;align-items: center;gap: 20px;">
+                                        <label for="visible_on_fooyes">Mark Unavailable:</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="unavailable_on_standalone" name="unavailable_on_standalone" <?= $restaurant_data['unavailable_on_standalone'] == 1 ? 'checked' : '' ?>/>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                     <div class="form-group" style="display: flex;align-items: center;gap: 20px;">
+                                        <input type="text" name="unavailable_standalone_text" class="form-control" placeholder="Popup Text" value="<?php echo sanitize($restaurant_data['unavailable_standalone_text']); ?>">
                                     </div>
                                     
 

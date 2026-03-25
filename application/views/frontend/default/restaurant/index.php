@@ -6,6 +6,10 @@
 $cartView = true;
 
 include APPPATH . 'views/frontend/default/navigation/dark.php';
+
+include 'unavailable_popup.php';
+
+
 ?>
 <style>
     .disabled {
@@ -178,6 +182,7 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
 </style>
 <!-- RESTAURANT GALLERY -->
 <script>
+    
        // Wait until the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function () {
          const currentOrigin = window.location.origin;
@@ -210,11 +215,15 @@ $this->session->set_userdata('restaurant_id', $restaurant_details['id']);
 $current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
 $isFooyes = (strpos($current_domain, 'fooyes') !== false);
 
+
+
 $restaurant_name  = $isFooyes ? $restaurant_details['name'] : $restaurant_details['restaurant_name_standalone'];
 $tag_line         = $isFooyes ? $restaurant_details['tag_line'] : $restaurant_details['tag_line_standalone'];
 $restaurant_about = $isFooyes ? $restaurant_details['restaurant_about'] : $restaurant_details['restaurant_about_standalone'];
 $restaurant_cuisines = $isFooyes ? json_decode($restaurant_details['cuisine']) : json_decode($restaurant_details['cuisine_standalone']);
 ?>
+
+<input type="hidden" id="domain" value="<?php echo $isFooyes ? 'fooyes' : 'standalone'; ?>">
 
 <section class="detail-wbox mt-5 d-none d-md-block">
 

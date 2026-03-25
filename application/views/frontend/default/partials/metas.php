@@ -8,7 +8,7 @@
 if ($page_name == "restaurant/index") : ?>
 
 <?php elseif ($page_name == "contact_us/index") : ?>
-    <meta name="keywordss" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
+    <meta name="keywords" content="<?php echo sanitize(get_system_settings('website_keywords')); ?>" />
     <meta name="description" content="Get in touch with our customer support team. We're here to assist you with orders, deliveries, and account inquiries." />
 
 <?php elseif ($page_name == "home/index") : ?>

@@ -392,7 +392,7 @@ public function merger_pos($cart_items)
         }
 
         $menus = $this->db->get($this->table);
-        return $this->merger($menus);
+        return $this->merger($menus); 
     }
 
     /**
@@ -483,15 +483,25 @@ public function merger_pos($cart_items)
         $variantSubOption = $this->variation_model->get_variant_sub_options_name_by_id($subVariantId);
 
         // Get sub-option item name
-        $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId);
+        $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId,1);
+        
+
+        $group         = $this->variation_model->get_group($subVariantId);
+
 
         $details[] = [
             'subVariantId' => $subVariantId,
             'itemId' => $itemId,
             'variantName' => $variantSubOption,
-            'subOptionName' => $subOptionItem
+            'subOptionName' => $subOptionItem["variant"],
+            'is_free' => $subOptionItem["is_free"] ?? 0,
+            'group' => [
+                "id" => $group['variant_group_id'] ?? null,
+                "name" => $group['group_name'] ?? null
+            ]
         ];
     }
+    
 
     return $details;
 }

@@ -203,21 +203,41 @@ $(document).on("click",".add_variant",function(){
             //    alert(response);
             console.log("item added",response);
 
-               newRowAdd =
-                '<div id="item-'+response+'" > ' +
-                '<div class="form-row item-row">'+
-    '<div class="col">'+
-      '<input type="text" data-item-id="'+response+'"  data-item-name="variant"  class="form-control variant_item" placeholder="Food Item Name">'+
-    '</div>'+
-    '<div class="col">'+
-      '<input type="text" data-item-id="'+response+'" data-item-name="price" class="form-control variant_item" placeholder="Price">'+
-    '</div>'+
-    '<div class="col">'+
-    '<button class="btn btn-info delete-item" data-item-id="'+response+'">Delete</button>'+
-    '</div>'+
+             newRowAdd =
+    '<div id="item-'+response+'" class="input-group mb-3">' +
 
-  '</div>' +
-                '</div>';
+        '<div style="display:flex;flex:1;">' +
+
+            '<input type="text" data-item-id="'+response+'" data-item-name="variant" ' +
+            'class="form-control variant_item" placeholder="Food Item Name" ' +
+            'style="height:100%;border-radius:0;border-right-color:transparent;">' +
+
+            '<input type="text" data-item-id="'+response+'" data-item-name="price" ' +
+            'class="form-control variant_item" placeholder="Price" ' +
+            'style="height:100%;border-radius:0;border-right-color:transparent;">' +
+
+        '</div>' +
+
+        '<div class="input-group-prepend">' +
+            '<div class="input-group-text">' +
+                '<label style="font-size:14px;margin:0px;">' +
+                    'Free with deal ' +
+                    '<input type="checkbox" ' +
+                    'class="variant_item" ' +
+                    'data-item-id="'+response+'" ' +
+                    'data-item-name="is_free">' +
+                '</label>' +
+            '</div>' +
+        '</div>' +
+
+        '<div class="input-group-prepend">' +
+            '<div class="input-group-text" style="display:flex;gap:5px;">' +
+                '<button class="btn btn-success btn-sm">Save</button>' +
+                '<button class="btn btn-danger btn-sm delete-item" data-item-id="'+response+'">Delete</button>' +
+            '</div>' +
+        '</div>' +
+
+    '</div>';
                 var div = ".variant_items_"+variation_id;
                 console.log(div);
                 $(div).append(newRowAdd);
@@ -251,7 +271,9 @@ $(document).on("change",".variant_item",function(){
                 variation_attr_value:variation_attr_value,
 
 			},
+            
 			success: function(response) {
+                toastr.success('Food Item Updated Successfully');
 				console.log("updated successfully");
 			}
 		});
@@ -276,8 +298,8 @@ $(document).on("change",".variant_item",function(){
             variation_attr_value: variation_attr_value,
         },
         success: function(response) {
+            toastr.success('Food Item Added');
             console.log("Updated successfully");
-            // Handle success, maybe show a message to the user or update the UI
         },
         error: function() {
             console.log("An error occurred");
@@ -314,6 +336,7 @@ $(document).on("change", ".variant_sub_cat", function () {
         },
         success: function (response) {
             if (response.status === "success") {
+                toastr.success('Sub Variant Updated Successfully');
                 // alert(response.message); // ya toastr.success(response.message);
             } else {
                 alert(response.message); // ya toastr.error(response.message);

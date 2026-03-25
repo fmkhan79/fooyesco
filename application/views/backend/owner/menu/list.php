@@ -10,8 +10,8 @@
     <div class="card-body">
         <form action="<?php echo site_url('menu/index'); ?>" method="get">
             <div class="row justify-content-sm-center">
-                <div class="col-lg-4">
-                    <div class="form-group">
+                <div class="col-lg-10 row">
+                    <div class="form-group col">
                         <label><?php echo get_phrase('restaurant'); ?></label>
                         <select class="form-control select2 w-100" name="restaurant_id">
                             <option value="all" <?php if ($restaurant_id == "all") echo "selected"; ?>><?php echo get_phrase('all'); ?></option>
@@ -20,17 +20,16 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <div class="form-group">
-    <label>Menu Type</label>
-    <select class="form-control select2 w-100" name="menu_for_standalone">
-        <option value="all" <?php if ($menu_for_standalone == "all") echo "selected"; ?>>All</option>
-        <option value="1" <?php if ($menu_for_standalone == "1") echo "selected"; ?>>Standalone</option>
-        <option value="0" <?php if ($menu_for_standalone == "0") echo "selected"; ?>>Fooyes (Main Domain)</option>
-    </select>
-</div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
+                    <div class="form-group col">
+                        <label>Menu Type</label>
+                        <select class="form-control select2 w-100" name="menu_for_standalone">
+                            <option value="all" <?php if ($menu_for_standalone == "all") echo "selected"; ?>>All</option>
+                            <option value="1" <?php if ($menu_for_standalone == "1") echo "selected"; ?>>Standalone</option>
+                            <option value="0" <?php if ($menu_for_standalone == "0") echo "selected"; ?>>Fooyes (Main Domain)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col">
                         <label><?php echo get_phrase('category'); ?></label>
                         <select class="form-control select2 w-100" name="category_id">
                             <option value="all" <?php if ($category_id == "all") echo "selected"; ?>><?php echo get_phrase('all'); ?></option>
@@ -39,7 +38,7 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    
+
                 </div>
                 <div class="col-1">
                     <div class="form-group mt-30">
@@ -98,7 +97,7 @@
                             <li class="list-group-item">
                                 <b><?php echo "Menu On";  ?></b>
                                 <a class="float-right">
-                                    <?php if ($menu['menu_for_standalone'] != 1 ) : ?>
+                                    <?php if ($menu['menu_for_standalone'] != 1) : ?>
                                         <span class="badge badge-success"><?php echo "Main Domain"; ?></span>
                                     <?php else : ?>
                                         <span class="badge badge-danger"><?php echo "Stand Alone Domain"; ?></span>

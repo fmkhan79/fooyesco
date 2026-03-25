@@ -1,3 +1,4 @@
+<style>.options-list{padding-left:20px;}.options-list ul {padding-left:10px;}</style>
 <?php
 $restaurant_ids = $this->cart_model->get_restaurant_ids();
 if (count($restaurant_ids) > 0):
@@ -7,163 +8,112 @@ if (count($restaurant_ids) > 0):
 
         $cart_items = $this->cart_model->get_cart_by_condition([
             'customer_id'  => $this->session->userdata('user_id'),
-            'restaurant_id'=> sanitize($restaurant_details['id'])
+            'restaurant_id' => sanitize($restaurant_details['id'])
         ]);
 
         foreach ($cart_items as $cart_item):
-?>
-
-<div class="price-box d-flex justify-content-between">
-
-    <div class="product-tile">
-        <span>
-            <span id="cart-quantity-<?php echo sanitize($cart_item['id']); ?>">
-                <?php echo sanitize($cart_item['quantity']); ?>
-            </span>
-            x <?php echo html_entity_decode(sanitize($cart_item['menu_name'])); ?>
-        </span>
-
-<?php
-        // ==========================
-        // 🔥 Dynamic Addon Logic
-        // ==========================
-
-       $pizzas = [];
-$extras = [];
-$freeItems = [];
-
-if (!empty($cart_item['options_1_details'])) {
-
-    foreach ($cart_item['options_1_details'] as $opt) { 
-                
-        $variantName   = $opt['variantName'] ?? '';
-        $subOptionName = $opt['subOptionName'] ?? '';
-
-        // ✅ 1. Free Items (Chips, Drink etc)
-        if (stripos($variantName, 'Free Items') !== false) {
-            $freeItems[] = $subOptionName;
-        }
-
-        // ✅ 2. Free Toppings (Pizza specific)
-        // elseif (preg_match('/Free Toppings.*Pizza\s*(\d+)/i', $variantName, $matches)) {
-        //     $pizzaNo = $matches[1];
-        //     $pizzas[$pizzaNo][] = $subOptionName;
         
-        // }
-
-        // // ✅ 3. Extra Toppings (Pizza specific)
-        // elseif (preg_match('/Extra Toppings.*Pizza\s*(\d+)/i', $variantName, $matches)) {
-        //     $pizzaNo = $matches[1];
-        //     $extras[] = $subOptionName; // Extras alag rahenge
-        // }
-
-        // ✅ 4. Pizza Selection / Base / Crust
-        elseif (preg_match('/Pizza\s*(\d+)/i', $variantName, $matches)) {
-            $pizzaNo = $matches[1];
-            $pizzas[$pizzaNo][] = $subOptionName;
-        }
-
-        // ✅ 5. Safety fallback
-        else {
-            $extras[] = $subOptionName;
-        }
-    }
-}
 ?>
+            <div class="price-box d-flex justify-content-between">
 
-        <!-- 🔥 Display Dynamic Pizzas -->
-        <?php if (!empty($pizzas)): ?>
-            <?php foreach ($pizzas as $number => $items): ?>
-                <ul class="options-list">
-                    <li><strong>Pizza <?= $number ?></strong></li>
-                    <?php foreach ($items as $item): ?>
-                        <li><?= html_entity_decode(sanitize($item)) ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endforeach; ?>
-        <?php endif; ?>
-        
+                <div class="product-tile">
+                    <span>
+                        <span id="cart-quantity-<?php echo sanitize($cart_item['id']); ?>">
+                            <?php echo sanitize($cart_item['quantity']); ?>
+                        </span>
+                        x <?php echo html_entity_decode(sanitize($cart_item['menu_name'])); ?>
+                    </span>
+                    <?php
+                    $variant = null; 
+
+                    if (!empty($cart_item['variant_id'])) {
+
+                        $variant = $this->cart_model->get_variant_details($cart_item['variant_id']);
+
+                        if (!empty($variant) && !empty($variant->name)):
+                    ?>
+
+                            <p class="text-muted" style="font-size: 14px;line-height:normal;margin-bottom:0px;">
+                                <?= html_entity_decode(sanitize($variant->name)) ?>
+                            </p>
+                    <?php
+                        endif;
+                    }
+                    ?>
+
+                    <!-- Check for variants -->
+                    <ul class="options-list">
+                    <?php 
+
+                    if (!empty($cart_item['options_1_details'])) {
+                        
+                        $currentGroupID = null;
+                        
+                        foreach ($cart_item['options_1_details'] as $option) { 
+
+                           // Meaning that this is the last option or the next option belongs to a different group, we close the list.
+                            if($currentGroupID != null && $currentGroupID != $option['group']['id']) {
+                                echo "</ul>";
+                            }   
+
+                            // Meaning that this option has a group associated with it.
+                            if($option['group']['id'] != null) {
+                                // Meaning that this is the first option or the group has changed from the previous option, we print the group name.
+                                if($currentGroupID != $option['group']['id']) {
+                                    echo "<li><strong>".$option['group']['name']."</strong></li>";
+                                    echo "<ul>";
+                                    // Change the Group ID to the current one.
+                                    $currentGroupID = $option['group']['id'] ?? null;
+                                }
+                            }
+                            
+                            $variantName   = $option['variantName'] ?? '';
+                            $selectedOption = $option['subOptionName'] ?? '';
+
+                            echo "<li>".$selectedOption. "</li>";
+
+                         
+
+                        }
+                    }
+
+                    ?>
+                    </ul>
+                    
 
 
-           <?php if (!empty($freeItems)): ?>
-    <ul class="options-list">
-        <li><strong>Extras</strong></li>
-        <?php foreach ($freeItems as $item): ?>
-            <li><?= html_entity_decode(sanitize($item)) ?></li>
-        <?php endforeach; ?>
-    </ul>
-<?php endif; ?>
+                </div>
 
+                <!-- Cart Buttons -->
+                <div class="d-flex p-1">
+                    <button type="button"
+                        class="cart-actions mr-1 cart-btns"
+                        onclick="updateCart('<?php echo sanitize($cart_item['id']); ?>', true)">
+                        <i class="fas fa-plus"></i>
+                    </button>
 
-         <?php if (!empty($extras)): ?>
-            <ul class="options-list">
-                        <!-- <li><strong>extras</strong></li> -->
+                    <button type="button"
+                        class="cart-actions mr-1 cart-btns"
+                        onclick="updateCart('<?php echo sanitize($cart_item['id']); ?>', false)">
+                        <i class="fas fa-minus"></i>
+                    </button>
 
-                <?php foreach ($extras as $item): ?>
-                    <li><?= html_entity_decode(sanitize($item)) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
+                    <button type="button"
+                        class="cart-actions mr-1 cart-btns"
+                        onclick="confirm_modal_withoutPopup('<?php echo site_url('cart/delete/' . sanitize($cart_item['id'])); ?>',this)">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
 
+                <!-- Price -->
+                <div class="product-price">
+                    <img src="<?php echo base_url('assets/frontend/default/images/cart-red.png') ?>" />
+                    <span id="sub-total-<?= sanitize($cart_item['id']) ?>">
+                        <?php echo currency(sanitize($cart_item['price'])); ?>
+                    </span>
+                </div>
 
-
-     
-        <!-- 🔥 Display Extras -->
-       
-        <!-- ✅ Display Free Items -->
-
-
-        <!-- Variant Display -->
-      <?php
-$variant = null; // 🔥 reset every loop
-
-if (!empty($cart_item['variant_id'])) {
-
-    $variant = $this->cart_model->get_variant_details($cart_item['variant_id']);
-
-    if (!empty($variant) && !empty($variant->name)):
-?>
-        <p class="text-muted" style="font-size: 12px;">
-            Selected: <?= html_entity_decode(sanitize($variant->name)) ?>
-        </p>
-<?php
-    endif;
-}
-?>
-
-
-    </div>
-
-    <!-- Cart Buttons -->
-    <div class="d-flex p-1">
-        <button type="button"
-                class="cart-actions mr-1 cart-btns"
-                onclick="updateCart('<?php echo sanitize($cart_item['id']); ?>', true)">
-            <i class="fas fa-plus"></i>
-        </button>
-
-        <button type="button"
-                class="cart-actions mr-1 cart-btns"
-                onclick="updateCart('<?php echo sanitize($cart_item['id']); ?>', false)">
-            <i class="fas fa-minus"></i>
-        </button>
-
-        <button type="button"
-                class="cart-actions mr-1 cart-btns"
-                onclick="confirm_modal_withoutPopup('<?php echo site_url('cart/delete/' . sanitize($cart_item['id'])); ?>',this)">
-            <i class="fas fa-trash-alt"></i>
-        </button>
-    </div>
-
-    <!-- Price -->
-    <div class="product-price">
-        <img src="<?php echo base_url('assets/frontend/default/images/cart-red.png') ?>" />
-        <span id="sub-total-<?= sanitize($cart_item['id']) ?>">
-            <?php echo currency(sanitize($cart_item['price'])); ?>
-        </span>
-    </div>
-
-</div>
+            </div>
 
 <?php
         endforeach;

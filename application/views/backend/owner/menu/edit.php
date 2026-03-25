@@ -11,14 +11,12 @@
                     <li class="nav-item"><a href="#details" class="nav-link  <?php if ($active_tab == "details") echo 'active'; ?>" data-toggle="tab"><?php echo get_phrase('details') ?></a></li>
                     <li class="nav-item"><a href="#servings-price" class="nav-link  <?php if ($active_tab == "price") echo 'active'; ?>" data-toggle="tab"><?php echo get_phrase('price_details', true) ?></a></li>
                     <li class="nav-item"><a href="#gallery" class="nav-link <?php if ($active_tab == "gallery") echo 'active'; ?>" data-toggle="tab"><?php echo get_phrase('gallery') ?></a></li>
-                    <li class="nav-item"><a href="#variation" class="nav-link <?php if ($active_tab == "variation") echo 'active'; ?>" data-toggle="tab"><?php echo get_phrase('menu_variation') ?></a></li>
-                    <!-- TODO-not-for-now: Removing for now -->
-                    <!-- <li class="nav-item"><a href="#addons" class="nav-link <.?php if ($active_tab == "addons") echo 'active'; ?>" data-toggle="tab"><.?php echo get_phrase('addons') ?></a></li> -->
-                    <!-- <li class="nav-item"><a href="#ingredients" class="nav-link <.?php if ($active_tab == "ingredients") echo 'active'; ?>" data-toggle="tab"><.?php echo get_phrase('ingredients') ?></a></li> -->
+                    <li class="nav-item"><a href="#variation" class="nav-link <?php if ($active_tab == "variation") echo 'active'; ?>" data-toggle="tab">Menu Variants</a></li>
                     <li class="nav-item"><a href="javascript:void(0);" class="nav-link text-white btn btn-danger ml-2" onclick="confirm_modal('<?php echo site_url('menu/delete/' . sanitize($id)); ?>')"><?php echo get_phrase('delete_this_menu') ?></a></li>
                 </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
+
                 <div class="tab-content">
                     <div class="tab-pane  <?php if ($active_tab == "basic") echo 'active'; ?>" id="basic">
                         <div class="row">
@@ -49,22 +47,22 @@
                                         </select>
                                     </div>
 
-                                  <div class="form-group">
-                                <label for="menu_for_standalone">
-                                    Show menu on
-                                </label>
+                                    <div class="form-group">
+                                        <label for="menu_for_standalone">
+                                            Show menu on
+                                        </label>
 
-                                <?php $selectedStandalone = $menu_data['menu_for_standalone'] ?? 0; ?>
+                                        <?php $selectedStandalone = $menu_data['menu_for_standalone'] ?? 0; ?>
 
-                                <select class="form-control select2" name="menu_for_standalone" id="menu_for_standalone">
-                                    <option value="0" <?= $selectedStandalone == 0 ? 'selected' : '' ?>>
-                                        Fooyes Domain
-                                    </option>
-                                    <option value="1" <?= $selectedStandalone == 1 ? 'selected' : '' ?>>
-                                        Standalone
-                                    </option>
-                                </select>
-                            </div>
+                                        <select class="form-control select2" name="menu_for_standalone" id="menu_for_standalone">
+                                            <option value="0" <?= $selectedStandalone == 0 ? 'selected' : '' ?>>
+                                                Fooyes Domain
+                                            </option>
+                                            <option value="1" <?= $selectedStandalone == 1 ? 'selected' : '' ?>>
+                                                Standalone
+                                            </option>
+                                        </select>
+                                    </div>
 
 
 
@@ -77,13 +75,13 @@
                                         <input class="custom-control-input" name="byoneoffer" type="checkbox" id="byoneoffer" <?php if ($menu_data['byoneoffer']) echo "checked"; ?>>
                                         <label for="byoneoffer" class="custom-control-label">BUY 1 GET 1 FREE<small>( <?php echo get_phrase('check') . ', ' . get_phrase('if_it_is_available_for_offer'); ?> )</small></label>
                                     </div>
-                                    
+
                                     <div class="custom-control custom-checkbox">
                                         <input class="custom-control-input" name="todayspecial" type="checkbox" id="todayspecial" <?php if ($menu_data['today_special']) echo "checked"; ?>>
                                         <label for="todayspecial" class="custom-control-label">Today Special Offer<small>( <?php echo get_phrase('check') . ', ' . get_phrase('if_it_is_available_for_offer'); ?> )</small></label>
                                     </div>
 
-                                    
+
                                     <button type="submit" class="btn btn-primary mt-4"><?php echo get_phrase('update_basic'); ?></button>
                                 </form>
                             </div>
@@ -203,7 +201,7 @@
                                                 ?>%
                                             </span> <?php echo get_phrase('discount'); ?></small>
                                     </div>
-                                    
+
                                     <button type="submit" class="btn btn-primary float-left"><?php echo get_phrase('update_price'); ?></button>
                                 </form>
                             </div>
@@ -223,15 +221,15 @@
                                         <label for="food_menu_thumbnail"></label>
                                     </div>
                                     <div class="avatar-preview">
-                                     
+
                                         <div id="food_menu_thumbnail_preview" thumbnail="<?php echo base_url('uploads/menu/' . sanitize($menu_data['thumbnail'])); ?>"></div>
                                     </div>
                                 </div>
 
                             </div>
-                           
+
                             <button type="submit" class="btn btn-primary mt-4 float-left"><?php echo get_phrase('update_gallery'); ?></button>
-                        <a class="btn btn-danger" style="margin-top: 1.5rem; margin-left:15px" href="<?php echo site_url('menu/image_remove?id=' . sanitize($id)); ?>">Delete Image</a>
+                            <a class="btn btn-danger" style="margin-top: 1.5rem; margin-left:15px" href="<?php echo site_url('menu/image_remove?id=' . sanitize($id)); ?>">Delete Image</a>
 
                         </form>
                     </div>
@@ -242,102 +240,80 @@
                             <label for="has_variant" class="custom-control-label"><?php echo get_phrase("has_variant"); ?> <small>( <?php echo get_phrase('check') . ', ' . get_phrase('if_this_menu_has_variant'); ?> )</small></label>
                         </div>
                         <div class="row <?php if (!$menu_data['has_variant']) echo 'd-none'; ?>" id="variant-area">
-                            <div class="col-xl-8">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col text-left">
-                                                <h3 class="card-title mt-2"><?php echo get_phrase('variants'); ?></h3>
-                                            </div>
-                                            <div class="col text-right">
-                                                <div class="card-tools">
-                                                    <!-- <a href="javascript:void(0)" class="btn btn-sm btn-primary" onclick="showAjaxModal('<?php echo site_url('modal/popup/variant/create/' . sanitize($menu_data['id'])); ?>', '<?php echo get_phrase('add_new_variant'); ?>')">
-                                                       
-                                                    </a> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body p-0" id="variant-list">
-                                        <?php include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/variant/list.php"; ?>
-                                    </div>
-                                    <!-- /.card-body -->
+                            <div class="col-xl-12">
+
+                                <!-- /.card-header -->
+                                <div id="variant-list">
+                                    <?php include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/variant/list.php"; ?>
                                 </div>
+                                <!-- /.card-body -->
                             </div>
-                            <div class="col-xl-4">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col text-left">
-                                                <h3 class="card-title mt-2"><?php echo get_phrase('variant_options'); ?></h3>
-                                            </div>
-                                            <div class="col text-right">
-                                                <div class="card-tools">
-                                                    <a href="javascript:void(0)" class="btn btn-sm btn-warning" onclick="showAjaxModal('<?php echo site_url('modal/popup/variant_options/create/' . sanitize($menu_data['id'])); ?>', '<?php echo get_phrase('add_variant_options'); ?>')">
-                                                        <?php echo get_phrase("add_variant_options"); ?>
-                                                    </a>
-                                                </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col text-left">
+                                            <h3 class="card-title mt-2"><?php echo get_phrase('variant_options'); ?></h3>
+                                        </div>
+                                        <div class="col text-right">
+                                            <div class="card-tools">
+                                                <a href="javascript:void(0)" class="btn btn-sm btn-warning" onclick="showAjaxModal('<?php echo site_url('modal/popup/variant_options/create/' . sanitize($menu_data['id'])); ?>', '<?php echo get_phrase('add_variant_options'); ?>')">
+                                                    <?php echo get_phrase("add_variant_options"); ?>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body p-0">
-                                        <?php include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/variant_options/list.php"; ?>
-                                    </div>
-                                    <!-- /.card-body -->
                                 </div>
+                                <!-- /.card-header -->
+                                <div class="card-body p-0">
+                                    <?php include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/variant_options/list.php"; ?>
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col text-left">
+                                                            <h3 class="card-title mt-2"><?php echo get_phrase('addon_menu'); ?></h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <?php include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/addons/list.php"; ?>
+                                                </div>
+                                                <!-- /.card-body -->
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col text-left">
+                                                            <h3 class="card-title mt-2"><?php echo get_phrase('create_new_addon'); ?></h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <?php include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/addons/create.php"; ?>
+                                                </div>
+                                                <!-- /.card-body -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- /.card-body -->
                             </div>
                         </div>
                     </div>
-                    <!-- /.tab-pane -->
-                    <div class="tab-pane  <?php if ($active_tab == "addons") echo 'active'; ?>" id="addons">
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col text-left">
-                                                <h3 class="card-title mt-2"><?php echo get_phrase('addon_menu'); ?></h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body">
-                                        <?php include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/addons/list.php"; ?>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                            </div>
-                            <div class="col-lg-5">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col text-left">
-                                                <h3 class="card-title mt-2"><?php echo get_phrase('create_new_addon'); ?></h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body">
-                                        <?php include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/addons/create.php"; ?>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.tab-pane -->
-                    <div class="tab-pane  <?php if ($active_tab == "ingredients") echo 'active'; ?>" id="ingredients">
-                        <?php include APPPATH . "views/backend/admin/menu/ingredients.php"; ?>
-                    </div>
-                    <!-- /.tab-pane -->
                 </div>
-                <!-- /.tab-content -->
-            </div><!-- /.card-body -->
-        </div>
-        <!-- ./card -->
+            </div>
+            <!-- /.tab-content -->
+        </div><!-- /.card-body -->
+    </div>
+    <!-- ./card -->
     </div>
     <!--/. container-fluid -->
 </section>
-

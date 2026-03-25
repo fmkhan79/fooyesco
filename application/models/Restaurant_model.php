@@ -390,9 +390,13 @@ public function update_address()
     {
         $id = required(sanitize($this->input->post('id')));
         $active = $this->input->post('flag') == "on" ? 1 : 0;
+        $unavailable = $this->input->post('unavailable_on_' . $this->input->post("domain")) == "on" ? 1 : 0;
 
-        $data[$this->input->post("domain")] = $active;
-        
+
+        $data["visible_on_" . $this->input->post("domain")] = $active;
+        $data["unavailable_on_" . $this->input->post("domain")] = $unavailable;
+
+        $data["unavailable_".  $this->input->post("domain") ."_text"] = $this->input->post("unavailable_" . $this->input->post("domain") ."_text");
 
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
