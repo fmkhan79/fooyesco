@@ -91,6 +91,13 @@
                         ?>
                         <small class="text-danger">Last applied: <?= $last ?>%</small>
                     </div>
+                    <div class="form-group">
+            <label>Apply on:</label>
+            <select class="form-control" name="menu_type" required>
+                <option value="1">Standalone Menus</option>
+                <option value="0">Main Domain Menus</option>
+            </select>
+            </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

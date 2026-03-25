@@ -586,35 +586,45 @@ class Menu extends Authorization
 }
 
 
-    public function update_prices()
-{
-    $percentage = $this->input->post('percentage');
-   
-    if (!is_numeric($percentage)) {
-        $this->session->set_flashdata('error', 'Invalid percentage value.');
-        redirect('menu');
-    }
+        public function update_prices()
+        {
+            $percentage = $this->input->post('percentage');
+            $menu_type  = $this->input->post('menu_type'); // 1 or 0
 
-    $multiplier = 1 + ($percentage / 100);
+            if (!is_numeric($percentage)) {
+                $this->session->set_flashdata('error', 'Invalid percentage value.');
+                redirect('menu');
+            }
 
-    $query = "
-        UPDATE food_menus
-        SET price = JSON_OBJECT(
-            'menu',
-            ROUND(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(real_price, '$.menu')) AS DECIMAL(10,2)) * {$multiplier},
-                2
-            )
-        );
-    ";
+            if ($menu_type !== '0' && $menu_type !== '1') {
+                $this->session->set_flashdata('error', 'Invalid menu type.');
+                redirect('menu');
+            }
 
-    $this->db->query($query);
+            $multiplier = 1 + ($percentage / 100);
 
-    $this->session->set_userdata('last_percentage', $percentage);
+            $query = "
+                UPDATE food_menus
+                SET price = JSON_OBJECT(
+                    'menu',
+                    ROUND(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(real_price, '$.menu')) AS DECIMAL(10,2)) * {$multiplier},
+                        2
+                    )
+                )
+                WHERE menu_for_standalone = {$menu_type}
+            ";
 
-    $this->session->set_flashdata('success', 'Menu prices updated successfully!');
-    redirect('menu');
-}
+            $this->db->query($query);
+
+            $this->session->set_userdata('last_percentage', $percentage);
+
+            $type_text = $menu_type == 1 ? 'Standalone' : 'Main Domain';
+
+            $this->session->set_flashdata('success', "Prices updated successfully for {$type_text} menus!");
+            redirect('menu');
+        }
+
 
 public function get_sub_options_ajax()
 {

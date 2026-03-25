@@ -53,6 +53,13 @@
               Enter a positive value to increase or a negative value to decrease prices.
             </small>
           </div>
+          <div class="form-group">
+          <label>Apply on:</label>
+          <select class="form-control" name="menu_type" required>
+            <option value="1">Standalone Menus</option>
+            <option value="0">Main Domain Menus</option>
+          </select>
+        </div>
         </div>
        <?php 
         $last = $this->session->userdata('last_percentage');
