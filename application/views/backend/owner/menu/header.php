@@ -12,8 +12,11 @@
                             <a href="#" class="btn btn-outline-success btn-rounded float-right mr-1" data-toggle="modal" data-target="#priceIncreaseModal">
                           <i class="fas fa-percentage"></i> Increase Prices / Decrease Prices
                       </a>
-                          <a href="<?php echo site_url('menu/duplicate'); ?>" class="btn btn-outline-danger btn-rounded float-right" name="button"><?php echo get_phrase("Duplicate Menu for stand alone", true); ?></a>
-
+            <a href="<?php echo site_url('menu/duplicate'); ?>" 
+              id="duplicateMenuBtn"
+              class="btn btn-outline-danger btn-rounded float-right">
+              <?php echo get_phrase("Duplicate Menu for stand alone", true); ?>
+            </a>
                         <?php elseif ($page_name == 'menu/create') : ?>
                             <a href="<?php echo site_url('menu'); ?>" class="btn btn-outline-primary btn-rounded float-right" name="button"><?php echo get_phrase("back_to_menu", true); ?></a>
                             
@@ -69,3 +72,29 @@
     </div>
   </div>
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.getElementById("duplicateMenuBtn").addEventListener("click", function(e) {
+    e.preventDefault(); // default link stop
+
+    let link = this.href;
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This will duplicate the entire menu!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, duplicate it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = link;
+        }
+    });
+});
+</script>
