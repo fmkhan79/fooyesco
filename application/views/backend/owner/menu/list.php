@@ -122,3 +122,28 @@
 <?php if (count($menus) == 0) : ?>
     <?php isEmpty(); ?>
 <?php endif; ?>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.getElementById("duplicateMenuBtn").addEventListener("click", function(e) {
+    e.preventDefault(); // default link stop
+
+    let link = this.href;
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This will duplicate the entire menu!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, duplicate it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = link;
+        }
+    });
+});
+</script>
