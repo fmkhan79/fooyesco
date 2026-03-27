@@ -112,7 +112,6 @@
 
     </style>
 </head>
-
 <body>
 
 <?php

@@ -589,7 +589,8 @@ class Order_model extends Base_model
             // print_r($cart_item);
             // die();
             $restaurant_ids = $order_details['restaurant_id'];
-                        $order_details['order_code'] = $data['code'];
+
+            $order_details['order_code'] = $data['code'];
             $order_details['menu_id'] = $cart_item['menu_id'];
             $order_details['restaurant_id'] = $cart_item['restaurant_id'];
             $order_details['servings'] = $cart_item['servings'];
@@ -598,6 +599,8 @@ class Order_model extends Base_model
             $order_details['note'] = $cart_item['note'];
             $order_details['variant_id'] = $cart_item['variant_id'];
             $order_details['addons'] = $cart_item['options_1'];
+            $order_details['html_output_for_recipts'] = $cart_item['html_output_for_recipts'];
+
             $this->db->insert('order_details', $order_details);
         }
 

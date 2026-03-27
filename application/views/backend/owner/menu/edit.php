@@ -244,7 +244,7 @@
 
                                 <!-- /.card-header -->
                                 <div id="variant-list">
-                                    <?php include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/variant/list.php"; ?>
+                                    <?php include APPPATH . "views/backend/owner/variant/list.php"; ?>
                                 </div>
                                 <!-- /.card-body -->
                             </div>
@@ -280,7 +280,8 @@
                                                 </div>
                                                 <!-- /.card-header -->
                                                 <div class="card-body">
-                                                    <?php include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/addons/list.php"; ?>
+                                                    <?php // include APPPATH . "views/backend/" . $this->session->userdata('user_role') . "/addons/list.php"; ?>
+                                                    <?php include APPPATH . "views/backend/owner/addons/list.php"; ?>
                                                 </div>
                                                 <!-- /.card-body -->
                                             </div>

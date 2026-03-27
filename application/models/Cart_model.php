@@ -116,7 +116,8 @@ class Cart_model extends Base_model
         $menu_details = $this->menu_model->get_menu_by_condition(['id' => $data['menu_id'], 'availability' => 1]);
         $menu_details = $menu_details[0];
         $data['restaurant_id'] = $menu_details['restaurant_id'];
-
+        
+        $data['html_output_for_recipts'] = $this->generate_variant_html($this->input->post('options_1'));
         // CHECK MULTI RESTAURANT ORDER PERMISSION
         if (!get_order_settings('multi_restaurant_order')) {
             $get_current_items = $this->db->get_where($this->table, ['customer_id' => $data['customer_id']]);
@@ -501,7 +502,6 @@ public function merger_pos($cart_items)
             ]
         ];
     }
-    
 
     return $details;
 }
@@ -927,5 +927,59 @@ public function get_discounted_amount($order_type, $restaurant_id = null)
         }
 
         return $grandTotal;
+    }
+
+
+    public function generate_variant_html($options_1)
+    {
+
+        // Because it is json
+        if($options_1 == "[]"){
+            return null;
+        }
+
+        $html = "";
+        $currentGroupID = null;
+        
+        foreach (json_decode($options_1, true) as $option) {
+            
+            $sub_variant_id = $option['subVariantId'];
+        
+            $group   = $this->variation_model->get_group($sub_variant_id);
+
+            $option['group'] = [
+                "id" => $group['variant_group_id'] ?? null,
+                "name" => $group['group_name'] ?? null
+            ];
+
+            // Meaning that this is the last option or the next option belongs to a different group, we close the list.
+            if($currentGroupID != null && $currentGroupID != $option['group']['id']) {
+                $html .= "</ul>";
+            }   
+
+            // Meaning that this option has a group associated with it.
+            if($option['group']['id'] != null) {
+                // Meaning that this is the first option or the group has changed from the previous option, we print the group name.
+                if($currentGroupID != $option['group']['id']) {
+                    $html .= "<li><strong>".$option['group']['name']."</strong></li>";
+                    $html .= "<ul>";
+                    // Change the Group ID to the current one.
+                    $currentGroupID = $option['group']['id'] ?? null;
+                }
+            }
+            
+            $selectedOption = $this->variation_model->get_variant_name_by_id($option["itemId"],1);
+
+            $html .= "<li style='display:flex; justify-content: space-between;'><span>".$selectedOption["variant"]. "</span>";
+            
+            if($selectedOption["is_free"] == 0) {
+                $html .= "<span class='text-muted' style='font-size: 12px;'>+£". $selectedOption["price"]. "</span>";
+            }else {
+                $html .= " <span class='text-muted' style='font-size: 12px;'> FREE </span>";
+            }
+            
+        }
+
+        return $html;
     }
 }

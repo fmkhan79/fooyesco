@@ -255,11 +255,10 @@ $(document).on("click",".add_variant",function(){
 
 
 $(document).on("change",".variant_item",function(){
-    // alert("great its working");
+    
     var variation_item_id =   this.getAttribute("data-item-id");
     var variation_attr_name =   this.getAttribute("data-item-name");
-    var variation_attr_value =   $(this).val();
-    console.log(variation_attr_value);
+    var variation_attr_value =   $(this).is(':checked') ? "on" : "off";
     
 
 	$.ajax({
@@ -283,9 +282,9 @@ $(document).on("change",".variant_item",function(){
 
 
             $(document).on("click", ".add_variant", function() {
-    var variation_item_id = $(".variant_item").data("item-id");  // Assuming .variant_item holds this data
-    var variation_attr_name = $(".variant_item").data("item-name");  // Assuming .variant_item holds this data
-    var variation_attr_value = $(".variant_item").val();  // Value from the .variant_item input/select
+        var variation_item_id = $(".variant_item").data("item-id");  // Assuming .variant_item holds this data
+        var variation_attr_name = $(".variant_item").data("item-name");  // Assuming .variant_item holds this data
+        var variation_attr_value = $(".variant_item").val();  // Value from the .variant_item input/select
 
     console.log(variation_attr_value);
 

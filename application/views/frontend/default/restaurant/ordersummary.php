@@ -1,4 +1,4 @@
-<style>.options-list{padding-left:20px;}.options-list ul {padding-left:10px;}</style>
+<style>.options-list{padding-left:20px;}.options-list ul {padding-left:10px;}.var_options li {font-size:14px;}</style>
 <?php
 $restaurant_ids = $this->cart_model->get_restaurant_ids();
 if (count($restaurant_ids) > 0):
@@ -14,8 +14,8 @@ if (count($restaurant_ids) > 0):
         foreach ($cart_items as $cart_item):
         
 ?>
-            <div class="price-box d-flex justify-content-between">
 
+            <div class="d-flex price-box justify-content-between">
                 <div class="product-tile">
                     <span>
                         <span id="cart-quantity-<?php echo sanitize($cart_item['id']); ?>">
@@ -40,52 +40,8 @@ if (count($restaurant_ids) > 0):
                         endif;
                     }
                     ?>
-
-                    <!-- Check for variants -->
-                    <ul class="options-list">
-                    <?php 
-
-                    if (!empty($cart_item['options_1_details'])) {
-                        
-                        $currentGroupID = null;
-                        
-                        foreach ($cart_item['options_1_details'] as $option) { 
-
-                           // Meaning that this is the last option or the next option belongs to a different group, we close the list.
-                            if($currentGroupID != null && $currentGroupID != $option['group']['id']) {
-                                echo "</ul>";
-                            }   
-
-                            // Meaning that this option has a group associated with it.
-                            if($option['group']['id'] != null) {
-                                // Meaning that this is the first option or the group has changed from the previous option, we print the group name.
-                                if($currentGroupID != $option['group']['id']) {
-                                    echo "<li><strong>".$option['group']['name']."</strong></li>";
-                                    echo "<ul>";
-                                    // Change the Group ID to the current one.
-                                    $currentGroupID = $option['group']['id'] ?? null;
-                                }
-                            }
-                            
-                            $variantName   = $option['variantName'] ?? '';
-                            $selectedOption = $option['subOptionName'] ?? '';
-
-                            echo "<li>".$selectedOption. "</li>";
-
-                         
-
-                        }
-                    }
-
-                    ?>
-                    </ul>
-                    
-
-
                 </div>
-
-                <!-- Cart Buttons -->
-                <div class="d-flex p-1">
+                <div class="d-flex">
                     <button type="button"
                         class="cart-actions mr-1 cart-btns"
                         onclick="updateCart('<?php echo sanitize($cart_item['id']); ?>', true)">
@@ -104,9 +60,7 @@ if (count($restaurant_ids) > 0):
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
-
-                <!-- Price -->
-                <div class="product-price">
+                 <div class="product-price">
                     <img src="<?php echo base_url('assets/frontend/default/images/cart-red.png') ?>" />
                     <span id="sub-total-<?= sanitize($cart_item['id']) ?>">
                         <?php echo currency(sanitize($cart_item['price'])); ?>
@@ -114,6 +68,13 @@ if (count($restaurant_ids) > 0):
                 </div>
 
             </div>
+            <div class="var_options">
+                <ul class="options-list">
+                    <?= $cart_item['html_output_for_recipts']?>
+                </ul>
+
+            </div>
+            <hr>
 
 <?php
         endforeach;

@@ -382,7 +382,7 @@ public function update_item()
     public function get_variant_name_by_id($variant_id, $flag = 0)
     {
         if($flag == 1){
-            $this->db->select('variant, is_free');
+            $this->db->select('variant, is_free, price');
         } else {
             $this->db->select('variant');
         }
@@ -392,7 +392,8 @@ public function update_item()
         if($flag == 1 && $variant) {
             return [
                 "variant" => $variant['variant'],
-                "is_free" => $variant['is_free']
+                "is_free" => $variant['is_free'],
+                "price" => $variant['price'],
             ];
         }
         
