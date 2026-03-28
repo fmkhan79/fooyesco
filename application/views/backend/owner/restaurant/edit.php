@@ -84,6 +84,8 @@ input:checked + .slider:before {
 
                     <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/visibility'); ?>" class="nav-link <?php if ($active_tab == 'visibility') echo 'active' ?>"><?php echo get_phrase("Visibility"); ?></a></li>
 
+                   <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/emails'); ?>" class="nav-link <?php if ($active_tab == 'emails') echo 'active' ?>"><?php echo get_phrase("Email Settings"); ?></a></li>
+
                 </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
@@ -817,6 +819,41 @@ input:checked + .slider:before {
 
                     </div>
                     <!-- /.tab-pane -->
+
+<div class="tab-pane <?php if ($active_tab == 'emails') echo 'active' ?>" id="emails">
+    <div class="row">
+        <div class="col-lg-6" style="padding-right:20px;">
+
+        
+
+<form action="<?php echo site_url('restaurant/update_email_settings'); ?>" method="post">
+                    <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
+
+                <!-- Missed Order Email -->
+                <div class="form-group">
+                    <label>Missed Order Email</label>
+                    <input type="email" name="missed_order_email" class="form-control"
+                        value="<?= $restaurant_data['missed_order_email'] ?? '' ?>"
+                        placeholder="Enter email for missed orders">
+                </div>
+
+                <!-- Abandoned Cart Email -->
+                <div class="form-group">
+                    <label>Abandoned Cart Email</label>
+                    <input type="email" name="abandoned_cart_email" class="form-control"
+                        value="<?= $restaurant_data['abandoned_cart_email'] ?? '' ?>"
+                        placeholder="Enter email for abandoned cart">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Settings</button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
                 </div>
                 <!-- /.tab-content -->
             </div><!-- /.card-body -->

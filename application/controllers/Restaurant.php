@@ -80,6 +80,8 @@ class Restaurant extends Authorization
         $this->load->view('backend/index', $page_data);
     }
 
+
+
     function delete($id)
     {
         /** CHECK IF THE USER HAS ACCESS TO SEE THIS **/
@@ -129,4 +131,30 @@ class Restaurant extends Authorization
             error(get_phrase("an_error_occured"), site_url("restaurant/edit/$id/$section"));
         }
     }
+
+    public function update_email_settings()
+{
+    $id = required(sanitize($this->input->post('id')));
+
+    /** CHECK ACCESS **/
+    if (!has_access('restaurants', $id)) {
+        error(get_phrase('you_are_not_authorized_for_this_action'), site_url('restaurant'));
+    }
+
+    // 📩 Get form data
+    $data = [
+        'missed_order_email'   => $this->input->post('missed_order_email'),
+        'abandoned_cart_email' => $this->input->post('abandoned_cart_email'),
+        // 'new_order_email'      => $this->input->post('new_order_email'),
+    ];
+
+    // 📩 Call model
+    $response = $this->restaurant_model->update_email_settings($id, $data);
+
+    if ($response) {
+        success(get_phrase("email_settings_updated_successfully"), site_url("restaurant/edit/$id/emails"));
+    } else {
+        error(get_phrase("an_error_occured"), site_url("restaurant/edit/$id/emails"));
+    }
+}
 }

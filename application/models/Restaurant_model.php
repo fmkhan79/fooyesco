@@ -555,7 +555,11 @@ public function update_address()
         }
         return $restaurant_ids;
     }
-
+        public function update_email_settings($id, $data)
+        {
+            $this->db->where('id', $id);
+            return $this->db->update('restaurants', $data);
+        }
     /**
      * GET PLAIN RESTAURANT IDS AS A NUMERIC ARRAY LIKE [1,2,3,4]
      *

@@ -120,7 +120,7 @@ class Auth extends Base {
 	public function index()
 	{
 		if ($this->session->userdata('is_logged_in')) {
-			redirect(site_url('dashboard'), 'refresh');
+			redirect(site_url('dashboard'));
 		}
 
 		$this->load->view('auth/login');
@@ -130,7 +130,7 @@ class Auth extends Base {
 	public function validate()
 	{
 		if ($this->session->userdata('is_logged_in')) {
-			redirect(site_url('dashboard'), 'refresh');
+			redirect(site_url('dashboard'));
 		}
 
 		$validity = $this->auth_model->validate_login();
@@ -139,11 +139,11 @@ class Auth extends Base {
 			$userdata = $this->user_model->get_user_by_id($this->session->userdata('user_id'));
 			$this->session->set_flashdata('flash_message', get_phrase('welcome') . ", " . $userdata['name']);
 			if ($this->session->userdata('user_role') == "driver") {
-				redirect(site_url('orders/today'), 'refresh');
+				redirect(site_url('orders/today'));
 			} elseif ($this->session->userdata('user_role') == "customer") {
-				redirect(site_url(), 'refresh');
+				redirect(site_url());
 			} else {
-				redirect(site_url('dashboard'), 'refresh');
+				redirect(site_url('dashboard'));
 			}
 		} else {
 			$this->session->set_flashdata('error_message', get_phrase('This email or password is invalid. Please try another.'));
@@ -165,7 +165,7 @@ class Auth extends Base {
 			$this->session->set_userdata('customer_login', 1);
 			$this->session->set_flashdata('flash_message', get_phrase('successfully_switched_to_customer', true));
 		}
-		redirect(site_url('dashboard'), 'refresh');
+		redirect(site_url('dashboard'));
 	}
 
 
@@ -177,7 +177,7 @@ class Auth extends Base {
 	public function roles()
 	{
 		if ($this->session->userdata('is_logged_in')) {
-			redirect(site_url('dashboard'), 'refresh');
+			redirect(site_url('dashboard'));
 		}
 
 		$this->load->view('auth/roles');
@@ -195,7 +195,7 @@ class Auth extends Base {
 
 		if ($this->session->userdata('is_logged_in')) {
 			
-			redirect(site_url('dashboard'), 'refresh');
+			redirect(site_url('dashboard'));
 		}
 		$page_data['role'] = sanitize($role);
 		$this->load->view('auth/registration', $page_data);
@@ -229,7 +229,7 @@ class Auth extends Base {
 	public function register()
 	{
 		if ($this->session->userdata('is_logged_in')) {
-			redirect(site_url('dashboard'), 'refresh');
+			redirect(site_url('dashboard'));
 		}
 		$validate_recaptcha = $this->validate_captcha();
 		if ($validate_recaptcha) {
