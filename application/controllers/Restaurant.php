@@ -145,6 +145,8 @@ class Restaurant extends Authorization
     $data = [
         'missed_order_email'   => $this->input->post('missed_order_email'),
         'abandoned_cart_email' => $this->input->post('abandoned_cart_email'),
+        'abandoned_cart_email_standalone' => $this->input->post('abandoned_cart_email_standalone'),
+        'missed_order_email_standalone' => $this->input->post('missed_order_email_standalone'),
         // 'new_order_email'      => $this->input->post('new_order_email'),
     ];
 

@@ -118,120 +118,115 @@ class Testcart extends Base {
     }
 }
 
-    public function missedresponsenoti() {
-    // Hardcoded restaurant id for testing purposes
-    $user_id = 3;   
+  public function missedresponsenoti() {
 
-    // Get all orders with no response = 1 for this restaurant only
-    $this->db->from('orders');
-    $this->db->where('no_response', 1);
-    $this->db->where('restaurant_id', $user_id); // optional but recommended
-    $this->db->order_by('id', 'DESC');
-    $orders = $this->db->get()->result_array();
+    // Get all restaurants
+    $restaurants = $this->db->get('restaurants')->result_array();
 
-    // Get restaurant info
-    $restaurant = $this->db->get_where('restaurants', ['id' => $user_id])->row_array();
+    foreach ($restaurants as $restaurant) {
 
-    if ($restaurant) {
-        $owner_email = $restaurant['email']; // main restaurant email
-        $extra_email = $restaurant['missed_order_email']; // custom missed order email
+        $user_id = $restaurant['id'];
 
-        if (!empty($orders)) {
-            // Get user (owner) info
-            $owner = $this->db->get_where('users', ['id' => $user_id])->row_array();
-            
-            if ($owner) {
-                // fallback if restaurant email empty
-                if (empty($owner_email) && !empty($owner['email'])) {
-                    $owner_email = $owner['email'];
-                }
+        // Get missed orders for this restaurant
+        $this->db->from('orders');
+        $this->db->where('no_response', 1);
+        $this->db->where('restaurant_id', $user_id);
+        $this->db->order_by('id', 'DESC');
+        $orders = $this->db->get()->result_array();
 
-                // Prepare order list
-                $order_codes = array_column($orders, 'code');
-                $order_list = '';
+        if (empty($orders)) {
+            continue; // skip if no orders
+        }
 
-                foreach ($orders as $order) {
-                    $billing_data = json_decode($order['billing'], true);
+        $owner_email = $restaurant['email'];
+        $extra_email = $restaurant['missed_order_email'];
 
-                    if ($order["order_type"] == "pos") continue;
-                    if (!$billing_data || empty($billing_data['first_name'])) continue;
+        // Get owner info
+        $owner = $this->db->get_where('users', ['id' => $user_id])->row_array();
 
-                    $customer_first_name = trim(strtolower($billing_data['first_name']));
-                    if ($customer_first_name === 'test') continue;
+        if (!$owner) {
+            continue;
+        }
 
-                    $customer_last_name = trim(strtolower($billing_data['last_name']));
-                    if ($customer_last_name === 'test') continue;
+        // fallback email
+        if (empty($owner_email) && !empty($owner['email'])) {
+            $owner_email = $owner['email'];
+        }
 
-                    $code = $order['code'];
-                    $grand_total_amount = $order['grand_total'];
-                    $customer_name = ucfirst($billing_data['first_name']) . ' ' . ucfirst($billing_data['last_name']);
-                    $customer_phone = $billing_data['phone_mobile'];
+        $order_list = [];
+        $order_codes = [];
 
-                    // Append order details to the list
-                    $order_list .= "- Order <strong>#" . htmlspecialchars($code) . "</strong><br>";
-                    $order_list .= "&nbsp;&nbsp;&nbsp; Customer: <strong>" . htmlspecialchars($customer_name) . "</strong><br>";
-                    $order_list .= "&nbsp;&nbsp;&nbsp; Phone: <strong>" . htmlspecialchars($customer_phone) . "</strong><br>";
-                    $order_list .= "&nbsp;&nbsp;&nbsp; Total Order Amount: <strong>" . htmlspecialchars($grand_total_amount) . "€</strong><br><br>";
-                }
+        foreach ($orders as $order) {
 
-                if (empty(trim($order_list))) {
-                    log_message('info', 'No missed orders to notify (only test customers). Email not sent.');
-                    echo 'No real missed orders found. Email not sent.';
-                    return; // exit before sending any email
-                }
+            $billing_data = json_decode($order['billing'], true);
 
-                // Prepare email content
-                $subject = "Missed Orders Notification";
-                $message = "Dear Restaurant Owner " . htmlspecialchars($owner['name']) . ",<br><br>";
-                $message .= "You missed the following orders:<br><br>";
-                $message .= $order_list;
-                $message .= "<br>Please check your orders dashboard.<br><br>";
-                $message .= "Regards,<br>Fooyes Team";
+            if ($order["order_type"] == "pos") continue;
+            if (!$billing_data || empty($billing_data['first_name'])) continue;
 
-                // === Send Email using PHPMailer ===
-                $this->load->library('phpmailer_lib');
-                $mail = $this->phpmailer_lib->load();
+            if (strtolower(trim($billing_data['first_name'])) == 'test') continue;
+            if (strtolower(trim($billing_data['last_name'])) == 'test') continue;
 
-                // SMTP config
-                $mail->isSMTP();
-                $mail->Host       = 'mail.fooyes.co.uk';
-                $mail->SMTPAuth   = true;
-                $mail->Username   = 'support@fooyes.co.uk';
-                $mail->Password   = 'hYEjNhb@[w&T7fRg';  
-                $mail->SMTPSecure = 'ssl';
-                $mail->Port       = 465;
+            $code = $order['code'];
+            $order_codes[] = $code;
 
-                // Set sender info
-                $mail->setFrom('support@fooyes.co.uk', 'Fooyes');
+            $customer_name = ucfirst($billing_data['first_name']) . ' ' . ucfirst($billing_data['last_name']);
+            $customer_phone = $billing_data['phone_mobile'];
 
-                // MAIN email (must)
-                if (!empty($owner_email)) {
-                    $mail->addAddress($owner_email);
-                }
+            $order_list[] =
+                "- Order <strong>#{$code}</strong><br>
+                 &nbsp;&nbsp; Customer: <strong>{$customer_name}</strong><br>
+                 &nbsp;&nbsp; Phone: <strong>{$customer_phone}</strong><br>
+                 &nbsp;&nbsp; Total: <strong>{$order['grand_total']}€</strong><br><br>";
+        }
 
-                // Add BCC to developer
-                $mail->addBCC('website25developer@gmail.com');
+        if (empty($order_list)) {
+            continue;
+        }
 
-                // Extra missed order email
-                if (!empty($extra_email) && $extra_email != $owner_email) {
-                    $mail->addAddress($extra_email);
-                }
+        $order_list_html = implode('', $order_list);
 
-                // Email body settings
-                $mail->isHTML(true);
-                $mail->Subject = $subject;
-                $mail->Body    = $message;
+        // Email content
+        $subject = "Missed Orders Notification";
+        $message = "Dear {$owner['name']},<br><br>";
+        $message .= "You missed the following orders:<br><br>";
+        $message .= $order_list_html;
+        $message .= "<br>Please check your dashboard.<br><br>Regards,<br>Fooyes Team";
 
-                // Send email and log the result
-                if ($mail->send()) {
-                    echo 'Email Sent Successfully!';
-                    log_message('info', "Missed orders email sent to {$owner_email}" . (!empty($extra_email) ? " and {$extra_email}" : "") . " for orders: " . implode(', ', $order_codes));
-                } else {
-                    echo 'Mailer Error: ' . $mail->ErrorInfo;
-                    log_message('error', "Failed to send missed orders email to {$owner_email}. Mailer Error: " . $mail->ErrorInfo);
-                }
-            }
+        // PHPMailer
+        $this->load->library('phpmailer_lib');
+        $mail = $this->phpmailer_lib->load();
+
+        $mail->isSMTP();
+        $mail->Host       = 'mail.fooyes.co.uk';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'support@fooyes.co.uk';
+        $mail->Password   = 'hYEjNhb@[w&T7fRg';
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port       = 465;
+
+        $mail->setFrom('support@fooyes.co.uk', 'Fooyes');
+
+        if (!empty($owner_email)) {
+            $mail->addAddress($owner_email);
+        }
+
+        if (!empty($extra_email) && $extra_email != $owner_email) {
+            $mail->addAddress($extra_email);
+        }
+
+        $mail->addBCC('website25developer@gmail.com');
+
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body    = $message;
+
+        if ($mail->send()) {
+            log_message('info', "Missed orders email sent to {$owner_email} (Restaurant ID: {$user_id})");
+        } else {
+            log_message('error', "Mailer Error for restaurant {$user_id}: " . $mail->ErrorInfo);
         }
     }
+
+    echo "Process completed for all restaurants.";
 }
 }
