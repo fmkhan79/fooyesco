@@ -54,31 +54,33 @@ class Menu_model extends Base_model
         ->get()
         ->row_array();
 }
+public function get_menu_by_condition($conditions = [])
+{
+    foreach ($conditions as $key => $value) {
 
-    // GET MENU BY CONDITIONS ARRAY
-    public function get_menu_by_condition($conditions = [])
-    {
-        
-        foreach ($conditions as $key => $value) {
-            if (!is_null($value)) {
-                if (is_array($value)) {
-                    if (count($value)) {
-                        $this->db->where_in($key, $value);
-                    } else {
-                        return array();
-                    }
+        if (!is_null($value)) {
+
+            // ✅ SEARCH HANDLE KARO ALAG SE
+            if ($key == 'search') {
+                $this->db->like('name', $value); // 👈 apna column name check karo
+            }
+
+            // ✅ NORMAL CONDITIONS
+            else if (is_array($value)) {
+                if (count($value)) {
+                    $this->db->where_in($key, $value);
                 } else {
-                    $this->db->where($key, $value);
+                    return array();
                 }
+            } else {
+                $this->db->where($key, $value);
             }
         }
-
-        $menus = $this->db->get($this->table);
-
-        // var_dump($this->merger($menus));
-        return $this->merger($menus);
     }
 
+    $menus = $this->db->get($this->table);
+    return $this->merger($menus);
+}
     // MERGER FUNCTION IS FOR MERGING NECESSARY DATA
     public function merger($query_obj, $is_single_row = false)
     {

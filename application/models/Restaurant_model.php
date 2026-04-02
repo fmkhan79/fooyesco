@@ -263,40 +263,28 @@ public function update_offers()
     // UPDATE ADDRESS AND PHONE INFOS FOR A RESTAURANT
 public function update_address()
 {
-    $id = $this->input->post('id');
-    $commission = sanitize($this->input->post('commission_res'));
+    $id = (int) $this->input->post('id');
+    $commission = (float) sanitize($this->input->post('commission_res'));
 
-    $data['address']    = sanitize($this->input->post('restaurant_address'));
-    $data['latitude']   = sanitize($this->input->post('restaurant_latitude'));
-    $data['longitude']  = sanitize($this->input->post('restaurant_longitude'));
-    $data['phone']      = sanitize($this->input->post('restaurant_phone'));
-    $data['website']    = sanitize($this->input->post('restaurant_website_link'));
-    $data['commission_res'] = $commission;
-    $data['updated_at'] = strtotime(date('D, d-M-Y'));
+    $data = [
+        'address'         => sanitize($this->input->post('restaurant_address')),
+        'latitude'        => (float) sanitize($this->input->post('restaurant_latitude')),
+        'longitude'       => (float) sanitize($this->input->post('restaurant_longitude')),
+        'phone'           => sanitize($this->input->post('restaurant_phone')),
+        'website'         => sanitize($this->input->post('restaurant_website_link')),
+        'commission_res'  => $commission,
+        'updated_at'      => time() // cleaner than strtotime(date())
+    ];
 
+    // Update restaurant
     $this->db->where('id', $id);
     $this->db->update($this->table, $data);
 
-    // Update commission on pending unpaid orders
-    $orders = $this->db->get_where('orders', [
-        'restaurant_id' => $id,
-        'is_paid'       => 0
-    ])->result();
-
-    foreach ($orders as $order) {
-        $commission_amount = ($order->grand_total * $commission) / 100;
-        $commission_paid   = $order->grand_total - $commission_amount;
-
-        $this->db->where('id', $order->id);
-        $this->db->update('orders', [
-            'commission_res'  => $commission,
-            'commission_paid' => $commission_paid
-        ]);
-    }
+    // Get pending unpaid orders
+   
 
     return true;
 }
-
     // UPDATE OWNER INFOS FOR A RESTAURANT
     public function update_owner()
     {

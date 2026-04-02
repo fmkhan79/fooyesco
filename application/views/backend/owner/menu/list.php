@@ -38,6 +38,12 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    <div class="form-group col">
+    <label>Item Name</label>
+    <input type="text" name="search" class="form-control" 
+           value="<?php echo isset($_GET['search']) ? sanitize($_GET['search']) : ''; ?>" 
+           placeholder="Search item name">
+</div>
 
                 </div>
                 <div class="col-1">

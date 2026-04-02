@@ -825,29 +825,52 @@ input:checked + .slider:before {
         <div class="col-lg-6" style="padding-right:20px;">
 
         
+<div class="tab-pane <?php if ($active_tab == 'emails') echo 'active' ?>" id="emails">
+    <div class="row">
+        <div class="col-lg-6" style="padding-right:20px;">
 
 <form action="<?php echo site_url('restaurant/update_email_settings'); ?>" method="post">
-                    <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
+    <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
 
-                <!-- Missed Order Email -->
-                <div class="form-group">
-                    <label>Missed Order Email</label>
-                    <input type="email" name="missed_order_email" class="form-control"
-                        value="<?= $restaurant_data['missed_order_email'] ?? '' ?>"
-                        placeholder="Enter email for missed orders">
-                </div>
+    <!-- Missed Order Email (Main Domain) -->
+    <div class="form-group">
+        <label>Missed Order Email (Main Domain)</label>
+        <input type="email" name="missed_order_email" class="form-control"
+            value="<?= $restaurant_data['missed_order_email'] ?? '' ?>"
+            placeholder="Enter email for missed orders">
+    </div>
 
-                <!-- Abandoned Cart Email -->
-                <div class="form-group">
-                    <label>Abandoned Cart Email</label>
-                    <input type="email" name="abandoned_cart_email" class="form-control"
-                        value="<?= $restaurant_data['abandoned_cart_email'] ?? '' ?>"
-                        placeholder="Enter email for abandoned cart">
-                </div>
+    <!-- Abandoned Cart Email (Main Domain) -->
+    <div class="form-group">
+        <label>Abandoned Cart Email (Main Domain)</label>
+        <input type="email" name="abandoned_cart_email" class="form-control"
+            value="<?= $restaurant_data['abandoned_cart_email'] ?? '' ?>"
+            placeholder="Enter email for abandoned cart">
+    </div>
 
-                <button type="submit" class="btn btn-primary">Save Settings</button>
+    <!-- Missed Order Email (Standalone Domain) -->
+    <div class="form-group">
+        <label>Missed Order Email (Standalone Domain)</label>
+        <input type="email" name="missed_order_email_standalone" class="form-control"
+            value="<?= $restaurant_data['missed_order_email_standalone'] ?? '' ?>"
+            placeholder="Enter email for standalone missed orders">
+    </div>
 
-            </form>
+    <!-- Abandoned Cart Email (Standalone Domain) -->
+    <div class="form-group">
+        <label>Abandoned Cart Email (Standalone Domain)</label>
+        <input type="email" name="abandoned_cart_email_standalone" class="form-control"
+            value="<?= $restaurant_data['abandoned_cart_email_standalone'] ?? '' ?>"
+            placeholder="Enter email for standalone abandoned cart">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Settings</button>
+
+</form>
+
+        </div>
+    </div>
+</div>
 
         </div>
     </div>

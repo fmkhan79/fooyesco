@@ -56,31 +56,40 @@ class Base_model extends CI_Model
     /**
      * COMMON PAGINATION FUNCTION FOR ALL
      */
-    public function paginate($per_page, $page_number, $conditions = [], $order_by = "id", $order = "desc")
-    {
-        /**
-         * THIS LOOP CHECKS IF GIVEN CONDITION HAS ANY EMPTY ARRAY. IF IT DOES IT WILL RETURN EMPTY ARRAY.
-         */
-        foreach ($conditions as $key => $value) {
-            if (is_array($value)) {
-                if (count($value) == 0) {
-                    $conditions[$key] = "-1"; // GIVING A VALUE WHICH IS NOT BE AVAILABE ANYWHERE
-                }
+   public function paginate($per_page, $page_number, $conditions = [], $order_by = "id", $order = "desc")
+{
+    /**
+     * EMPTY ARRAY CHECK
+     */
+    foreach ($conditions as $key => $value) {
+        if (is_array($value)) {
+            if (count($value) == 0) {
+                $conditions[$key] = "-1";
             }
         }
-
-        foreach ($conditions as $key => $value) {
-            if (!is_null($value)) {
-                if (is_array($value)) {
-                    $this->db->where_in($key, $value);
-                } else {
-                    $this->db->where($key, $value);
-                }
-            }
-        }
-
-        $offset = $page_number > 0 ? ($page_number - 1) * $per_page : 0;
-        $this->db->order_by($order_by, $order);
-        return $this->db->get($this->table, $per_page, $offset);
     }
+
+    foreach ($conditions as $key => $value) {
+
+        if (!is_null($value)) {
+
+            // ✅ SEARCH FIX (IMPORTANT)
+            if ($key == 'search') {
+                $this->db->like('name', $value); // 👈 apna column name confirm karo
+            }
+
+            // ✅ NORMAL CONDITIONS
+            else if (is_array($value)) {
+                $this->db->where_in($key, $value);
+            } else {
+                $this->db->where($key, $value);
+            }
+        }
+    }
+
+    $offset = $page_number > 0 ? ($page_number - 1) * $per_page : 0;
+    $this->db->order_by($order_by, $order);
+
+    return $this->db->get($this->table, $per_page, $offset);
+}
 }
