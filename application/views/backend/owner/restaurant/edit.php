@@ -777,7 +777,17 @@ input:checked + .slider:before {
                                      <div class="form-group" style="display: flex;align-items: center;gap: 20px;">
                                         <input type="text" name="unavailable_fooyes_text" class="form-control" placeholder="Popup Text" value="<?php echo sanitize($restaurant_data['unavailable_fooyes_text']); ?>">
                                     </div>
-                                    
+                                    <div class="form-group">
+        <label>Closed From:</label>
+        <input type="time" name="closed_from" class="form-control"
+            value="<?php echo sanitize($restaurant_data['closed_from']); ?>">
+    </div>
+
+    <div class="form-group">
+        <label>Closed To:</label>
+        <input type="time" name="closed_to" class="form-control"
+            value="<?php echo sanitize($restaurant_data['closed_to']); ?>">
+    </div>
 
 
                                     <button class="btn btn-primary" type="submit">Update Visibility</button>
@@ -814,61 +824,65 @@ input:checked + .slider:before {
                                 </form>
                                
                             </div>
+
+                        
+                            
                         </div>
 
 
                     </div>
                     <!-- /.tab-pane -->
 
-<div class="tab-pane <?php if ($active_tab == 'emails') echo 'active' ?>" id="emails">
-    <div class="row">
-        <div class="col-lg-6" style="padding-right:20px;">
 
         
 <div class="tab-pane <?php if ($active_tab == 'emails') echo 'active' ?>" id="emails">
     <div class="row">
-        <div class="col-lg-6" style="padding-right:20px;">
 
-<form action="<?php echo site_url('restaurant/update_email_settings'); ?>" method="post">
-    <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
+        <!-- LEFT SIDE (Fooyes) -->
+        <div class="col-lg-6" style="padding-right:20px; border-right:1px solid lightgrey">
+            
+            <h2 style="display: flex;justify-content: space-between;align-items: flex-end;">
+                <?= $restaurant_data['fooyes_url'] ?>
+                <small class="text-muted text-sm">(Fooyes)</small>
+            </h2>
 
-    <!-- Missed Order Email (Main Domain) -->
-    <div class="form-group">
-        <label>Missed Order Email (Main Domain)</label>
-        <input type="email" name="missed_order_email" class="form-control"
-            value="<?= $restaurant_data['missed_order_email'] ?? '' ?>"
-            placeholder="Enter email for missed orders">
-    </div>
+            <form action="<?php echo site_url('restaurant/update_email_settings'); ?>" method="post">
+                <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
 
-    <!-- Abandoned Cart Email (Main Domain) -->
-    <div class="form-group">
-        <label>Abandoned Cart Email (Main Domain)</label>
-        <input type="email" name="abandoned_cart_email" class="form-control"
-            value="<?= $restaurant_data['abandoned_cart_email'] ?? '' ?>"
-            placeholder="Enter email for abandoned cart">
-    </div>
+                <div class="form-group">
+                    <label>Missed Order Email (Main Domain)</label>
+                    <input type="email" name="missed_order_email" class="form-control"
+                        value="<?= $restaurant_data['missed_order_email'] ?? '' ?>"
+                        placeholder="Enter email for missed orders">
+                </div>
 
-    <!-- Missed Order Email (Standalone Domain) -->
-    <div class="form-group">
-        <label>Missed Order Email (Standalone Domain)</label>
-        <input type="email" name="missed_order_email_standalone" class="form-control"
-            value="<?= $restaurant_data['missed_order_email_standalone'] ?? '' ?>"
-            placeholder="Enter email for standalone missed orders">
-    </div>
-
-    <!-- Abandoned Cart Email (Standalone Domain) -->
-    <div class="form-group">
-        <label>Abandoned Cart Email (Standalone Domain)</label>
-        <input type="email" name="abandoned_cart_email_standalone" class="form-control"
-            value="<?= $restaurant_data['abandoned_cart_email_standalone'] ?? '' ?>"
-            placeholder="Enter email for standalone abandoned cart">
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save Settings</button>
-
-</form>
-
+                <button type="submit" class="btn btn-primary mt-2">Save Fooyes Settings</button>
+            </form>
         </div>
+
+
+        <!-- RIGHT SIDE (Standalone) -->
+        <div class="col-lg-6" style="padding-left:20px;">
+            
+            <h2 style="display: flex;justify-content: space-between;align-items: flex-end;">
+                <?= $restaurant_data['standalone_url'] ?>
+                <small class="text-muted text-sm">(Standalone)</small>
+            </h2>
+
+            <form action="<?php echo site_url('restaurant/update_email_settings'); ?>" method="post">
+                <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
+
+                <div class="form-group">
+                    <label>Missed Order Email (Standalone Domain)</label>
+                    <input type="email" name="missed_order_email_standalone" class="form-control"
+                        value="<?= $restaurant_data['missed_order_email_standalone'] ?? '' ?>"
+                        placeholder="Enter email for standalone missed orders">
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-4">Save Standalone Settings</button>
+            </form>
+        </div>
+
     </div>
 </div>
 

@@ -385,6 +385,8 @@ public function update_address()
         $data["unavailable_on_" . $this->input->post("domain")] = $unavailable;
 
         $data["unavailable_".  $this->input->post("domain") ."_text"] = $this->input->post("unavailable_" . $this->input->post("domain") ."_text");
+        $data["closed_from"] = $this->input->post("closed_from") ?: null;
+    $data["closed_to"]   = $this->input->post("closed_to") ?: null;
 
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);

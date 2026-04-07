@@ -13,50 +13,78 @@ class Site extends Base
 {
 
     // INDEX FUNCTION IS RESPONSIBLE FOR SHOWING INDEX PAGE
-    function index()
-    {
+   public function index()
+{
+    $host = get_subdomain();
+    $checkSlugInDb = $this->restaurant_model->find_slug($host);
 
-        $host = get_subdomain();
-    
-        $checkSlugInDb = $this->restaurant_model->find_slug($host);
-        
-        //Standalone if not null 
-        if($checkSlugInDb){    
+    // Standalone restaurant
+    if ($checkSlugInDb) {
 
-            $page_data['reviews_count'] = 0;
-            
-            $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($checkSlugInDb);
-        
-            if(!$page_data['restaurant_details']["id"]){
-                show_404(); 
-            }
+        $page_data['reviews_count'] = 0;
+        $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($checkSlugInDb);
 
-            $page_data['page_name']          = 'restaurant/index';
-            $page_data['page_title']         = site_phrase("restaurant", true);
-
-            $restaurant_id = $page_data['restaurant_details']['id'];
-            
-            if (isset($restaurant_id) && trim($restaurant_id) !== '') {
-                // print_r($restaurant_id)
-                $page_data['reviews_count'] = count($this->review_model->get_by_restaurantr_id($restaurant_id));
-            }
-
-            $this->load->view(frontend('index'), $page_data);
-            return;
+        if (!$page_data['restaurant_details']["id"]) {
+            show_404();
         }
-        
 
-        $page_data['page_name']        = 'home/index';
-        $page_data['page_title']       = site_phrase("home", true);
-        $page_data['featured_cuisines'] = $this->cuisine_model->get_featured_cuisine();
-        $page_data['popular_restaurants'] = $this->restaurant_model->get_popular_restaurants(9);
-        $page_data['featured_restaurants'] = $this->restaurant_model->get_all(6);
-        $page_data['cuisines']    = $this->cuisine_model->get_all();
-        $page_data['categories'] = $this->category_model->get_featured_categories();
-        $page_data['test'] = $this->cuisine_model->get_all(1);
+        // ✅ TIMEZONE (dynamic if available, otherwise UK)
+        $timezone = !empty($page_data['restaurant_details']['timezone']) 
+                    ? $page_data['restaurant_details']['timezone'] 
+                    : 'Europe/London';
+
+        date_default_timezone_set($timezone);
+
+        // ✅ CLOSE TIME CHECK
+        $close_from = $page_data['restaurant_details']['close_from'];
+        $close_to   = $page_data['restaurant_details']['close_to'];
+
+        $current_time = date('H:i:s');
+
+        if (!empty($close_from) && !empty($close_to)) {
+
+            if ($close_from < $close_to) {
+                if ($current_time >= $close_from && $current_time <= $close_to) {
+                    echo "<script>alert('Restaurant is currently closed');</script>";
+                    exit;
+                }
+            } else {
+               
+                if ($current_time >= $close_from || $current_time <= $close_to) {
+                    echo "<script>alert('Restaurant is currently closed');</script>";
+                    exit;
+                }
+            }
+        }
+
+        $page_data['page_name']  = 'restaurant/index';
+        $page_data['page_title'] = site_phrase("restaurant", true);
+
+        $restaurant_id = $page_data['restaurant_details']['id'];
+
+        if (isset($restaurant_id) && trim($restaurant_id) !== '') {
+            $page_data['reviews_count'] = count(
+                $this->review_model->get_by_restaurantr_id($restaurant_id)
+            );
+        }
 
         $this->load->view(frontend('index'), $page_data);
+        return;
     }
+
+    // Default home page
+    $page_data['page_name']  = 'home/index';
+    $page_data['page_title'] = site_phrase("home", true);
+
+    $page_data['featured_cuisines']     = $this->cuisine_model->get_featured_cuisine();
+    $page_data['popular_restaurants']   = $this->restaurant_model->get_popular_restaurants(9);
+    $page_data['featured_restaurants']  = $this->restaurant_model->get_all(6);
+    $page_data['cuisines']              = $this->cuisine_model->get_all();
+    $page_data['categories']            = $this->category_model->get_featured_categories();
+    $page_data['test']                  = $this->cuisine_model->get_all(1);
+
+    $this->load->view(frontend('index'), $page_data);
+}
 
     public function restaurant_by_slug($slug = "")
     {
