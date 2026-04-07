@@ -13,7 +13,7 @@ class Site extends Base
 {
 
     // INDEX FUNCTION IS RESPONSIBLE FOR SHOWING INDEX PAGE
-   public function index()
+  public function index()
 {
     $host = get_subdomain();
     $checkSlugInDb = $this->restaurant_model->find_slug($host);
@@ -28,31 +28,29 @@ class Site extends Base
             show_404();
         }
 
-        // ✅ TIMEZONE (dynamic if available, otherwise UK)
+        // ✅ TIMEZONE
         $timezone = !empty($page_data['restaurant_details']['timezone']) 
                     ? $page_data['restaurant_details']['timezone'] 
                     : 'Europe/London';
 
         date_default_timezone_set($timezone);
 
-        // ✅ CLOSE TIME CHECK
-        $close_from = $page_data['restaurant_details']['close_from'];
-        $close_to   = $page_data['restaurant_details']['close_to'];
+        $close_from = $page_data['restaurant_details']['closed_from'];
+        $close_to   = $page_data['restaurant_details']['closed_to'];
 
         $current_time = date('H:i:s');
+
+        $page_data['is_closed'] = 0;
 
         if (!empty($close_from) && !empty($close_to)) {
 
             if ($close_from < $close_to) {
                 if ($current_time >= $close_from && $current_time <= $close_to) {
-                    echo "<script>alert('Restaurant is currently closed');</script>";
-                    exit;
+                    $page_data['is_closed'] = 1;
                 }
             } else {
-               
                 if ($current_time >= $close_from || $current_time <= $close_to) {
-                    echo "<script>alert('Restaurant is currently closed');</script>";
-                    exit;
+                    $page_data['is_closed'] = 1;
                 }
             }
         }
