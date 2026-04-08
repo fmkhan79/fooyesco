@@ -777,7 +777,7 @@ input:checked + .slider:before {
                                      <div class="form-group" style="display: flex;align-items: center;gap: 20px;">
                                         <input type="text" name="unavailable_fooyes_text" class="form-control" placeholder="Popup Text" value="<?php echo sanitize($restaurant_data['unavailable_fooyes_text']); ?>">
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
         <label>Closed From:</label>
         <input type="time" name="closed_from" class="form-control"
             value="<?php echo sanitize($restaurant_data['closed_from']); ?>">
@@ -787,7 +787,7 @@ input:checked + .slider:before {
         <label>Closed To:</label>
         <input type="time" name="closed_to" class="form-control"
             value="<?php echo sanitize($restaurant_data['closed_to']); ?>">
-    </div>
+    </div> -->
 
 
                                     <button class="btn btn-primary" type="submit">Update Visibility</button>

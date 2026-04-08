@@ -13,8 +13,8 @@ class Site extends Base
 {
 
     // INDEX FUNCTION IS RESPONSIBLE FOR SHOWING INDEX PAGE
-  public function index()
-{
+  public function index() {
+
     $host = get_subdomain();
     $checkSlugInDb = $this->restaurant_model->find_slug($host);
 
@@ -35,22 +35,53 @@ class Site extends Base
 
         date_default_timezone_set($timezone);
 
-        $close_from = $page_data['restaurant_details']['closed_from'];
-        $close_to   = $page_data['restaurant_details']['closed_to'];
+        // ✅ Schedule JSON
+        $schedule = json_decode($page_data['restaurant_details']['schedule'], true);
 
+        $current_day  = strtolower(date('l')); // monday, tuesday...
         $current_time = date('H:i:s');
 
-        $page_data['is_closed'] = 0;
+        $page_data['is_closed'] = 1; // default closed
 
-        if (!empty($close_from) && !empty($close_to)) {
+        if (!empty($schedule)) {
 
-            if ($close_from < $close_to) {
-                if ($current_time >= $close_from && $current_time <= $close_to) {
+            $opening_key = $current_day . '_opening';
+            $closing_key = $current_day . '_closing';
+
+            if (isset($schedule[$opening_key]) && isset($schedule[$closing_key])) {
+
+                $open_time  = $schedule[$opening_key];
+                $close_time = $schedule[$closing_key];
+
+                // ❌ Full day closed
+                if (
+                    ($open_time == '00:00' || $open_time == '00:00:00') &&
+                    ($close_time == '00:00' || $close_time == '00:00:00')
+                ) {
                     $page_data['is_closed'] = 1;
-                }
-            } else {
-                if ($current_time >= $close_from || $current_time <= $close_to) {
-                    $page_data['is_closed'] = 1;
+                } 
+                else {
+
+                    // Normalize format (H:i:s)
+                    if (strlen($open_time) == 5) {
+                        $open_time .= ':00';
+                    }
+                    if (strlen($close_time) == 5) {
+                        $close_time .= ':00';
+                    }
+
+                    // ✅ Same day timing
+                    if ($open_time < $close_time) {
+                        if ($current_time >= $open_time && $current_time <= $close_time) {
+                            $page_data['is_closed'] = 0;
+                        }
+                    } 
+                    // ✅ Overnight timing (e.g. 18:00 → 03:00)
+                    else {
+                        if ($current_time >= $open_time || $current_time <= $close_time) {
+                            $page_data['is_closed'] = 0;
+                        }
+                    }
                 }
             }
         }
@@ -60,7 +91,7 @@ class Site extends Base
 
         $restaurant_id = $page_data['restaurant_details']['id'];
 
-        if (isset($restaurant_id) && trim($restaurant_id) !== '') {
+        if (!empty($restaurant_id)) {
             $page_data['reviews_count'] = count(
                 $this->review_model->get_by_restaurantr_id($restaurant_id)
             );
@@ -83,26 +114,6 @@ class Site extends Base
 
     $this->load->view(frontend('index'), $page_data);
 }
-
-    public function restaurant_by_slug($slug = "")
-    {
-        $slug = strtolower(sanitize($slug));
-
-        // Slug exact match DB me
-        $restaurant = $this->db->where('slug', $slug)
-        ->where('visible_on_fooyes', 1)->get('restaurants')->row_array();
-
-        if (!$restaurant) {
-            show_404();
-        }
-
-        $page_data['restaurant_details'] = $restaurant;
-        $page_data['page_name'] = 'restaurant/index';
-        $page_data['page_title'] = site_phrase("restaurant", true);
-
-        $this->load->view(frontend('index'), $page_data);
-    }
-
 
     // RESTAURANT FUNCTION IS RESPONSIBLE FOR SHOWING THE RESTAURANT DETAILS PAGE
     // Have to change for next stnadalone
