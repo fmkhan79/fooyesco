@@ -106,9 +106,12 @@ foreach($items as $item){
           data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"]; ?>"
           data-item-id="<?php echo $item["id"]; ?>"
           class="menuoptions required-item"
-          onclick="loadNextSequence(<?php echo $menu_sub_catagory_item['id']; ?>, <?php echo $item['id']; ?>, <?php echo $menu_sub_catagory_item['sequence'] ?? null; ?> , '<?php echo $menu_sub_catagory_item['variant_option_id']; ?>')"
+          onclick="loadNextSequence(<?php echo $menu_sub_catagory_item['id']; ?>, <?php echo $item['id']; ?>, <?php echo $menu_sub_catagory_item['sequence'] ?? 'null'; ?> , '<?php echo $menu_sub_catagory_item['variant_option_id']; ?>')"
         />
-      <?php } else { ?>
+        
+      <?php
+
+       } else { ?>
         <!-- FREE → hidden + auto selected -->
         <input
           type="checkbox"
