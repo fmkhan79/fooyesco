@@ -129,6 +129,7 @@ class Testcart extends Base {
 
         // Get missed orders for this restaurant
         $this->db->from('orders');
+        $this->db->where('missed_order_email_count_left >', 0);
         $this->db->where('no_response', 1);
         $this->db->where('restaurant_id', $user_id);
         $this->db->order_by('id', 'DESC');
