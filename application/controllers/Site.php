@@ -23,7 +23,8 @@ class Site extends Base
 
         $page_data['reviews_count'] = 0;
         $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($checkSlugInDb);
-        $page_data['restaurant_details']['timings'] = $this->restaurant_model->get_timings_by_id($page_data['restaurant_details']["id"]);
+        $page_data['timings'] = $this->restaurant_model->get_timings_by_id($page_data['restaurant_details']["id"]);
+
 
         if (!$page_data['restaurant_details']["id"]) {
             show_404();
