@@ -1,7 +1,9 @@
 
                           <?php
                           $variant_sub_options = $this->variation_model->get_sub_options(sanitize($menu_option['id']), $flag_variant_list);
-                          $sub_options_for_condition = array_column($variant_sub_options, 'name', 'id');
+                          $variant_sub_options_all = $this->variation_model->get_sub_options(sanitize($menu_option['id']));
+
+                          $sub_options_for_condition = array_column($variant_sub_options_all, 'name', 'id');
                           // var_dump($variant_sub_options);
                           foreach ($variant_sub_options as $key => $variant_sub_option) {
                           ?>

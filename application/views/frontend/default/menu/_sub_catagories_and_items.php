@@ -42,9 +42,12 @@ foreach($menu_sub_catagory_items as $menu_sub_catagory_item){
 
 
 
-
+$break = false;
 foreach($menu_sub_catagory_items as $menu_sub_catagory_item){ 
   
+  if(in_array($menu_sub_catagory_item["id"], $referenced_sub_categories)){
+      $break = true;
+  }
   if($menu_sub_catagory_item["name"]){
 
     // Get all items of this sub-category
@@ -106,7 +109,9 @@ foreach($items as $item){
           data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"]; ?>"
           data-item-id="<?php echo $item["id"]; ?>"
           class="menuoptions required-item"
+          <?php if($break){ ?>
           onclick="loadNextSequence(<?php echo $menu_sub_catagory_item['id']; ?>, <?php echo $item['id']; ?>, <?php echo $menu_sub_catagory_item['sequence'] ?? 'null'; ?> , '<?php echo $menu_sub_catagory_item['variant_option_id']; ?>')"
+          <?php  }?>
         />
         
       <?php
@@ -198,7 +203,7 @@ if (preg_match('/Maximum\s*(\d+)/i', $name, $matches)) {
 
 <?php } } 
 
-if(in_array($menu_sub_catagory_item["id"], $referenced_sub_categories)){
+if($break){
     break;
 }
 
