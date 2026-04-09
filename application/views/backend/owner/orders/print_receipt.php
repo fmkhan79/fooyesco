@@ -16,9 +16,11 @@
             font-size: 18px;
         }
 
+        <?php if(!isset($_GET["s"])): ?>
         body {
             overflow: hidden;
         }
+        <?php endif; ?>
 
         .receipt {
             width: 270px;

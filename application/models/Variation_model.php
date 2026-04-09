@@ -608,6 +608,13 @@ public function update_item()
         $this->db->where('variant_group_variant_sub_options_pivot.variant_sub_options_id', $variant_sub_options_id);
         return $this->db->get('variant_group_variant_sub_options_pivot')->result_array()[0];
     }
+
+    public function update_sub_variant_condition($effected_variation_sub_id, $variant_id, $variation_sub_id){
+
+        $this->db->where('id', $effected_variation_sub_id);
+        $this->db->update('variant_sub_options', ['condition_variant_id' => $variant_id, 'condition_sub_options_id' => $variation_sub_id]);
+        return true;
+    }
 }
 
 

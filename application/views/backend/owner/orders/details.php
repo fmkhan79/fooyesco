@@ -159,7 +159,7 @@ $host = $_SERVER['HTTP_HOST'];
                             <li class="list-group-item border-bottom-0 text-center">
                                 <a href="javascript:void(0)" onclick="openHiddenWindow('<?php echo site_url('orders/print_recipt/' . sanitize($order_data['code'])); ?>'); return false;" class="btn btn-primary btn-block" "><b> <i class="fas fa-times-rectangle"></i> Print</b></a>
                                     </li>
-                           <a href="<?php echo site_url('orders/view/' . sanitize($order_data['code'])); ?>"
+                           <a href="<?php echo site_url('orders/view/' . sanitize($order_data['code']). "?s=1"); ?>"
                                target="_blank"
                                 class="btn btn-danger btn-block">
                                 <i class="fas fa-eye"></i> See Order

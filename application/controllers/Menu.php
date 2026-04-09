@@ -677,4 +677,11 @@ public function get_sub_options_ajax()
         $page_data['reports'] = $this->menu_model->report();
         $this->load->view('backend/index', $page_data);
     }
+
+    public function check_for_condition_miss_errors()
+    {
+        $errors = $this->menu_model->check_for_condition_miss_errors($this->input->post('menu_id') );
+        echo json_encode($errors);
+
+    }
 }

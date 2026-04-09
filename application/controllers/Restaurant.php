@@ -71,6 +71,8 @@ class Restaurant extends Authorization
 
         $page_data['id'] = $id;
         $page_data['restaurant_data'] = $this->restaurant_model->get_by_id($id);
+        $page_data['restaurant_data']['timings'] = $this->restaurant_model->get_timings_by_id($page_data['restaurant_data']["id"]);
+
         $restaurant_name = $page_data['restaurant_data']['name'];
         $page_data['cuisines'] = $this->cuisine_model->get_all();
         $page_data['active_tab'] = $active_tab;
@@ -133,30 +135,27 @@ class Restaurant extends Authorization
     }
 
     public function update_email_settings()
-{
-    $id = required(sanitize($this->input->post('id')));
+    {
+        $id = required(sanitize($this->input->post('id')));
 
-    /** CHECK ACCESS **/
-    if (!has_access('restaurants', $id)) {
-        error(get_phrase('you_are_not_authorized_for_this_action'), site_url('restaurant'));
+        /** CHECK ACCESS **/
+        if (!has_access('restaurants', $id)) {
+            error(get_phrase('you_are_not_authorized_for_this_action'), site_url('restaurant'));
+        }
+
+        // 📩 Get form data
+        $data = [
+            'missed_order_email'   => $this->input->post('missed_order_email'),
+            'missed_order_email_count' => $this->input->post('missed_order_email_count'),
+        ];
+
+        // 📩 Call model
+        $response = $this->restaurant_model->update_email_settings($id, array_filter($data));
+
+        if ($response) {
+            success(get_phrase("email_settings_updated_successfully"), site_url("restaurant/edit/$id/emails"));
+        } else {
+            error(get_phrase("an_error_occured"), site_url("restaurant/edit/$id/emails"));
+        }
     }
-
-    // 📩 Get form data
-    $data = [
-        'missed_order_email'   => $this->input->post('missed_order_email'),
-        'abandoned_cart_email' => $this->input->post('abandoned_cart_email'),
-        'abandoned_cart_email_standalone' => $this->input->post('abandoned_cart_email_standalone'),
-        'missed_order_email_standalone' => $this->input->post('missed_order_email_standalone'),
-        // 'new_order_email'      => $this->input->post('new_order_email'),
-    ];
-
-    // 📩 Call model
-    $response = $this->restaurant_model->update_email_settings($id, $data);
-
-    if ($response) {
-        success(get_phrase("email_settings_updated_successfully"), site_url("restaurant/edit/$id/emails"));
-    } else {
-        error(get_phrase("an_error_occured"), site_url("restaurant/edit/$id/emails"));
-    }
-}
 }

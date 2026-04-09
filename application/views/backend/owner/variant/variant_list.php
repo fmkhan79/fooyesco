@@ -1,12 +1,14 @@
 
                           <?php
                           $variant_sub_options = $this->variation_model->get_sub_options(sanitize($menu_option['id']), $flag_variant_list);
+                          $sub_options_for_condition = array_column($variant_sub_options, 'name', 'id');
                           // var_dump($variant_sub_options);
                           foreach ($variant_sub_options as $key => $variant_sub_option) {
                           ?>
+                          <!-- This is currently working -->
                             <div class="card subvariants_card" id="sub_variant-<?php echo $variant_sub_option["id"] ?>">
-                              <div class="card-header d-flex justify-content-between align-items-center variant_sub_option_header" style="background: #f9f9f9 !important;border: #fdc55e 1px solid;"
-                                data-toggle="collapse" href="#body-<?php echo $variant_sub_option["id"] ?>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                              <div class="card-header  variant_sub_option_header" href="#body-<?php echo $variant_sub_option["id"] ?>" style="background: #f9f9f9 !important;border: #fdc55e 1px solid;"
+                                >
                                 <div class="row w-100">
 
                                   <div class="col flex-grow-0" style="padding: 0px;display: flex;justify-content: center;align-items: center;opacity: 0.7;">
@@ -124,19 +126,24 @@
                                       </g>
                                     </svg>
                                   </div>
-                                  <div class="col flex-1" style="padding-left:10px;">
+                                  <div class="col-7" style="padding-left:10px;">
                                     <input type="text" data-variant-sub-id="<?php echo $variant_sub_option["id"] ?>" data-item-name="name"
                                       class="form-control variant_sub_cat" placeholder="Food sub Category name"
                                       value="<?php echo $variant_sub_option["name"] ?>">
                                   </div>
 
-                                  <div class="" style="padding-left:20px;    display: flex;align-items: center;/* justify-content: space-evenly; */gap: 10px;">
+                                  <div class="col" style="align-items: center;display: flex;justify-content: space-between;gap: 10px;">
 
+                                      <div>
                                     <input type="checkbox" class="variant_sub_cat" data-variant-sub-id="<?php echo $variant_sub_option["id"] ?>" data-item-name="isoptional" <?php if ($variant_sub_option["isoptional"]) {
                                                                                                                                                                                 echo "checked";
-                                                                                                                                                                              } ?>><label style="margin:0px;color:black;    font-weight: 100; font-size:13px; ">Optional?
-                                    </label>
+                                                                                                                                                                              } ?>>&nbsp;&nbsp;&nbsp;<label style="margin:0px;color:black;    font-weight: 100; font-size:13px; ">Optional?</label>
+                                      </div>
 
+
+                                    <button class="btn btn-info btn-sm" data-toggle="collapse" href="#body-<?php echo $variant_sub_option["id"] ?>" role="button" aria-expanded="false" aria-controls="collapseExample">Variant Options</button>
+
+                                    <button class="btn btn-info btn-sm" data-toggle="collapse" href="#conditions-<?php echo $variant_sub_option["id"] ?>" role="button" aria-expanded="false" aria-controls="collapseExample">Conditions</button>
 
                                     <button class="btn btn-success btn-sm">Save</button>
 
@@ -148,6 +155,36 @@
 
 
                                 </div>
+                                <div class="row w-100">
+                                 
+                                  <div class="col font-dark collapse <?php echo (isset($variant_sub_option["condition_variant_id"]) && !empty($variant_sub_option["condition_variant_id"])) ? 'show' : ''; ?>" style="padding-left:10px;color:black;" id="conditions-<?php echo $variant_sub_option["id"] ?>">
+                                  <hr class="w-100">
+                                    <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <label class="input-group-text" for="inputGroupSelect01"> <label style="margin:0px;color:black;    font-weight: 100; font-size:13px; ">Show When:</label></label>
+                                    </div>
+                                    <select class="custom-select condition-dropdown" data-variant-id="<?php echo $variant_sub_option["condition_variant_id"] ?>">
+                                      <option disabled selected>Choose...</option>
+                                      
+                                      <?php 
+
+                                      foreach($sub_options_for_condition as $id => $name){
+                                        if($name == "" || $name == null) continue;
+                                        
+                                        echo '<option value="'.$id.'" '. ($id == $variant_sub_option["condition_sub_options_id"] ? "selected" : "") .'>'.$name.'</option>';
+                                      }
+                                      ?>
+                                    </select>
+                                    <div class="input-group-prepend">
+                                      <label class="input-group-text" for="inputGroupSelect01"> <label style="margin:0px;color:black;    font-weight: 100; font-size:13px; ">Is</label></label>
+                                    </div>
+                                    <select class="custom-select condition-variant-dropdown" data-variation-sub-id="<?php echo $variant_sub_option["id"] ?>">
+                                      <option disabled selected>Choose...</option>
+                                    </select>
+                                  </div>
+                                  </div>
+
+                                </div>
 
                               </div>
 
@@ -155,32 +192,7 @@
                                 <h5 class="card-title"> <span class="text-danger"></span></h5>
                                 <!--sub_variants  work starts from hear -->
                                 <div class="v_var_div" id="sub_variant-<?php echo $variant_sub_option["id"] ?>">
-                                  <!-- <div class="form-row v_var_row">
-                              <div class="col-md-6">
-                                <input type="text" data-variant-sub-id="<?php echo $variant_sub_option["id"] ?>" data-item-name="name"
-                                  class="form-control variant_sub_cat" placeholder="Food sub Category name"
-                                  value="<?php echo $variant_sub_option["name"] ?>">
-                              </div>
-                              <div class="col-md-4">
-                                <label>Is Addons
-                                  <input type="checkbox" class="variant_sub_cat" data-variant-sub-id="<?php echo $variant_sub_option["id"] ?>" data-item-name="isoptional" <?php if ($variant_sub_option["isoptional"]) {
-                                                                                                                                                                              echo "checked";
-                                                                                                                                                                            } ?>>
-                                </label>
-                                <button data-menu-id="<?php echo $variant_sub_option["menu_id"] ?>"
-                                  data-variation-sub-id="<?php echo $variant_sub_option["id"] ?>" class="btn btn-info btn-sm delete_sub_variant">Delete
-                                </button>
-
-
-                              </div>
-                              <div class="col-md-2">
-                                <button style="float:right" data-menu-id="<?php echo $variant_sub_option["menu_id"] ?>"
-                                  data-variation-sub-id="<?php echo $variant_sub_option["id"] ?>" class="btn btn-primary btn-sm add_variant">Add
-                                  Food Item
-                                </button>
-
-                              </div>
-                            </div> -->
+                                 
                                   <div class="v_items variant_items_<?php echo $variant_sub_option["id"]; ?>">
 
                                     <!-- items work start from hear -->
@@ -221,34 +233,6 @@
                                         </div>
                                       </div>
 
-                                      <!-- <div id="item-<?php echo $variant_sub_item["id"]; ?>">
-                                  <div class="form-row item-row">
-                                    <div class="col">
-                                      <input type="text" data-item-id="<?php echo $variant_sub_item["id"]; ?>" data-item-name="variant"
-                                        class="form-control variant_item" placeholder="Food Item Name"
-                                        value="<?php echo $variant_sub_item["variant"]; ?>">
-                                    </div>
-                                    <div class="col">
-                                      <input type="text" data-item-id="<?php echo $variant_sub_item["id"]; ?>" data-item-name="price"
-                                        class="form-control variant_item" placeholder="Price"
-                                        value="<?php echo $variant_sub_item["price"]; ?>">
-                                    </div>
-                                    <div class="col">
-                                      <button class="btn btn-info delete-item" data-item-id="<?php echo $variant_sub_item["id"]; ?>">Delete</button>
-                                    </div>
-                                    <div class="col">
-                                      <label style="font-size:14px;">
-                                        Free with deal
-                                        <input type="checkbox"
-                                          class="variant_item"
-                                          data-item-id="<?php echo $variant_sub_item["id"]; ?>"
-                                          data-item-name="is_free"
-                                          <?php if (!empty($variant_sub_item["is_free"])) echo "checked"; ?>>
-                                      </label>
-                                    </div>
-
-                                  </div>
-                                </div> -->
                                     <?php } ?>
 
 

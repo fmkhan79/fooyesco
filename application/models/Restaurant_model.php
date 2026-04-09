@@ -205,6 +205,19 @@ class Restaurant_model extends Base_model
         }
     }
 
+    public function get_missed_order_count($restaurant_ids)
+    {
+        $this->db->select('missed_order_email_count');
+        $this->db->where('id', $restaurant_ids);
+        $query = $this->db->get($this->table);
+        if ($query->num_rows() > 0) {
+            return $query->row()->missed_order_email_count;
+        } else {
+            return false;
+        }
+    }
+
+
     public function get_pos_discount($restaurant_id)
     {
         $this->db->select('pos_discount');
@@ -385,8 +398,6 @@ public function update_address()
         $data["unavailable_on_" . $this->input->post("domain")] = $unavailable;
 
         $data["unavailable_".  $this->input->post("domain") ."_text"] = $this->input->post("unavailable_" . $this->input->post("domain") ."_text");
-        $data["closed_from"] = $this->input->post("closed_from") ?: null;
-    $data["closed_to"]   = $this->input->post("closed_to") ?: null;
 
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
@@ -394,6 +405,31 @@ public function update_address()
         return true;
     }
 
+    public function update_timings(){
+        $id = required(sanitize($this->input->post('id')));
+
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+        $data = [];
+        foreach ($days as $day) {
+            $data[$day . '_closed'] = $this->input->post($day . '_closed') ? 1 : 0;
+            $data[$day . '_open']   = $data[$day . '_closed'] ? null : ($this->input->post($day . '_open')  ?: null);
+            $data[$day . '_close']  = $data[$day . '_closed'] ? null : ($this->input->post($day . '_close') ?: null);
+        }
+
+        $this->db->where('restaurant_id', $id);
+        $exists = $this->db->count_all_results('restaurant_hours');
+
+        if ($exists) {
+            $this->db->where('restaurant_id', $id);
+            $this->db->update('restaurant_hours', $data);
+        } else {
+            $data['restaurant_id'] = $id;
+            $this->db->insert('restaurant_hours', $data);
+        }
+
+        return $this->db->affected_rows() > 0;
+    }
     // UPDATE SEO DATA FOR A RESTAURANT
     public function update_seo()
     {
@@ -644,6 +680,13 @@ public function get_distance($lat1, $lng1, $lat2, $lng2) {
     // Calculate distance in miles
     return EARTH_RADIUS * $c;
 }
+
+public function get_timings_by_id($restaurant_id){
+    $this->db->where('restaurant_id', $restaurant_id);
+    $query = $this->db->get('restaurant_hours');
+    return $query->row_array();
+}
+
     // public function filter_restaurant_frontend()
     // {
     //     $cuisine    = nuller(sanitize($this->input->get('cuisine')));

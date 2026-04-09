@@ -16,8 +16,20 @@ class Orders extends Authorization
      */
     public function __construct()
     {
+        
         parent::__construct();
-        authorization(['admin', 'owner', 'customer', 'driver', 'cook'], true);
+        
+        $action = $this->router->fetch_method();
+
+        if($action != "view_mail"){
+            authorization(['admin', 'owner', 'customer', 'driver', 'cook'], true);
+        }else{
+            if(!isset($_GET['key'])){
+                show_404();
+            }
+        }
+        
+
     }
 
     /**
@@ -151,23 +163,45 @@ class Orders extends Authorization
         }
     }
 
-    public function mark_order_as_read()
+    // Order code is being used by mail accept
+    public function mark_order_as_read($order_code = null)
     {
-        $order_id = $this->input->post('order_id');
+        //Normal running
+        if($order_code == null){
+            $order_id = $this->input->post('order_id');
+        
+            if ($order_id) {
+                // make it not show on popup 
+                $this->db->set('read_status', 1); // Assuming 'read_status' is the field name in the 'orders' table
+                $this->db->where('id', $order_id);
+                $this->db->update('orders');
 
-        if ($order_id) {
+                // make it not trigger an email
+                $this->db->set('no_response', 0); // Assuming 'read_status' is the field name in the 'orders' table
+                $this->db->where('id', $order_id);
+                $this->db->update('orders');
+
+
+                echo json_encode(['status' => 'success']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Invalid order ID']);
+            }
+        }else{ 
+            // when accepting from email 
+        
+            // make it not show on popup 
             $this->db->set('read_status', 1); // Assuming 'read_status' is the field name in the 'orders' table
-            $this->db->where('id', $order_id);
+            $this->db->where('code', $order_code);
             $this->db->update('orders');
 
+            // make it not trigger an email
             $this->db->set('no_response', 0); // Assuming 'read_status' is the field name in the 'orders' table
-            $this->db->where('id', $order_id);
+            $this->db->where('code', $order_code);
             $this->db->update('orders');
 
 
             echo json_encode(['status' => 'success']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Invalid order ID']);
+        
         }
     }
 
@@ -493,8 +527,17 @@ class Orders extends Authorization
         $this->session->set_userdata('show_test_orders', $this->input->post('show_test_orders'));
     }
 
+    public function view_mail($order_code){
+        if($this->order_model->verify_key($order_code, $_GET['key'])){
+            $this->mark_order_as_read($order_code);
+            $this->view($order_code);
+        } else {
+            show_404();
+        }
+    }
+
     public function view($order_code)
-{
+    {
 
 // Fetch order details based on the order code
         $order_details = $this->order_model->get_by_code($order_code);
@@ -516,50 +559,55 @@ class Orders extends Authorization
         $data['ordered_items'] = $ordered_items;
         $data['payment']       = $payment;
         $data['daily_order_number'] = $order_details->daily_order_number;
-                $this->load->view('backend/owner/orders/order_view_scroll', $data);
-
-}
+            if ($timestamp < $compareDate) {
+            $this->load->view('backend/owner/orders/print_receipt', $data);
+        } elseif ($timestamp >= $compareDate && $timestamp < strtotime('2026-03-28')) {
+            $this->load->view('backend/owner/orders/print_receipt_v2', $data);
+        } else {
+            $this->load->view('backend/owner/orders/print_receipt_v2', $data);
+        }
+    }
 
 
     public function complete_order()
-{
-    $code = $this->input->post('order_code');
+    {
+        $code = $this->input->post('order_code');
 
-    if (!$code) {
-        echo json_encode(['status' => 'error', 'message' => 'Order code missing']);
-        return;
+        if (!$code) {
+            echo json_encode(['status' => 'error', 'message' => 'Order code missing']);
+            return;
+        }
+
+        $this->load->model('order_model');
+        $result = $this->order_model->complete_order($code);
+
+        if ($result) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Unable to complete order']);
+        }
     }
 
-    $this->load->model('order_model');
-    $result = $this->order_model->complete_order($code);
 
-    if ($result) {
-        echo json_encode(['status' => 'success']);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Unable to complete order']);
+    public function check_payment_status()
+    {
+        $order_code = $this->input->post('order_code');
+
+        $payment = $this->db
+            ->where('order_code', $order_code)
+            ->get('payment')
+            ->row();
+
+        if ($payment && $payment->payment_method === 'stripe') {
+            echo json_encode([
+                'paid' => true
+            ]);
+        } else {
+            echo json_encode([
+                'paid' => false
+            ]);
+        }
     }
-}
-
-
-public function check_payment_status()
-{
-    $order_code = $this->input->post('order_code');
-
-    $payment = $this->db
-        ->where('order_code', $order_code)
-        ->get('payment')
-        ->row();
-
-    if ($payment && $payment->payment_method === 'stripe') {
-        echo json_encode([
-            'paid' => true
-        ]);
-    } else {
-        echo json_encode([
-            'paid' => false
-        ]);
-    }
-}
 
 
 }

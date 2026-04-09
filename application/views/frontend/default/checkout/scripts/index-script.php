@@ -189,7 +189,6 @@ function calculatePrice() {
 }
 // GET AND DISPLAY THE MENU ITEMS BASED ON SUB CATAGORY
 function viewselected_cat_items(maincatid, menu_selection = null) {
-
     var menu_option = menu_selection;
     console.log('--menu_selection', menu_selection);
     menu_selection = '.' + menu_selection;

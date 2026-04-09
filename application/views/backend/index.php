@@ -50,7 +50,8 @@ a:hover{
         <div class="content-wrapper  <?php if ($page_name == 'pos/index') echo 'm-0'; ?>" >
             <?php 
                 // Process to make singular owner and admin page
-                if($page_name == "restaurant/edit"){
+                // Add pages that are currently singular 
+                if (in_array($page_name, ["restaurant/edit", "category/edit", "subcategory/edit", "subcategory/create"])) {
                     $role = "owner";
                 }
             

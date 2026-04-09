@@ -116,7 +116,7 @@ class Cart_model extends Base_model
         $menu_details = $this->menu_model->get_menu_by_condition(['id' => $data['menu_id'], 'availability' => 1]);
         $menu_details = $menu_details[0];
         $data['restaurant_id'] = $menu_details['restaurant_id'];
-        
+
         $data['html_output_for_recipts'] = $this->generate_variant_html($this->input->post('options_1'));
         // CHECK MULTI RESTAURANT ORDER PERMISSION
         if (!get_order_settings('multi_restaurant_order')) {
@@ -132,32 +132,31 @@ class Cart_model extends Base_model
 
 
         // Calculate price based on whether the menu item has variants
-       // Calculate price based on whether the menu item has variants
-if ($menu_details['has_variant'] == 1) {
+        // Calculate price based on whether the menu item has variants
+        if ($menu_details['has_variant'] == 1) {
 
-    $data['variant_id'] = sanitize($this->input->post('variantId'));
+            $data['variant_id'] = sanitize($this->input->post('variantId'));
 
-    $variant_details = $this->db->get_where('variant_options', ['id' => $data['variant_id']]);
-    if ($variant_details->num_rows() > 0) {
-        $variant_details = $variant_details->row_array();
-        $price = $data['quantity'] * $variant_details['price'];
-        $data['price'] = $price;
-    }
+            $variant_details = $this->db->get_where('variant_options', ['id' => $data['variant_id']]);
+            if ($variant_details->num_rows() > 0) {
+                $variant_details = $variant_details->row_array();
+                $price = $data['quantity'] * $variant_details['price'];
+                $data['price'] = $price;
+            }
 
-    // ✅ OPTIONS only when variant exists
-    $data['options_1'] = $this->input->post('options_1') ?? null;
-    $data['options_2'] = $this->input->post('options_2') ?? null;
+            // ✅ OPTIONS only when variant exists
+            $data['options_1'] = $this->input->post('options_1') ?? null;
+            $data['options_2'] = $this->input->post('options_2') ?? null;
+        } else {
 
-} else {
+            // ✅ CLEAR OPTIONS ONLY (price logic same as before)
+            $data['variant_id'] = null;
+            $data['options_1']  = null;
+            $data['options_2']  = null;
 
-    // ✅ CLEAR OPTIONS ONLY (price logic same as before)
-    $data['variant_id'] = null;
-    $data['options_1']  = null;
-    $data['options_2']  = null;
-
-    $price = $data['quantity'] * get_menu_price($data['menu_id']);
-    $data['price'] = $price;
-}
+            $price = $data['quantity'] * get_menu_price($data['menu_id']);
+            $data['price'] = $price;
+        }
 
 
         // Final price calculation
@@ -207,69 +206,69 @@ if ($menu_details['has_variant'] == 1) {
     /**
      * UPDATE CART ITEM METHOD
      */
-   function update_cart()
-{
-    $cart_id = required(sanitize($this->input->post('cartId')));
-    $data['quantity'] = sanitize($this->input->post('quantity'));
+    function update_cart()
+    {
+        $cart_id = required(sanitize($this->input->post('cartId')));
+        $data['quantity'] = sanitize($this->input->post('quantity'));
 
-    $cart_detail = $this->db->get_where('cart', ['id' => $cart_id])->row_array();
+        $cart_detail = $this->db->get_where('cart', ['id' => $cart_id])->row_array();
 
-    // Get base menu price first (fallback)
-    $menu_details = $this->db->get_where('food_menus', ['id' => $cart_detail['menu_id']])->row_array();
-    $base_price = get_menu_price($menu_details['id']);
+        // Get base menu price first (fallback)
+        $menu_details = $this->db->get_where('food_menus', ['id' => $cart_detail['menu_id']])->row_array();
+        $base_price = get_menu_price($menu_details['id']);
 
-    // Variant logic
-    if ($cart_detail['variant_id'] > 0) {
-        $variant_details = $this->db->get_where(
-            'variant_options',
-            ['id' => $cart_detail['variant_id']]
-        )->row_array();
+        // Variant logic
+        if ($cart_detail['variant_id'] > 0) {
+            $variant_details = $this->db->get_where(
+                'variant_options',
+                ['id' => $cart_detail['variant_id']]
+            )->row_array();
 
-        // If variant price is greater than 0 use it, else use base price
-        if (!empty($variant_details) && $variant_details['price'] > 0) {
-            $unit_price = $variant_details['price'];
+            // If variant price is greater than 0 use it, else use base price
+            if (!empty($variant_details) && $variant_details['price'] > 0) {
+                $unit_price = $variant_details['price'];
+            } else {
+                $unit_price = $base_price;
+            }
         } else {
             $unit_price = $base_price;
         }
-    } else {
-        $unit_price = $base_price;
-    }
 
-    // Quantity price
-    $price = $unit_price * $data['quantity'];
+        // Quantity price
+        $price = $unit_price * $data['quantity'];
 
-    // Addons price
-    if (!empty($cart_detail['addons'])) {
-        $total_addon_price = 0;
-        $selected_addons = explode(',', $cart_detail['addons']);
+        // Addons price
+        if (!empty($cart_detail['addons'])) {
+            $total_addon_price = 0;
+            $selected_addons = explode(',', $cart_detail['addons']);
 
-        foreach ($selected_addons as $selected_addon) {
-            $addon = $this->db->get_where('addons', ['id' => $selected_addon])->row_array();
-            $total_addon_price += $addon['price'];
+            foreach ($selected_addons as $selected_addon) {
+                $addon = $this->db->get_where('addons', ['id' => $selected_addon])->row_array();
+                $total_addon_price += $addon['price'];
+            }
+
+            $price += $total_addon_price;
         }
 
-        $price += $total_addon_price;
+        $data['price'] = $price;
+
+        $this->db->where('id', $cart_id);
+        $this->db->update('cart', $data);
+
+        return currency($data['price']);
     }
-
-    $data['price'] = $price;
-
-    $this->db->where('id', $cart_id);
-    $this->db->update('cart', $data);
-
-    return currency($data['price']);
-}
 
 
     public function update_cart_pos($cart_id, $quantity, $price)
-{
-    $data = [
-        'quantity' => $quantity,
-        'price'    => $price
-    ];
-    
-    $this->db->where('id', $cart_id);
-    return $this->db->update('cart', $data);
-}
+    {
+        $data = [
+            'quantity' => $quantity,
+            'price'    => $price
+        ];
+
+        $this->db->where('id', $cart_id);
+        return $this->db->update('cart', $data);
+    }
 
 
     /**
@@ -284,22 +283,22 @@ if ($menu_details['has_variant'] == 1) {
     /**
      * RETURN ALL THE CART ITEMS
      */
- public function get_all_by_pos($posId)
-{
-    if (!$posId) return [];
+    public function get_all_by_pos($posId)
+    {
+        if (!$posId) return [];
 
-    $this->db->where('customer_id', $posId);
-    
-    $query = $this->db->get($this->table);
+        $this->db->where('customer_id', $posId);
+
+        $query = $this->db->get($this->table);
 
 
 
-    $result = $query ? $query->result_array() : [];
+        $result = $query ? $query->result_array() : [];
 
-   
 
-    return $this->merger_pos($result);
-}
+
+        return $this->merger_pos($result);
+    }
 
 
 
@@ -307,57 +306,57 @@ if ($menu_details['has_variant'] == 1) {
 
                 // Cart_model.php
 
-/**
- * POS-specific merger: process cart items for POS
- * @param array|null $cart_items
- * @return array
- */
-public function merger_pos($cart_items)
-{
-    if (empty($cart_items) || !is_array($cart_items)) {
-        return [];
-    }
-
-    foreach ($cart_items as $key => $cart_item) {
-
-        // Ensure always an array
-        if (!is_array($cart_item)) continue;
-
-        // Safe model data
-        $menu_data = $this->menu_model->get_by_id($cart_item['menu_id']) ?? [];
-        $menu_data = is_array($menu_data) ? $menu_data : [];
-
-        $restaurant_data = $this->restaurant_model->get_by_id($cart_item['restaurant_id']) ?? [];
-        $restaurant_data = is_array($restaurant_data) ? $restaurant_data : [];
-
-        // Safe assignments
-        $cart_items[$key]['menu_name']       = $menu_data['name'] ?? '';
-        $cart_items[$key]['menu_thumbnail']  = $menu_data['thumbnail'] ?? '';
-        $cart_items[$key]['restaurant_name'] = $restaurant_data['name'] ?? '';
-        $cart_items[$key]['delivery_charge'] = delivery_charge($restaurant_data['id'] ?? 0);
-
-        // Decode options safely
-        $opt1 = json_decode($cart_item['options_1'] ?? '[]', true);
-        $opt2 = json_decode($cart_item['options_2'] ?? '[]', true);
-
-        $opt1 = is_array($opt1) ? $opt1 : [];
-        $opt2 = is_array($opt2) ? $opt2 : [];
-
-        $cart_items[$key]['options_1_details'] = $this->get_options_details_pos($opt1);
-        $cart_items[$key]['options_2_details'] = $this->get_options_details_pos($opt2);
-        
-        $variant_id = $cart_item['variant_id'];
-        $variant = $this->db->get_where('variant_options', ['id' => $variant_id])->row_array();
-     
-        if ($variant) {
-            $cart_items[$key]['variant_name'] = $variant['name']; // or your column name
-        } else {
-            $cart_items[$key]['variant_name'] = null;
+    /**
+     * POS-specific merger: process cart items for POS
+     * @param array|null $cart_items
+     * @return array
+     */
+    public function merger_pos($cart_items)
+    {
+        if (empty($cart_items) || !is_array($cart_items)) {
+            return [];
         }
-    }
 
-    return $cart_items;
-}
+        foreach ($cart_items as $key => $cart_item) {
+
+            // Ensure always an array
+            if (!is_array($cart_item)) continue;
+
+            // Safe model data
+            $menu_data = $this->menu_model->get_by_id($cart_item['menu_id']) ?? [];
+            $menu_data = is_array($menu_data) ? $menu_data : [];
+
+            $restaurant_data = $this->restaurant_model->get_by_id($cart_item['restaurant_id']) ?? [];
+            $restaurant_data = is_array($restaurant_data) ? $restaurant_data : [];
+
+            // Safe assignments
+            $cart_items[$key]['menu_name']       = $menu_data['name'] ?? '';
+            $cart_items[$key]['menu_thumbnail']  = $menu_data['thumbnail'] ?? '';
+            $cart_items[$key]['restaurant_name'] = $restaurant_data['name'] ?? '';
+            $cart_items[$key]['delivery_charge'] = delivery_charge($restaurant_data['id'] ?? 0);
+
+            // Decode options safely
+            $opt1 = json_decode($cart_item['options_1'] ?? '[]', true);
+            $opt2 = json_decode($cart_item['options_2'] ?? '[]', true);
+
+            $opt1 = is_array($opt1) ? $opt1 : [];
+            $opt2 = is_array($opt2) ? $opt2 : [];
+
+            $cart_items[$key]['options_1_details'] = $this->get_options_details_pos($opt1);
+            $cart_items[$key]['options_2_details'] = $this->get_options_details_pos($opt2);
+
+            $variant_id = $cart_item['variant_id'];
+            $variant = $this->db->get_where('variant_options', ['id' => $variant_id])->row_array();
+
+            if ($variant) {
+                $cart_items[$key]['variant_name'] = $variant['name']; // or your column name
+            } else {
+                $cart_items[$key]['variant_name'] = null;
+            }
+        }
+
+        return $cart_items;
+    }
 
 
 
@@ -393,7 +392,7 @@ public function merger_pos($cart_items)
         }
 
         $menus = $this->db->get($this->table);
-        return $this->merger($menus); 
+        return $this->merger($menus);
     }
 
     /**
@@ -430,81 +429,83 @@ public function merger_pos($cart_items)
     }
 
     private function get_options_details_pos($options)
-{
-    // If NULL, string, number → convert to empty array
-    if (!is_array($options)) {
-        return [];
-    }
-
-    $details = [];
-    
-    foreach ($options as $option) {
-
-        // Each option must be an array with specific keys
-        if (!is_array($option) || 
-            !isset($option['subVariantId']) || 
-            !isset($option['itemId'])) {
-            continue; // skip invalid entries
+    {
+        // If NULL, string, number → convert to empty array
+        if (!is_array($options)) {
+            return [];
         }
 
-        $subVariantId = $option['subVariantId'];
-        $itemId = $option['itemId'];
+        $details = [];
 
-        $variantSubOption = $this->variation_model->get_variant_sub_options_name_by_id($subVariantId);
-        $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId);
+        foreach ($options as $option) {
 
-        $details[] = [
-            'subVariantId' => $subVariantId,
-            'itemId' => $itemId,
-            'variantName' => $variantSubOption,
-            'subOptionName' => $subOptionItem
-        ];
-    }
-    return $details;
-}
+            // Each option must be an array with specific keys
+            if (
+                !is_array($option) ||
+                !isset($option['subVariantId']) ||
+                !isset($option['itemId'])
+            ) {
+                continue; // skip invalid entries
+            }
 
+            $subVariantId = $option['subVariantId'];
+            $itemId = $option['itemId'];
 
-   public function get_options_details($options)
-{
-    // If not array → convert to empty array
-    if (!is_array($options)) {
-        return [];
-    }
+            $variantSubOption = $this->variation_model->get_variant_sub_options_name_by_id($subVariantId);
+            $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId);
 
-    $details = [];
-
-    foreach ($options as $option) {
-        // Prevent string inside array from breaking processing
-        if (!is_array($option)) continue;
-
-        $subVariantId = $option['subVariantId'] ?? null;
-        $itemId = $option['itemId'] ?? null;
-
-        // Get variant sub-option name
-        $variantSubOption = $this->variation_model->get_variant_sub_options_name_by_id($subVariantId);
-
-        // Get sub-option item name
-        $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId,1);
-        
-
-        $group         = $this->variation_model->get_group($subVariantId);
-
-
-        $details[] = [
-            'subVariantId' => $subVariantId,
-            'itemId' => $itemId,
-            'variantName' => $variantSubOption,
-            'subOptionName' => $subOptionItem["variant"],
-            'is_free' => $subOptionItem["is_free"] ?? 0,
-            'group' => [
-                "id" => $group['variant_group_id'] ?? null,
-                "name" => $group['group_name'] ?? null
-            ]
-        ];
+            $details[] = [
+                'subVariantId' => $subVariantId,
+                'itemId' => $itemId,
+                'variantName' => $variantSubOption,
+                'subOptionName' => $subOptionItem
+            ];
+        }
+        return $details;
     }
 
-    return $details;
-}
+
+    public function get_options_details($options)
+    {
+        // If not array → convert to empty array
+        if (!is_array($options)) {
+            return [];
+        }
+
+        $details = [];
+
+        foreach ($options as $option) {
+            // Prevent string inside array from breaking processing
+            if (!is_array($option)) continue;
+
+            $subVariantId = $option['subVariantId'] ?? null;
+            $itemId = $option['itemId'] ?? null;
+
+            // Get variant sub-option name
+            $variantSubOption = $this->variation_model->get_variant_sub_options_name_by_id($subVariantId);
+
+            // Get sub-option item name
+            $subOptionItem = $this->variation_model->get_variant_name_by_id($itemId, 1);
+
+
+            $group         = $this->variation_model->get_group($subVariantId);
+
+
+            $details[] = [
+                'subVariantId' => $subVariantId,
+                'itemId' => $itemId,
+                'variantName' => $variantSubOption,
+                'subOptionName' => $subOptionItem["variant"],
+                'is_free' => $subOptionItem["is_free"] ?? 0,
+                'group' => [
+                    "id" => $group['variant_group_id'] ?? null,
+                    "name" => $group['group_name'] ?? null
+                ]
+            ];
+        }
+
+        return $details;
+    }
 
 
     public function get_restaurants_by_ids($restaurant_ids)
@@ -571,22 +572,22 @@ public function merger_pos($cart_items)
         }
     }
 
-     public function order_placing_mail_pos($order_code,$pos_id)
+    public function order_placing_mail_pos($order_code, $pos_id)
     {
-       
+
         $customer_details = $this->user_model->get_user_by_id($pos_id);
-        
+
         $this->load->model('order_model');
 
         $order_data = $this->order_model->get_order_by_code($order_code);
-        
+
         $message  = get_phrase('hello') . ' ' . $customer_details['name'] . ', <br/>';
         $message .= get_phrase('your_order_has_been_placed_successfully') . '.<br/>';
         $message .= get_phrase('the_order_code_is') . ' <b>' . $order_code . '</b>.<br/>';
         $message .= get_phrase('please_track_down_your_order_status_from_the_order_details_page') . '.';
         $this->email_model->order_pacing($customer_details, $order_data);
 
-          $restaurant_ids = $this->get_restaurant_ids($order_code);
+        $restaurant_ids = $this->get_restaurant_ids($order_code);
         foreach ($restaurant_ids as $key => $restaurant_id) {
             $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
             $message  = get_phrase('hello') . ' ' . $restaurant_details['owner_name'] . ', <br/>';
@@ -595,7 +596,6 @@ public function merger_pos($cart_items)
             $message .= get_phrase('please_check_the_order_as_soon_as_possible') . '.';
             $this->email_model->order_pacing($restaurant_details['owner_email'], $message);
         }
-
     }
 
 
@@ -683,46 +683,45 @@ public function merger_pos($cart_items)
         return $total_price;
     }
 
-public function get_total_discount_applied_percentage($order_type, $restaurant_id = null)
-{
-    $total_discount = 0.00;
+    public function get_total_discount_applied_percentage($order_type, $restaurant_id = null)
+    {
+        $total_discount = 0.00;
 
-    if (empty($restaurant_id)) {
-        log_message('debug', 'No restaurant_id provided in get_total_discount_applied_percentage()');
-        return $total_discount;
-    }
-
-    $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
-
-    if (empty($restaurant_details) || $this->get_sub_total() <= 0) {
-        return $total_discount;
-    }
-
-    // Domain check
-    $current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
-    $isFooyes = (strpos($current_domain, 'fooyes') !== false);
-
-    if ($isFooyes) {
-
-        // Fooyes domain
-        if (in_array($order_type, ['collection', 'pickup'])) {
-            $discount_value = $restaurant_details['pick_discount'] ?? '0%';
-        } else {
-            $discount_value = $restaurant_details['res_discount'] ?? '0%';
+        if (empty($restaurant_id)) {
+            log_message('debug', 'No restaurant_id provided in get_total_discount_applied_percentage()');
+            return $total_discount;
         }
 
-    } else {
+        $restaurant_details = $this->restaurant_model->get_by_id($restaurant_id);
 
-        if (in_array($order_type, ['collection', 'pickup'])) {
-            $discount_value = $restaurant_details['standalone_pick_discount'] ?? '0%';
-        } else {
-            $discount_value = $restaurant_details['standalone_res_discount'] ?? '0%';
+        if (empty($restaurant_details) || $this->get_sub_total() <= 0) {
+            return $total_discount;
         }
-    }
 
-    $total_discount = (float) str_replace('%', '', $discount_value);
-    return $total_discount;
-}
+        // Domain check
+        $current_domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
+        $isFooyes = (strpos($current_domain, 'fooyes') !== false);
+
+        if ($isFooyes) {
+
+            // Fooyes domain
+            if (in_array($order_type, ['collection', 'pickup'])) {
+                $discount_value = $restaurant_details['pick_discount'] ?? '0%';
+            } else {
+                $discount_value = $restaurant_details['res_discount'] ?? '0%';
+            }
+        } else {
+
+            if (in_array($order_type, ['collection', 'pickup'])) {
+                $discount_value = $restaurant_details['standalone_pick_discount'] ?? '0%';
+            } else {
+                $discount_value = $restaurant_details['standalone_res_discount'] ?? '0%';
+            }
+        }
+
+        $total_discount = (float) str_replace('%', '', $discount_value);
+        return $total_discount;
+    }
 
 
 
@@ -731,17 +730,17 @@ public function get_total_discount_applied_percentage($order_type, $restaurant_i
      * GET SMALLER DATA FOR CART PAGE : GRAND TOTAL
      */
 
-public function get_discounted_amount($order_type, $restaurant_id = null)
-{
-    if (empty($restaurant_id)) {
-        $restaurant_id = $this->session->userdata('restaurant_id');
+    public function get_discounted_amount($order_type, $restaurant_id = null)
+    {
+        if (empty($restaurant_id)) {
+            $restaurant_id = $this->session->userdata('restaurant_id');
+        }
+
+        $sub_total = $this->get_sub_total($order_type);
+        $discount_percentage = $this->get_total_discount_applied_percentage($order_type, $restaurant_id);
+
+        return $sub_total * ($discount_percentage / 100);
     }
-
-    $sub_total = $this->get_sub_total($order_type);
-    $discount_percentage = $this->get_total_discount_applied_percentage($order_type, $restaurant_id);
-
-    return $sub_total * ($discount_percentage / 100);
-}
 
 
     /**
@@ -757,7 +756,7 @@ public function get_discounted_amount($order_type, $restaurant_id = null)
     public function clearing_cart_pos($customer_id)
     {
         $data['customer_id'] = $customer_id;
-         $this->db->where($data);
+        $this->db->where($data);
         return $this->db->delete($this->table);
     }
 
@@ -911,7 +910,7 @@ public function get_discounted_amount($order_type, $restaurant_id = null)
         if (!empty($promo) && isset($promo['discount'])) {
             $promo_discount = ($subtotal * $promo['discount']) / 100;
 
-            if($onlineDiscount == '1'){
+            if ($onlineDiscount == '1') {
                 $discountedAmount = (float) sanitize($this->get_discounted_amount($order_type));
             }
         } else {
@@ -933,18 +932,20 @@ public function get_discounted_amount($order_type, $restaurant_id = null)
     public function generate_variant_html($options_1)
     {
 
+
         // Because it is json
-        if($options_1 == "[]"){
+        if ($options_1 == "[]") {
             return null;
         }
 
         $html = "";
         $currentGroupID = null;
-        
+
+        $grouped = [];
+
         foreach (json_decode($options_1, true) as $option) {
-            
+
             $sub_variant_id = $option['subVariantId'];
-        
             $group   = $this->variation_model->get_group($sub_variant_id);
 
             $option['group'] = [
@@ -952,32 +953,45 @@ public function get_discounted_amount($order_type, $restaurant_id = null)
                 "name" => $group['group_name'] ?? null
             ];
 
-            // Meaning that this is the last option or the next option belongs to a different group, we close the list.
-            if($currentGroupID != null && $currentGroupID != $option['group']['id']) {
-                $html .= "</ul>";
-            }   
+            $groupId = $option['group']['id'] ?? 'no_group';
 
-            // Meaning that this option has a group associated with it.
-            if($option['group']['id'] != null) {
-                // Meaning that this is the first option or the group has changed from the previous option, we print the group name.
-                if($currentGroupID != $option['group']['id']) {
-                    $html .= "<li><strong>".$option['group']['name']."</strong></li>";
-                    $html .= "<ul>";
-                    // Change the Group ID to the current one.
-                    $currentGroupID = $option['group']['id'] ?? null;
+            if (!isset($grouped[$groupId])) {
+                $grouped[$groupId] = [
+                    'name'    => $option['group']['name'],
+                    'options' => []
+                ];
+            }
+
+            $grouped[$groupId]['options'][] = $option;
+        }
+
+        foreach ($grouped as $groupId => $group) {
+
+            if ($groupId !== 'no_group' && $group['name']) {
+                $html .= "<li><strong>" . $group['name'] . "</strong></li>";
+                $html .= "<ul>";
+            }
+
+            foreach ($group['options'] as $option) {
+                $selectedOption = $this->variation_model->get_variant_name_by_id($option["itemId"], 1);
+
+                $html .= "<li style='display:flex; justify-content: space-between;'>";
+                $html .= "<span>" . $selectedOption["variant"] . "</span>";
+
+                if ($selectedOption["is_free"] == 0 && !empty($selectedOption["price"])) {
+                    $html .= "<span class='text-muted' style='font-size: 12px;'>+£" . $selectedOption["price"] . "</span>";
+                } else if ($selectedOption['is_free'] == 0 && empty($selectedOption['price'])) {
+                    $html .= "<span class='text-muted' style='font-size: 12px;'></span>";
+                } else {
+                    $html .= "<span class='text-muted' style='font-size: 12px;'> FREE </span>";
                 }
-            }
-            
-            $selectedOption = $this->variation_model->get_variant_name_by_id($option["itemId"],1);
 
-            $html .= "<li style='display:flex; justify-content: space-between;'><span>".$selectedOption["variant"]. "</span>";
-            
-            if($selectedOption["is_free"] == 0) {
-                $html .= "<span class='text-muted' style='font-size: 12px;'>+£". $selectedOption["price"]. "</span>";
-            }else {
-                $html .= " <span class='text-muted' style='font-size: 12px;'> FREE </span>";
+                $html .= "</li>";
             }
-            
+
+            if ($groupId !== 'no_group' && $group['name']) {
+                $html .= "</ul>";
+            }
         }
 
         return $html;

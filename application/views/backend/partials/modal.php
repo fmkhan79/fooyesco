@@ -148,27 +148,74 @@ $(document).on("click",".add_sub_variant",function(){
 			},
 			success: function(response) {
             //    alert(response);
-               newRowAdd =
-                '<div id="sub_variant-'+response+'" class="v_var_div"> ' +
-                '<div class="form-row v_var_row">'+
-                '<div class="col-md-7">'+
-                '<input type="text" data-variant-sub-id="'+response+'"  data-item-name="name"  class="form-control variant_sub_cat" placeholder="Fodd sub Category name">'+
-                '</div>'+
-                '<div class="col-md-3">'+
-                '<label>Is Addons'+
-                ' <input type="checkbox" class="variant_sub_cat" data-variant-sub-id="'+response+'" data-item-name="isoptional">'+
-                '</label>'+
-                '<button class="btn btn-info btn-sm delete_sub_variant" data-variation-sub-id="'+response+'" style="float:right" >Delete'+
-                '</button>'+
-                '</div>'+
-                '<div class="col-md-2">'+
-                '<button style="float:right" data-menu-id="'+menu_id+'" data-variation-sub-id="'+response+'" class="btn btn-primary btn-sm add_variant">Add Food Item'+ 
-                ' </button>'+
-                '</div>'+
-                '</div>' +
-                '<div class="variant_items_'+response+'">'+
-                '</div>'+
-                '</div>';
+            //    newRowAdd =
+            //     '<div id="sub_variant-'+response+'" class="v_var_div"> ' +
+            //     '<div class="form-row v_var_row">'+
+            //     '<div class="col-md-7">'+
+            //     '<input type="text" data-variant-sub-id="'+response+'"  data-item-name="name"  class="form-control variant_sub_cat" placeholder="Fodd sub Category name">'+
+            //     '</div>'+
+            //     '<div class="col-md-3">'+
+            //     '<label>Is Addons23'+
+            //     ' <input type="checkbox" class="variant_sub_cat" data-variant-sub-id="'+response+'" data-item-name="isoptional">'+
+            //     '</label>'+
+            //     '<button class="btn btn-info btn-sm delete_sub_variant" data-variation-sub-id="'+response+'" style="float:right" >Delete'+
+            //     '</button>'+
+            //     '</div>'+
+            //     '<div class="col-md-2">'+
+            //     '<button style="float:right" data-menu-id="'+menu_id+'" data-variation-sub-id="'+response+'" class="btn btn-primary btn-sm add_variant">Add Food Item'+ 
+            //     ' </button>'+
+            //     '</div>'+
+            //     '</div>' +
+            //     '<div class="variant_items_'+response+'">'+
+            //     '</div>'+
+            //     '</div>';
+
+            newRowAdd =
+                    '<div class="card subvariants_card" id="sub_variant-'+response+'">' +
+
+                    '<div class="card-header d-flex justify-content-between align-items-center variant_sub_option_header" ' +
+                    'style="background: #f9f9f9 !important;border: #fdc55e 1px solid;" ' +
+                    'data-toggle="collapse" href="#body-'+response+'" role="button" aria-expanded="false">' +
+
+                        '<div class="row w-100">' +
+
+                        // Icon
+                        '<div class="col flex-grow-0" style="padding:0;display:flex;align-items:center;opacity:0.7;">' +
+                            '<svg width="20" height="20" viewBox="0 0 64 64">' +
+                            '<path d="M20 30 L32 42 L44 30" stroke="black" fill="none"/>' +
+                            '</svg>' +
+                        '</div>' +
+
+                        // Input
+                        '<div class="col flex-1" style="padding-left:10px;">' +
+                            '<input type="text" data-variant-sub-id="'+response+'" data-item-name="name" ' +
+                            'class="form-control variant_sub_cat" placeholder="Food sub Category name">' +
+                        '</div>' +
+
+                        // Actions
+                        '<div style="padding-left:20px;display:flex;align-items:center;gap:10px;">' +
+
+                            '<input type="checkbox" class="variant_sub_cat" ' +
+                            'data-variant-sub-id="'+response+'" data-item-name="isoptional">' +
+
+                            '<label style="margin:0;color:black;font-weight:100;font-size:13px;">Optional?</label>' +
+
+                            '<button class="btn btn-success btn-sm" onclick="saveNewSubCategory()">Save</button>' +
+
+                            '<button data-menu-id="'+menu_id+'" data-variation-sub-id="'+response+'" ' +
+                            'class="btn btn-danger btn-sm delete_sub_variant">Delete</button>' +
+
+                        '</div>' +
+
+                        '</div>' +
+                    '</div>' +
+
+                    // Collapsible body (important — your old code had items container)
+                    '<div id="body-'+response+'" class="collapse">' +
+                        '<div class="p-2 variant_items_'+response+'"></div>' +
+                    '</div>' +
+
+                    '</div>';
                 var div = ".variant_"+variation_id;
                 console.log(div);
                 $(div).append(newRowAdd);
@@ -258,7 +305,14 @@ $(document).on("change",".variant_item",function(){
     
     var variation_item_id =   this.getAttribute("data-item-id");
     var variation_attr_name =   this.getAttribute("data-item-name");
-    var variation_attr_value =   $(this).is(':checked') ? "on" : "off";
+    var variation_attr_value =  "";
+
+    if(variation_attr_name == "is_free"){
+        variation_attr_value = $(this).is(':checked') ? "on" : "off";
+    }
+    else{
+        variation_attr_value = $(this).val();        
+    }
     
 
 	$.ajax({
@@ -436,7 +490,6 @@ $(document).on("click",".duplicate_variant",function(){
 $(document).ready(function() {
     var submitButton = $("#offers_submit");
     submitButton.prop('disabled', true);
- console.log("promo_code");
     $("#promo_code").on('change', function() {
         var promoCode = $(this).val();
         console.log(promoCode);

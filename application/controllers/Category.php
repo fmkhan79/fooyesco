@@ -59,8 +59,10 @@ class Category extends Authorization
         }
 
         $page_data['category'] = $this->category_model->get_by_id($id);
+        $page_data['sub_categories'] = $this->category_model->get_sub_categories($id);
         $page_data['page_name'] = 'category/edit';
         $page_data['page_title'] = get_phrase("update_category");
+
         $this->load->view('backend/index', $page_data);
     }
 

@@ -502,9 +502,9 @@ $(document).ready(function() {
     //  GET AND DISPALY THE MENU MAIN CATAGORIES BASED ON THE CLICK MENU 
     function viewselected_menu(menuid, menuprice, hasvariant, isButton) {
         
-        var el = document.querySelector("#unavailable_on_<?php echo $domain; ?>");
+        var el = document.querySelector("#disable-menu");
 
-        if (el != null && el.value == "1") {
+        if (el != null) {
             return;
         }
 
@@ -542,13 +542,12 @@ $(document).ready(function() {
         // Find the price element within the modal content and update its text
         $('#popup #add-order-price').text(menuPrice); // Replace '£15.99' with the new price you want to set
     }
-    // GET AND DISPLAY THE MENU ITEMS BASED ON SUB CATAGORY
+    // GET AND DISPLAY THE MENU ITEMS BASED ON SUB CATAGORY 
+    // THIS IS WORKING
 function viewselected_cat_items(maincatid, menu_selection = null) {
 
     var menu_option = menu_selection;
-    console.log('--menu_selection', menu_selection);
     menu_selection = '.' + menu_selection;
-    console.log('--menu_selection:after', menu_selection);
     // Get the selected radio button element
     var selectedRadioButton = document.querySelector('input[type="radio"][value="' + maincatid + '"].menuoptions');
 
@@ -581,6 +580,14 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
     }
     $.ajax({
         url: '<?php echo base_url(); ?>site/selected_cat_items/' + maincatid + '/' + menu_option,
+         beforeSend: function () {
+            $(".box.box2").css("opacity", "0.8");
+            $(".box.box2 .loader").removeClass("d-none");
+        },
+        complete: function () {
+            $(".box.box2").css("opacity", "1");
+            $(".box.box2 .loader").addClass("d-none");
+        },
         success: function(res) {
             // $("#sub-catagories-and-items").html(res);
             $(menu_selection).html(res);
@@ -594,7 +601,6 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
         
         ar.length == $(".modal-body input[type='radio']:checked").length ? button.classList.remove("disabled") : button.classList.remove("disabled");
         
-        console.log(ar.length, $(".modal-body input[type='radio']:checked").length, button.classList);
         },
         error: function() {
             // alert("<?php echo $this->lang->line('fail'); ?>")
@@ -605,6 +611,46 @@ function viewselected_cat_items(maincatid, menu_selection = null) {
 
     // holdModal('popup');
 }
+
+    function loadNextSequence(subCatId, variantID, sequence, maincatid) {
+        let menu_option = "menu-option-1";
+        sequence = parseInt(sequence) + 1;
+
+
+        $(".sequence[data-id='" + (sequence) + "']").remove();
+
+        menu_selection = '.' + menu_option;
+
+        $.ajax({
+        beforeSend: function () {
+            $(".box.box2").css("opacity", "0.8");
+            $(".box.box2 .loader").removeClass("d-none");
+        },
+        complete: function () {
+            $(".box.box2").css("opacity", "1");
+            $(".box.box2 .loader").addClass("d-none");
+        },
+        url: '<?php echo base_url(); ?>site/selected_cat_items/' + maincatid + '/' + menu_option + '/' + (sequence) + '/' + subCatId + '/' + variantID,
+        success: function(res) {
+            // $("#sub-catagories-and-items").html(res);
+            res = "<div class='sequence' data-id='" + (sequence) + "'>" + res + "</div>";
+            $(menu_selection).append(res);
+            let groupArr = [];
+     
+        $(".modal-body input[type='radio']").each( (index, item) => { 
+            groupArr.push(item.getAttribute('name')); 
+        }); 
+        let ar = [...new Set(groupArr)];
+        let button = document.querySelector("#add-to-order-container");
+        
+        ar.length == $(".modal-body input[type='radio']:checked").length ? button.classList.remove("disabled") : button.classList.remove("disabled");
+        
+        },
+        error: function() {
+            // alert("<?php echo $this->lang->line('fail'); ?>")
+        }
+    });
+    }
 
 
     // GET THE CART SUMMARY AND DISPAY IN RIGHT SIDE

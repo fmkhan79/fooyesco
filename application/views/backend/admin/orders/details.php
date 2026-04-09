@@ -167,7 +167,7 @@ $host = $_SERVER['HTTP_HOST'];
                                 </a>
                             </li>
 
-                             <a href="<?php echo site_url('orders/view/' . sanitize($order_data['code'])); ?>"
+                             <a href="<?php echo site_url('orders/view/' . sanitize($order_data['code']). "?s=1"); ?>"
                                target="_blank"
                                 class="btn btn-danger btn-block">
                                 <i class="fas fa-eye"></i> See Order

@@ -9,6 +9,8 @@ include APPPATH . 'views/frontend/default/navigation/dark.php';
 
 include 'unavailable_popup.php';
 
+include 'timings_popup.php';
+
 
 ?>
 <style>

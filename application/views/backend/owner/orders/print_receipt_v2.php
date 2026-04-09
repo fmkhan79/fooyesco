@@ -16,9 +16,11 @@
             font-size: 18px;
         }
 
+        <?php if(!isset($_GET["s"])): ?>
         body {
             overflow: hidden;
         }
+        <?php endif; ?>
 
         .receipt {
             width: 270px;
@@ -118,6 +120,37 @@
 </head>
 
 <body>
+
+
+<?php
+if(isset($_GET["s"])) {
+    
+// Get current URI
+$uri = $_SERVER['REQUEST_URI'];
+
+// Break URI into parts
+$segments = explode('/', trim($uri, '/'));
+
+// Last segment is order code
+$order_code = end($segments);
+
+// Build redirect URL (CHANGE IF NEEDED)
+$redirect_url = base_url('orders/details/' . $order_code);
+?>
+<a href="<?php echo $redirect_url; ?>" style="    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: x-large;
+    font-weight: 700;"
+     class="btn btn-danger">
+    ✕
+</a>
+
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/global/toastr/toastr.css') ?>">
+
+    
+
+<?php } ?>
 
     <?php
     // --- SAFETY / NORMALIZATION ---
@@ -500,6 +533,15 @@
                                     };
                                 </script>
 
+    
+	<script src="<?php echo base_url('assets/auth/vendor/jquery/jquery-3.2.1.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/global/toastr/toastr.min.js'); ?>"></script>
+
+<?php
+if(isset($_GET["s"]) && isset($_GET["key"])) {
+    echo "<script>toastr.success('Order Accepted');</script>";
+}
+?>
 </body>
 
 </html>

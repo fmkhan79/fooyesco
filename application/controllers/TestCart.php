@@ -132,6 +132,7 @@ class Testcart extends Base {
         $this->db->where('no_response', 1);
         $this->db->where('restaurant_id', $user_id);
         $this->db->order_by('id', 'DESC');
+
         $orders = $this->db->get()->result_array();
 
         if (empty($orders)) {
@@ -172,16 +173,49 @@ class Testcart extends Base {
             $customer_name = ucfirst($billing_data['first_name']) . ' ' . ucfirst($billing_data['last_name']);
             $customer_phone = $billing_data['phone_mobile'];
 
-            $order_list[] =
-                "- Order <strong>#{$code}</strong><br>
-                 &nbsp;&nbsp; Customer: <strong>{$customer_name}</strong><br>
-                 &nbsp;&nbsp; Phone: <strong>{$customer_phone}</strong><br>
-                 &nbsp;&nbsp; Total: <strong>{$order['grand_total']}€</strong><br><br>";
+            $base_url = !empty($_SERVER['HTTP_HOST']) 
+            ? (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST']
+            : 'https://fooyes.co.uk'; // fallback for cron
+
+            $accept_url = $base_url . "/orders/view_mail/{$order['code']}/?s=1&key={$order['secret_mail_accept']}";
+            
+            $order_list[] = "
+            <div style='font-family: Arial, sans-serif; background-color: #f9f9f9; border: 1px solid #e0e0e0; border-left: 4px solid #4CAF50; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; max-width: 520px;'>
+            
+            <p style='margin: 0 0 6px 0; font-size: 16px; color: #333;'>
+                🛒 Order <strong style='color: #2c2c2c;'>#{$code}</strong>
+            </p>
+
+            <p style='margin: 4px 0; font-size: 14px; color: #555;'>
+                👤 Customer: <strong>{$customer_name}</strong>
+            </p>
+
+            <p style='margin: 4px 0; font-size: 14px; color: #555;'>
+                📞 Phone: <strong>{$customer_phone}</strong>
+            </p>
+
+            <p style='margin: 4px 0 14px 0; font-size: 14px; color: #555;'>
+                💰 Total: <strong style='color: #2e7d32;'>{$order['grand_total']}€</strong>
+            </p>
+
+            <a href='{$accept_url}' style='display: inline-block; background-color: #4CAF50; color: #ffffff; text-decoration: none; padding: 9px 20px; border-radius: 5px; font-size: 14px; font-weight: bold;'>
+                ✅ Accept/View Order
+            </a>
+
+            </div>";
+
+            $this->db->where('id', $order['id']);
+            $this->db->where('missed_order_email_count_left >', 0);
+            $this->db->set('missed_order_email_count_left', 'missed_order_email_count_left - 1', false);
+            $this->db->update('orders');
+            
         }
+        
 
         if (empty($order_list)) {
             continue;
         }
+
 
         $order_list_html = implode('', $order_list);
 
@@ -207,13 +241,12 @@ class Testcart extends Base {
         $mail->setFrom('support@fooyes.co.uk', 'Fooyes');
 
         if (!empty($owner_email)) {
-            $mail->addAddress($owner_email);
+            // $mail->addAddress($owner_email);
         }
 
         if (!empty($extra_email) && $extra_email != $owner_email) {
             $mail->addAddress($extra_email);
         }
-
         $mail->addBCC('website25developer@gmail.com');
 
         $mail->isHTML(true);

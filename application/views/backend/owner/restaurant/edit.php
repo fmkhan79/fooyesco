@@ -69,10 +69,6 @@ input:checked + .slider:before {
                             href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/delivery'); ?>"
                             class="nav-link <?php if ($active_tab == 'delivery') echo 'active' ?>"><?php echo get_phrase('delivery_data') ?></a>
                     </li>
-                    <li class="nav-item"><a
-                            href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/schedule'); ?>"
-                            class="nav-link <?php if ($active_tab == 'schedule') echo 'active' ?>"><?php echo get_phrase('schedule') ?></a>
-                    </li>
                     <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/seo'); ?>"
                             class="nav-link <?php if ($active_tab == 'seo') echo 'active' ?>"><?php echo "SEO Settings"; ?></a>
                     </li>
@@ -83,6 +79,8 @@ input:checked + .slider:before {
                     <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/offers'); ?>" class="nav-link <?php if ($active_tab == 'offers') echo 'active' ?>"><?php echo get_phrase("Offers") . "/Discounts" ?></a></li>
 
                     <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/visibility'); ?>" class="nav-link <?php if ($active_tab == 'visibility') echo 'active' ?>"><?php echo get_phrase("Visibility"); ?></a></li>
+                    
+                    <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/timings'); ?>" class="nav-link <?php if ($active_tab == 'timings') echo 'active' ?>">Timings</a></li>
 
                    <li class="nav-item"><a href="<?php echo site_url('restaurant/edit/' . sanitize($id) . '/emails'); ?>" class="nav-link <?php if ($active_tab == 'emails') echo 'active' ?>"><?php echo get_phrase("Email Settings"); ?></a></li>
 
@@ -329,45 +327,6 @@ input:checked + .slider:before {
                         </form>
                     </div>
                     <!-- /.tab-pane -->
-                    <div class="tab-pane <?php if ($active_tab == 'schedule') echo 'active' ?>" id="schedule">
-                        <form action="<?php echo site_url('restaurant/update/schedule'); ?>" method="post">
-                            <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
-                            <?php
-                            $schedule = json_decode($restaurant_data['schedule'], true);
-                            $days = ['saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-                            foreach ($days as $day) : ?>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label
-                                                for="<?php echo sanitize($day); ?>_opening"><?php echo get_phrase($day . "_opening"); ?></label>
-                                            <input type="time" class="form-control"
-                                                name="<?php echo sanitize($day); ?>_opening"
-                                                value="<?php echo isset($schedule[$day . "_opening"]) ? $schedule[$day . "_opening"] : "00:00:00"; ?>">
-                                            <div class="custom-control custom-checkbox mt-2">
-                                                <input type="checkbox" class="custom-control-input"
-                                                    name="<?php echo sanitize($day); ?>_opening_is_closed"
-                                                    id="<?php echo sanitize($day); ?>_opening_is_closed" value="1"
-                                                    <?php if (isset($schedule[$day . "_opening"]) && $schedule[$day . "_opening"] == "closed") echo "checked"; ?>>
-                                                <label class="custom-control-label"
-                                                    for="<?php echo sanitize($day); ?>_opening_is_closed"><?php echo get_phrase('is_closed_this_day'); ?></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label
-                                                for="<?php echo sanitize($day); ?>_closing"><?php echo get_phrase($day . "_closing"); ?></label>
-                                            <input type="time" class="form-control"
-                                                name="<?php echo sanitize($day); ?>_closing"
-                                                value="<?php echo isset($schedule[$day . "_closing"]) ? $schedule[$day . "_closing"] : "00:00:00"; ?>">
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                            <button class="btn btn-primary"><?php echo get_phrase('update_schedule'); ?></button>
-                        </form>
-                    </div>
                     <!-- /.tab-pane -->
                     <div class="tab-pane <?php if ($active_tab == 'seo') echo 'active' ?>" id="seo">
                         <div class="row">
@@ -778,16 +737,16 @@ input:checked + .slider:before {
                                         <input type="text" name="unavailable_fooyes_text" class="form-control" placeholder="Popup Text" value="<?php echo sanitize($restaurant_data['unavailable_fooyes_text']); ?>">
                                     </div>
                                     <div class="form-group">
-        <label>Closed From:</label>
-        <input type="time" name="closed_from" class="form-control"
-            value="<?php echo sanitize($restaurant_data['closed_from']); ?>">
-    </div>
+                                        <label>Closed From:</label>
+                                        <input type="time" name="closed_from" class="form-control"
+                                            value="<?php echo sanitize($restaurant_data['closed_from']); ?>">
+                                    </div>
 
-    <div class="form-group">
-        <label>Closed To:</label>
-        <input type="time" name="closed_to" class="form-control"
-            value="<?php echo sanitize($restaurant_data['closed_to']); ?>">
-    </div>
+                                    <div class="form-group">
+                                        <label>Closed To:</label>
+                                        <input type="time" name="closed_to" class="form-control"
+                                            value="<?php echo sanitize($restaurant_data['closed_to']); ?>">
+                                    </div>
 
 
                                     <button class="btn btn-primary" type="submit">Update Visibility</button>
@@ -834,57 +793,230 @@ input:checked + .slider:before {
                     <!-- /.tab-pane -->
 
 
+                     <div class="tab-pane <?php if ($active_tab == 'timings') echo 'active' ?>" id="timings">
+                        <div class="row" style="display: flex;justify-content: center;">
+                            <div class="col-lg-6" style="padding-right:20px; border-right:1px solid lightgrey;border-left:1px solid lightgrey">
+                                
+                                <form action="<?php echo site_url('restaurant/update/timings'); ?>" method="post">
+                                    <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
+
+                                    <?php
+                                    $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                                    foreach ($days as $day):
+                                        $open_key   = $day . '_open';
+                                        $close_key  = $day . '_close';
+                                        $closed_key = $day . '_closed';
+                                    ?>
+                                    <div class="day-row <?php echo !empty($restaurant_data['timings'][$closed_key]) ? 'is-closed' : ''; ?>" id="row-<?php echo $day; ?>">
+                                        <div class="day-label">
+                                            <span><?php echo ucfirst($day); ?></span>
+                                            <label class="toggle">
+                                                <input type="checkbox" name="<?php echo $closed_key; ?>"
+                                                    value="1"
+                                                    <?php echo !empty($restaurant_data['timings'][$closed_key]) ? 'checked' : ''; ?>
+                                                    onchange="toggleDay('<?php echo $day; ?>', this.checked)">
+                                                <span class="toggle-track"></span>
+                                                <span class="toggle-label-text">Closed</span>
+                                            </label>
+                                        </div>
+                                        <div class="day-times" id="times-<?php echo $day; ?>">
+                                            <div class="time-field">
+                                                <label>Opens</label>
+                                                <input type="time" name="<?php echo $open_key; ?>" class="form-control"
+                                                    value="<?php echo sanitize($restaurant_data['timings'][$open_key] ?? '09:00'); ?>">
+                                            </div>
+                                            <span class="time-sep">→</span>
+                                            <div class="time-field">
+                                                <label>Closes</label>
+                                                <input type="time" name="<?php echo $close_key; ?>" class="form-control"
+                                                    value="<?php echo sanitize($restaurant_data['timings'][$close_key] ?? '22:00'); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="closed-badge" id="badge-<?php echo $day; ?>" style="display:none">Closed all day</div>
+                                    </div>
+                                    <?php endforeach; ?>
+
+                                    <button class="btn btn-primary mt-3" type="submit">Save Hours</button>
+                                </form>
+
+                                <style>
+                                .day-row {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 16px;
+                                    padding: 12px 16px;
+                                    border-radius: 10px;
+                                    border: 1px solid #e9ecef;
+                                    background: #fff;
+                                    margin-bottom: 8px;
+                                    transition: background 0.2s;
+                                }
+                                .day-row.is-closed {
+                                    background: #f8f9fa;
+                                    opacity: 0.7;
+                                }
+                                .day-label {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 12px;
+                                    min-width: 200px;
+                                }
+                                .day-label > span {
+                                    font-weight: 600;
+                                    font-size: 16px;
+                                    width: 90px;
+                                    color: #212529;
+                                }
+                                .toggle {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                    cursor: pointer;
+                                    margin: 0;
+                                }
+                                .toggle input[type="checkbox"] { display: none; }
+                                .toggle-track {
+                                    width: 36px;
+                                    height: 20px;
+                                    background: #dee2e6;
+                                    border-radius: 20px;
+                                    position: relative;
+                                    transition: background 0.2s;
+                                    flex-shrink: 0;
+                                }
+                                .toggle-track::after {
+                                    content: '';
+                                    position: absolute;
+                                    width: 14px;
+                                    height: 14px;
+                                    border-radius: 50%;
+                                    background: #fff;
+                                    top: 3px;
+                                    left: 3px;
+                                    transition: left 0.2s;
+                                }
+                                .toggle input:checked ~ .toggle-track { background: #dc3545; }
+                                .toggle input:checked ~ .toggle-track::after { left: 19px; }
+                                .toggle-label-text {
+                                    font-size: 13px;
+                                    color: #6c757d;
+                                }
+                                .day-times {
+                                    display: flex;
+                                    align-items: flex-end;
+                                    gap: 10px;
+                                    flex: 1;
+                                }
+                                .time-field {
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 4px;
+                                }
+                                .time-field label {
+                                    font-size: 11px;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.05em;
+                                    color: #6c757d;
+                                    margin: 0;
+                                }
+                                .time-field .form-control {
+                                    width: 130px;
+                                    padding: 7px 10px;
+                                    font-size: 14px;
+                                    border: 1px solid #dee2e6;
+                                    border-radius: 8px;
+                                    background: #f8f9fa;
+                                    color: #212529;
+                                }
+                                .time-field .form-control:focus {
+                                    border-color: #0d6efd;
+                                    background: #fff;
+                                    box-shadow: 0 0 0 3px rgba(13,110,253,.15);
+                                    outline: none;
+                                }
+                                .time-sep {
+                                    font-size: 16px;
+                                    color: #adb5bd;
+                                    padding-bottom: 8px;
+                                }
+                                .closed-badge {
+                                    font-size: 13px;
+                                    color: #dc3545;
+                                    font-weight: 500;
+                                    padding: 6px 12px;
+                                    background: #fff5f5;
+                                    border-radius: 20px;
+                                    border: 1px solid #f5c6cb;
+                                }
+                                </style>
+
+                                <script>
+                                function toggleDay(day, isClosed) {
+                                    const row    = document.getElementById('row-' + day);
+                                    const times  = document.getElementById('times-' + day);
+                                    const badge  = document.getElementById('badge-' + day);
+                                    times.style.display = isClosed ? 'none' : 'flex';
+                                    badge.style.display = isClosed ? 'block' : 'none';
+                                    row.classList.toggle('is-closed', isClosed);
+                                }
+                                document.querySelectorAll('.toggle input[type="checkbox"]').forEach(cb => {
+                                    const day = cb.closest('.day-row').id.replace('row-', '');
+                                    toggleDay(day, cb.checked);
+                                });
+                                </script>
+                            </div>
+                    
+                        </div>
+
+
+                    </div>
+
         
-<div class="tab-pane <?php if ($active_tab == 'emails') echo 'active' ?>" id="emails">
-    <div class="row">
+                    <div class="tab-pane <?php if ($active_tab == 'emails') echo 'active' ?>" id="emails">
+                        <div class="row">
 
-        <!-- LEFT SIDE (Fooyes) -->
-        <div class="col-lg-6" style="padding-right:20px; border-right:1px solid lightgrey">
-            
-            <h2 style="display: flex;justify-content: space-between;align-items: flex-end;">
-                <?= $restaurant_data['fooyes_url'] ?>
-                <small class="text-muted text-sm">(Fooyes)</small>
-            </h2>
+                            <!-- LEFT SIDE (Fooyes) -->
+                            <div class="col-lg-6" style="padding-right:20px; border-right:1px solid lightgrey">
+                                
 
-            <form action="<?php echo site_url('restaurant/update_email_settings'); ?>" method="post">
-                <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
+                                <form action="<?php echo site_url('restaurant/update_email_settings'); ?>" method="post">
+                                    <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
 
-                <div class="form-group">
-                    <label>Missed Order Email (Main Domain)</label>
-                    <input type="email" name="missed_order_email" class="form-control"
-                        value="<?= $restaurant_data['missed_order_email'] ?? '' ?>"
-                        placeholder="Enter email for missed orders">
-                </div>
+                                    <div class="form-group">
+                                        <label>Missed Order Email</label>
+                                        <input type="email" name="missed_order_email" class="form-control"
+                                            value="<?= $restaurant_data['missed_order_email'] ?? '' ?>"
+                                            placeholder="Enter email for missed orders">
+                                    </div>
 
-                <button type="submit" class="btn btn-primary mt-2">Save Fooyes Settings</button>
-            </form>
-        </div>
+                                    <button type="submit" class="btn btn-primary mt-2">Save Fooyes Settings</button>
+                                </form>
+                            </div>
 
 
-        <!-- RIGHT SIDE (Standalone) -->
-        <div class="col-lg-6" style="padding-left:20px;">
-            
-            <h2 style="display: flex;justify-content: space-between;align-items: flex-end;">
-                <?= $restaurant_data['standalone_url'] ?>
-                <small class="text-muted text-sm">(Standalone)</small>
-            </h2>
+                            <!-- RIGHT SIDE (Standalone) -->
+                            <div class="col-lg-6" style="padding-left:20px;">
+                                
 
-            <form action="<?php echo site_url('restaurant/update_email_settings'); ?>" method="post">
-                <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
+                                <form action="<?php echo site_url('restaurant/update_email_settings'); ?>" method="post">
+                                    <input type="hidden" name="id" value="<?php echo sanitize($restaurant_data['id']); ?>">
 
-                <div class="form-group">
-                    <label>Missed Order Email (Standalone Domain)</label>
-                    <input type="email" name="missed_order_email_standalone" class="form-control"
-                        value="<?= $restaurant_data['missed_order_email_standalone'] ?? '' ?>"
-                        placeholder="Enter email for standalone missed orders">
-                </div>
+                                    <div class="form-group">
+                                        <label>Missed Order Email Count</label>
+                                        <input type="number" name="missed_order_email_count" class="form-control"
+                                            value="<?= $restaurant_data['missed_order_email_count'] ?? '' ?>"
+                                            placeholder="Enter email count for standalone missed orders">
+                                    </div>
 
-                <button type="submit" class="btn btn-primary mt-4">Save Standalone Settings</button>
-            </form>
-        </div>
+                                    <button type="submit" class="btn btn-primary mt-4">Save Standalone Settings</button>
+                                </form>
+                            </div>
 
-    </div>
-</div>
+                        </div>
+                    </div>
+
+
 
         </div>
     </div>

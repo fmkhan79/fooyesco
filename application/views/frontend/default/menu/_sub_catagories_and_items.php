@@ -1,5 +1,5 @@
 <?php 
-$menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
+$menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid, $sequence, $subOptionsId, $variantId);
 ?>
 
 <!-- CSS for FREE badge -->
@@ -30,7 +30,21 @@ $menu_sub_catagory_items = $this->menu_model->get_sub_options($maincatid);
 
 <?php 
 
+
+// 
+$referenced_sub_categories = [];
+
 foreach($menu_sub_catagory_items as $menu_sub_catagory_item){ 
+  if($menu_sub_catagory_item["condition_sub_options_id"] != null){
+    $referenced_sub_categories[] = $menu_sub_catagory_item["condition_sub_options_id"];
+  }
+}
+
+
+
+
+foreach($menu_sub_catagory_items as $menu_sub_catagory_item){ 
+  
   if($menu_sub_catagory_item["name"]){
 
     // Get all items of this sub-category
@@ -77,7 +91,7 @@ foreach($items as $item){
   if($item["variant"]){
 ?>
 <div class="d-flex align-items-center p-4 choice-box justify-content-between gray-border">
-
+  
   <div class="label-box">
     <label>
 
@@ -92,6 +106,7 @@ foreach($items as $item){
           data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"]; ?>"
           data-item-id="<?php echo $item["id"]; ?>"
           class="menuoptions required-item"
+          onclick="loadNextSequence(<?php echo $menu_sub_catagory_item['id']; ?>, <?php echo $item['id']; ?>, <?php echo $menu_sub_catagory_item['sequence']; ?> , '<?php echo $menu_sub_catagory_item['variant_option_id']; ?>')"
         />
       <?php } else { ?>
         <!-- FREE → hidden + auto selected -->
@@ -178,7 +193,13 @@ if (preg_match('/Maximum\s*(\d+)/i', $name, $matches)) {
 
 </div>
 
-<?php } } } ?>
+<?php } } 
+
+if(in_array($menu_sub_catagory_item["id"], $referenced_sub_categories)){
+    break;
+}
+
+} ?>
 
 </div>
 

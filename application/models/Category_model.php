@@ -34,6 +34,25 @@ class Category_model extends Base_model
         return $this->db->get($this->table)->row_array();
     }
 
+    
+    /**
+     * GET SUBCATEGORIES BY ID
+     */
+    public function get_sub_categories($id)
+    {
+        $this->db->where('category_id', $id);
+        return $this->db->get("food_sub_category")->result_array();
+    }
+
+    /**
+     * GET SUBCATEGORY BY ID
+    */
+    public function get_sub_category_by_id($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->get("food_sub_category")->row_array();
+    }
+
     /**
      * GET FEATURED CATEGORIES
      */
@@ -86,6 +105,21 @@ class Category_model extends Base_model
         return true;
     }
 
+       /**
+     * STORING SUB CATEGORY DATA
+     */
+    public function store_sub_category()
+    {
+        $data['name']  = required(sanitize($this->input->post('category_name')));
+        $data['description']  = required(sanitize($this->input->post('category_description')));
+        $data['category_id']  = required(sanitize($this->input->post('category_id')));
+        
+        $data['created_at'] = strtotime(date('D, d-M-Y'));
+
+        $this->db->insert("food_sub_category", $data);
+        return true;
+    }
+
     /**
      * UPDATING CATEGORY
      */
@@ -121,6 +155,27 @@ class Category_model extends Base_model
 
         $this->db->where('id', $id);
         $this->db->update($this->table, $data);
+        return true;
+    }
+
+    public function update_sub_category()
+    {
+    
+        $id = required(sanitize($this->input->post('id')));
+        $previous_data = $this->get_by_id($id);
+
+        $data['name']  = required(sanitize($this->input->post('category_name')));
+        $data['category_id']  = required(sanitize($this->input->post('category_id')));
+        $data["description"]  = required(sanitize($this->input->post('category_description')));
+        
+        $data['updated_at'] = strtotime(date('D, d-M-Y'));
+
+        if (count($this->get_by_condition(['name' => $data['name'], 'id !=' => $id])) > 0) {
+            error(get_phrase('this_category_is_already_registered'), site_url('category'));
+        }
+
+        $this->db->where('id', $id);
+        $this->db->update('food_sub_category', $data);
         return true;
     }
 
@@ -182,4 +237,14 @@ class Category_model extends Base_model
         }
         return array();
     }
+
+     public function delete_sub_category($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('food_sub_category');
+
+
+        return true;
+    }
+
 }

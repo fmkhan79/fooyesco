@@ -74,6 +74,13 @@ class Order_model extends Base_model
         return $this->order_merger($obj, true);
     }
 
+    public function verify_key($code, $key)
+    {
+        $this->db->where('code', $code);
+        $this->db->where('secret_mail_accept', $key);
+        return $this->db->count_all_results('orders') > 0;
+    }
+
     public function get_order_payment($code)
     {
         $this->db->where('order_code', $code);
@@ -546,13 +553,19 @@ class Order_model extends Base_model
         // Count how many orders have been placed today
         $this->db->where('DATE(created_at)', $today);
         $count = $this->db->count_all_results('orders');
-         $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
         // New order number for the day
         $daily_order_number = $count + 1;
         $address_id = !empty($address_id_arg) ? $address_id_arg : sanitize($this->input->post('address_number'));
 
         $data['code'] = "OR-" . strtotime(date('D, d-M-Y H:i:s')) . "-" . $this->session->userdata('user_id');
+        
+        $secret_key = bin2hex(random_bytes(32)); // 64 char secure random key
+        $data['secret_mail_accept'] = $secret_key;
+
+
+
         $data['customer_id'] = $this->logged_in_user_id;
         $data['customer_address_id'] = $address_id;
         $data['daily_order_number'] = $daily_order_number;
@@ -565,29 +578,23 @@ class Order_model extends Base_model
         $data['grand_total'] = $this->cart_model->get_grand_total($order_type);
         $data['user_agent'] = $user_agent;
         $cart_items = $this->cart_model->get_all();
+
         if (!empty($cart_items)) {
             $data['restaurant_id'] = $cart_items[0]['restaurant_id'];
         }
         
-      $data['commission_res'] = $this->restaurant_model->commision_check($data['restaurant_id']);
-    $commission_value = floatval(preg_replace('/[^0-9.]/', '', $data['commission_res']));
-    $data['commission_paid'] = $data['grand_total'] * ($commission_value / 100);
+        $data['missed_order_email_count_left'] = $this->restaurant_model->get_missed_order_count($data['restaurant_id']);
+        
+        $commission_value = floatval(preg_replace('/[^0-9.]/', '', $data['commission_res']));
+        $data['commission_paid'] = $data['grand_total'] * ($commission_value / 100);
 
-
-        // log_message('error',  $data['commission_res'] ."lol");
-        // print_r($data);
-        // die();
 
         $this->db->insert($this->table, $data);
 
         $cart_items = $this->cart_model->get_all();
 
-        // print_r($cart_items);
-        // die();   
-
         foreach ($cart_items as $cart_item) {
-            // print_r($cart_item);
-            // die();
+           
             $restaurant_ids = $order_details['restaurant_id'];
 
             $order_details['order_code'] = $data['code'];

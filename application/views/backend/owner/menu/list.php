@@ -111,7 +111,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <a href="<?php echo site_url('menu/edit/' . sanitize($menu['id'])); ?>" class="btn btn-primary btn-block"><b><?php echo get_phrase('details'); ?></b></a>
+                        <a href="<?php echo site_url('menu/edit/' . sanitize($menu['id']). '/variation'); ?>" class="btn btn-primary btn-block"><b><?php echo get_phrase('details'); ?></b></a>
                     </div>
                     <!-- /.card-body -->
                 </div>

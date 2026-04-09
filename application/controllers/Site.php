@@ -23,37 +23,12 @@ class Site extends Base
 
         $page_data['reviews_count'] = 0;
         $page_data['restaurant_details'] = $this->restaurant_model->get_by_slug($checkSlugInDb);
+        $page_data['restaurant_details']['timings'] = $this->restaurant_model->get_timings_by_id($page_data['restaurant_details']["id"]);
 
         if (!$page_data['restaurant_details']["id"]) {
             show_404();
         }
 
-        // ✅ TIMEZONE
-        $timezone = !empty($page_data['restaurant_details']['timezone']) 
-                    ? $page_data['restaurant_details']['timezone'] 
-                    : 'Europe/London';
-
-        date_default_timezone_set($timezone);
-
-        $close_from = $page_data['restaurant_details']['closed_from'];
-        $close_to   = $page_data['restaurant_details']['closed_to'];
-
-        $current_time = date('H:i:s');
-
-        $page_data['is_closed'] = 0;
-
-        if (!empty($close_from) && !empty($close_to)) {
-
-            if ($close_from < $close_to) {
-                if ($current_time >= $close_from && $current_time <= $close_to) {
-                    $page_data['is_closed'] = 1;
-                }
-            } else {
-                if ($current_time >= $close_from || $current_time <= $close_to) {
-                    $page_data['is_closed'] = 1;
-                }
-            }
-        }
 
         $page_data['page_name']  = 'restaurant/index';
         $page_data['page_title'] = site_phrase("restaurant", true);
@@ -97,6 +72,8 @@ class Site extends Base
         }
 
         $page_data['restaurant_details'] = $restaurant;
+        $page_data['restaurant_details']['timings'] = $this->restaurant_model->get_timings_by_id($page_data['restaurant_details']["id"]);
+
         $page_data['page_name'] = 'restaurant/index';
         $page_data['page_title'] = site_phrase("restaurant", true);
 
@@ -128,9 +105,14 @@ class Site extends Base
         $this->load->view("frontend/default/menu/_selected_menu",$data);
     }
 
-    function selected_cat_items($maincatid,$option = null){
+    // THIS FUNCTION IS RESPONSIBLE FOR RETURNING THE POUP BODY WITH THE SELCTED MENU VARIANTS AND SUBVARIANTS
+    function selected_cat_items($maincatid,$option = null, $sequence = null, $subOptionsId = null, $variantId = null){
         $data["option"] = $option;
         $data["maincatid"] = $maincatid;
+        $data["sequence"] = $sequence;
+        $data["subOptionsId"] = $subOptionsId;
+        $data["variantId"] = $variantId;
+
         $this->load->view("frontend/default/menu/_sub_catagories_and_items.php",$data);
     }
 

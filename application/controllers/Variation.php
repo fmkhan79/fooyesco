@@ -134,6 +134,7 @@ class Variation extends Base
 
         $data = $this->input->post("result");
 
+
         foreach($data as $key => $d){
             
             $id = str_replace("#body-", "", $d["id"]);
@@ -163,6 +164,37 @@ class Variation extends Base
             }
             
         }
+
+    }
+
+    public function fetch_variants() {
+        $variant_option_id = $this->input->post('value');
+        
+        $variants = $this->variation_model->get_sub_option_items($variant_option_id);
+        
+        echo json_encode($variants);
+    }
+
+    public function update_sub_variant_condition(){
+
+        $variant_id = $this->input->post('variant_id');
+        $variation_sub_id = $this->input->post('variation_sub_id');
+        $effected_variation_sub_id = $this->input->post('effected_variation_sub_id');
+
+        if($variant_id == "" || $variation_sub_id == "" || $effected_variation_sub_id == ""){
+            echo json_encode(["status" => "error", "message" => "All fields are required"]);
+            return false;
+        }
+
+        if($effected_variation_sub_id == $variation_sub_id){
+            echo json_encode(["status" => "error", "message" => "You cannot set condition to the same variant"]);
+            return false;
+        }
+        
+        $this->variation_model->update_sub_variant_condition($effected_variation_sub_id, $variant_id, $variation_sub_id);
+        echo json_encode(["status" => "success", "message" => "Condition updated successfully"]);
+
+        return true; 
 
     }
 

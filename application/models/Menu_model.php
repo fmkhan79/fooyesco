@@ -496,7 +496,7 @@ public function get_menu_by_condition($conditions = [])
      *  GET VARIATION SUB OPTIONS
      */
 
-     public function get_sub_options($variant_option_id)
+     public function get_sub_options($variant_option_id, $sequence = null, $subOptionsId = null, $variantId = null)
      {
         
         $this->db->order_by("sequence IS NULL", "ASC", false);
@@ -504,7 +504,21 @@ public function get_menu_by_condition($conditions = [])
         $this->db->order_by("id", "ASC");
 
         $this->db->order_by("id", "asc");
-         $variant_sub_options = $this->db->get_where('variant_sub_options', ['variant_option_id' => $variant_option_id])->result_array();
+
+        
+
+        if($sequence != null){
+            
+            $variant_sub_options = $this->db->get_where('variant_sub_options', ['variant_option_id' => $variant_option_id, 'sequence' => $sequence, "condition_sub_options_id" => $subOptionsId, "condition_variant_id" => $variantId])->result_array();
+            // Chekc if there is nothing is returning
+            if(count($variant_sub_options) == 0){
+                $variant_sub_options = $this->db->get_where('variant_sub_options', ['variant_option_id' => $variant_option_id, 'sequence' => $sequence])->result_array();            
+            }
+        }
+        else{
+            $variant_sub_options = $this->db->get_where('variant_sub_options', ['variant_option_id' => $variant_option_id])->result_array();
+        }
+         
          return $variant_sub_options;
      }
 
@@ -547,6 +561,32 @@ public function get_menu_by_condition($conditions = [])
 
         return $variant_sub_options_items;
 
+     }
+
+     public function check_for_condition_miss_errors($id){
+        $errors = [];
+
+        $this->db->where('menu_id', $id);
+        $this->db->where('test IS NOT NULL', null, false);
+
+        $variant_options = $this->db->get('variant_sub_options')->result_array();
+
+        dd($variant_options);
+
+        foreach($variant_options as $option){
+            if($option["condition"] != null){
+                $condition = json_decode($option["condition"], true);
+                if(isset($condition["sub_option_id"]) && !empty($condition["sub_option_id"])){
+                    $sub_option_id = $condition["sub_option_id"];
+                    $variant_sub_option_items = $this->db->where("variant_option_id", $sub_option_id)->get("variants")->result_array();
+                    if(count($variant_sub_option_items) == 0){
+                        $errors[] = "Variant option '" . $option["name"] . "' has a condition on a sub-option which does not have any item.";
+                    }
+                }
+            }
+        }
+
+        return $errors;
      }
 
 
