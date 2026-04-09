@@ -1,6 +1,5 @@
 <?php 
 
-$timings = $restaurant_details['timings'];
 $uk_time = new DateTime('now', new DateTimeZone('Europe/London'));
 $current_time = $uk_time->format('H:i:s'); // add seconds to match DB format
 
@@ -29,6 +28,14 @@ echo "<!-- Current Time: $current_time, Open Time: $open_time, Close Time: $clos
 <!-- ======================== -->
 <?php if(isset($is_closed_now) && $is_closed_now): ?>
 <style>
+  .disable-text-summary{
+  display: block !important;
+}
+.order-summery-box{
+  opacity: 0.2 !important;
+  pointer-events: none !important;
+}
+
 .timing-modal-close {
   position: fixed;
   top: 0;

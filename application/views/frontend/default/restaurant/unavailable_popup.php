@@ -11,6 +11,13 @@ $domain =  $isFooyes ? 'fooyes' : 'standalone';
 <!-- ======================== -->
 <?php if($restaurant_details['unavailable_on_' . $domain] == 1): ?>
 <style>
+.disable-text-summary{
+  display: block !important;
+}
+.order-summery-box{
+  opacity: 0.2 !important;
+  pointer-events: none !important;
+}
 .custom-modal {
   position: fixed;
   top: 0;

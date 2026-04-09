@@ -282,7 +282,7 @@ $redirect_url = base_url('orders/details/' . $order_code);
                             ?>
                         </li>
                     </ul>
-                    <ul>
+                    <ul style="padding:0px;padding-left:10px;margin:0px;">
                         <?= $ordered_item["html_output_for_recipts"];?>
                     </ul>
                     

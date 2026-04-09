@@ -72,10 +72,11 @@ class Site extends Base
         }
 
         $page_data['restaurant_details'] = $restaurant;
-        $page_data['restaurant_details']['timings'] = $this->restaurant_model->get_timings_by_id($page_data['restaurant_details']["id"]);
+        $page_data['timings'] = $this->restaurant_model->get_timings_by_id($page_data['restaurant_details']["id"]);
 
         $page_data['page_name'] = 'restaurant/index';
         $page_data['page_title'] = site_phrase("restaurant", true);
+
 
         $this->load->view(frontend('index'), $page_data);
     }

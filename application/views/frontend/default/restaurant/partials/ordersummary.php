@@ -50,7 +50,7 @@
 </script>
 
 
-
+    <span class="disable-text-summary" style="display:none;position: absolute;top: 45%;z-index: 999;width:100%;font-size:25px;text-align: center;font-weight: bold;">Resturant is currently unavailable</span>
 
 <div class="col-12 order-summery-box" id="order-summary">
                 <div class="sticky-offset">

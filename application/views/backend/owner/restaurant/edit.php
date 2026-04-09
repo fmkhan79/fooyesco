@@ -736,18 +736,7 @@ input:checked + .slider:before {
                                      <div class="form-group" style="display: flex;align-items: center;gap: 20px;">
                                         <input type="text" name="unavailable_fooyes_text" class="form-control" placeholder="Popup Text" value="<?php echo sanitize($restaurant_data['unavailable_fooyes_text']); ?>">
                                     </div>
-                                    <div class="form-group">
-                                        <label>Closed From:</label>
-                                        <input type="time" name="closed_from" class="form-control"
-                                            value="<?php echo sanitize($restaurant_data['closed_from']); ?>">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Closed To:</label>
-                                        <input type="time" name="closed_to" class="form-control"
-                                            value="<?php echo sanitize($restaurant_data['closed_to']); ?>">
-                                    </div>
-
+                                    
 
                                     <button class="btn btn-primary" type="submit">Update Visibility</button>
                                 </form>
@@ -1009,7 +998,7 @@ input:checked + .slider:before {
                                             placeholder="Enter email count for standalone missed orders">
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary mt-4">Save Standalone Settings</button>
+                                    <button type="submit" class="btn btn-primary mt-4">Save Email Count Settings</button>
                                 </form>
                             </div>
 

@@ -875,7 +875,7 @@ $ctaLink = $this->order_model->getSetting('ctaLink');
 
             </div>
 <!-- for screens -->
-<div class="d-none d-md-flex mt-5">
+<div class="d-none d-md-flex mt-5" style="position:relative">
     <?php include(__DIR__ . '/partials/ordersummary.php'); ?>
 </div>
 

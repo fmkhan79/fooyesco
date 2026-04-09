@@ -199,8 +199,6 @@ class Orders extends Authorization
             $this->db->where('code', $order_code);
             $this->db->update('orders');
 
-
-            echo json_encode(['status' => 'success']);
         
         }
     }
@@ -328,16 +326,13 @@ class Orders extends Authorization
 
         // Versioning 
         $timestamp = $data['order_details']['order_placed_at'];
-        $compareDate = strtotime('2026-03-27 00:00:00');
+        $compareDate = strtotime('2026-04-08 00:00:00');
 
         if ($timestamp < $compareDate) {
             $this->load->view('backend/owner/orders/print_receipt', $data);
-        } elseif ($timestamp >= $compareDate && $timestamp < strtotime('2026-03-28')) {
-            $this->load->view('backend/owner/orders/print_receipt_v2', $data);
         } else {
             $this->load->view('backend/owner/orders/print_receipt_v2', $data);
         }
-
     }
 
 
@@ -559,13 +554,16 @@ class Orders extends Authorization
         $data['ordered_items'] = $ordered_items;
         $data['payment']       = $payment;
         $data['daily_order_number'] = $order_details->daily_order_number;
-            if ($timestamp < $compareDate) {
+        
+        $timestamp = $data['order_details']['order_placed_at'];
+        $compareDate = strtotime('2026-04-08 00:00:00');
+
+        if ($timestamp < $compareDate) {
             $this->load->view('backend/owner/orders/print_receipt', $data);
-        } elseif ($timestamp >= $compareDate && $timestamp < strtotime('2026-03-28')) {
-            $this->load->view('backend/owner/orders/print_receipt_v2', $data);
         } else {
             $this->load->view('backend/owner/orders/print_receipt_v2', $data);
         }
+
     }
 
 

@@ -172,7 +172,9 @@ $stripe_settings = json_decode($stripe_settings);
     display: none;
 }
 
-
+div#item-list button {
+    display: none !important;
+}
 </style>
 <section class="detail-wbox mt-4 mb-2 p-md-5 d-flex justify-content-around">
     <div class="container bg-white text-dark border border-light p-3 w-lg-75 p-md-5">
