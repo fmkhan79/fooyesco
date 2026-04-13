@@ -291,7 +291,7 @@ $isChilliHut = (strpos($current_domain, 'chilli-hut-march') !== false);
                         <?php else : ?>
                             <div class="row mt-2 d-flex flex-row gap-2">
                                 <div class="btn-proceed">
-                                <a href="<?php echo site_url('auth'); ?>" class="d-block order-red-btn-main text-center mt-4 border-0 CheckoutBtn">
+                                <a href="<?php echo site_url('auth/google_login'); ?>" class="d-block order-red-btn-main text-center mt-4 border-0 CheckoutBtn">
                                     Login
                                 </a>
                             </div>
