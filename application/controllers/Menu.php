@@ -417,6 +417,9 @@ class Menu extends Authorization
                 $page_data['active_tab'] = $active_tab;
                 $page_data['menu_data'] = $this->menu_model->get_by_id($id);
                 $page_data['menu_data']['groups'] = $this->menu_model->get_variant_groups($id);
+                $page_data['subcategories'] = $this->db
+    ->get('food_sub_category')
+    ->result_array();
 
                 $page_data['page_name'] = 'menu/edit';
                 $page_data['page_title'] = $page_data['menu_data']['name'];

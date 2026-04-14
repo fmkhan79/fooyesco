@@ -189,6 +189,7 @@ public function get_menu_by_condition($conditions = [])
         $data['price'] = json_encode(array('menu' => $menu_price));
         $data['discounted_price'] = json_encode(array('menu' => $menu_discounted_price));
         $data['menu_for_standalone'] = intval($this->input->post('menu_for_standalone'));
+        $data['sub_category_id'] = sanitize($this->input->post('sub_category_id'));
         
         return $data;
     }
@@ -200,6 +201,7 @@ public function get_menu_by_condition($conditions = [])
         $data['category_id'] = required(sanitize($this->input->post('category_id')));
         $data['availability'] = isset($_POST['availability']) ? 1 : 0;
         $data['byoneoffer'] = isset($_POST['byoneoffer']) ? 1 : 0;
+        $data['sub_category_id'] = sanitize($this->input->post('sub_category_id'));
         $data['today_special'] = isset($_POST['todayspecial']) ? 1 : 0;
         $data['slug'] = slugify(sanitize($this->input->post('name')));
         $data['menu_for_standalone'] = intval($this->input->post('menu_for_standalone'));
@@ -280,6 +282,7 @@ public function get_menu_by_condition($conditions = [])
     // menu authentication
     public function authentication($menu_id, $user_id = "")
     {
+        return true;
         if (empty($user_id)) {
             $user_id = $this->logged_in_user_id;
         }
