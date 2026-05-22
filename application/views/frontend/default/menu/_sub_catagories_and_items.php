@@ -99,6 +99,7 @@ foreach($items as $item){
     <label>
 
       <?php if(!$isFreeOption){ ?>
+      <?= $break ? "T" : "F" ?>
         <!-- NORMAL REQUIRED RADIO -->
         <input
           type="radio"
@@ -109,9 +110,9 @@ foreach($items as $item){
           data-sub-variant-id="<?php echo $menu_sub_catagory_item["id"]; ?>"
           data-item-id="<?php echo $item["id"]; ?>"
           class="menuoptions required-item"
-          <?php if($break){ ?>
+      
           onclick="loadNextSequence(<?php echo $menu_sub_catagory_item['id']; ?>, <?php echo $item['id']; ?>, <?php echo $menu_sub_catagory_item['sequence'] ?? 'null'; ?> , '<?php echo $menu_sub_catagory_item['variant_option_id']; ?>')"
-          <?php  }?>
+         
         />
         
       <?php
