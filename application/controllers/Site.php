@@ -68,7 +68,7 @@ class Site extends Base
         $restaurant = $this->db->where('slug', $slug)
         ->where('visible_on_fooyes', 1)->get('restaurants')->row_array();
 
-        if (!$restaurant) {
+        if (!$restaurant && !isset($_GET["debug"])) {
             show_404();
         }
 
