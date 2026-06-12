@@ -593,7 +593,7 @@ div#item-list button {
                             <div class="d-flex gap-2 justify-content-center">
                                 <div class="grand-product-price d-none"></div> <!-- Total Amount in this like £8.6 -->
                                 <input type="text" class="form-control" id="promo_code" name="promo_code" required>
-                                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo" onclick="remove_promo()">
+                                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo"  style="display:none" onclick="remove_promo()">
                                     <i class="fa fa-times"></i>
                                 </div>
                             </div>
@@ -695,7 +695,7 @@ div#item-list button {
                             <div class="d-flex gap-2 justify-content-center">
                                 <div class="grand-product-price d-none"></div> <!-- Total Amount in this like £8.6 -->
                                 <input type="text" class="form-control" id="promo_code" name="promo_code" required>
-                                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo" onclick="remove_promo()">
+                                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo"  style="display:none" onclick="remove_promo()">
                                     <i class="fa fa-times"></i>
                                 </div>
                             </div>
@@ -919,11 +919,13 @@ $(document).ready(function () {
     // Show banner if not accepted
     if (cookieConsent !== "accepted") {
         document.getElementById("cookie-banner").style.display = "block";
-        document.getElementById("termBackdrop").style.display = "block";
+        let el = document.getElementById("termBackdrop");
+        if (el) el.style.display = "block";
     }
 
+    debugger;
     // Show guest address modal if delivery and cookies accepted
-    if (typeof orderTypeV !== 'undefined' && orderTypeV === 'delivery' && cookieConsent === "accepted") {
+    if (typeof orderTypeV !== 'undefined' && orderTypeV === 'delivery') {
         $('#guestAddressModal').modal({
             backdrop: 'static',
             keyboard: false

@@ -106,7 +106,7 @@ if (count($restaurant_ids) > 0):
                     <input type="text" class="form-control" id="promo_code" name="promo_code"
                         value="<?php echo $cart_items[0]['offer_code'] ?>" required>
                     <?php if(isset($cart_items[0]['offer_code'])){ ?>
-                    <div class="btn btn-sm btn-danger m-2" onclick="remove_promo()">
+                    <div class="d-none btn btn-sm btn-danger m-2" onclick="remove_promo()">
                         <i class="fa fa-times"></i>
                     </div>
                     <?php } ?>

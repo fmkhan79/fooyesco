@@ -99,8 +99,8 @@ foreach($items as $item){
     <label>
 
       <?php if(!$isFreeOption){ ?>
-      <?= $break ? "T" : "F" ?>
-        <!-- NORMAL REQUIRED RADIO -->
+      
+        <!-- NORMAL REQUIRED RADIO  $break ? "T" : "F" -->
         <input
           type="radio"
           required

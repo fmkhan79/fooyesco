@@ -211,7 +211,7 @@ $isChilliHut = (strpos($current_domain, 'chilli-hut-march') !== false);
             <div class="d-flex gap-2 justify-content-center">
                 <div class="grand-product-price d-none"></div>
                 <input type="text" class="form-control" id="promo_code" name="promo_code" required>
-                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo" onclick="remove_promo()">
+                <div class="btn btn-sm btn-danger m-2 d-none" id="remove_promo"  style="display:none" onclick="remove_promo()">
                     <i class="fa fa-times"></i>
                 </div>
             </div>
