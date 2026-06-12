@@ -65,8 +65,14 @@ class Site extends Base
         $slug = strtolower(sanitize($slug));
 
         // Slug exact match DB me
-        $restaurant = $this->db->where('slug', $slug)
-        ->where('visible_on_fooyes', 1)->get('restaurants')->row_array();
+        if(isset($_GET["debug"])){
+            $restaurant = $this->db->where('slug', $slug)
+            ->get('restaurants')->row_array();
+        }else{
+            $restaurant = $this->db->where('slug', $slug)
+            ->where('visible_on_fooyes', 1)->get('restaurants')->row_array();
+        }
+        
 
         if (!$restaurant && !isset($_GET["debug"])) {
             show_404();
