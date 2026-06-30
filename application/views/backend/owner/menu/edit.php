@@ -38,14 +38,15 @@
                                         </select>
                                     </div>
 
-   <div class="form-group">
+   <div class="form-group">                               
     <label>Sub Category</label>
-
     <select class="form-control select2 w-100" name="sub_category_id" id="subcategory_id">
-
+    <?php if ($menu_data['subcategory_id'] == null) : ?>
+        <option value="" selected disabled>Select Sub Category</option>
+    <?php endif; ?>
         <?php foreach ($subcategories as $sub) : ?>
             <option value="<?php echo $sub['id']; ?>"
-                <?php echo ($menu_data['subcategory_id'] == $sub['id']) ? 'selected' : ''; ?>>
+                <?php echo ($menu_data['sub_category_id'] == $sub['id']) ? 'selected' : ''; ?>>
 
                 <?php echo $sub['name']; ?>
             </option>
