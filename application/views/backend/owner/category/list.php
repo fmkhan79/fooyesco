@@ -40,15 +40,15 @@
                                         <?php endif; ?>
                                     </td>
                                     <td class="text-center">
-                                        <?php if ($category['created_by'] == $this->session->userdata('user_id')) : ?>
+                                        <?php // if ($category['created_by'] == $this->session->userdata('user_id')) : ?>
                                             <button class="btn action-dropdown" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                             <ul class="dropdown-menu">
                                                 <li><a class="dropdown-item" href="<?php echo site_url('category/edit/' . sanitize($category['id'])); ?>"><?php echo get_phrase("edit"); ?></a></li>
                                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="confirm_modal('<?php echo site_url('category/delete/' . sanitize($category['id'])); ?>')"><?php echo get_phrase("delete"); ?></a></li>
                                             </ul>
-                                        <?php else : ?>
-                                            <small>-</small>
-                                        <?php endif; ?>
+                                        <?php // else : ?>
+                                            <!-- <small>-</small> -->
+                                        <?php // endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

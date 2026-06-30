@@ -54,9 +54,9 @@ class Category extends Authorization
     function edit($id)
     {
         /** CHECK IF THE USER HAS ACCESS TO SEE THIS **/
-        if (!has_access('food_categories', $id)) {
-            error(get_phrase('you_are_not_authorized_for_this_action'), site_url('category'));
-        }
+        // if (!has_access('food_categories', $id)) {
+        //     error(get_phrase('you_are_not_authorized_for_this_action'), site_url('category'));
+        // }
 
         $page_data['category'] = $this->category_model->get_by_id($id);
         $page_data['sub_categories'] = $this->category_model->get_sub_categories($id);
