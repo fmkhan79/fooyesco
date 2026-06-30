@@ -43,6 +43,7 @@ $route['chilli-hut-march'] = 'site/restaurant_by_slug/chillihutmarch';
 $route['(:any)'] = 'site/restaurant_by_slug/$1';
 $route['subcategory/create/(:num)'] = 'SubCategory/create/$1';
 $route['subcategory/create'] = 'SubCategory/create';
+$route['subcategory/store'] = 'SubCategory/store';
 
 // Catch-all route for **restaurant slugs only**
 // $route['(:any)'] = 'site/show_restaurant/$1';
