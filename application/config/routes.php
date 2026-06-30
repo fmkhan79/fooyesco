@@ -41,5 +41,8 @@ $route['customers-info/(:any)/(:any)'] = 'CustomersInfo/$1/$2';
 $route['promo-code'] = 'PromoCode';
 $route['chilli-hut-march'] = 'site/restaurant_by_slug/chillihutmarch';
 $route['(:any)'] = 'site/restaurant_by_slug/$1';
+$route['subcategory/create/(:num)'] = 'SubCategory/create/$1';
+$route['subcategory/create'] = 'SubCategory/create';
+
 // Catch-all route for **restaurant slugs only**
 // $route['(:any)'] = 'site/show_restaurant/$1';
