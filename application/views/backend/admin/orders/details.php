@@ -108,7 +108,7 @@ $host = $_SERVER['HTTP_HOST'];
                             <li class="list-group-item">
                                 <b><?php echo get_phrase('payment_status'); ?>: </b>
                                 <a class="float-right">
-                                    <?php if (isset($payment_data['amount_to_pay']) && isset($payment_data['amount_paid']) && $payment_data['amount_to_pay'] == $payment_data['amount_paid']) : ?>
+                                     <?php if (isset($payment_data['amount_to_pay'], $payment_data['amount_paid']) && round((float)$payment_data['amount_to_pay'], 2) === round((float)$payment_data['amount_paid'], 2)): ?>
                                         <span class="badge badge-success lighten-success"><?php echo get_phrase(sanitize('paid')); ?></span>
                                     <?php else : ?>
                                         <span class="badge badge-danger lighten-danger"><?php echo get_phrase(sanitize('unpaid')); ?></span>

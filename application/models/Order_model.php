@@ -1976,5 +1976,303 @@ if ($pos && $pos !== 'all') {
     ]);
 }
 
+    /*
+    |--------------------------------------------------------------------------
+    | "RECEIVE ORDERS" DESKTOP APP API HELPERS
+    | Restaurant-scoped (via a resolved restaurant_id, not session) variants of
+    | the owner order flow above, returning data/booleans instead of redirecting,
+    | so they are safe to call from Api.php (application/controllers/Api.php).
+    |--------------------------------------------------------------------------
+    */
 
+    // LIST ORDERS FOR ONE RESTAURANT, NEWEST FIRST, WITH ITEM COUNT.
+    // $date_from / $date_to are 'YYYY-MM-DD' strings, applied to order_placed_at.
+    public function api_get_orders($restaurant_id, $statuses = [], $limit = 50, $date_from = null, $date_to = null, $order_type = null, $payment_method = null)
+    {
+        $this->db->select('orders.*, COUNT(order_details.id) as item_count, MAX(payment.payment_method) as payment_method');
+        $this->db->from('orders');
+        $this->db->join('order_details', 'order_details.order_code = orders.code', 'left');
+        $this->db->join('payment', 'payment.order_code = orders.code', 'left');
+        $this->db->where('orders.restaurant_id', $restaurant_id);
+        if (!empty($statuses)) {
+            $this->db->where_in('orders.order_status', $statuses);
+        }
+        if (!empty($date_from)) {
+            $this->db->where('orders.order_placed_at >=', strtotime($date_from . ' 00:00:00'));
+        }
+        if (!empty($date_to)) {
+            $this->db->where('orders.order_placed_at <=', strtotime($date_to . ' 23:59:59'));
+        }
+        if (!empty($order_type)) {
+            $this->db->where('orders.order_type', $order_type);
+        }
+        if (!empty($payment_method)) {
+            // Filters on the joined raw column (pre-aggregation) — fine since
+            // an order has at most one payment row in practice.
+            $this->db->where('payment.payment_method', $payment_method);
+        }
+        $this->db->group_by('orders.id');
+        $this->db->order_by('orders.order_placed_at', 'desc');
+        $this->db->limit($limit);
+        return $this->db->get()->result_array();
+    }
+
+    // SINGLE ORDER, SCOPED TO A RESTAURANT (RETURNS NULL IF NOT FOUND / NOT OWNED)
+    public function api_get_order($order_code, $restaurant_id)
+    {
+        $this->db->where('code', $order_code);
+        $this->db->where('restaurant_id', $restaurant_id);
+        return $this->db->get('orders')->row_array();
+    }
+
+    // PAYMENT METHOD FOR ONE ORDER (OR NULL). SEPARATE FROM order_merger() ABOVE,
+    // WHICH IS SHAPED FOR "orders" ROWS (customer_id/driver_id lookups) AND WOULD
+    // MISBEHAVE ON A "payment" ROW.
+    public function api_get_order_payment_method($order_code)
+    {
+        $this->db->select('payment_method');
+        $this->db->where('order_code', $order_code);
+        $row = $this->db->get('payment')->row_array();
+        return $row['payment_method'] ?? null;
+    }
+
+    // STATS FOR THE DESKTOP APP'S DASHBOARD: today's order count/revenue, a
+    // live pending count, and a day-by-day breakdown for the last 7 days
+    // (for a simple chart). Canceled orders are excluded from revenue/counts
+    // since they were never fulfilled.
+    public function api_get_stats($restaurant_id)
+    {
+        $today_start = strtotime('today');
+        $today_end = strtotime('tomorrow') - 1;
+
+        $this->db->select("COUNT(*) as order_count, COALESCE(SUM(grand_total), 0) as revenue", false);
+        $this->db->where('restaurant_id', $restaurant_id);
+        $this->db->where('order_placed_at >=', $today_start);
+        $this->db->where('order_placed_at <=', $today_end);
+        $this->db->where('order_status !=', 'canceled');
+        $today = $this->db->get('orders')->row_array();
+
+        $this->db->where('restaurant_id', $restaurant_id);
+        $this->db->where('order_status', 'pending');
+        $pending_count = $this->db->count_all_results('orders');
+
+        // Raw SQL for the daily breakdown — this DB runs with
+        // ONLY_FULL_GROUP_BY, so the GROUP BY expression must exactly match
+        // the non-aggregated SELECT expression; CI's query-builder escaping
+        // makes that fragile to build via select()/group_by(), hence raw SQL.
+        $seven_days_ago = strtotime('-6 days', $today_start);
+        $sql = "SELECT FROM_UNIXTIME(order_placed_at, '%Y-%m-%d') as day,
+                       COUNT(*) as order_count,
+                       COALESCE(SUM(grand_total), 0) as revenue
+                FROM orders
+                WHERE restaurant_id = ?
+                  AND order_placed_at >= ?
+                  AND order_status != 'canceled'
+                GROUP BY FROM_UNIXTIME(order_placed_at, '%Y-%m-%d')
+                ORDER BY day ASC";
+        $daily = $this->db->query($sql, [$restaurant_id, $seven_days_ago])->result_array();
+
+        return [
+            'today' => [
+                'order_count' => (int) ($today['order_count'] ?? 0),
+                'revenue' => (float) ($today['revenue'] ?? 0),
+            ],
+            'pending_count' => (int) $pending_count,
+            'daily' => array_map(function ($row) {
+                return [
+                    'date' => $row['day'],
+                    'order_count' => (int) $row['order_count'],
+                    'revenue' => (float) $row['revenue'],
+                ];
+            }, $daily),
+        ];
+    }
+
+    // DASHBOARD STATISTICS BREAKDOWNS. $dimension is one of:
+    //   'month'          — last 12 months, by placement month
+    //   'domain'         — last 30 days, by orders.order_url (which site the
+    //                      order actually came through — e.g. the fooyes
+    //                      marketplace vs this restaurant's own standalone site)
+    //   'order_type'     — last 30 days, by orders.order_type (delivery/pickup/pos)
+    //   'payment_method' — last 30 days, by payment.payment_method
+    // Canceled orders are excluded throughout (never fulfilled, shouldn't
+    // count toward revenue/order-count breakdowns).
+    public function api_get_stats_breakdown($restaurant_id, $dimension)
+    {
+        if ($dimension === 'month') {
+            // Last 12 calendar months, including the current one.
+            $start = strtotime('-11 months', strtotime(date('Y-m-01')));
+            $sql = "SELECT DATE_FORMAT(FROM_UNIXTIME(order_placed_at), '%Y-%m') as label,
+                           COUNT(*) as order_count,
+                           COALESCE(SUM(grand_total), 0) as revenue
+                    FROM orders
+                    WHERE restaurant_id = ?
+                      AND order_placed_at >= ?
+                      AND order_status != 'canceled'
+                    GROUP BY DATE_FORMAT(FROM_UNIXTIME(order_placed_at), '%Y-%m')
+                    ORDER BY label ASC";
+            $rows = $this->db->query($sql, [$restaurant_id, $start])->result_array();
+        } elseif ($dimension === 'domain') {
+            $start = strtotime('-29 days', strtotime('today'));
+            $sql = "SELECT COALESCE(NULLIF(order_url, ''), 'Unknown') as label,
+                           COUNT(*) as order_count,
+                           COALESCE(SUM(grand_total), 0) as revenue
+                    FROM orders
+                    WHERE restaurant_id = ?
+                      AND order_placed_at >= ?
+                      AND order_status != 'canceled'
+                    GROUP BY label
+                    ORDER BY revenue DESC";
+            $rows = $this->db->query($sql, [$restaurant_id, $start])->result_array();
+        } elseif ($dimension === 'order_type') {
+            $start = strtotime('-29 days', strtotime('today'));
+            $sql = "SELECT COALESCE(NULLIF(order_type, ''), 'unknown') as label,
+                           COUNT(*) as order_count,
+                           COALESCE(SUM(grand_total), 0) as revenue
+                    FROM orders
+                    WHERE restaurant_id = ?
+                      AND order_placed_at >= ?
+                      AND order_status != 'canceled'
+                    GROUP BY label
+                    ORDER BY revenue DESC";
+            $rows = $this->db->query($sql, [$restaurant_id, $start])->result_array();
+        } elseif ($dimension === 'payment_method') {
+            $start = strtotime('-29 days', strtotime('today'));
+            // Subquery collapses to one payment_method per order_code first,
+            // so an order with more than one payment row can't double-count
+            // its revenue in the join below.
+            $sql = "SELECT COALESCE(NULLIF(pm.payment_method, ''), 'unknown') as label,
+                           COUNT(*) as order_count,
+                           COALESCE(SUM(o.grand_total), 0) as revenue
+                    FROM orders o
+                    LEFT JOIN (
+                        SELECT order_code, MAX(payment_method) as payment_method
+                        FROM payment GROUP BY order_code
+                    ) pm ON pm.order_code = o.code
+                    WHERE o.restaurant_id = ?
+                      AND o.order_placed_at >= ?
+                      AND o.order_status != 'canceled'
+                    GROUP BY label
+                    ORDER BY revenue DESC";
+            $rows = $this->db->query($sql, [$restaurant_id, $start])->result_array();
+        } else {
+            return [];
+        }
+
+        return array_map(function ($row) {
+            return [
+                'label' => $row['label'],
+                'order_count' => (int) $row['order_count'],
+                'revenue' => (float) $row['revenue'],
+            ];
+        }, $rows);
+    }
+
+    // ITEM LINES FOR AN ORDER, ENRICHED WITH MENU/VARIANT NAMES
+    public function api_get_order_items($order_code)
+    {
+        $rows = $this->details($order_code);
+        $items = [];
+        foreach ($rows as $row) {
+            $menu = $this->menu_model->get_by_id($row['menu_id']);
+
+            $addon_names = [];
+            if (!empty($row['addons']) && $row['addons'] !== '[]') {
+                $addons = json_decode($row['addons'], true);
+                if (is_array($addons)) {
+                    foreach ($addons as $addon) {
+                        if (is_string($addon)) {
+                            // OLD FORMAT: flat array of add-on names
+                            $addon_names[] = $addon;
+                        } elseif (is_array($addon) && isset($addon['itemId'])) {
+                            // NEW FORMAT: {subVariantId, itemId} referencing the variants table
+                            $detail = $this->menu_model->get_addon_item_detail($addon['itemId']);
+                            if (!empty($detail['subOptionName'])) {
+                                $label = $detail['subOptionName'];
+                                if (!empty($detail['price'])) {
+                                    $label .= ' (+' . number_format((float) $detail['price'], 2) . ')';
+                                }
+                                $addon_names[] = $label;
+                            }
+                        } elseif (is_array($addon)) {
+                            $addon_names[] = $addon['name'] ?? 'Add-on';
+                        }
+                    }
+                }
+            }
+
+            // If menu_id no longer matches a row in food_menus (deleted/rebuilt menu since
+            // this historical order was placed), say so plainly instead of a bare "Item".
+            $item_name = $menu['name'] ?? ('Unknown item (menu #' . $row['menu_id'] . ' no longer exists)');
+
+            // variant_options holds the actual selected choice (e.g. "12 inches");
+            // variant_sub_options holds the group LABEL (e.g. "Select Base For Pizza") —
+            // matches how application/views/backend/owner/orders/print_receipt_v2.php resolves it.
+            $variant_name = '';
+            if (!empty($row['variant_id'])) {
+                $variant_detail = $this->menu_model->get_variant_detail($row['variant_id']);
+                $variant_name = $variant_detail[0]['name'] ?? '';
+            }
+
+            $items[] = [
+                'menu_id' => $row['menu_id'],
+                'name' => $item_name,
+                'quantity' => $row['quantity'],
+                'total' => $row['total'],
+                'servings' => $row['servings'],
+                'note' => $row['note'],
+                'variant_name' => $variant_name,
+                'addons' => $addon_names,
+            ];
+        }
+        return $items;
+    }
+
+    // ADVANCE AN ORDER'S STATUS. MIRRORS process_orders_as_owner() ABOVE BUT
+    // RESTAURANT-SCOPED (NOT SESSION-SCOPED) AND RETURNS A RESULT ARRAY INSTEAD
+    // OF REDIRECTING, SO IT IS SAFE TO CALL FROM A JSON API.
+    public function api_process_order($order_code, $phase, $restaurant_id)
+    {
+        $order = $this->db->get_where('orders', ['code' => $order_code, 'restaurant_id' => $restaurant_id])->row_array();
+        if (!$order) {
+            return ['success' => false, 'message' => 'Order not found for this restaurant.'];
+        }
+
+        $phases = ['pending', 'approved', 'preparing', 'prepared', 'delivered'];
+        if (!in_array($phase, $phases)) {
+            return ['success' => false, 'message' => 'Invalid phase.'];
+        }
+
+        $index = array_search($phase, $phases);
+        if (!($index && $phases[$index - 1] == $order['order_status'])) {
+            return ['success' => false, 'message' => 'Order can\'t move to "' . $phase . '" from "' . $order['order_status'] . '".'];
+        }
+
+        $this->db->where('code', $order_code);
+        $this->db->update('orders', [
+            'order_status' => $phase,
+            'order_' . $phase . '_at' => strtotime(date('D, d-M-Y H:i:s')),
+        ]);
+
+        if ($phase == 'approved') {
+            if (get_order_settings('auto_assign_driver')) {
+                $this->driver_model->auto_assign_a_driver($order_code);
+            }
+        }
+
+        if ($phase == 'delivered') {
+            $this->report_model->devide_commission($order_code);
+            $this->payment_model->mark_order_as_paid($order_code);
+        }
+
+        return ['success' => true, 'message' => 'Order status changed to "' . $phase . '".', 'order_status' => $phase];
+    }
+
+    // MARK AN ORDER AS SEEN. MIRRORS Orders::mark_order_as_read() ABOVE, SCOPED BY RESTAURANT_ID INSTEAD OF ORDER ID.
+    public function api_mark_read($order_code, $restaurant_id)
+    {
+        $this->db->where('code', $order_code);
+        $this->db->where('restaurant_id', $restaurant_id);
+        return $this->db->update('orders', ['read_status' => 1, 'no_response' => 0]);
+    }
 }

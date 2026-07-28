@@ -113,4 +113,56 @@ class Refund_model extends Base_model
         $this->db->where('status', 0);
         return $this->db->count_all_results('refund_requests');
     }
+
+    // RESTAURANT-SCOPED LIST FOR THE DESKTOP APP API. get_all_refund_requests()
+    // above returns every restaurant's requests — not safe to expose through a
+    // single-restaurant token.
+    public function api_get_by_restaurant($restaurant_id)
+    {
+        $this->db->where('restaurant_id', $restaurant_id);
+        $this->db->order_by('requestedAt', 'DESC');
+        return $this->db->get('refund_requests')->result_array();
+    }
+
+    // For the order detail popup: does a refund request already exist for
+    // this order, and what's its status? Mirrors owner_report.php's
+    // canRequestRefund/isRefundPending/isRefundAccepted/isRefundRejected.
+    public function api_get_status_for_order($order_code)
+    {
+        $row = $this->db->get_where('refund_requests', ['order_code' => $order_code])->row_array();
+        if (!$row) return null;
+
+        return [
+            'status' => (int) $row['status'], // 0 pending, 1 accepted, 2 rejected
+            'requested_at' => $row['requestedAt'],
+        ];
+    }
+
+    // OWNER-INITIATED REQUEST — restaurant-scoped wrapper around
+    // get_order_details_for_request_refund() above. Verifies the order
+    // belongs to the calling restaurant and is actually eligible (mirrors
+    // owner_report.php's canRequestRefund: unpaid, no existing request)
+    // before creating it.
+    public function api_request_refund($order_code, $restaurant_id)
+    {
+        $order = $this->db->get_where('orders', ['code' => $order_code, 'restaurant_id' => $restaurant_id])->row_array();
+        if (!$order) {
+            return ['ok' => false, 'message' => 'Order not found.'];
+        }
+        if ((string) $order['is_status'] !== '0') {
+            return ['ok' => false, 'message' => 'Only unpaid orders are eligible for a refund request.'];
+        }
+
+        $existing = $this->db->where('order_code', $order_code)->count_all_results('refund_requests');
+        if ($existing > 0) {
+            return ['ok' => false, 'message' => 'A refund request already exists for this order.'];
+        }
+
+        $this->get_order_details_for_request_refund($order_code);
+
+        $created = $this->db->where('order_code', $order_code)->count_all_results('refund_requests') > 0;
+        return $created
+            ? ['ok' => true]
+            : ['ok' => false, 'message' => 'Could not create refund request.'];
+    }
 }

@@ -405,6 +405,53 @@ public function update_address()
         return true;
     }
 
+    // ---------------------------------------------------------------
+    // "RECEIVE ORDERS" DESKTOP APP API HELPERS — restaurant-scoped variants
+    // (explicit params, not $_POST-coupled like update_visibility()/
+    // update_timings() above), safe to call from Api.php.
+    // ---------------------------------------------------------------
+    public function api_get_status($restaurant_id)
+    {
+        $this->db->select('unavailable_on_fooyes, unavailable_fooyes_text');
+        $this->db->where('id', $restaurant_id);
+        return $this->db->get($this->table)->row_array();
+    }
+
+    public function api_update_status($restaurant_id, $unavailable, $text)
+    {
+        $this->db->where('id', $restaurant_id);
+        return $this->db->update($this->table, [
+            'unavailable_on_fooyes' => $unavailable ? 1 : 0,
+            'unavailable_fooyes_text' => $text,
+        ]);
+    }
+
+    // $days: ['monday' => ['closed' => bool, 'open' => 'HH:MM', 'close' => 'HH:MM'], ...]
+    public function api_update_hours($restaurant_id, $days)
+    {
+        $valid_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $data = [];
+        foreach ($valid_days as $day) {
+            $d = $days[$day] ?? [];
+            $closed = !empty($d['closed']);
+            $data[$day . '_closed'] = $closed ? 1 : 0;
+            $data[$day . '_open'] = $closed ? null : (($d['open'] ?? '') ?: null);
+            $data[$day . '_close'] = $closed ? null : (($d['close'] ?? '') ?: null);
+        }
+
+        $this->db->where('restaurant_id', $restaurant_id);
+        $exists = $this->db->count_all_results('restaurant_hours');
+
+        if ($exists) {
+            $this->db->where('restaurant_id', $restaurant_id);
+            $this->db->update('restaurant_hours', $data);
+        } else {
+            $data['restaurant_id'] = $restaurant_id;
+            $this->db->insert('restaurant_hours', $data);
+        }
+        return true;
+    }
+
     public function update_timings(){
         $id = required(sanitize($this->input->post('id')));
 

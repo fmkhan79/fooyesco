@@ -40,6 +40,25 @@ $route['customers-info/(:any)'] = 'CustomersInfo/$1';
 $route['customers-info/(:any)/(:any)'] = 'CustomersInfo/$1/$2';
 $route['promo-code'] = 'PromoCode';
 $route['chilli-hut-march'] = 'site/restaurant_by_slug/chillihutmarch';
+
+// "Receive Orders" desktop app JSON API — must stay before the catch-all below,
+// otherwise every api/* request gets swallowed by the restaurant-slug route.
+$route['api/ping'] = 'api/ping';
+$route['api/login'] = 'api/login';
+$route['api/logout'] = 'api/logout';
+$route['api/dev-token'] = 'api/dev_token';
+$route['api/orders'] = 'api/orders';
+$route['api/orders/(:any)/status'] = 'api/order_status/$1';
+$route['api/orders/(:any)/cancel'] = 'api/order_cancel/$1';
+$route['api/orders/(:any)/receipt'] = 'api/order_receipt/$1';
+$route['api/orders/(:any)/request-refund'] = 'api/order_request_refund/$1';
+$route['api/orders/(:any)'] = 'api/order_detail/$1';
+$route['api/stats'] = 'api/stats';
+$route['api/stats/breakdown'] = 'api/stats_breakdown';
+$route['api/restaurant/status'] = 'api/restaurant_status';
+$route['api/restaurant/hours'] = 'api/restaurant_hours';
+$route['api/refunds'] = 'api/refunds';
+
 $route['(:any)'] = 'site/restaurant_by_slug/$1';
 $route['subcategory/create/(:num)'] = 'SubCategory/create/$1';
 $route['subcategory/create'] = 'SubCategory/create';
